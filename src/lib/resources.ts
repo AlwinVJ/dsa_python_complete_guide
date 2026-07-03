@@ -1,0 +1,584 @@
+export type Difficulty = "Beginner" | "Intermediate" | "Advanced";
+export type ResourceType =
+  | "Documentation"
+  | "Tutorial"
+  | "Practice"
+  | "Blog"
+  | "Course"
+  | "Visualization";
+
+export type Resource = {
+  id: string;
+  title: string;
+  url: string;
+  description: string;
+  type: ResourceType;
+  difficulty: Difficulty;
+  tags: string[];
+  official?: boolean;
+  free?: boolean;
+  author?: string;
+  readingTime?: string;
+  site?: string;
+};
+
+export type Problem = {
+  id: string;
+  title: string;
+  platform: "LeetCode" | "HackerRank" | "Codewars" | "Exercism" | "GeeksforGeeks";
+  difficulty: Difficulty;
+  url: string;
+  tags: string[];
+  time?: string;
+  acceptance?: string;
+};
+
+export type RoadmapLevel = {
+  level: string;
+  title: string;
+  description: string;
+  problems: Problem[];
+};
+
+// -------- Section 1: Official Documentation --------
+export const OFFICIAL_DOCS: Resource[] = [
+  {
+    id: "py-tut-datastructures",
+    title: "Python Tutorial — Data Structures",
+    url: "https://docs.python.org/3/tutorial/datastructures.html",
+    description: "The canonical walkthrough of lists, tuples, sets and dicts from the official Python tutorial.",
+    type: "Documentation",
+    difficulty: "Beginner",
+    tags: ["lists", "official", "tutorial"],
+    official: true,
+    free: true,
+    readingTime: "20 min",
+    site: "docs.python.org",
+  },
+  {
+    id: "py-stdtypes-list",
+    title: "Python Standard Types — Lists",
+    url: "https://docs.python.org/3/library/stdtypes.html#lists",
+    description: "Formal specification of list operations, mutability, and method semantics.",
+    type: "Documentation",
+    difficulty: "Intermediate",
+    tags: ["lists", "reference"],
+    official: true,
+    free: true,
+    readingTime: "15 min",
+    site: "docs.python.org",
+  },
+  {
+    id: "py-builtins",
+    title: "Python Built-in Functions",
+    url: "https://docs.python.org/3/library/functions.html",
+    description: "Reference for len, sorted, sum, min, max, enumerate, zip, map, filter and more.",
+    type: "Documentation",
+    difficulty: "Beginner",
+    tags: ["builtins", "reference"],
+    official: true,
+    free: true,
+    readingTime: "25 min",
+    site: "docs.python.org",
+  },
+  {
+    id: "py-sorting-howto",
+    title: "Python Sorting HOWTO",
+    url: "https://docs.python.org/3/howto/sorting.html",
+    description: "Deep-dive on sort() vs sorted(), key functions, stability, and Decorate-Sort-Undecorate.",
+    type: "Documentation",
+    difficulty: "Intermediate",
+    tags: ["sorting", "official"],
+    official: true,
+    free: true,
+    readingTime: "12 min",
+    site: "docs.python.org",
+  },
+  {
+    id: "py-time-complexity",
+    title: "TimeComplexity — Python Wiki",
+    url: "https://wiki.python.org/moin/TimeComplexity",
+    description: "Big-O complexities for CPython list, deque, dict and set operations.",
+    type: "Documentation",
+    difficulty: "Intermediate",
+    tags: ["complexity", "big-o"],
+    official: true,
+    free: true,
+    readingTime: "10 min",
+    site: "wiki.python.org",
+  },
+];
+
+// -------- Section 2: Beginner Learning Resources --------
+export const BEGINNER_RESOURCES: Resource[] = [
+  {
+    id: "w3-py-lists",
+    title: "W3Schools — Python Lists",
+    url: "https://www.w3schools.com/python/python_lists.asp",
+    description: "Bite-sized examples covering every list operation with a try-it editor.",
+    type: "Tutorial",
+    difficulty: "Beginner",
+    tags: ["lists", "syntax"],
+    free: true,
+    site: "w3schools.com",
+  },
+  {
+    id: "w3-py-arrays",
+    title: "W3Schools — Python Arrays",
+    url: "https://www.w3schools.com/python/python_arrays.asp",
+    description: "How Python treats arrays vs lists, when to use the array module.",
+    type: "Tutorial",
+    difficulty: "Beginner",
+    tags: ["arrays"],
+    free: true,
+    site: "w3schools.com",
+  },
+  {
+    id: "gfg-py-lists",
+    title: "GeeksforGeeks — Python Lists",
+    url: "https://www.geeksforgeeks.org/python-list/",
+    description: "Comprehensive guide with syntax, examples and edge cases for Python lists.",
+    type: "Tutorial",
+    difficulty: "Beginner",
+    tags: ["lists"],
+    free: true,
+    site: "geeksforgeeks.org",
+  },
+  {
+    id: "gfg-arrays",
+    title: "GeeksforGeeks — Arrays",
+    url: "https://www.geeksforgeeks.org/array-data-structure/",
+    description: "Foundations of arrays as a data structure with algorithms and problems.",
+    type: "Tutorial",
+    difficulty: "Beginner",
+    tags: ["arrays", "dsa"],
+    free: true,
+    site: "geeksforgeeks.org",
+  },
+  {
+    id: "gfg-list-methods",
+    title: "GeeksforGeeks — Python List Methods",
+    url: "https://www.geeksforgeeks.org/list-methods-python/",
+    description: "Every built-in list method with clear examples and use-cases.",
+    type: "Tutorial",
+    difficulty: "Beginner",
+    tags: ["methods"],
+    free: true,
+    site: "geeksforgeeks.org",
+  },
+  {
+    id: "programiz-lists",
+    title: "Programiz — Python Lists",
+    url: "https://www.programiz.com/python-programming/list",
+    description: "Beginner-friendly tutorial with runnable examples inline.",
+    type: "Tutorial",
+    difficulty: "Beginner",
+    tags: ["lists"],
+    free: true,
+    site: "programiz.com",
+  },
+  {
+    id: "tp-lists",
+    title: "TutorialsPoint — Python Lists",
+    url: "https://www.tutorialspoint.com/python/python_lists.htm",
+    description: "Concise reference with examples for every operation.",
+    type: "Tutorial",
+    difficulty: "Beginner",
+    tags: ["lists"],
+    free: true,
+    site: "tutorialspoint.com",
+  },
+  {
+    id: "rp-lists",
+    title: "Real Python — Lists and Tuples",
+    url: "https://realpython.com/python-lists-tuples/",
+    description: "In-depth article on lists vs tuples, mutability and common patterns.",
+    type: "Blog",
+    difficulty: "Intermediate",
+    tags: ["lists", "tuples"],
+    free: true,
+    site: "realpython.com",
+  },
+  {
+    id: "fcc-lists",
+    title: "freeCodeCamp — Python Lists",
+    url: "https://www.freecodecamp.org/news/python-list-methods-cheat-sheet/",
+    description: "List methods cheat sheet with examples for quick revision.",
+    type: "Tutorial",
+    difficulty: "Beginner",
+    tags: ["lists", "cheatsheet"],
+    free: true,
+    site: "freecodecamp.org",
+  },
+  {
+    id: "gfg-array-problems",
+    title: "GeeksforGeeks — Top Array Practice Problems",
+    url: "https://www.geeksforgeeks.org/array-data-structure/#practice",
+    description: "Curated array problems progressing from easy to hard.",
+    type: "Practice",
+    difficulty: "Beginner",
+    tags: ["arrays", "practice"],
+    free: true,
+    site: "geeksforgeeks.org",
+  },
+];
+
+// -------- Section 3: Free Medium & Blog Articles --------
+export const ARTICLES: Resource[] = [
+  {
+    id: "art-list-internals",
+    title: "How Python Lists Really Work Under the Hood",
+    url: "https://towardsdatascience.com/how-python-lists-work-under-the-hood-9d6de4a0e15e",
+    description: "Dynamic array resizing, over-allocation and pointer indirection explained.",
+    type: "Blog",
+    difficulty: "Intermediate",
+    tags: ["internals", "memory"],
+    author: "Reza Bagheri",
+    readingTime: "8 min",
+    free: true,
+    site: "medium.com",
+  },
+  {
+    id: "art-dynamic-arrays",
+    title: "Dynamic Arrays and Amortized Analysis",
+    url: "https://medium.com/@edward.li/dynamic-array-and-amortized-analysis-fdcf88a4a4b8",
+    description: "Why append is O(1) amortized even though resizing is O(n).",
+    type: "Blog",
+    difficulty: "Advanced",
+    tags: ["complexity", "amortized"],
+    readingTime: "6 min",
+    free: true,
+    site: "medium.com",
+  },
+  {
+    id: "art-time-complexity",
+    title: "Time Complexity of Python Operations",
+    url: "https://wiki.python.org/moin/TimeComplexity",
+    description: "Reference chart of Big-O for every list, dict and set operation.",
+    type: "Blog",
+    difficulty: "Intermediate",
+    tags: ["complexity"],
+    readingTime: "10 min",
+    free: true,
+    site: "wiki.python.org",
+  },
+  {
+    id: "art-sorting-algos",
+    title: "Timsort — The Fastest Sorting Algorithm You've Never Heard Of",
+    url: "https://hackernoon.com/timsort-the-fastest-sorting-algorithm-youve-never-heard-of-36b28417f399",
+    description: "Design of the hybrid merge/insertion sort powering Python's sorted().",
+    type: "Blog",
+    difficulty: "Advanced",
+    tags: ["sorting", "timsort"],
+    readingTime: "12 min",
+    free: true,
+    site: "hackernoon.com",
+  },
+  {
+    id: "art-memory",
+    title: "Python Memory Management",
+    url: "https://realpython.com/python-memory-management/",
+    description: "Reference counting, garbage collection and object identity in CPython.",
+    type: "Blog",
+    difficulty: "Advanced",
+    tags: ["memory", "gc"],
+    readingTime: "18 min",
+    free: true,
+    site: "realpython.com",
+  },
+  {
+    id: "art-comprehensions",
+    title: "When to Use List Comprehensions in Python",
+    url: "https://realpython.com/list-comprehension-python/",
+    description: "Patterns, anti-patterns and readability trade-offs of comprehensions.",
+    type: "Blog",
+    difficulty: "Intermediate",
+    tags: ["comprehensions"],
+    readingTime: "15 min",
+    free: true,
+    site: "realpython.com",
+  },
+  {
+    id: "art-mistakes",
+    title: "Common Python List Mistakes to Avoid",
+    url: "https://towardsdatascience.com/python-lists-mistakes-to-avoid-1a3e0c8a1a8a",
+    description: "Mutable default args, shared references and shallow copy traps.",
+    type: "Blog",
+    difficulty: "Intermediate",
+    tags: ["mistakes", "pitfalls"],
+    readingTime: "7 min",
+    free: true,
+    site: "medium.com",
+  },
+  {
+    id: "art-interview",
+    title: "Top Python List Interview Questions",
+    url: "https://www.interviewbit.com/python-interview-questions/",
+    description: "Frequently asked list and array questions with answers.",
+    type: "Blog",
+    difficulty: "Intermediate",
+    tags: ["interview"],
+    readingTime: "20 min",
+    free: true,
+    site: "interviewbit.com",
+  },
+  {
+    id: "art-array-vs-list",
+    title: "Array vs List in Python — The Real Difference",
+    url: "https://learnpython.com/blog/python-array-vs-list/",
+    description: "When array.array beats list, and when it doesn't.",
+    type: "Blog",
+    difficulty: "Beginner",
+    tags: ["arrays", "lists"],
+    readingTime: "6 min",
+    free: true,
+    site: "learnpython.com",
+  },
+  {
+    id: "art-bigo",
+    title: "Big-O Notation for Beginners",
+    url: "https://www.freecodecamp.org/news/big-o-notation-simply-explained-with-illustrations-and-video-87d5a71c0174/",
+    description: "Visual intro to Big-O, with array/list examples.",
+    type: "Blog",
+    difficulty: "Beginner",
+    tags: ["complexity", "big-o"],
+    readingTime: "9 min",
+    free: true,
+    site: "freecodecamp.org",
+  },
+];
+
+// -------- Section 4: Visualization --------
+export const VISUALIZATIONS: Resource[] = [
+  {
+    id: "viz-visualgo",
+    title: "VisuAlgo — Sorting & Arrays",
+    url: "https://visualgo.net/en/sorting",
+    description: "Best for: watching every sorting algorithm animate side-by-side with pseudocode.",
+    type: "Visualization",
+    difficulty: "Beginner",
+    tags: ["sorting", "arrays"],
+    free: true,
+    site: "visualgo.net",
+  },
+  {
+    id: "viz-algo-viz",
+    title: "Algorithm Visualizer",
+    url: "https://algorithm-visualizer.org/",
+    description: "Best for: stepping through code and data structures line-by-line in the browser.",
+    type: "Visualization",
+    difficulty: "Intermediate",
+    tags: ["algorithms"],
+    free: true,
+    site: "algorithm-visualizer.org",
+  },
+  {
+    id: "viz-usfca",
+    title: "USFCA Data Structure Visualizations",
+    url: "https://www.cs.usfca.edu/~galles/visualization/Algorithms.html",
+    description: "Best for: classic textbook animations of arrays, trees, graphs and sorts.",
+    type: "Visualization",
+    difficulty: "Beginner",
+    tags: ["dsa"],
+    free: true,
+    site: "cs.usfca.edu",
+  },
+  {
+    id: "viz-pytutor",
+    title: "Python Tutor",
+    url: "https://pythontutor.com/",
+    description: "Best for: seeing Python's memory model, references and list aliasing live.",
+    type: "Visualization",
+    difficulty: "Beginner",
+    tags: ["memory", "debug"],
+    free: true,
+    site: "pythontutor.com",
+  },
+];
+
+// -------- Section 5: Coding Practice Roadmap --------
+export const PRACTICE_BEGINNER: Problem[] = [
+  { id: "p-create", title: "Create Array/List", platform: "HackerRank", difficulty: "Beginner", url: "https://www.hackerrank.com/challenges/python-lists/problem", tags: ["basics"], time: "10 min" },
+  { id: "p-access", title: "Access Elements", platform: "HackerRank", difficulty: "Beginner", url: "https://www.hackerrank.com/challenges/list-comprehensions/problem", tags: ["basics"], time: "10 min" },
+  { id: "p-update", title: "Update Elements", platform: "HackerRank", difficulty: "Beginner", url: "https://www.hackerrank.com/challenges/nested-list/problem", tags: ["basics"], time: "15 min" },
+  { id: "p-insert", title: "Insert Elements", platform: "HackerRank", difficulty: "Beginner", url: "https://www.hackerrank.com/challenges/python-lists/problem", tags: ["insert"], time: "10 min" },
+  { id: "p-delete", title: "Delete Elements", platform: "HackerRank", difficulty: "Beginner", url: "https://www.hackerrank.com/challenges/python-lists/problem", tags: ["delete"], time: "10 min" },
+  { id: "p-reverse", title: "Reverse Array", platform: "LeetCode", difficulty: "Beginner", url: "https://leetcode.com/problems/reverse-string/", tags: ["two-pointers"], time: "15 min" },
+  { id: "p-max", title: "Find Maximum", platform: "Codewars", difficulty: "Beginner", url: "https://www.codewars.com/kata/554b4ac871d6813a03000035", tags: ["traversal"], time: "10 min" },
+  { id: "p-min", title: "Find Minimum", platform: "Codewars", difficulty: "Beginner", url: "https://www.codewars.com/kata/find-the-smallest-integer-in-the-array", tags: ["traversal"], time: "10 min" },
+  { id: "p-sum", title: "Sum of Array", platform: "Codewars", difficulty: "Beginner", url: "https://www.codewars.com/kata/57eaeb9578748ff92a000009", tags: ["traversal"], time: "10 min" },
+  { id: "p-avg", title: "Average", platform: "Codewars", difficulty: "Beginner", url: "https://www.codewars.com/kata/57a2013acf1fa5bfc4000921", tags: ["math"], time: "10 min" },
+  { id: "p-freq", title: "Frequency Count", platform: "LeetCode", difficulty: "Beginner", url: "https://leetcode.com/problems/majority-element/", tags: ["hashmap"], time: "15 min" },
+];
+
+export const PRACTICE_INTERMEDIATE: Problem[] = [
+  { id: "p-twosum", title: "Two Sum", platform: "LeetCode", difficulty: "Intermediate", url: "https://leetcode.com/problems/two-sum/", tags: ["hashmap"], time: "20 min", acceptance: "54%" },
+  { id: "p-rotate", title: "Rotate Array", platform: "LeetCode", difficulty: "Intermediate", url: "https://leetcode.com/problems/rotate-array/", tags: ["array"], time: "25 min", acceptance: "42%" },
+  { id: "p-movezeros", title: "Move Zeroes", platform: "LeetCode", difficulty: "Intermediate", url: "https://leetcode.com/problems/move-zeroes/", tags: ["two-pointers"], time: "15 min", acceptance: "62%" },
+  { id: "p-merge", title: "Merge Sorted Arrays", platform: "LeetCode", difficulty: "Intermediate", url: "https://leetcode.com/problems/merge-sorted-array/", tags: ["two-pointers"], time: "20 min", acceptance: "50%" },
+  { id: "p-dedup", title: "Remove Duplicates from Sorted Array", platform: "LeetCode", difficulty: "Intermediate", url: "https://leetcode.com/problems/remove-duplicates-from-sorted-array/", tags: ["two-pointers"], time: "20 min", acceptance: "56%" },
+  { id: "p-prod", title: "Product of Array Except Self", platform: "LeetCode", difficulty: "Intermediate", url: "https://leetcode.com/problems/product-of-array-except-self/", tags: ["prefix"], time: "30 min", acceptance: "66%" },
+  { id: "p-majority", title: "Majority Element", platform: "LeetCode", difficulty: "Intermediate", url: "https://leetcode.com/problems/majority-element/", tags: ["boyer-moore"], time: "20 min", acceptance: "64%" },
+  { id: "p-intersect", title: "Intersection of Two Arrays", platform: "LeetCode", difficulty: "Intermediate", url: "https://leetcode.com/problems/intersection-of-two-arrays/", tags: ["set"], time: "20 min", acceptance: "72%" },
+  { id: "p-missing", title: "Missing Number", platform: "LeetCode", difficulty: "Intermediate", url: "https://leetcode.com/problems/missing-number/", tags: ["math", "xor"], time: "20 min", acceptance: "63%" },
+  { id: "p-bsearch", title: "Binary Search", platform: "LeetCode", difficulty: "Intermediate", url: "https://leetcode.com/problems/binary-search/", tags: ["binary-search"], time: "20 min", acceptance: "58%" },
+  { id: "p-first-occ", title: "First & Last Position of Element", platform: "LeetCode", difficulty: "Intermediate", url: "https://leetcode.com/problems/find-first-and-last-position-of-element-in-sorted-array/", tags: ["binary-search"], time: "30 min", acceptance: "45%" },
+  { id: "p-peak", title: "Find Peak Element", platform: "LeetCode", difficulty: "Intermediate", url: "https://leetcode.com/problems/find-peak-element/", tags: ["binary-search"], time: "25 min", acceptance: "47%" },
+];
+
+export const PRACTICE_ADVANCED: Problem[] = [
+  { id: "p-sw", title: "Longest Substring Without Repeating (Sliding Window)", platform: "LeetCode", difficulty: "Advanced", url: "https://leetcode.com/problems/longest-substring-without-repeating-characters/", tags: ["sliding-window"], time: "35 min", acceptance: "35%" },
+  { id: "p-prefix", title: "Range Sum Query — Immutable (Prefix Sum)", platform: "LeetCode", difficulty: "Advanced", url: "https://leetcode.com/problems/range-sum-query-immutable/", tags: ["prefix-sum"], time: "25 min", acceptance: "62%" },
+  { id: "p-kadane", title: "Maximum Subarray (Kadane)", platform: "LeetCode", difficulty: "Advanced", url: "https://leetcode.com/problems/maximum-subarray/", tags: ["kadane", "dp"], time: "30 min", acceptance: "51%" },
+  { id: "p-mono", title: "Daily Temperatures (Monotonic Stack)", platform: "LeetCode", difficulty: "Advanced", url: "https://leetcode.com/problems/daily-temperatures/", tags: ["monotonic-stack"], time: "35 min", acceptance: "67%" },
+  { id: "p-bs-answer", title: "Koko Eating Bananas (Binary Search on Answer)", platform: "LeetCode", difficulty: "Advanced", url: "https://leetcode.com/problems/koko-eating-bananas/", tags: ["binary-search"], time: "40 min", acceptance: "48%" },
+  { id: "p-intervals", title: "Merge Intervals", platform: "LeetCode", difficulty: "Advanced", url: "https://leetcode.com/problems/merge-intervals/", tags: ["intervals", "sort"], time: "35 min", acceptance: "47%" },
+  { id: "p-spiral", title: "Spiral Matrix", platform: "LeetCode", difficulty: "Advanced", url: "https://leetcode.com/problems/spiral-matrix/", tags: ["matrix"], time: "40 min", acceptance: "45%" },
+  { id: "p-kth", title: "Kth Largest Element", platform: "LeetCode", difficulty: "Advanced", url: "https://leetcode.com/problems/kth-largest-element-in-an-array/", tags: ["heap", "quickselect"], time: "30 min", acceptance: "67%" },
+  { id: "p-topk", title: "Top K Frequent Elements", platform: "LeetCode", difficulty: "Advanced", url: "https://leetcode.com/problems/top-k-frequent-elements/", tags: ["heap", "hashmap"], time: "35 min", acceptance: "64%" },
+  { id: "p-nge", title: "Next Greater Element I", platform: "LeetCode", difficulty: "Advanced", url: "https://leetcode.com/problems/next-greater-element-i/", tags: ["monotonic-stack"], time: "30 min", acceptance: "72%" },
+  { id: "p-trap", title: "Trapping Rain Water", platform: "LeetCode", difficulty: "Advanced", url: "https://leetcode.com/problems/trapping-rain-water/", tags: ["two-pointers"], time: "50 min", acceptance: "60%" },
+];
+
+// -------- Section 6: LeetCode Roadmap --------
+export const LEETCODE_ROADMAP: RoadmapLevel[] = [
+  {
+    level: "Level 1",
+    title: "Basics",
+    description: "Warm-up array problems to build intuition.",
+    problems: [
+      { id: "lc-1", title: "Running Sum of 1d Array", platform: "LeetCode", difficulty: "Beginner", url: "https://leetcode.com/problems/running-sum-of-1d-array/", tags: ["prefix"], acceptance: "77%" },
+      { id: "lc-2", title: "Find Numbers with Even Digits", platform: "LeetCode", difficulty: "Beginner", url: "https://leetcode.com/problems/find-numbers-with-even-number-of-digits/", tags: ["array"], acceptance: "80%" },
+      { id: "lc-3", title: "Squares of a Sorted Array", platform: "LeetCode", difficulty: "Beginner", url: "https://leetcode.com/problems/squares-of-a-sorted-array/", tags: ["two-pointers"], acceptance: "73%" },
+    ],
+  },
+  {
+    level: "Level 2",
+    title: "Searching",
+    description: "Master binary search patterns.",
+    problems: [
+      { id: "lc-4", title: "Binary Search", platform: "LeetCode", difficulty: "Beginner", url: "https://leetcode.com/problems/binary-search/", tags: ["binary-search"], acceptance: "58%" },
+      { id: "lc-5", title: "Search Insert Position", platform: "LeetCode", difficulty: "Beginner", url: "https://leetcode.com/problems/search-insert-position/", tags: ["binary-search"], acceptance: "45%" },
+      { id: "lc-6", title: "Find First and Last Position", platform: "LeetCode", difficulty: "Intermediate", url: "https://leetcode.com/problems/find-first-and-last-position-of-element-in-sorted-array/", tags: ["binary-search"], acceptance: "45%" },
+    ],
+  },
+  {
+    level: "Level 3",
+    title: "Two Pointers",
+    description: "Shrink the search space with two indices.",
+    problems: [
+      { id: "lc-7", title: "Two Sum II — Sorted Array", platform: "LeetCode", difficulty: "Intermediate", url: "https://leetcode.com/problems/two-sum-ii-input-array-is-sorted/", tags: ["two-pointers"], acceptance: "62%" },
+      { id: "lc-8", title: "Remove Duplicates from Sorted Array", platform: "LeetCode", difficulty: "Beginner", url: "https://leetcode.com/problems/remove-duplicates-from-sorted-array/", tags: ["two-pointers"], acceptance: "56%" },
+      { id: "lc-9", title: "Move Zeroes", platform: "LeetCode", difficulty: "Beginner", url: "https://leetcode.com/problems/move-zeroes/", tags: ["two-pointers"], acceptance: "62%" },
+    ],
+  },
+  {
+    level: "Level 4",
+    title: "Prefix Sum",
+    description: "Precompute cumulative sums for O(1) range queries.",
+    problems: [
+      { id: "lc-10", title: "Running Sum of 1d Array", platform: "LeetCode", difficulty: "Beginner", url: "https://leetcode.com/problems/running-sum-of-1d-array/", tags: ["prefix"], acceptance: "77%" },
+      { id: "lc-11", title: "Find Pivot Index", platform: "LeetCode", difficulty: "Beginner", url: "https://leetcode.com/problems/find-pivot-index/", tags: ["prefix"], acceptance: "58%" },
+      { id: "lc-12", title: "Range Sum Query — Immutable", platform: "LeetCode", difficulty: "Beginner", url: "https://leetcode.com/problems/range-sum-query-immutable/", tags: ["prefix"], acceptance: "62%" },
+    ],
+  },
+  {
+    level: "Level 5",
+    title: "Sliding Window",
+    description: "Track a moving contiguous range for subarray problems.",
+    problems: [
+      { id: "lc-13", title: "Maximum Average Subarray I", platform: "LeetCode", difficulty: "Beginner", url: "https://leetcode.com/problems/maximum-average-subarray-i/", tags: ["sliding-window"], acceptance: "44%" },
+      { id: "lc-14", title: "Longest Substring Without Repeating", platform: "LeetCode", difficulty: "Intermediate", url: "https://leetcode.com/problems/longest-substring-without-repeating-characters/", tags: ["sliding-window"], acceptance: "35%" },
+      { id: "lc-15", title: "Minimum Size Subarray Sum", platform: "LeetCode", difficulty: "Intermediate", url: "https://leetcode.com/problems/minimum-size-subarray-sum/", tags: ["sliding-window"], acceptance: "47%" },
+    ],
+  },
+  {
+    level: "Level 6",
+    title: "Advanced Arrays",
+    description: "Interview classics that combine multiple techniques.",
+    problems: [
+      { id: "lc-16", title: "Product of Array Except Self", platform: "LeetCode", difficulty: "Intermediate", url: "https://leetcode.com/problems/product-of-array-except-self/", tags: ["prefix"], acceptance: "66%" },
+      { id: "lc-17", title: "First Missing Positive", platform: "LeetCode", difficulty: "Advanced", url: "https://leetcode.com/problems/first-missing-positive/", tags: ["cyclic-sort"], acceptance: "38%" },
+      { id: "lc-18", title: "Trapping Rain Water", platform: "LeetCode", difficulty: "Advanced", url: "https://leetcode.com/problems/trapping-rain-water/", tags: ["two-pointers"], acceptance: "60%" },
+      { id: "lc-19", title: "Merge Intervals", platform: "LeetCode", difficulty: "Intermediate", url: "https://leetcode.com/problems/merge-intervals/", tags: ["sort", "intervals"], acceptance: "47%" },
+    ],
+  },
+];
+
+// -------- Section 7: HackerRank Roadmap --------
+export const HACKERRANK_ROADMAP: RoadmapLevel[] = [
+  {
+    level: "Stage 1",
+    title: "Warm-up",
+    description: "Quick problems to get comfortable with Python I/O.",
+    problems: [
+      { id: "hr-1", title: "Solve Me First", platform: "HackerRank", difficulty: "Beginner", url: "https://www.hackerrank.com/challenges/solve-me-first/problem", tags: ["warmup"] },
+      { id: "hr-2", title: "Simple Array Sum", platform: "HackerRank", difficulty: "Beginner", url: "https://www.hackerrank.com/challenges/simple-array-sum/problem", tags: ["array"] },
+      { id: "hr-3", title: "Compare the Triplets", platform: "HackerRank", difficulty: "Beginner", url: "https://www.hackerrank.com/challenges/compare-the-triplets/problem", tags: ["array"] },
+    ],
+  },
+  {
+    level: "Stage 2",
+    title: "Arrays",
+    description: "Core array manipulation.",
+    problems: [
+      { id: "hr-4", title: "Arrays — DS", platform: "HackerRank", difficulty: "Beginner", url: "https://www.hackerrank.com/challenges/arrays-ds/problem", tags: ["array"] },
+      { id: "hr-5", title: "2D Array — DS", platform: "HackerRank", difficulty: "Intermediate", url: "https://www.hackerrank.com/challenges/2d-array/problem", tags: ["matrix"] },
+      { id: "hr-6", title: "Left Rotation", platform: "HackerRank", difficulty: "Intermediate", url: "https://www.hackerrank.com/challenges/array-left-rotation/problem", tags: ["rotation"] },
+    ],
+  },
+  {
+    level: "Stage 3",
+    title: "Lists",
+    description: "Python-specific list operations.",
+    problems: [
+      { id: "hr-7", title: "Lists", platform: "HackerRank", difficulty: "Beginner", url: "https://www.hackerrank.com/challenges/python-lists/problem", tags: ["list"] },
+      { id: "hr-8", title: "List Comprehensions", platform: "HackerRank", difficulty: "Beginner", url: "https://www.hackerrank.com/challenges/list-comprehensions/problem", tags: ["comprehension"] },
+      { id: "hr-9", title: "Nested Lists", platform: "HackerRank", difficulty: "Intermediate", url: "https://www.hackerrank.com/challenges/nested-list/problem", tags: ["nested"] },
+    ],
+  },
+  {
+    level: "Stage 4",
+    title: "Sorting & Searching",
+    description: "Classic algorithm patterns.",
+    problems: [
+      { id: "hr-10", title: "Big Sorting", platform: "HackerRank", difficulty: "Intermediate", url: "https://www.hackerrank.com/challenges/big-sorting/problem", tags: ["sort"] },
+      { id: "hr-11", title: "Insertion Sort — Part 1", platform: "HackerRank", difficulty: "Intermediate", url: "https://www.hackerrank.com/challenges/insertionsort1/problem", tags: ["sort"] },
+      { id: "hr-12", title: "Ice Cream Parlor", platform: "HackerRank", difficulty: "Intermediate", url: "https://www.hackerrank.com/challenges/icecream-parlor/problem", tags: ["search"] },
+    ],
+  },
+  {
+    level: "Stage 5",
+    title: "Interview Prep Kit",
+    description: "Curated problems asked in real interviews.",
+    problems: [
+      { id: "hr-13", title: "New Year Chaos", platform: "HackerRank", difficulty: "Advanced", url: "https://www.hackerrank.com/challenges/new-year-chaos/problem", tags: ["array"] },
+      { id: "hr-14", title: "Minimum Swaps 2", platform: "HackerRank", difficulty: "Advanced", url: "https://www.hackerrank.com/challenges/minimum-swaps-2/problem", tags: ["greedy"] },
+      { id: "hr-15", title: "Array Manipulation", platform: "HackerRank", difficulty: "Advanced", url: "https://www.hackerrank.com/challenges/crush/problem", tags: ["prefix"] },
+    ],
+  },
+];
+
+// -------- Section 8: Recommended Learning Order --------
+export const LEARNING_ORDER: { title: string; to?: string; note: string }[] = [
+  { title: "Introduction", to: "/introduction", note: "What lists are, why they matter." },
+  { title: "Python Lists", to: "/creating", note: "Create lists with literals and list()." },
+  { title: "Basic Operations", to: "/accessing", note: "Access, update, slice." },
+  { title: "Traversing", to: "/traversing", note: "for, enumerate, zip." },
+  { title: "Searching", to: "/searching", note: "Linear and binary search." },
+  { title: "Sorting", to: "/sorting", note: "11 sorting algorithms animated." },
+  { title: "List Comprehensions", to: "/comprehension", note: "One-liners done right." },
+  { title: "Nested Lists", to: "/nested", note: "Matrices and 2D data." },
+  { title: "Interview Questions", to: "/faq", note: "FAQ + Interview Qs." },
+  { title: "LeetCode Beginner", note: "Level 1–3 of the roadmap above." },
+  { title: "LeetCode Intermediate", note: "Level 4–5: prefix sums, sliding window." },
+  { title: "LeetCode Advanced", note: "Level 6: hardest interview classics." },
+  { title: "Competitive Programming", note: "Codeforces, AtCoder, ICPC." },
+];
+
+export const ALL_RESOURCES: Resource[] = [
+  ...OFFICIAL_DOCS,
+  ...BEGINNER_RESOURCES,
+  ...ARTICLES,
+  ...VISUALIZATIONS,
+];
