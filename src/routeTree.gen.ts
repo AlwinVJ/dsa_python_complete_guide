@@ -49,6 +49,7 @@ import { Route as LinkedListsInterviewRouteImport } from './routes/linked-lists.
 import { Route as LinkedListsFaqRouteImport } from './routes/linked-lists.faq'
 import { Route as LinkedListsSplatRouteImport } from './routes/linked-lists.$'
 import { Route as LearnCourseRouteImport } from './routes/learn.$course'
+import { Route as HeapsSplatRouteImport } from './routes/heaps.$'
 import { Route as HashTablesSplatRouteImport } from './routes/hash-tables.$'
 import { Route as GraphsSplatRouteImport } from './routes/graphs.$'
 import { Route as ComplexityTimeRouteImport } from './routes/complexity.time'
@@ -256,6 +257,11 @@ const LearnCourseRoute = LearnCourseRouteImport.update({
   path: '/learn/$course',
   getParentRoute: () => rootRouteImport,
 } as any)
+const HeapsSplatRoute = HeapsSplatRouteImport.update({
+  id: '/heaps/$',
+  path: '/heaps/$',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const HashTablesSplatRoute = HashTablesSplatRouteImport.update({
   id: '/hash-tables/$',
   path: '/hash-tables/$',
@@ -314,6 +320,7 @@ export interface FileRoutesByFullPath {
   '/complexity/time': typeof ComplexityTimeRoute
   '/graphs/$': typeof GraphsSplatRoute
   '/hash-tables/$': typeof HashTablesSplatRoute
+  '/heaps/$': typeof HeapsSplatRoute
   '/learn/$course': typeof LearnCourseRouteWithChildren
   '/linked-lists/$': typeof LinkedListsSplatRoute
   '/linked-lists/faq': typeof LinkedListsFaqRoute
@@ -362,6 +369,7 @@ export interface FileRoutesByTo {
   '/complexity/time': typeof ComplexityTimeRoute
   '/graphs/$': typeof GraphsSplatRoute
   '/hash-tables/$': typeof HashTablesSplatRoute
+  '/heaps/$': typeof HeapsSplatRoute
   '/learn/$course': typeof LearnCourseRouteWithChildren
   '/linked-lists/$': typeof LinkedListsSplatRoute
   '/linked-lists/faq': typeof LinkedListsFaqRoute
@@ -411,6 +419,7 @@ export interface FileRoutesById {
   '/complexity/time': typeof ComplexityTimeRoute
   '/graphs/$': typeof GraphsSplatRoute
   '/hash-tables/$': typeof HashTablesSplatRoute
+  '/heaps/$': typeof HeapsSplatRoute
   '/learn/$course': typeof LearnCourseRouteWithChildren
   '/linked-lists/$': typeof LinkedListsSplatRoute
   '/linked-lists/faq': typeof LinkedListsFaqRoute
@@ -461,6 +470,7 @@ export interface FileRouteTypes {
     | '/complexity/time'
     | '/graphs/$'
     | '/hash-tables/$'
+    | '/heaps/$'
     | '/learn/$course'
     | '/linked-lists/$'
     | '/linked-lists/faq'
@@ -509,6 +519,7 @@ export interface FileRouteTypes {
     | '/complexity/time'
     | '/graphs/$'
     | '/hash-tables/$'
+    | '/heaps/$'
     | '/learn/$course'
     | '/linked-lists/$'
     | '/linked-lists/faq'
@@ -557,6 +568,7 @@ export interface FileRouteTypes {
     | '/complexity/time'
     | '/graphs/$'
     | '/hash-tables/$'
+    | '/heaps/$'
     | '/learn/$course'
     | '/linked-lists/$'
     | '/linked-lists/faq'
@@ -606,6 +618,7 @@ export interface RootRouteChildren {
   ComplexityTimeRoute: typeof ComplexityTimeRoute
   GraphsSplatRoute: typeof GraphsSplatRoute
   HashTablesSplatRoute: typeof HashTablesSplatRoute
+  HeapsSplatRoute: typeof HeapsSplatRoute
   LearnCourseRoute: typeof LearnCourseRouteWithChildren
   LinkedListsSplatRoute: typeof LinkedListsSplatRoute
   LinkedListsFaqRoute: typeof LinkedListsFaqRoute
@@ -909,6 +922,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LearnCourseRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/heaps/$': {
+      id: '/heaps/$'
+      path: '/heaps/$'
+      fullPath: '/heaps/$'
+      preLoaderRoute: typeof HeapsSplatRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/hash-tables/$': {
       id: '/hash-tables/$'
       path: '/hash-tables/$'
@@ -993,6 +1013,7 @@ const rootRouteChildren: RootRouteChildren = {
   ComplexityTimeRoute: ComplexityTimeRoute,
   GraphsSplatRoute: GraphsSplatRoute,
   HashTablesSplatRoute: HashTablesSplatRoute,
+  HeapsSplatRoute: HeapsSplatRoute,
   LearnCourseRoute: LearnCourseRouteWithChildren,
   LinkedListsSplatRoute: LinkedListsSplatRoute,
   LinkedListsFaqRoute: LinkedListsFaqRoute,
