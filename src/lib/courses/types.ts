@@ -73,6 +73,25 @@ export type Course = {
   groups?: LessonGroup[];
   /** Wrap-up lessons rendered below the subtype groups. */
   outro?: Lesson[];
+  /**
+   * Marks the whole module as not yet built out. When true, the sidebar
+   * collapses this course into a single ordinary navigation link (no
+   * expand arrow, no lesson tree, no visual badge — it looks identical to
+   * a completed module until clicked), and every lesson/overview route
+   * under it renders the shared ComingSoon page. Flip to false (or remove)
+   * once the module has real content — no sidebar changes required.
+   */
+  comingSoon?: boolean;
+  /**
+   * Marks this course as a thin duplicate of content that has a single
+   * canonical home elsewhere in the platform (e.g. Tries duplicating the
+   * Trie variant under Trees). When set, the sidebar collapses this course
+   * to a single link instead of exposing a second lesson tree, and its
+   * routes render a short landing page pointing at the canonical course
+   * instead of duplicating lessons. `label`/`href` describe that canonical
+   * destination.
+   */
+  duplicateOf?: { label: string; href: string };
 };
 
 export function lessonHref(course: Course, lesson: Lesson) {

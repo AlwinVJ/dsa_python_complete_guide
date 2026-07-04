@@ -17,7 +17,7 @@ export const NAV_SECTIONS: NavSection[] = [
     items: [
       { to: "/modules/python-basics", label: "Python Basics" },
       { to: "/complexity", label: "Big-O Complexity" },
-      { to: "/modules/recursion", label: "Recursion" },
+      { to: "/learn/recursion", label: "Recursion" },
     ],
   },
 
@@ -43,7 +43,7 @@ export const NAV_SECTIONS: NavSection[] = [
   {
     title: "Linear · Strings",
     items: [
-      { to: "/modules/strings", label: "Strings — Overview" },
+      { to: "/learn/strings", label: "Strings — Overview" },
     ],
   },
   {
@@ -116,7 +116,7 @@ export const NAV_SECTIONS: NavSection[] = [
   {
     title: "Non-Linear · Heaps",
     items: [
-      { to: "/modules/heaps", label: "Heaps" },
+      { to: "/learn/heaps", label: "Heaps" },
     ],
   },
   {
@@ -133,8 +133,8 @@ export const NAV_SECTIONS: NavSection[] = [
     title: "Algorithms",
     items: [
       { to: "/sorting", label: "Sorting Algorithms" },
-      { to: "/modules/graph-algorithms", label: "Graph Algorithms" },
-      { to: "/modules/dp", label: "Dynamic Programming" },
+      { to: "/learn/graph-algorithms", label: "Graph Algorithms" },
+      { to: "/learn/dp", label: "Dynamic Programming" },
       { to: "/modules/advanced-graphs", label: "Advanced Graphs" },
     ],
   },

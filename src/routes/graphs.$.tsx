@@ -18,12 +18,18 @@ import { CoursePrevNext } from "@/components/CoursePrevNext";
 import { useLessonProgress } from "@/lib/lesson-progress";
 import type { GLesson, GSection, TQuizItem } from "@/lib/graphs/types";
 import { G_FOUNDATIONS } from "@/lib/graphs/foundations";
+import { G_REPRESENTATIONS } from "@/lib/graphs/representations";
+import { G_TRAVERSALS } from "@/lib/graphs/traversals";
+import { G_ALGORITHMS } from "@/lib/graphs/algorithms";
 
 type Tier = { kind: string; title: string; lessons: GLesson[] };
 
 const TIERS: Record<string, Tier> = {
   foundations: { kind: "foundations", title: "Foundations", lessons: G_FOUNDATIONS },
-  // Types / representations / traversals / algorithms / revision — populated in later turns.
+  representations: { kind: "applications", title: "Representations", lessons: G_REPRESENTATIONS },
+  traversals: { kind: "applications", title: "Traversals", lessons: G_TRAVERSALS },
+  algorithms: { kind: "applications", title: "Algorithms", lessons: G_ALGORITHMS },
+  // Graph Types / Review — populated in a later content pass.
 };
 
 type Resolved = { tierKey: string; tierTitle: string; lesson: GLesson };

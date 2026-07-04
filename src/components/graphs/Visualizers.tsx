@@ -438,32 +438,265 @@ export function MemoryDiagram({
 }
 
 /* =========================================================
- * Placeholder algorithm players — full versions land in Turn 3.
- * Keep the section-type contract satisfied without shipping stubs
- * users can see; these render a hint + the source graph.
+ * Weighted / ordering algorithm players — Dijkstra, Bellman-Ford,
+ * Prim, Kruskal, Topological Sort. Same Play/Step/Reset shell as
+ * BFS/DFS's StepPlayer, with an algorithm-specific info panel.
  * ========================================================= */
-function ComingSoon({ label }: { label: string }) {
+
+function useStepper(total: number, intervalMs = 850) {
+  const [i, setI] = useState(0);
+  const [playing, setPlaying] = useState(false);
+  useEffect(() => {
+    if (!playing) return;
+    const t = setInterval(() => {
+      setI((v) => {
+        if (v >= total - 1) { setPlaying(false); return v; }
+        return v + 1;
+      });
+    }, intervalMs);
+    return () => clearInterval(t);
+  }, [playing, total, intervalMs]);
+  return { i, setI, playing, setPlaying };
+}
+
+function PlayerControls({
+  i, total, setI, playing, setPlaying,
+}: { i: number; total: number; setI: (fn: (v: number) => number) => void; playing: boolean; setPlaying: (fn: (p: boolean) => boolean) => void }) {
   return (
-    <div className="card-surface border-dashed p-4 text-xs text-muted-foreground">
-      <div className="font-semibold text-foreground">{label} — interactive player</div>
-      Full step-by-step animation ships in the next content pass. The lesson code, dry run, and complexity below are complete.
+    <div className="mb-2 flex items-center gap-2 text-xs">
+      <button onClick={() => setPlaying((p) => !p)}
+        className="inline-flex items-center gap-1 rounded-md gradient-brand px-2.5 py-1 font-medium text-primary-foreground">
+        {playing ? <Pause className="h-3.5 w-3.5" /> : <Play className="h-3.5 w-3.5" />} {playing ? "Pause" : "Play"}
+      </button>
+      <button onClick={() => setI((v) => Math.min(v + 1, total - 1))}
+        className="inline-flex items-center gap-1 rounded-md border border-border px-2.5 py-1 hover:bg-accent">
+        <SkipForward className="h-3.5 w-3.5" /> Step
+      </button>
+      <button onClick={() => { setI(() => 0); setPlaying(() => false); }}
+        className="inline-flex items-center gap-1 rounded-md border border-border px-2.5 py-1 hover:bg-accent">
+        <RefreshCcw className="h-3.5 w-3.5" /> Reset
+      </button>
+      <span className="ml-auto text-muted-foreground">Step {Math.min(i + 1, total)} / {total}</span>
     </div>
   );
 }
-export function DijkstraPlayer({ spec, caption }: { spec: GraphSpec; start: string; caption?: string }) {
-  return <div className="space-y-2"><GraphViz spec={spec} caption={caption} /><ComingSoon label="Dijkstra" /></div>;
+
+const INF = "∞";
+
+type DistStep = { dist: Record<string, number | null>; current: string | null; relaxed: string | null; done: Set<string>; log: string };
+
+function dijkstraSteps(spec: GraphSpec, start: string): DistStep[] {
+  const steps: DistStep[] = [];
+  const dist: Record<string, number | null> = {};
+  spec.nodes.forEach((n) => (dist[n.id] = n.id === start ? 0 : null));
+  const done = new Set<string>();
+  steps.push({ dist: { ...dist }, current: null, relaxed: null, done: new Set(done), log: `dist[${start}] = 0, all others ∞` });
+  while (done.size < spec.nodes.length) {
+    let u: string | null = null;
+    let best = Infinity;
+    for (const n of spec.nodes) {
+      const d = dist[n.id];
+      if (!done.has(n.id) && d != null && d < best) { best = d; u = n.id; }
+    }
+    if (u == null) break;
+    done.add(u);
+    steps.push({ dist: { ...dist }, current: u, relaxed: null, done: new Set(done), log: `pick unvisited node with smallest dist: ${u} (${best})` });
+    for (const e of spec.edges) {
+      const other = e.from === u ? e.to : e.to === u ? e.from : null;
+      if (other == null || done.has(other)) continue;
+      const w = e.weight ?? 1;
+      const cand = best + w;
+      if (dist[other] == null || cand < (dist[other] as number)) {
+        dist[other] = cand;
+        steps.push({ dist: { ...dist }, current: u, relaxed: other, done: new Set(done), log: `relax ${u}→${other}: dist[${other}] = ${cand}` });
+      }
+    }
+  }
+  return steps;
 }
-export function BellmanFordPlayer({ spec, caption }: { spec: GraphSpec; start: string; caption?: string }) {
-  return <div className="space-y-2"><GraphViz spec={spec} caption={caption} /><ComingSoon label="Bellman-Ford" /></div>;
+
+function bellmanFordSteps(spec: GraphSpec, start: string): DistStep[] {
+  const steps: DistStep[] = [];
+  const dist: Record<string, number | null> = {};
+  spec.nodes.forEach((n) => (dist[n.id] = n.id === start ? 0 : null));
+  steps.push({ dist: { ...dist }, current: null, relaxed: null, done: new Set(), log: `dist[${start}] = 0, all others ∞` });
+  const edges = spec.directed ? spec.edges : spec.edges.flatMap((e) => [e, { from: e.to, to: e.from, weight: e.weight }]);
+  for (let pass = 1; pass < spec.nodes.length; pass++) {
+    let changed = false;
+    for (const e of edges) {
+      const d = dist[e.from];
+      if (d == null) continue;
+      const cand = d + (e.weight ?? 1);
+      if (dist[e.to] == null || cand < (dist[e.to] as number)) {
+        dist[e.to] = cand;
+        changed = true;
+        steps.push({ dist: { ...dist }, current: e.from, relaxed: e.to, done: new Set(), log: `pass ${pass}: relax ${e.from}→${e.to}, dist[${e.to}] = ${cand}` });
+      }
+    }
+    if (!changed) { steps.push({ dist: { ...dist }, current: null, relaxed: null, done: new Set(), log: `pass ${pass}: no changes — converged early` }); break; }
+  }
+  return steps;
 }
-export function PrimPlayer({ spec, caption }: { spec: GraphSpec; start: string; caption?: string }) {
-  return <div className="space-y-2"><GraphViz spec={spec} caption={caption} /><ComingSoon label="Prim's algorithm" /></div>;
+
+function DistancePlayer({ spec, steps, caption }: { spec: GraphSpec; steps: DistStep[]; caption?: string }) {
+  const { i, setI, playing, setPlaying } = useStepper(steps.length);
+  const step = steps[Math.min(i, steps.length - 1)];
+  const colors: GraphSpec["colors"] = {};
+  step.done.forEach((v) => { colors[v] = "visited"; });
+  if (step.current) colors[step.current] = "brand";
+  if (step.relaxed) colors[step.relaxed] = "highlight";
+  return (
+    <div className="space-y-3">
+      <GraphViz spec={{ ...spec, colors }} />
+      <div className="card-surface p-3">
+        <PlayerControls i={i} total={steps.length} setI={setI} playing={playing} setPlaying={setPlaying} />
+        <div className="flex flex-wrap gap-1.5">
+          {spec.nodes.map((n) => (
+            <span key={n.id} className="rounded-md border border-border bg-muted/40 px-2 py-0.5 font-mono text-xs">
+              {n.id}: {step.dist[n.id] == null ? INF : step.dist[n.id]}
+            </span>
+          ))}
+        </div>
+        <div className="mt-2 text-xs text-muted-foreground">› {step.log}</div>
+      </div>
+      {caption && <p className="text-center text-xs italic text-muted-foreground">{caption}</p>}
+    </div>
+  );
 }
+
+export function DijkstraPlayer({ spec, start, caption }: { spec: GraphSpec; start: string; caption?: string }) {
+  const steps = useMemo(() => dijkstraSteps(spec, start), [spec, start]);
+  return <DistancePlayer spec={spec} steps={steps} caption={caption} />;
+}
+
+export function BellmanFordPlayer({ spec, start, caption }: { spec: GraphSpec; start: string; caption?: string }) {
+  const steps = useMemo(() => bellmanFordSteps(spec, start), [spec, start]);
+  return <DistancePlayer spec={spec} steps={steps} caption={caption} />;
+}
+
+type MstStep = { chosen: GEdge[]; current: GEdge | null; cost: number; log: string };
+
+function primSteps(spec: GraphSpec): MstStep[] {
+  const steps: MstStep[] = [];
+  if (spec.nodes.length === 0) return steps;
+  const inMst = new Set<string>([spec.nodes[0].id]);
+  const chosen: GEdge[] = [];
+  let cost = 0;
+  steps.push({ chosen: [], current: null, cost: 0, log: `start from ${spec.nodes[0].id}` });
+  while (inMst.size < spec.nodes.length) {
+    let best: GEdge | null = null;
+    for (const e of spec.edges) {
+      const aIn = inMst.has(e.from), bIn = inMst.has(e.to);
+      if (aIn === bIn) continue; // need exactly one endpoint inside
+      if (!best || (e.weight ?? 1) < (best.weight ?? 1)) best = e;
+    }
+    if (!best) break;
+    inMst.add(best.from); inMst.add(best.to);
+    chosen.push(best); cost += best.weight ?? 1;
+    steps.push({ chosen: [...chosen], current: best, cost, log: `add cheapest crossing edge ${best.from}-${best.to} (${best.weight ?? 1}) — total ${cost}` });
+  }
+  return steps;
+}
+
+function kruskalSteps(spec: GraphSpec): MstStep[] {
+  const steps: MstStep[] = [];
+  const parent: Record<string, string> = {};
+  spec.nodes.forEach((n) => (parent[n.id] = n.id));
+  const find = (x: string): string => (parent[x] === x ? x : (parent[x] = find(parent[x])));
+  const sorted = [...spec.edges].sort((a, b) => (a.weight ?? 1) - (b.weight ?? 1));
+  steps.push({ chosen: [], current: null, cost: 0, log: `sort ${sorted.length} edges by weight ascending` });
+  const chosen: GEdge[] = [];
+  let cost = 0;
+  for (const e of sorted) {
+    const ra = find(e.from), rb = find(e.to);
+    if (ra === rb) {
+      steps.push({ chosen: [...chosen], current: e, cost, log: `skip ${e.from}-${e.to} (${e.weight ?? 1}) — would form a cycle` });
+      continue;
+    }
+    parent[ra] = rb;
+    chosen.push(e); cost += e.weight ?? 1;
+    steps.push({ chosen: [...chosen], current: e, cost, log: `take ${e.from}-${e.to} (${e.weight ?? 1}) — union sets, total ${cost}` });
+  }
+  return steps;
+}
+
+function MstPlayer({ spec, steps, caption }: { spec: GraphSpec; steps: MstStep[]; caption?: string }) {
+  const { i, setI, playing, setPlaying } = useStepper(steps.length);
+  const step = steps[Math.min(i, steps.length - 1)];
+  const chosenKeys = new Set(step.chosen.map(edgeKey));
+  const spec2: GraphSpec = { ...spec, highlightEdges: [...chosenKeys] };
+  return (
+    <div className="space-y-3">
+      <GraphViz spec={spec2} />
+      <div className="card-surface p-3">
+        <PlayerControls i={i} total={steps.length} setI={setI} playing={playing} setPlaying={setPlaying} />
+        <div className="text-xs text-muted-foreground">
+          MST edges so far: <span className="font-mono text-foreground">{step.chosen.map((e) => `${e.from}-${e.to}`).join(", ") || "none"}</span>
+        </div>
+        <div className="text-xs text-muted-foreground">Total cost: <span className="font-mono text-foreground">{step.cost}</span></div>
+        <div className="mt-2 text-xs text-muted-foreground">› {step.log}</div>
+      </div>
+      {caption && <p className="text-center text-xs italic text-muted-foreground">{caption}</p>}
+    </div>
+  );
+}
+
+export function PrimPlayer({ spec, caption }: { spec: GraphSpec; start?: string; caption?: string }) {
+  const steps = useMemo(() => primSteps(spec), [spec]);
+  return <MstPlayer spec={spec} steps={steps} caption={caption} />;
+}
+
 export function KruskalPlayer({ spec, caption }: { spec: GraphSpec; caption?: string }) {
-  return <div className="space-y-2"><GraphViz spec={spec} caption={caption} /><ComingSoon label="Kruskal's algorithm" /></div>;
+  const steps = useMemo(() => kruskalSteps(spec), [spec]);
+  return <MstPlayer spec={spec} steps={steps} caption={caption} />;
 }
+
+type TopoStep = { order: string[]; queue: string[]; indegree: Record<string, number>; current: string | null; log: string };
+
+function topoSortSteps(spec: GraphSpec): TopoStep[] {
+  const steps: TopoStep[] = [];
+  const indegree: Record<string, number> = {};
+  spec.nodes.forEach((n) => (indegree[n.id] = 0));
+  spec.edges.forEach((e) => { indegree[e.to] = (indegree[e.to] ?? 0) + 1; });
+  const queue = spec.nodes.filter((n) => indegree[n.id] === 0).map((n) => n.id);
+  steps.push({ order: [], queue: [...queue], indegree: { ...indegree }, current: null, log: `in-degree 0 nodes start the queue: ${queue.join(", ") || "none"}` });
+  const order: string[] = [];
+  const q = [...queue];
+  while (q.length) {
+    const u = q.shift()!;
+    order.push(u);
+    steps.push({ order: [...order], queue: [...q], indegree: { ...indegree }, current: u, log: `dequeue ${u}, append to order` });
+    for (const e of spec.edges) {
+      if (e.from !== u) continue;
+      indegree[e.to]--;
+      if (indegree[e.to] === 0) { q.push(e.to); steps.push({ order: [...order], queue: [...q], indegree: { ...indegree }, current: u, log: `${e.to}'s in-degree hits 0 — enqueue` }); }
+      else steps.push({ order: [...order], queue: [...q], indegree: { ...indegree }, current: u, log: `decrement in-degree of ${e.to} → ${indegree[e.to]}` });
+    }
+  }
+  if (order.length < spec.nodes.length) steps.push({ order: [...order], queue: [], indegree: { ...indegree }, current: null, log: `queue empties with nodes left over — graph has a cycle, no valid ordering` });
+  return steps;
+}
+
 export function TopoSortPlayer({ spec, caption }: { spec: GraphSpec; caption?: string }) {
-  return <div className="space-y-2"><GraphViz spec={spec} caption={caption} /><ComingSoon label="Topological sort" /></div>;
+  const steps = useMemo(() => topoSortSteps(spec), [spec]);
+  const { i, setI, playing, setPlaying } = useStepper(steps.length);
+  const step = steps[Math.min(i, steps.length - 1)];
+  const colors: GraphSpec["colors"] = {};
+  step.order.forEach((v) => { colors[v] = "visited"; });
+  step.queue.forEach((v) => { if (!colors[v]) colors[v] = "highlight"; });
+  if (step.current) colors[step.current] = "brand";
+  return (
+    <div className="space-y-3">
+      <GraphViz spec={{ ...spec, colors }} />
+      <div className="card-surface p-3">
+        <PlayerControls i={i} total={steps.length} setI={setI} playing={playing} setPlaying={setPlaying} />
+        <div className="text-xs text-muted-foreground">Order so far: <span className="font-mono text-foreground">{step.order.join(" → ") || "—"}</span></div>
+        <div className="text-xs text-muted-foreground">Queue: <span className="font-mono text-foreground">{step.queue.join(", ") || "empty"}</span></div>
+        <div className="mt-2 text-xs text-muted-foreground">› {step.log}</div>
+      </div>
+      {caption && <p className="text-center text-xs italic text-muted-foreground">{caption}</p>}
+    </div>
+  );
 }
 
 /* =========================================================

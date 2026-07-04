@@ -7,6 +7,13 @@ export const triesCourse: Course = {
   category: "non-linear",
   order: 9,
   icon: "TypeOutline",
+  // The canonical, complete Trie implementation lives under Trees → Variants
+  // → Trie (/trees/trie/*), with its own visualizer and Python code. This
+  // course's lesson data below is intentionally left untouched (per the
+  // "do not regenerate content" rule) but is no longer rendered — see
+  // LessonView.tsx and learn.$course.tsx, which check `duplicateOf` and
+  // show a redirect landing page instead.
+  duplicateOf: { label: "Trees → Trie", href: "/trees/trie/introduction" },
   lessons: [
     {
       slug: "introduction",

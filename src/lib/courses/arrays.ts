@@ -23,7 +23,6 @@ export const arraysCourse: Course = {
     { slug: "nested", title: "Nested Lists", href: "/nested" },
     { slug: "comprehension", title: "List Comprehension", href: "/comprehension" },
     { slug: "copying", title: "Copying & Memory", href: "/copying" },
-    { slug: "sorting", title: "Sorting", href: "/sorting" },
     { slug: "faq", title: "FAQ & Interview Qs", href: "/faq" },
   ],
 };

@@ -7,6 +7,12 @@ export const searchingCourse: Course = {
   category: "algorithm",
   order: 11,
   icon: "Search",
+  // Lesson content below is complete, but the platform is intentionally
+  // presenting this module as under development for now (per current
+  // product decision). Flip this to false — or delete the line — to
+  // automatically restore the expandable lesson tree; no sidebar changes
+  // are needed.
+  comingSoon: true,
   lessons: [
     {
       slug: "introduction",

@@ -16,6 +16,8 @@ import { allCourseLessons, lessonHref } from "@/lib/courses/types";
 import type { Course, Lesson, LessonGroup } from "@/lib/courses/types";
 import { useLessonProgress } from "@/lib/lesson-progress";
 import { cn } from "@/lib/utils";
+import { ComingSoon } from "@/components/ComingSoon";
+import { TrieRedirect } from "@/components/TrieRedirect";
 
 export const Route = createFileRoute("/learn/$course")({
   beforeLoad: ({ params }) => {
@@ -45,6 +47,26 @@ function CoursePage() {
   const { course: slug } = Route.useLoaderData();
   const course = getCourse(slug)!;
   const { isDone, courseProgress } = useLessonProgress();
+
+  // Thin duplicate of canonical content living elsewhere (e.g. Tries).
+  if (course.duplicateOf) {
+    return <TrieRedirect />;
+  }
+
+  // Whole module is still under development — show the shared landing page
+  // instead of an overview grid that would otherwise link to empty lessons.
+  if (course.comingSoon) {
+    return (
+      <ComingSoon
+        title={course.title}
+        description="This module is currently under active development. It will include detailed theory, Python implementations, interactive visualizations, complexity analysis, memory diagrams, interview questions, FAQs, practice problems, quizzes, and references."
+        backHref="/roadmap"
+        backLabel="Go Back"
+        overviewHref="/"
+        overviewLabel="Return to Overview"
+      />
+    );
+  }
 
   const allLessons = allCourseLessons(course);
   const prog = courseProgress(course.slug, allLessons.map((l) => l.slug));

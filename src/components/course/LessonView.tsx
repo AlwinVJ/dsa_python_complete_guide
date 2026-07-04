@@ -9,6 +9,23 @@ import { CodeBlock } from "@/components/CodeBlock";
 import type { Course, Lesson } from "@/lib/courses/types";
 import { lessonHref } from "@/lib/courses/types";
 import { useLessonProgress } from "@/lib/lesson-progress";
+import { ComingSoon } from "@/components/ComingSoon";
+import { SortingRedirect } from "@/components/SortingRedirect";
+import { TrieRedirect } from "@/components/TrieRedirect";
+
+function isLessonEmpty(l: Lesson): boolean {
+  return !(
+    l.theory ||
+    (l.bullets && l.bullets.length) ||
+    l.code ||
+    (l.complexity && l.complexity.length) ||
+    (l.mistakes && l.mistakes.length) ||
+    l.tip ||
+    l.quiz ||
+    (l.practice && l.practice.length) ||
+    (l.references && l.references.length)
+  );
+}
 
 export function LessonView({
   course,
@@ -25,6 +42,33 @@ export function LessonView({
 }) {
   const { isDone, toggle } = useLessonProgress();
   const done = isDone(course.slug, lesson.slug);
+
+  // This course is a thin duplicate of canonical content living elsewhere
+  // (e.g. Tries duplicating Trees → Trie) — show the landing page instead
+  // of a second copy of the lessons.
+  if (course.duplicateOf) return <TrieRedirect />;
+
+  // Sorting algorithms are best experienced in the interactive Sorting
+  // Playground. Redirect instead of duplicating static educational content.
+  if (course.slug === "sorting-algorithms") return <SortingRedirect />;
+
+  // Entire course is under development — every lesson renders the shared
+  // ComingSoon page while preserving its slot in the sidebar and prev/next.
+  if (course.comingSoon || isLessonEmpty(lesson)) {
+    return (
+      <ComingSoon
+        title={lesson.title}
+        description={
+          course.comingSoon
+            ? "This module is currently under development and will be available in a future update."
+            : lesson.tagline ??
+              "This lesson is currently under development and will be added in a future update."
+        }
+        backHref={prev ? lessonHref(course, prev) : undefined}
+        overviewHref={`/learn/${course.slug}`}
+      />
+    );
+  }
 
   return (
     <div className="mx-auto max-w-4xl px-4 py-10 sm:px-6">

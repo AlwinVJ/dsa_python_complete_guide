@@ -14,12 +14,18 @@ const TOP_LINKS = [
   { to: "/search", label: "Search" },
 ];
 
-const ALGO_EXTRA_LINKS = [
-  { to: "/sorting", label: "Sorting Algorithms" },
-  { to: "/algorithms", label: "Popular Patterns" },
-];
+const SORTING_LINK = { to: "/sorting", label: "Sorting Algorithms" };
+const ALGO_EXTRA_LINKS = [{ to: "/algorithms", label: "Popular Patterns" }];
 
 const SPECIALIZED_SLUGS = new Set(["heaps", "tries"]);
+
+// Sorting content lives in exactly one place in the sidebar: the "Sorting
+// Algorithms" link in ALGO_EXTRA_LINKS below, which points at the polished
+// /sorting reference page + playground. The `sorting-algorithms` course
+// (full lesson tree) still exists and its routes still resolve — old links
+// redirect to /sorting via SortingRedirect — but it's hidden here so
+// "Sorting" doesn't appear twice under Algorithms.
+const HIDDEN_FROM_SIDEBAR = new Set(["sorting-algorithms"]);
 
 const PLAYGROUND_LINKS = [
   { to: "/playgrounds/sorting", label: "Sorting Playground" },
@@ -140,7 +146,8 @@ export function CourseSidebar({ onNavigate }: { onNavigate?: () => void }) {
       </SidebarSection>
 
       <SidebarSection title="Algorithms">
-        {groups.algorithm.map((c) => (
+        <SidebarLink to={SORTING_LINK.to} label={SORTING_LINK.label} active={pathname === SORTING_LINK.to} onNavigate={onNavigate} />
+        {groups.algorithm.filter((c) => !HIDDEN_FROM_SIDEBAR.has(c.slug)).map((c) => (
           <CourseGroup
             key={c.slug}
             course={c}
@@ -219,6 +226,18 @@ function CourseGroup({
   isDone: (course: string, lesson: string) => boolean;
   progressPct: number;
 }) {
+  // Modules that aren't ready for their full lesson tree yet (still under
+  // development, or a thin duplicate pointing at canonical content
+  // elsewhere) collapse to a single, ordinary navigation link — same look
+  // as any other sidebar item, just no expand arrow. The module explains
+  // its own status once opened; the sidebar doesn't editorialize.
+  if (course.comingSoon || course.duplicateOf) {
+    const href = `/learn/${course.slug}`;
+    return (
+      <SidebarLink to={href} label={course.title} active={pathname === href} onNavigate={onNavigate} />
+    );
+  }
+
   return (
     <li>
       <button

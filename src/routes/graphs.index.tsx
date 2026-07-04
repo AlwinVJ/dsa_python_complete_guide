@@ -7,6 +7,9 @@ import {
 import { PageShell, PageHeader } from "@/components/Callout";
 import { GraphPlayground } from "@/components/graphs/GraphPlayground";
 import { G_FOUNDATIONS } from "@/lib/graphs/foundations";
+import { G_REPRESENTATIONS } from "@/lib/graphs/representations";
+import { G_TRAVERSALS } from "@/lib/graphs/traversals";
+import { G_ALGORITHMS } from "@/lib/graphs/algorithms";
 
 export const Route = createFileRoute("/graphs/")({
   head: () => ({
@@ -23,9 +26,9 @@ export const Route = createFileRoute("/graphs/")({
 const tiers = [
   { title: "Foundations", tagline: "Vocabulary, memory layout, and the graph mental model.", icon: BookOpen, to: "/graphs/foundations/introduction" as const, count: G_FOUNDATIONS.length, ready: true },
   { title: "Graph Types", tagline: "15 mini-courses — directed, weighted, bipartite, DAG, and more.", icon: Layers, ready: false },
-  { title: "Representations", tagline: "Adjacency list vs matrix vs edge list vs CSR.", icon: Network, ready: false },
-  { title: "Traversals", tagline: "BFS, DFS, iterative vs recursive, components.", icon: Compass, ready: false },
-  { title: "Algorithms", tagline: "Shortest path, MST, SCC, flow, coloring, tours.", icon: Zap, ready: false },
+  { title: "Representations", tagline: "Adjacency list vs matrix vs edge list vs CSR.", icon: Network, to: "/graphs/representations/overview" as const, count: G_REPRESENTATIONS.length, ready: true },
+  { title: "Traversals", tagline: "BFS, DFS, iterative vs recursive, components.", icon: Compass, to: "/graphs/traversals/overview" as const, count: G_TRAVERSALS.length, ready: true },
+  { title: "Algorithms", tagline: "Shortest path, MST, topological sort, Union-Find.", icon: Zap, to: "/graphs/algorithms/overview" as const, count: G_ALGORITHMS.length, ready: true },
   { title: "Review & Practice", tagline: "Cheatsheet, FAQ, interview bank, LC roadmap, quiz.", icon: RouteIcon, ready: false },
 ];
 
@@ -44,9 +47,9 @@ function GraphsOverview() {
       </motion.div>
 
       <section className="mb-8 grid gap-3 sm:grid-cols-3">
-        <Stat label="Total lessons" value={`${G_FOUNDATIONS.length}+`} />
-        <Stat label="Estimated time" value="~14 hours" />
-        <Stat label="Interactive playgrounds" value="10+" />
+        <Stat label="Total lessons" value={`${G_FOUNDATIONS.length + G_REPRESENTATIONS.length + G_TRAVERSALS.length + G_ALGORITHMS.length}+`} />
+        <Stat label="Estimated time" value="~18 hours" />
+        <Stat label="Interactive playgrounds" value="12+" />
       </section>
 
       <section className="mb-10">
