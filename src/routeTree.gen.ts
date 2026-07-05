@@ -43,6 +43,7 @@ import { Route as QueuesInterviewRouteImport } from './routes/queues.interview'
 import { Route as QueuesFaqRouteImport } from './routes/queues.faq'
 import { Route as QueuesSplatRouteImport } from './routes/queues.$'
 import { Route as PlaygroundsSortingRouteImport } from './routes/playgrounds.sorting'
+import { Route as PlaygroundsSearchingRouteImport } from './routes/playgrounds.searching'
 import { Route as PlaygroundsGraphRouteImport } from './routes/playgrounds.graph'
 import { Route as ModulesSlugRouteImport } from './routes/modules.$slug'
 import { Route as LinkedListsInterviewRouteImport } from './routes/linked-lists.interview'
@@ -227,6 +228,11 @@ const PlaygroundsSortingRoute = PlaygroundsSortingRouteImport.update({
   path: '/playgrounds/sorting',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PlaygroundsSearchingRoute = PlaygroundsSearchingRouteImport.update({
+  id: '/playgrounds/searching',
+  path: '/playgrounds/searching',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PlaygroundsGraphRoute = PlaygroundsGraphRouteImport.update({
   id: '/playgrounds/graph',
   path: '/playgrounds/graph',
@@ -327,6 +333,7 @@ export interface FileRoutesByFullPath {
   '/linked-lists/interview': typeof LinkedListsInterviewRoute
   '/modules/$slug': typeof ModulesSlugRoute
   '/playgrounds/graph': typeof PlaygroundsGraphRoute
+  '/playgrounds/searching': typeof PlaygroundsSearchingRoute
   '/playgrounds/sorting': typeof PlaygroundsSortingRoute
   '/queues/$': typeof QueuesSplatRoute
   '/queues/faq': typeof QueuesFaqRoute
@@ -376,6 +383,7 @@ export interface FileRoutesByTo {
   '/linked-lists/interview': typeof LinkedListsInterviewRoute
   '/modules/$slug': typeof ModulesSlugRoute
   '/playgrounds/graph': typeof PlaygroundsGraphRoute
+  '/playgrounds/searching': typeof PlaygroundsSearchingRoute
   '/playgrounds/sorting': typeof PlaygroundsSortingRoute
   '/queues/$': typeof QueuesSplatRoute
   '/queues/faq': typeof QueuesFaqRoute
@@ -426,6 +434,7 @@ export interface FileRoutesById {
   '/linked-lists/interview': typeof LinkedListsInterviewRoute
   '/modules/$slug': typeof ModulesSlugRoute
   '/playgrounds/graph': typeof PlaygroundsGraphRoute
+  '/playgrounds/searching': typeof PlaygroundsSearchingRoute
   '/playgrounds/sorting': typeof PlaygroundsSortingRoute
   '/queues/$': typeof QueuesSplatRoute
   '/queues/faq': typeof QueuesFaqRoute
@@ -477,6 +486,7 @@ export interface FileRouteTypes {
     | '/linked-lists/interview'
     | '/modules/$slug'
     | '/playgrounds/graph'
+    | '/playgrounds/searching'
     | '/playgrounds/sorting'
     | '/queues/$'
     | '/queues/faq'
@@ -526,6 +536,7 @@ export interface FileRouteTypes {
     | '/linked-lists/interview'
     | '/modules/$slug'
     | '/playgrounds/graph'
+    | '/playgrounds/searching'
     | '/playgrounds/sorting'
     | '/queues/$'
     | '/queues/faq'
@@ -575,6 +586,7 @@ export interface FileRouteTypes {
     | '/linked-lists/interview'
     | '/modules/$slug'
     | '/playgrounds/graph'
+    | '/playgrounds/searching'
     | '/playgrounds/sorting'
     | '/queues/$'
     | '/queues/faq'
@@ -625,6 +637,7 @@ export interface RootRouteChildren {
   LinkedListsInterviewRoute: typeof LinkedListsInterviewRoute
   ModulesSlugRoute: typeof ModulesSlugRoute
   PlaygroundsGraphRoute: typeof PlaygroundsGraphRoute
+  PlaygroundsSearchingRoute: typeof PlaygroundsSearchingRoute
   PlaygroundsSortingRoute: typeof PlaygroundsSortingRoute
   QueuesSplatRoute: typeof QueuesSplatRoute
   QueuesFaqRoute: typeof QueuesFaqRoute
@@ -880,6 +893,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PlaygroundsSortingRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/playgrounds/searching': {
+      id: '/playgrounds/searching'
+      path: '/playgrounds/searching'
+      fullPath: '/playgrounds/searching'
+      preLoaderRoute: typeof PlaygroundsSearchingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/playgrounds/graph': {
       id: '/playgrounds/graph'
       path: '/playgrounds/graph'
@@ -1020,6 +1040,7 @@ const rootRouteChildren: RootRouteChildren = {
   LinkedListsInterviewRoute: LinkedListsInterviewRoute,
   ModulesSlugRoute: ModulesSlugRoute,
   PlaygroundsGraphRoute: PlaygroundsGraphRoute,
+  PlaygroundsSearchingRoute: PlaygroundsSearchingRoute,
   PlaygroundsSortingRoute: PlaygroundsSortingRoute,
   QueuesSplatRoute: QueuesSplatRoute,
   QueuesFaqRoute: QueuesFaqRoute,

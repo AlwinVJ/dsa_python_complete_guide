@@ -7,7 +7,7 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import { useNavigate } from "@tanstack/react-router";
-import { ROADMAP } from "@/lib/curriculum";
+import { ROADMAP, getModuleRoute } from "@/lib/curriculum";
 import { useProgress, nextUnlocked } from "@/lib/progress";
 import { Footer } from "@/components/Footer";
 import { DsaIntro } from "@/components/DsaIntro";
@@ -146,7 +146,7 @@ function Landing() {
                   <div className="text-xs text-muted-foreground">Next up</div>
                   <div className="font-medium">{next.title}</div>
                 </div>
-                <Link to={next.route} className="inline-flex items-center gap-1 text-sm text-[color:var(--brand)]">
+                <Link to={getModuleRoute(next)} className="inline-flex items-center gap-1 text-sm text-[color:var(--brand)]">
                   Continue <ArrowRight className="h-4 w-4" />
                 </Link>
               </div>
@@ -160,7 +160,7 @@ function Landing() {
               {ROADMAP.slice(0, 6).map((r, i) => (
                 <li key={r.slug} className="flex items-center gap-2">
                   <span className="grid h-5 w-5 place-items-center rounded-full bg-muted text-[10px]">{i + 1}</span>
-                  <Link to={r.route} className="hover:text-[color:var(--brand)]">{r.title}</Link>
+                  <Link to={getModuleRoute(r)} className="hover:text-[color:var(--brand)]">{r.title}</Link>
                 </li>
               ))}
             </ul>

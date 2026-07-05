@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Trophy, Flame, Bookmark, CheckCircle2, TrendingUp, ArrowRight } from "lucide-react";
-import { ROADMAP } from "@/lib/curriculum";
+import { ROADMAP, getModuleRoute } from "@/lib/curriculum";
 import { useProgress, useStreak, nextUnlocked } from "@/lib/progress";
 import { useLocalSet } from "@/lib/useLocalSet";
 
@@ -55,7 +55,7 @@ function DashboardPage() {
             <div className="mt-1 text-lg font-semibold">{next ? next.title : "🎉 You've completed the roadmap!"}</div>
           </div>
           {next && (
-            <Link to={next.route} className="inline-flex items-center gap-1.5 rounded-md gradient-brand px-4 py-2 text-sm font-medium text-primary-foreground">
+            <Link to={getModuleRoute(next)} className="inline-flex items-center gap-1.5 rounded-md gradient-brand px-4 py-2 text-sm font-medium text-primary-foreground">
               Continue <ArrowRight className="h-4 w-4" />
             </Link>
           )}
@@ -73,7 +73,7 @@ function DashboardPage() {
             return (
               <Link
                 key={item.slug}
-                to={item.route}
+                to={getModuleRoute(item)}
                 className="card-surface flex items-center justify-between p-3 hover:border-[color:var(--brand)]/50 transition"
               >
                 <span className="flex items-center gap-2 text-sm">

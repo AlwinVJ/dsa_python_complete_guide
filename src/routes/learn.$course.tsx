@@ -1,4 +1,4 @@
-import { createFileRoute, Link, notFound } from "@tanstack/react-router";
+import { createFileRoute, Link, notFound, redirect } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import { useState } from "react";
 import {
@@ -21,6 +21,12 @@ import { TrieRedirect } from "@/components/TrieRedirect";
 
 export const Route = createFileRoute("/learn/$course")({
   beforeLoad: ({ params }) => {
+    if (params.course === "sorting-algorithms") {
+      throw redirect({ to: "/sorting" });
+    }
+    if (params.course === "searching") {
+      throw redirect({ to: "/searching" });
+    }
     if (!getCourse(params.course)) throw notFound();
   },
   loader: ({ params }) => params,

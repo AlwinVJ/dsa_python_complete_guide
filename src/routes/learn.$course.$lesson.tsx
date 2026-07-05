@@ -1,9 +1,15 @@
-import { createFileRoute, notFound } from "@tanstack/react-router";
+import { createFileRoute, notFound, redirect } from "@tanstack/react-router";
 import { getCourse, getLesson, getPrevNext } from "@/lib/courses";
 import { LessonView } from "@/components/course/LessonView";
 
 export const Route = createFileRoute("/learn/$course/$lesson")({
   beforeLoad: ({ params }) => {
+    if (params.course === "sorting-algorithms") {
+      throw redirect({ to: "/sorting" });
+    }
+    if (params.course === "searching") {
+      throw redirect({ to: "/searching" });
+    }
     if (!getLesson(params.course, params.lesson)) throw notFound();
   },
   loader: ({ params }) => params,

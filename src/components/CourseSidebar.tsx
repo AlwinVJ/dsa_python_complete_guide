@@ -14,20 +14,14 @@ const TOP_LINKS = [
   { to: "/search", label: "Search" },
 ];
 
+const SEARCHING_LINK = { to: "/searching", label: "Searching Algorithms" };
 const SORTING_LINK = { to: "/sorting", label: "Sorting Algorithms" };
 const ALGO_EXTRA_LINKS = [{ to: "/algorithms", label: "Popular Patterns" }];
 
 const SPECIALIZED_SLUGS = new Set(["heaps", "tries"]);
 
-// Sorting content lives in exactly one place in the sidebar: the "Sorting
-// Algorithms" link in ALGO_EXTRA_LINKS below, which points at the polished
-// /sorting reference page + playground. The `sorting-algorithms` course
-// (full lesson tree) still exists and its routes still resolve — old links
-// redirect to /sorting via SortingRedirect — but it's hidden here so
-// "Sorting" doesn't appear twice under Algorithms.
-const HIDDEN_FROM_SIDEBAR = new Set(["sorting-algorithms"]);
-
 const PLAYGROUND_LINKS = [
+  { to: "/playgrounds/searching", label: "Searching Playground" },
   { to: "/playgrounds/sorting", label: "Sorting Playground" },
 ];
 
@@ -101,7 +95,7 @@ export function CourseSidebar({ onNavigate }: { onNavigate?: () => void }) {
       </SidebarSection>
 
       <SidebarSection title="Linear Data Structures">
-        {groups.linear.map((c) => (
+        {groups.linear.filter((c) => !c.hidden).map((c) => (
           <CourseGroup
             key={c.slug}
             course={c}
@@ -116,7 +110,7 @@ export function CourseSidebar({ onNavigate }: { onNavigate?: () => void }) {
       </SidebarSection>
 
       <SidebarSection title="Non-Linear Data Structures">
-        {groups["non-linear"].filter((c) => !SPECIALIZED_SLUGS.has(c.slug)).map((c) => (
+        {groups["non-linear"].filter((c) => !c.hidden && !SPECIALIZED_SLUGS.has(c.slug)).map((c) => (
           <CourseGroup
             key={c.slug}
             course={c}
@@ -131,7 +125,7 @@ export function CourseSidebar({ onNavigate }: { onNavigate?: () => void }) {
       </SidebarSection>
 
       <SidebarSection title="Specialized Data Structures">
-        {groups["non-linear"].filter((c) => SPECIALIZED_SLUGS.has(c.slug)).map((c) => (
+        {groups["non-linear"].filter((c) => !c.hidden && SPECIALIZED_SLUGS.has(c.slug)).map((c) => (
           <CourseGroup
             key={c.slug}
             course={c}
@@ -146,8 +140,9 @@ export function CourseSidebar({ onNavigate }: { onNavigate?: () => void }) {
       </SidebarSection>
 
       <SidebarSection title="Algorithms">
+        <SidebarLink to={SEARCHING_LINK.to} label={SEARCHING_LINK.label} active={pathname === SEARCHING_LINK.to} onNavigate={onNavigate} />
         <SidebarLink to={SORTING_LINK.to} label={SORTING_LINK.label} active={pathname === SORTING_LINK.to} onNavigate={onNavigate} />
-        {groups.algorithm.filter((c) => !HIDDEN_FROM_SIDEBAR.has(c.slug)).map((c) => (
+        {groups.algorithm.filter((c) => !c.hidden).map((c) => (
           <CourseGroup
             key={c.slug}
             course={c}

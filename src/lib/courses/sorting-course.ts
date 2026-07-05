@@ -7,6 +7,7 @@ export const sortingCourse: Course = {
   category: "algorithm",
   order: 12,
   icon: "ArrowUpDown",
+  hidden: true,
   lessons: [
     {
       slug: "introduction",

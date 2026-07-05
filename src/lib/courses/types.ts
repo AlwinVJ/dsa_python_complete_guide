@@ -92,6 +92,8 @@ export type Course = {
    * destination.
    */
   duplicateOf?: { label: string; href: string };
+  /** Hides the course from rendering dynamically in the sidebar tree. */
+  hidden?: boolean;
 };
 
 export function lessonHref(course: Course, lesson: Lesson) {

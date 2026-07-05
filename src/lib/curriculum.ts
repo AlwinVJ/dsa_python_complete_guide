@@ -2,6 +2,8 @@
 // Modules that already exist as real routes have `route` pointing there.
 // Stub modules point to `/modules/<slug>` which is rendered by modules.$slug.tsx.
 
+import { getCourse } from "./courses";
+
 export type ModuleStatus = "available" | "stub";
 
 export type Module = {
@@ -484,5 +486,20 @@ for (const v of VARIANT_STUBS) {
 
 export function getAllModuleSlugs() {
   return Object.keys(MODULES);
+}
+
+export function getModuleRoute(item: { slug: string; route: string }): string {
+  const courseSlug = item.slug === "sorting" ? "sorting-algorithms" : item.slug === "hashing" ? "hash-tables" : item.slug;
+  const course = getCourse(courseSlug);
+  if (course) {
+    if (course.slug === "sorting-algorithms") {
+      return "/sorting";
+    }
+    if (course.slug === "searching") {
+      return "/searching";
+    }
+    return `/learn/${course.slug}`;
+  }
+  return item.route;
 }
 

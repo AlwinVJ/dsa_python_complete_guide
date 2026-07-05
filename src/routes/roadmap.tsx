@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { CheckCircle2, Circle, Lock, ArrowRight } from "lucide-react";
 import { motion } from "framer-motion";
-import { ROADMAP } from "@/lib/curriculum";
+import { ROADMAP, getModuleRoute } from "@/lib/curriculum";
 import { useProgress } from "@/lib/progress";
 
 export const Route = createFileRoute("/roadmap")({
@@ -81,7 +81,7 @@ function RoadmapPage() {
                         {done ? "Undo" : "Mark done"}
                       </button>
                       <Link
-                        to={item.route}
+                        to={getModuleRoute(item)}
                         className="inline-flex items-center gap-1 rounded-md gradient-brand px-3 py-1.5 text-xs font-medium text-primary-foreground"
                       >
                         Open <ArrowRight className="h-3 w-3" />
