@@ -8,7 +8,6 @@ import {
 import { CodeBlock } from "@/components/CodeBlock";
 import type { Course, Lesson } from "@/lib/courses/types";
 import { lessonHref } from "@/lib/courses/types";
-import { useLessonProgress } from "@/lib/lesson-progress";
 import { ComingSoon } from "@/components/ComingSoon";
 import { SortingRedirect } from "@/components/SortingRedirect";
 import { TrieRedirect } from "@/components/TrieRedirect";
@@ -40,8 +39,7 @@ export function LessonView({
   prev?: Lesson;
   next?: Lesson;
 }) {
-  const { isDone, toggle } = useLessonProgress();
-  const done = isDone(course.slug, lesson.slug);
+
 
   // This course is a thin duplicate of canonical content living elsewhere
   // (e.g. Tries duplicating Trees → Trie) — show the landing page instead
@@ -83,17 +81,6 @@ export function LessonView({
         )}
 
         <div className="mt-5 flex flex-wrap items-center gap-3">
-          <button
-            onClick={() => toggle(course.slug, lesson.slug)}
-            className={`inline-flex items-center gap-2 rounded-md px-4 py-2 text-sm font-medium transition ${
-              done
-                ? "bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30"
-                : "gradient-brand text-primary-foreground"
-            }`}
-          >
-            {done ? <CheckCircle2 className="h-4 w-4" /> : <Circle className="h-4 w-4" />}
-            {done ? "Completed" : "Mark as complete"}
-          </button>
           <Link
             to="/learn/$course"
             params={{ course: course.slug }}

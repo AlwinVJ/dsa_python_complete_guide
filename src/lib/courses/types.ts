@@ -61,6 +61,13 @@ export type CourseCategory =
   | "non-linear"
   | "algorithm";
 
+export type CourseInfoCard = {
+  estimatedTime: string;
+  difficulty: number; // e.g. 4 for 4 stars
+  practiceRequired: boolean;
+  language: string;
+};
+
 export type Course = {
   slug: string;
   title: string;
@@ -94,6 +101,11 @@ export type Course = {
   duplicateOf?: { label: string; href: string };
   /** Hides the course from rendering dynamically in the sidebar tree. */
   hidden?: boolean;
+  infoCard?: CourseInfoCard;
+  whoIsThisFor?: string[];
+  showRoadmap?: boolean;
+  ctaText?: string;
+  ctaRoute?: string;
 };
 
 export function lessonHref(course: Course, lesson: Lesson) {

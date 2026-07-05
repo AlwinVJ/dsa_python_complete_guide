@@ -15,7 +15,7 @@ export const NAV_SECTIONS: NavSection[] = [
   {
     title: "Foundations",
     items: [
-      { to: "/modules/python-basics", label: "Python Basics" },
+      { to: "/modules/python-basics", label: "Prerequisites" },
       { to: "/complexity", label: "Big-O Complexity" },
       { to: "/learn/recursion", label: "Recursion" },
     ],

@@ -57,7 +57,7 @@ function scaffold(slug: string, title: string, extras: Partial<ModuleBank> = {})
 }
 
 export const genericBanks: Record<string, ModuleBank> = {
-  "python-basics": scaffold("python-basics", "Python Basics"),
+  "python-basics": scaffold("python-basics", "Prerequisites"),
   strings: scaffold("strings", "Strings", {
     questions: [
       {

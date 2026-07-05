@@ -4,14 +4,11 @@ import { ChevronDown, ChevronRight } from "lucide-react";
 import { COURSES, coursesByCategory } from "@/lib/courses";
 import { lessonHref } from "@/lib/courses/types";
 import type { Course } from "@/lib/courses/types";
-import { useLessonProgress } from "@/lib/lesson-progress";
 
 const TOP_LINKS = [
-  { to: "/", label: "Home" },
-  { to: "/roadmap", label: "DSA Roadmap" },
-  { to: "/dashboard", label: "Dashboard" },
-  { to: "/practice", label: "Question Bank" },
-  { to: "/search", label: "Search" },
+  { to: "/", label: "Welcome" },
+  { to: "/modules/python-basics", label: "Prerequisites" },
+  { to: "/roadmap", label: "Learning Roadmap" },
 ];
 
 const SEARCHING_LINK = { to: "/searching", label: "Searching Algorithms" };
@@ -47,7 +44,6 @@ function readOpen(): Record<string, boolean> {
 export function CourseSidebar({ onNavigate }: { onNavigate?: () => void }) {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const [open, setOpen] = useState<Record<string, boolean>>({});
-  const { isDone, courseProgress } = useLessonProgress();
 
   useEffect(() => {
     setOpen(readOpen());
@@ -80,12 +76,6 @@ export function CourseSidebar({ onNavigate }: { onNavigate?: () => void }) {
 
   const groups = coursesByCategory();
 
-  const progressKeysFor = (c: Course) => [
-    ...c.lessons.map((l) => l.slug),
-    ...(c.groups?.flatMap((g) => g.lessons.map((l) => `${g.slug}/${l.slug}`)) ?? []),
-    ...(c.outro?.map((l) => l.slug) ?? []),
-  ];
-
   return (
     <nav className="h-full overflow-y-auto px-4 py-6 text-sm">
       <SidebarSection title="Getting Started">
@@ -94,49 +84,48 @@ export function CourseSidebar({ onNavigate }: { onNavigate?: () => void }) {
         ))}
       </SidebarSection>
 
-      <SidebarSection title="Linear Data Structures">
-        {groups.linear.filter((c) => !c.hidden).map((c) => (
-          <CourseGroup
-            key={c.slug}
-            course={c}
-            open={effectiveOpen(c.slug)}
-            onToggle={() => toggle(c.slug)}
-            pathname={pathname}
-            onNavigate={onNavigate}
-            isDone={isDone}
-            progressPct={courseProgress(c.slug, progressKeysFor(c)).pct}
-          />
-        ))}
-      </SidebarSection>
+      <SidebarSection title="Data Structures & Algorithms">
+        <SidebarLink to="/learn/introduction-to-dsa" label="Introduction to DSA" active={pathname === "/learn/introduction-to-dsa"} onNavigate={onNavigate} />
+        <SidebarLink to="/complexity" label="Complexity Analysis" active={pathname === "/complexity"} onNavigate={onNavigate} />
+        
+        <SidebarSubSection title="Linear Data Structures">
+          {groups.linear.filter((c) => !c.hidden).map((c) => (
+            <CourseGroup
+              key={c.slug}
+              course={c}
+              open={effectiveOpen(c.slug)}
+              onToggle={() => toggle(c.slug)}
+              pathname={pathname}
+              onNavigate={onNavigate}
+            />
+          ))}
+        </SidebarSubSection>
 
-      <SidebarSection title="Non-Linear Data Structures">
-        {groups["non-linear"].filter((c) => !c.hidden && !SPECIALIZED_SLUGS.has(c.slug)).map((c) => (
-          <CourseGroup
-            key={c.slug}
-            course={c}
-            open={effectiveOpen(c.slug)}
-            onToggle={() => toggle(c.slug)}
-            pathname={pathname}
-            onNavigate={onNavigate}
-            isDone={isDone}
-            progressPct={courseProgress(c.slug, progressKeysFor(c)).pct}
-          />
-        ))}
-      </SidebarSection>
+        <SidebarSubSection title="Non-Linear Data Structures">
+          {groups["non-linear"].filter((c) => !c.hidden && !SPECIALIZED_SLUGS.has(c.slug)).map((c) => (
+            <CourseGroup
+              key={c.slug}
+              course={c}
+              open={effectiveOpen(c.slug)}
+              onToggle={() => toggle(c.slug)}
+              pathname={pathname}
+              onNavigate={onNavigate}
+            />
+          ))}
+        </SidebarSubSection>
 
-      <SidebarSection title="Specialized Data Structures">
-        {groups["non-linear"].filter((c) => !c.hidden && SPECIALIZED_SLUGS.has(c.slug)).map((c) => (
-          <CourseGroup
-            key={c.slug}
-            course={c}
-            open={effectiveOpen(c.slug)}
-            onToggle={() => toggle(c.slug)}
-            pathname={pathname}
-            onNavigate={onNavigate}
-            isDone={isDone}
-            progressPct={courseProgress(c.slug, progressKeysFor(c)).pct}
-          />
-        ))}
+        <SidebarSubSection title="Specialized Data Structures">
+          {groups["non-linear"].filter((c) => !c.hidden && SPECIALIZED_SLUGS.has(c.slug)).map((c) => (
+            <CourseGroup
+              key={c.slug}
+              course={c}
+              open={effectiveOpen(c.slug)}
+              onToggle={() => toggle(c.slug)}
+              pathname={pathname}
+              onNavigate={onNavigate}
+            />
+          ))}
+        </SidebarSubSection>
       </SidebarSection>
 
       <SidebarSection title="Algorithms">
@@ -150,8 +139,6 @@ export function CourseSidebar({ onNavigate }: { onNavigate?: () => void }) {
             onToggle={() => toggle(c.slug)}
             pathname={pathname}
             onNavigate={onNavigate}
-            isDone={isDone}
-            progressPct={courseProgress(c.slug, progressKeysFor(c)).pct}
           />
         ))}
         {ALGO_EXTRA_LINKS.map((l) => (
@@ -211,15 +198,13 @@ function SidebarLink({
 }
 
 function CourseGroup({
-  course, open, onToggle, pathname, onNavigate, isDone, progressPct,
+  course, open, onToggle, pathname, onNavigate,
 }: {
   course: Course;
   open: boolean;
   onToggle: () => void;
   pathname: string;
   onNavigate?: () => void;
-  isDone: (course: string, lesson: string) => boolean;
-  progressPct: number;
 }) {
   // Modules that aren't ready for their full lesson tree yet (still under
   // development, or a thin duplicate pointing at canonical content
@@ -241,9 +226,6 @@ function CourseGroup({
       >
         {open ? <ChevronDown className="h-3.5 w-3.5 shrink-0" /> : <ChevronRight className="h-3.5 w-3.5 shrink-0" />}
         <span className="flex-1 font-medium">{course.title}</span>
-        {progressPct > 0 && (
-          <span className="text-[10px] text-muted-foreground">{progressPct}%</span>
-        )}
       </button>
       {open && (
         <ul className="mb-1 ml-4 mt-0.5 space-y-0.5 border-l border-border pl-3">
@@ -262,7 +244,7 @@ function CourseGroup({
             </Link>
           </li>
           {course.lessons.map((l) => (
-            <LessonLink key={l.slug} course={course} lesson={l} pathname={pathname} onNavigate={onNavigate} isDone={isDone} />
+            <LessonLink key={l.slug} course={course} lesson={l} pathname={pathname} onNavigate={onNavigate} />
           ))}
           {course.groups?.map((g, idx) => {
             const prev = course.groups?.[idx - 1];
@@ -283,7 +265,6 @@ function CourseGroup({
                   group={g}
                   pathname={pathname}
                   onNavigate={onNavigate}
-                  isDone={isDone}
                 />
               </div>
             );
@@ -293,7 +274,7 @@ function CourseGroup({
             <li className="mx-2 my-1 border-t border-border/60" />
           )}
           {course.outro?.map((l) => (
-            <LessonLink key={l.slug} course={course} lesson={l} pathname={pathname} onNavigate={onNavigate} isDone={isDone} />
+            <LessonLink key={l.slug} course={course} lesson={l} pathname={pathname} onNavigate={onNavigate} />
           ))}
         </ul>
       )}
@@ -301,18 +282,40 @@ function CourseGroup({
   );
 }
 
+function SidebarSubSection({
+  title,
+  children,
+  defaultOpen = true,
+}: {
+  title: string;
+  children: React.ReactNode;
+  defaultOpen?: boolean;
+}) {
+  const [open, setOpen] = useState(defaultOpen);
+  return (
+    <div className="mb-2">
+      <button
+        onClick={() => setOpen((o) => !o)}
+        className="flex w-full items-center gap-1 px-2 py-1 text-left text-xs uppercase tracking-wider text-muted-foreground/80 hover:text-foreground transition font-bold"
+      >
+        {open ? <ChevronDown className="h-3.5 w-3.5 shrink-0" /> : <ChevronRight className="h-3.5 w-3.5 shrink-0" />}
+        <span className="flex-1">{title}</span>
+      </button>
+      {open && <ul className="mt-1 ml-2 space-y-0.5 border-l border-border/50 pl-2">{children}</ul>}
+    </div>
+  );
+}
+
 function LessonLink({
-  course, lesson: l, pathname, onNavigate, isDone,
+  course, lesson: l, pathname, onNavigate,
 }: {
   course: Course;
   lesson: Course["lessons"][number];
   pathname: string;
   onNavigate?: () => void;
-  isDone: (course: string, lesson: string) => boolean;
 }) {
   const href = lessonHref(course, l);
   const active = pathname === href;
-  const done = isDone(course.slug, l.slug);
   return (
     <li>
       <Link
@@ -324,7 +327,6 @@ function LessonLink({
             : "text-muted-foreground hover:bg-accent/60 hover:text-foreground"
         }`}
       >
-        <span className={`h-1.5 w-1.5 shrink-0 rounded-full ${done ? "bg-emerald-500" : "bg-muted-foreground/40"}`} />
         <span className="truncate">{l.title}</span>
       </Link>
     </li>
@@ -332,13 +334,12 @@ function LessonLink({
 }
 
 function SubGroup({
-  courseSlug, group, pathname, onNavigate, isDone,
+  courseSlug, group, pathname, onNavigate,
 }: {
   courseSlug: string;
   group: NonNullable<Course["groups"]>[number];
   pathname: string;
   onNavigate?: () => void;
-  isDone: (course: string, lesson: string) => boolean;
 }) {
   const key = `${courseSlug}:${group.slug}`;
   const autoOpen = group.kind === "foundations" || group.kind === "revision";
@@ -379,9 +380,6 @@ function SubGroup({
           {group.lessons.map((l) => {
             const href = l.href ?? "#";
             const active = pathname === href;
-            const done =
-              isDone(courseSlug, `${group.slug}/${l.slug}`) ||
-              isDone(courseSlug, l.slug);
             return (
               <li key={l.slug}>
                 <Link
@@ -393,7 +391,6 @@ function SubGroup({
                       : "text-muted-foreground hover:bg-accent/60 hover:text-foreground"
                   }`}
                 >
-                  <span className={`h-1.5 w-1.5 shrink-0 rounded-full ${done ? "bg-emerald-500" : "bg-muted-foreground/40"}`} />
                   <span className="truncate">{l.title}</span>
                 </Link>
               </li>

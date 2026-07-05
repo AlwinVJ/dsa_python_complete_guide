@@ -46,11 +46,17 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
-      <div className="max-w-md text-center">
+      <div className="max-w-2xl text-center w-full">
         <h1 className="text-xl font-semibold">This page didn't load</h1>
         <p className="mt-2 text-sm text-muted-foreground">
           Something went wrong. Try again or go back home.
         </p>
+        
+        <div className="mt-4 p-4 rounded-md bg-red-500/10 border border-red-500/20 text-red-600 dark:text-red-400 text-left text-xs font-mono overflow-auto max-h-60 max-w-full">
+          <div><strong>Error:</strong> {error?.message || String(error)}</div>
+          {error?.stack && <pre className="mt-2 white-space-pre-wrap">{error.stack}</pre>}
+        </div>
+
         <div className="mt-6 flex flex-wrap justify-center gap-2">
           <button
             onClick={() => {
@@ -135,8 +141,15 @@ function RootShell({ children }: { children: ReactNode }) {
 function ThemeToggle() {
   const [dark, setDark] = useState(false);
   useEffect(() => {
-    const saved = localStorage.getItem("pylist-theme");
-    const isDark = saved ? saved === "dark" : window.matchMedia("(prefers-color-scheme: dark)").matches;
+    let isDark = false;
+    try {
+      const saved = localStorage.getItem("pylist-theme");
+      isDark = saved ? saved === "dark" : window.matchMedia("(prefers-color-scheme: dark)").matches;
+    } catch {
+      try {
+        isDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+      } catch {}
+    }
     setDark(isDark);
     document.documentElement.classList.toggle("dark", isDark);
   }, []);
@@ -144,7 +157,9 @@ function ThemeToggle() {
     const next = !dark;
     setDark(next);
     document.documentElement.classList.toggle("dark", next);
-    localStorage.setItem("pylist-theme", next ? "dark" : "light");
+    try {
+      localStorage.setItem("pylist-theme", next ? "dark" : "light");
+    } catch {}
   };
   return (
     <button

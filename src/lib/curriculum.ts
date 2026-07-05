@@ -29,7 +29,7 @@ export type Module = {
 // Roadmap (ordered progression)
 // -----------------------------------------------------------------------------
 export const ROADMAP: { slug: string; title: string; route: string; group: string }[] = [
-  { slug: "python-basics", title: "Python Basics", route: "/modules/python-basics", group: "Foundations" },
+  { slug: "python-basics", title: "Prerequisites", route: "/modules/python-basics", group: "Foundations" },
   { slug: "big-o", title: "Time Complexity (Big-O)", route: "/complexity", group: "Foundations" },
   { slug: "arrays", title: "Arrays & Python Lists", route: "/introduction", group: "Linear DS" },
   { slug: "strings", title: "Strings", route: "/modules/strings", group: "Linear DS" },
@@ -65,8 +65,8 @@ const M = (m: Module): [string, Module] => [m.slug, m];
 export const MODULES: Record<string, Module> = Object.fromEntries([
   M({
     slug: "python-basics",
-    title: "Python Basics",
-    tagline: "Variables, control flow, functions, and I/O — the essentials before DSA.",
+    title: "Prerequisites",
+    tagline: "Python syntax, reference models, and recursion basics before DSA.",
     route: "/modules/python-basics",
     status: "stub",
     group: "Foundations",

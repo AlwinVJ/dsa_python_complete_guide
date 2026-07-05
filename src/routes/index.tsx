@@ -8,7 +8,6 @@ import {
 import { useState } from "react";
 import { useNavigate } from "@tanstack/react-router";
 import { ROADMAP, getModuleRoute } from "@/lib/curriculum";
-import { useProgress, nextUnlocked } from "@/lib/progress";
 import { Footer } from "@/components/Footer";
 import { DsaIntro } from "@/components/DsaIntro";
 
@@ -53,8 +52,7 @@ const RECENT = [
 function Landing() {
   const [q, setQ] = useState("");
   const navigate = useNavigate();
-  const { pct, size, total, completed, ready } = useProgress();
-  const next = nextUnlocked(completed);
+
 
   return (
     <div>
@@ -126,46 +124,23 @@ function Landing() {
       {/* Beginner-friendly DSA introduction */}
       <DsaIntro />
 
-      {/* Progress + Roadmap preview */}
+      {/* Roadmap preview */}
       <section className="mx-auto max-w-6xl px-4 py-12 sm:px-6">
-        <div className="grid gap-4 lg:grid-cols-3">
-          <div className="card-surface lg:col-span-2 p-6">
-            <div className="mb-1 flex items-center gap-2 text-xs uppercase tracking-wider text-muted-foreground">
-              <Trophy className="h-3.5 w-3.5 text-[color:var(--brand)]" /> Your Progress
-            </div>
-            <div className="flex items-baseline gap-3">
-              <div className="text-3xl font-bold">{ready ? `${pct}%` : "—"}</div>
-              <div className="text-sm text-muted-foreground">{ready ? `${size} of ${total} modules complete` : "loading…"}</div>
-            </div>
-            <div className="mt-3 h-2 w-full overflow-hidden rounded-full bg-muted">
-              <div className="h-full gradient-brand transition-all" style={{ width: `${pct}%` }} />
-            </div>
-            {next && (
-              <div className="mt-4 flex flex-wrap items-center justify-between gap-3 rounded-md border border-border bg-background/40 p-3">
-                <div>
-                  <div className="text-xs text-muted-foreground">Next up</div>
-                  <div className="font-medium">{next.title}</div>
-                </div>
-                <Link to={getModuleRoute(next)} className="inline-flex items-center gap-1 text-sm text-[color:var(--brand)]">
-                  Continue <ArrowRight className="h-4 w-4" />
-                </Link>
-              </div>
-            )}
+        <div className="card-surface p-6 max-w-3xl mx-auto">
+          <div className="mb-3 flex items-center gap-2 text-xs uppercase tracking-wider text-muted-foreground">
+            <Map className="h-3.5 w-3.5 text-[color:var(--brand)]" /> Learning Roadmap Preview
           </div>
-          <div className="card-surface p-6">
-            <div className="mb-2 flex items-center gap-2 text-xs uppercase tracking-wider text-muted-foreground">
-              <Map className="h-3.5 w-3.5 text-[color:var(--brand)]" /> Roadmap Preview
-            </div>
-            <ul className="mt-2 space-y-1 text-sm">
-              {ROADMAP.slice(0, 6).map((r, i) => (
-                <li key={r.slug} className="flex items-center gap-2">
-                  <span className="grid h-5 w-5 place-items-center rounded-full bg-muted text-[10px]">{i + 1}</span>
-                  <Link to={getModuleRoute(r)} className="hover:text-[color:var(--brand)]">{r.title}</Link>
-                </li>
-              ))}
-            </ul>
-            <Link to="/roadmap" className="mt-4 inline-flex items-center gap-1 text-sm font-medium text-[color:var(--brand)]">
-              See full roadmap <ArrowRight className="h-4 w-4" />
+          <ul className="grid gap-3 sm:grid-cols-2 text-sm mt-3">
+            {ROADMAP.slice(0, 6).map((r, i) => (
+              <li key={r.slug} className="flex items-center gap-2.5 p-2 rounded border border-border/40 bg-background/20">
+                <span className="grid h-5 w-5 shrink-0 place-items-center rounded-full bg-muted text-[10px] font-bold">{i + 1}</span>
+                <Link to={getModuleRoute(r)} className="hover:text-[color:var(--brand)] font-medium truncate">{r.title}</Link>
+              </li>
+            ))}
+          </ul>
+          <div className="mt-5 flex justify-end">
+            <Link to="/roadmap" className="inline-flex items-center gap-1.5 text-sm font-medium text-[color:var(--brand)] hover:underline">
+              See full learning roadmap <ArrowRight className="h-4 w-4" />
             </Link>
           </div>
         </div>

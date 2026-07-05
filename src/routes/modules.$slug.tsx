@@ -6,10 +6,9 @@ import {
   CheckCircle2, Circle, AlertTriangle, ClipboardList, Layers, Boxes,
   MemoryStick, Globe, HelpCircle, Trophy, Puzzle, Link2, GraduationCap,
 } from "lucide-react";
-import { MODULES } from "@/lib/curriculum";
+import { MODULES, getModuleRoute } from "@/lib/curriculum";
 import { getRichModule } from "@/lib/modules";
 import { CodeBlock } from "@/components/CodeBlock";
-import { useProgress } from "@/lib/progress";
 import { getBank } from "@/lib/question-bank";
 import { QuestionBank, EdgeCaseGrid, RevisionSheet } from "@/components/qbank/QuestionBank";
 import {
@@ -75,13 +74,200 @@ const BASIC_TABS = [
   { id: "revision",   label: "Revision",      icon: ClipboardList },
 ] as const;
 
+function PrerequisitesPage() {
+  const [checklist, setChecklist] = useState({
+    variables: false,
+    loops: false,
+    functions: false,
+    lists: false,
+    dicts: false,
+    recursion: false,
+  });
+
+  const allChecked = Object.values(checklist).every(Boolean);
+  const arraysRoute = getModuleRoute({ slug: "arrays", route: "/introduction" });
+
+  const topics = [
+    {
+      name: "Variables",
+      desc: "How references point to values/objects in memory.",
+      why: "Essential to understand parameter passing, aliasing, and mutable modifications of structures.",
+      where: "Python Tutorial: Informal Introduction.",
+    },
+    {
+      name: "Data Types",
+      desc: "Integers, floats, strings, booleans.",
+      why: "DSA algorithms rely on arithmetic operations, string manipulations, and conditional checks.",
+      where: "Python Docs: Built-in Types.",
+    },
+    {
+      name: "Loops",
+      desc: "For and While loops, loop control (break, continue).",
+      why: "Used in almost every single algorithm (iterating arrays, traversing linked lists, BFS/DFS).",
+      where: "Python Tutorial: More Control Flow Tools.",
+    },
+    {
+      name: "Functions",
+      desc: "Declaring def, args, kwargs, return values.",
+      why: "Algorithms are packaged in functions. Clean scope and parameter isolation is critical.",
+      where: "Python Docs: Defining Functions.",
+    },
+    {
+      name: "Classes",
+      desc: "Object-oriented programming (OOP) basics in Python.",
+      why: "Node structures in Linked Lists, Trees, and Graphs are modeled as Python custom classes.",
+      where: "Python Tutorial: Classes.",
+    },
+    {
+      name: "Lists",
+      desc: "Python's dynamic array implementation.",
+      why: "The baseline sequence structure for arrays, stacks, queues, and heaps.",
+      where: "Python Docs: Data Structures.",
+    },
+    {
+      name: "Dictionaries",
+      desc: "Key-value mapping backed by a hash table.",
+      why: "The baseline lookup table; gives O(1) average lookup times. Used in hashing and memoization.",
+      where: "Python Docs: Dictionaries.",
+    },
+    {
+      name: "Sets",
+      desc: "Unordered collections of unique items.",
+      why: "Used to keep track of visited nodes in graph traversal (BFS/DFS) in O(1) time.",
+      where: "Python Docs: Sets.",
+    },
+    {
+      name: "Recursion Basics",
+      desc: "A function calling itself with a smaller input.",
+      why: "The core engine of trees, graphs, divide & conquer, and backtracking algorithms.",
+      where: "Algorithms curriculum: Recursion module.",
+    },
+  ];
+
+  return (
+    <div className="mx-auto max-w-4xl px-4 py-10 sm:px-6">
+      <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}>
+        <div className="mb-2 inline-flex items-center gap-2 rounded-full border border-border bg-card px-3 py-1 text-xs text-muted-foreground">
+          <Sparkles className="h-3.5 w-3.5 text-[color:var(--brand)]" />
+          Getting Started
+        </div>
+        <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">Prerequisites</h1>
+        <p className="mt-3 max-w-3xl text-lg text-muted-foreground">
+          Before diving into Data Structures & Algorithms, make sure you are comfortable with these core Python programming concepts. We focus on how they apply to DSA.
+        </p>
+      </motion.div>
+
+      <div className="mt-8 space-y-6">
+        {/* Core Topics Checklist */}
+        <section className="card-surface p-5">
+          <h2 className="text-lg font-semibold mb-3">Topic Guidance & Why It Matters</h2>
+          <div className="grid gap-4 md:grid-cols-2">
+            {topics.map((t) => (
+              <div key={t.name} className="border border-border rounded-lg p-4 bg-background/50">
+                <div className="font-semibold text-foreground">{t.name}</div>
+                <div className="text-xs text-muted-foreground mt-1">{t.desc}</div>
+                <div className="text-xs text-[color:var(--brand)] mt-2 font-medium">Why it matters: <span className="text-muted-foreground">{t.why}</span></div>
+                <div className="text-xs text-muted-foreground mt-1 italic">Study resource: {t.where}</div>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* Recommended resources */}
+        <section className="card-surface p-5 space-y-4">
+          <h2 className="text-lg font-semibold">Recommended Learning Resources</h2>
+          <div className="grid gap-4 sm:grid-cols-2">
+            <div>
+              <div className="font-semibold text-xs uppercase tracking-wider text-muted-foreground mb-1.5">Official Documentation</div>
+              <ul className="space-y-1 text-sm text-[color:var(--brand)]">
+                <li><a href="https://docs.python.org/3/tutorial/index.html" target="_blank" rel="noreferrer" className="hover:underline">Python Official Tutorial</a></li>
+                <li><a href="https://docs.python.org/3/library/stdtypes.html" target="_blank" rel="noreferrer" className="hover:underline">Standard Types Reference</a></li>
+              </ul>
+            </div>
+            <div>
+              <div className="font-semibold text-xs uppercase tracking-wider text-muted-foreground mb-1.5">Beginner Tutorials</div>
+              <ul className="space-y-1 text-sm text-[color:var(--brand)]">
+                <li><a href="https://www.w3schools.com/python/" target="_blank" rel="noreferrer" className="hover:underline">W3Schools Python Tutorial</a></li>
+                <li><a href="https://www.programiz.com/python-programming" target="_blank" rel="noreferrer" className="hover:underline">Programiz Beginner Guide</a></li>
+                <li><a href="https://www.geeksforgeeks.org/python-programming-language/" target="_blank" rel="noreferrer" className="hover:underline">GeeksforGeeks Python Portal</a></li>
+                <li><a href="https://www.freecodecamp.org/" target="_blank" rel="noreferrer" className="hover:underline">freeCodeCamp Core Programming</a></li>
+              </ul>
+            </div>
+            <div>
+              <div className="font-semibold text-xs uppercase tracking-wider text-muted-foreground mb-1.5">Interactive Practice</div>
+              <ul className="space-y-1 text-sm text-[color:var(--brand)]">
+                <li><a href="https://www.hackerrank.com/domains/python" target="_blank" rel="noreferrer" className="hover:underline">HackerRank Python Domain</a></li>
+                <li><a href="https://exercism.org/tracks/python" target="_blank" rel="noreferrer" className="hover:underline">Exercism Python Track</a></li>
+                <li><a href="https://codingbat.com/python" target="_blank" rel="noreferrer" className="hover:underline">CodingBat Logic Practice</a></li>
+                <li><a href="https://leetcode.com/problemset/all/?difficulty=EASY&languageTags=python" target="_blank" rel="noreferrer" className="hover:underline">LeetCode Easy Python Problems</a></li>
+              </ul>
+            </div>
+            <div>
+              <div className="font-semibold text-xs uppercase tracking-wider text-muted-foreground mb-1.5">Video Courses & Books</div>
+              <ul className="space-y-1 text-sm text-muted-foreground">
+                <li><span className="text-[color:var(--brand)]">Corey Schafer's Python Series</span> (YouTube)</li>
+                <li><span className="text-[color:var(--brand)]">freeCodeCamp Python for Beginners</span> (YouTube)</li>
+                <li><span className="text-[color:var(--brand)]">"Python Crash Course"</span> by Eric Matthes (Book)</li>
+                <li><span className="text-[color:var(--brand)]">"Automate the Boring Stuff"</span> by Al Sweigart (Book)</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        {/* Readiness Checklist */}
+        <section className="card-surface p-5">
+          <h2 className="text-lg font-semibold mb-1">Self-Assessment Readiness Checklist</h2>
+          <p className="text-xs text-muted-foreground mb-3">Check off the boxes once you feel comfortable with each topic.</p>
+          <div className="space-y-2">
+            {[
+              { id: "variables", label: "Variables & Reference Aliasing" },
+              { id: "loops", label: "Loops (For/While iteration)" },
+              { id: "functions", label: "Functions (Scope and parameters)" },
+              { id: "lists", label: "Lists (Dynamic arrays, indexing, appending)" },
+              { id: "dicts", label: "Dictionaries (Hash table key-value lookups)" },
+              { id: "recursion", label: "Recursion Basics (Base case, stack frames)" },
+            ].map((item) => {
+              const k = item.id as keyof typeof checklist;
+              return (
+                <label key={item.id} className="flex items-center gap-3 p-2.5 rounded-md border border-border bg-background/30 hover:bg-accent/40 cursor-pointer select-none">
+                  <input
+                    type="checkbox"
+                    checked={checklist[k]}
+                    onChange={(e) => setChecklist((prev) => ({ ...prev, [k]: e.target.checked }))}
+                    className="h-4.5 w-4.5 rounded border-gray-300 text-[color:var(--brand)] focus:ring-[color:var(--brand)]"
+                  />
+                  <span className="text-sm font-medium">{item.label}</span>
+                </label>
+              );
+            })}
+          </div>
+
+          {allChecked && (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              className="card-surface p-5 border-emerald-500/30 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 mt-6 text-center"
+            >
+              <div className="font-semibold text-base">🎉 You're ready to begin learning Data Structures & Algorithms!</div>
+              <Link
+                to={arraysRoute}
+                className="inline-flex items-center gap-1.5 rounded-md gradient-brand px-5 py-2 text-sm font-semibold text-primary-foreground shadow-md hover:opacity-90 transition mt-4"
+              >
+                Start Learning Arrays →
+              </Link>
+            </motion.div>
+          )}
+        </section>
+      </div>
+    </div>
+  );
+}
+
 function ModulePage() {
   const { slug } = Route.useLoaderData();
   const rich = getRichModule(slug);
   const m = MODULES[slug];
   const bank = getBank(slug);
-  const { has, toggle } = useProgress();
-  const done = has(slug);
 
   const title = rich?.title || m?.title || slug;
   const tagline = rich?.tagline || m?.tagline || "";
@@ -89,6 +275,10 @@ function ModulePage() {
 
   const TABS = rich ? RICH_TABS : BASIC_TABS;
   const [tab, setTab] = useState<string>(TABS[0].id);
+
+  if (slug === "python-basics") {
+    return <PrerequisitesPage />;
+  }
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
@@ -101,17 +291,6 @@ function ModulePage() {
         <p className="mt-3 max-w-3xl text-lg text-muted-foreground">{tagline}</p>
 
         <div className="mt-5 flex flex-wrap items-center gap-3">
-          <button
-            onClick={() => toggle(slug)}
-            className={`inline-flex items-center gap-2 rounded-md px-4 py-2 text-sm font-medium transition ${
-              done
-                ? "bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30"
-                : "gradient-brand text-primary-foreground"
-            }`}
-          >
-            {done ? <CheckCircle2 className="h-4 w-4" /> : <Circle className="h-4 w-4" />}
-            {done ? "Completed" : "Mark as complete"}
-          </button>
           <Link to="/roadmap" className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground">
             <Rocket className="h-4 w-4" /> View roadmap
           </Link>

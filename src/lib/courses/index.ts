@@ -1,4 +1,5 @@
 import type { Course, Lesson } from "./types";
+import { introductionToDsaCourse } from "./introduction-to-dsa";
 import { arraysCourse } from "./arrays";
 import { stringsCourse } from "./strings";
 import { linkedListsCourse } from "./linked-lists";
@@ -21,6 +22,7 @@ import { backtrackingCourse } from "./backtracking";
 import { bitManipulationCourse } from "./bit-manipulation";
 
 export const COURSES: Course[] = [
+  introductionToDsaCourse,
   arraysCourse,
   stringsCourse,
   linkedListsCourse,

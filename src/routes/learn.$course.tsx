@@ -14,10 +14,10 @@ import {
 import { getCourse } from "@/lib/courses";
 import { allCourseLessons, lessonHref } from "@/lib/courses/types";
 import type { Course, Lesson, LessonGroup } from "@/lib/courses/types";
-import { useLessonProgress } from "@/lib/lesson-progress";
 import { cn } from "@/lib/utils";
 import { ComingSoon } from "@/components/ComingSoon";
 import { TrieRedirect } from "@/components/TrieRedirect";
+import { getModuleRoute } from "@/lib/curriculum";
 
 export const Route = createFileRoute("/learn/$course")({
   beforeLoad: ({ params }) => {
@@ -52,7 +52,6 @@ const MINUTES_PER_LESSON = 2;
 function CoursePage() {
   const { course: slug } = Route.useLoaderData();
   const course = getCourse(slug)!;
-  const { isDone, courseProgress } = useLessonProgress();
 
   // Thin duplicate of canonical content living elsewhere (e.g. Tries).
   if (course.duplicateOf) {
@@ -75,7 +74,6 @@ function CoursePage() {
   }
 
   const allLessons = allCourseLessons(course);
-  const prog = courseProgress(course.slug, allLessons.map((l) => l.slug));
   const totalMinutes = allLessons.length * MINUTES_PER_LESSON;
 
   // Build a normalized list of sections for rendering. Top-level `lessons`
@@ -127,8 +125,9 @@ function CoursePage() {
     { label: "Sections", value: sections.length, icon: Layers },
     { label: "Lessons", value: allLessons.length, icon: BookOpen },
     { label: "Est. time", value: `${totalMinutes} min`, icon: Clock },
-    { label: "Progress", value: `${prog.pct}%`, icon: GraduationCap },
   ];
+
+  const arraysRoute = getModuleRoute({ slug: "arrays", route: "/introduction" });
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-10 sm:px-6">
@@ -140,17 +139,70 @@ function CoursePage() {
         <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">{course.title}</h1>
         <p className="mt-3 max-w-3xl text-lg text-muted-foreground">{course.tagline}</p>
 
-        <div className="mt-5 max-w-sm">
-          <div className="flex items-center justify-between text-xs text-muted-foreground">
-            <span>Course progress</span>
-            <span>{prog.done} / {prog.total} · {prog.pct}%</span>
+        {course.infoCard && (
+          <div className="card-surface p-5 grid gap-4 sm:grid-cols-4 mt-6">
+            <div>
+              <div className="text-xs text-muted-foreground">Estimated Completion Time</div>
+              <div className="text-base font-semibold mt-0.5">{course.infoCard.estimatedTime}</div>
+            </div>
+            <div>
+              <div className="text-xs text-muted-foreground">Difficulty</div>
+              <div className="text-base font-semibold mt-0.5 text-amber-500">
+                {"★".repeat(course.infoCard.difficulty)}
+                {"☆".repeat(5 - course.infoCard.difficulty)}
+              </div>
+            </div>
+            <div>
+              <div className="text-xs text-muted-foreground">Coding Practice Required</div>
+              <div className="text-base font-semibold mt-0.5">{course.infoCard.practiceRequired ? "Yes" : "No"}</div>
+            </div>
+            <div>
+              <div className="text-xs text-muted-foreground">Programming Language</div>
+              <div className="text-base font-semibold mt-0.5">{course.infoCard.language}</div>
+            </div>
           </div>
-          <div className="mt-1.5 h-2 overflow-hidden rounded-full bg-muted">
-            <div className="h-full gradient-brand transition-all" style={{ width: `${prog.pct}%` }} />
-          </div>
-        </div>
+        )}
 
-        <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-4">
+        {course.whoIsThisFor && (
+          <div className="card-surface p-5 mt-6">
+            <h3 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground mb-3">Who is this Course For?</h3>
+            <ul className="grid gap-2 sm:grid-cols-2 text-sm text-muted-foreground">
+              {course.whoIsThisFor.map((item, i) => (
+                <li key={i} className="flex items-center gap-2">
+                  <span className="text-emerald-500 font-bold">✓</span> {item}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+
+        {course.showRoadmap && (
+          <div className="card-surface p-5 mt-6">
+            <h3 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground mb-4">Learning Roadmap</h3>
+            <div className="relative border-l border-border pl-6 ml-3 space-y-4">
+              {[
+                { name: "Prerequisites", duration: "2–3 Days" },
+                { name: "Introduction to DSA", duration: "30–60 Minutes" },
+                { name: "Complexity Analysis", duration: "2–4 Hours" },
+                { name: "Linear Data Structures", duration: "Linear data structures: Arrays (2 Days), Linked Lists (2 Days), Stacks, Queues, Hash Tables" },
+                { name: "Non-Linear Data Structures", duration: "Non-linear structures: Trees (3 Days), Graphs (3–4 Days)" },
+                { name: "Specialized Data Structures", duration: "Specialized structures: Heaps, Tries" },
+                { name: "Algorithms", duration: "2–3 Weeks (Sorting, Searching, and other algorithms)" },
+                { name: "Interview Preparation", duration: "1–2 Weeks (mock interviews, practice)" }
+              ].map((stage, idx) => (
+                <div key={stage.name} className="relative">
+                  <span className="absolute -left-9 top-1.5 flex h-6 w-6 items-center justify-center rounded-full bg-muted border border-border text-[10px] font-bold">
+                    {idx + 1}
+                  </span>
+                  <div className="text-sm font-semibold">{stage.name}</div>
+                  <div className="text-xs text-muted-foreground">{stage.duration}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        <div className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-3">
           {summary.map((s) => (
             <div key={s.label} className="card-surface flex items-center gap-3 p-3">
               <s.icon className="h-4 w-4 text-[color:var(--brand)]" />
@@ -165,19 +217,19 @@ function CoursePage() {
 
       <div className="mt-10 space-y-10">
         {foundations.map((s) => (
-          <SectionBlock key={s.slug} course={course} section={s} isDone={isDone} />
+          <SectionBlock key={s.slug} course={course} section={s} />
         ))}
 
         {flat.map((s) => (
-          <SectionBlock key={s.slug} course={course} section={s} isDone={isDone} />
+          <SectionBlock key={s.slug} course={course} section={s} />
         ))}
 
         {implementations.map((s) => (
-          <SectionBlock key={s.slug} course={course} section={s} isDone={isDone} />
+          <SectionBlock key={s.slug} course={course} section={s} />
         ))}
 
         {applications.map((s) => (
-          <SectionBlock key={s.slug} course={course} section={s} isDone={isDone} />
+          <SectionBlock key={s.slug} course={course} section={s} />
         ))}
 
         {variants.length > 0 && (
@@ -193,7 +245,6 @@ function CoursePage() {
                   key={s.slug}
                   course={course}
                   section={s}
-                  isDone={isDone}
                   defaultOpen={i === 0}
                 />
               ))}
@@ -202,8 +253,19 @@ function CoursePage() {
         )}
 
         {revision.map((s) => (
-          <SectionBlock key={s.slug} course={course} section={s} isDone={isDone} />
+          <SectionBlock key={s.slug} course={course} section={s} />
         ))}
+
+        {course.ctaText && (
+          <div className="mt-8 flex justify-center">
+            <Link
+              to={arraysRoute}
+              className="inline-flex items-center gap-1.5 rounded-md gradient-brand px-6 py-3 text-sm font-semibold text-primary-foreground shadow-lg hover:opacity-90 transition"
+            >
+              {course.ctaText}
+            </Link>
+          </div>
+        )}
       </div>
     </div>
   );
@@ -231,16 +293,14 @@ function SectionHeader({
 function SectionBlock({
   course,
   section,
-  isDone,
 }: {
   course: Course;
   section: { slug: string; title: string; tagline?: string; lessons: Lesson[] };
-  isDone: (c: string, l: string) => boolean;
 }) {
   return (
     <div>
       <SectionHeader title={section.title} tagline={section.tagline} />
-      <LessonGrid course={course} lessons={section.lessons} isDone={isDone} />
+      <LessonGrid course={course} lessons={section.lessons} />
     </div>
   );
 }
@@ -248,16 +308,13 @@ function SectionBlock({
 function VariantGroup({
   course,
   section,
-  isDone,
   defaultOpen,
 }: {
   course: Course;
   section: { slug: string; title: string; tagline?: string; lessons: Lesson[] };
-  isDone: (c: string, l: string) => boolean;
   defaultOpen?: boolean;
 }) {
   const [open, setOpen] = useState(!!defaultOpen);
-  const done = section.lessons.filter((l) => isDone(course.slug, l.slug)).length;
   return (
     <div className="card-surface overflow-hidden">
       <button
@@ -280,13 +337,10 @@ function VariantGroup({
             </div>
           )}
         </div>
-        <div className="shrink-0 text-xs text-muted-foreground">
-          {done} / {section.lessons.length}
-        </div>
       </button>
       {open && (
         <div className="border-t border-border p-4">
-          <LessonGrid course={course} lessons={section.lessons} isDone={isDone} />
+          <LessonGrid course={course} lessons={section.lessons} />
         </div>
       )}
     </div>
@@ -296,27 +350,19 @@ function VariantGroup({
 function LessonGrid({
   course,
   lessons,
-  isDone,
 }: {
   course: Course;
   lessons: Lesson[];
-  isDone: (c: string, l: string) => boolean;
 }) {
   return (
     <ol className="grid gap-2 sm:grid-cols-2">
       {lessons.map((l, i) => {
-        const done = isDone(course.slug, l.slug);
         return (
           <li key={l.slug}>
             <Link
               to={lessonHref(course, l)}
               className="card-surface group flex h-full items-start gap-3 p-3 transition hover:border-[color:var(--brand)]/60"
             >
-              {done ? (
-                <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-emerald-500" />
-              ) : (
-                <Circle className="mt-0.5 h-4 w-4 shrink-0 text-muted-foreground" />
-              )}
               <span className="mt-0.5 w-6 shrink-0 text-xs text-muted-foreground">
                 {String(i + 1).padStart(2, "0")}
               </span>
