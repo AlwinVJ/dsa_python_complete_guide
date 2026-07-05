@@ -9,7 +9,9 @@ import { useState } from "react";
 import { useNavigate } from "@tanstack/react-router";
 import { ROADMAP, getModuleRoute } from "@/lib/curriculum";
 import { Footer } from "@/components/Footer";
-import { DsaIntro } from "@/components/DsaIntro";
+import {
+  PlatformStatistics, PlatformFeatures, PlatformComparison, PlatformCta
+} from "@/components/PlatformFeatures";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -121,36 +123,15 @@ function Landing() {
         </div>
       </section>
 
-      {/* Beginner-friendly DSA introduction */}
-      <DsaIntro />
-
-      {/* Roadmap preview */}
-      <section className="mx-auto max-w-6xl px-4 py-12 sm:px-6">
-        <div className="card-surface p-6 max-w-3xl mx-auto">
-          <div className="mb-3 flex items-center gap-2 text-xs uppercase tracking-wider text-muted-foreground">
-            <Map className="h-3.5 w-3.5 text-[color:var(--brand)]" /> Learning Roadmap Preview
-          </div>
-          <ul className="grid gap-3 sm:grid-cols-2 text-sm mt-3">
-            {ROADMAP.slice(0, 6).map((r, i) => (
-              <li key={r.slug} className="flex items-center gap-2.5 p-2 rounded border border-border/40 bg-background/20">
-                <span className="grid h-5 w-5 shrink-0 place-items-center rounded-full bg-muted text-[10px] font-bold">{i + 1}</span>
-                <Link to={getModuleRoute(r)} className="hover:text-[color:var(--brand)] font-medium truncate">{r.title}</Link>
-              </li>
-            ))}
-          </ul>
-          <div className="mt-5 flex justify-end">
-            <Link to="/roadmap" className="inline-flex items-center gap-1.5 text-sm font-medium text-[color:var(--brand)] hover:underline">
-              See full learning roadmap <ArrowRight className="h-4 w-4" />
-            </Link>
-          </div>
-        </div>
-      </section>
+      {/* Statistics */}
+      <PlatformStatistics />
 
       {/* Featured Modules */}
-      <section className="mx-auto max-w-6xl px-4 pb-12 sm:px-6">
+      <section className="mx-auto max-w-6xl px-4 py-8 sm:px-6">
         <div className="mb-6">
           <div className="mb-2 text-xs font-semibold uppercase tracking-wider text-[color:var(--brand)]">Featured Modules</div>
-          <h2 className="text-3xl font-semibold">Start where it clicks.</h2>
+          <h2 className="text-3xl font-semibold text-foreground">Start where it clicks.</h2>
+          <p className="mt-1 text-sm text-muted-foreground">Select any of our flagship interactive modules below to begin exploring step-by-step.</p>
         </div>
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {FEATURED.map((r, i) => (
@@ -159,7 +140,7 @@ function Landing() {
                 <div className="mb-3 inline-flex h-10 w-10 items-center justify-center rounded-md gradient-brand text-primary-foreground">
                   <r.icon className="h-5 w-5" />
                 </div>
-                <div className="mb-1 flex items-center gap-1 font-semibold">
+                <div className="mb-1 flex items-center gap-1 font-semibold text-foreground">
                   {r.title}
                   <ArrowRight className="h-4 w-4 opacity-0 transition group-hover:translate-x-0.5 group-hover:opacity-100" />
                 </div>
@@ -167,6 +148,37 @@ function Landing() {
               </Link>
             </motion.div>
           ))}
+        </div>
+      </section>
+
+      {/* Platform Features companion */}
+      <PlatformFeatures />
+
+      {/* Interactive Visualizations Showcase Comparison */}
+      <PlatformComparison />
+
+      {/* Roadmap preview */}
+      <section className="mx-auto max-w-6xl px-4 py-12 sm:px-6">
+        <div className="card-surface p-6 max-w-3xl mx-auto border-l-4 border-l-[color:var(--brand)]">
+          <div className="mb-3 flex items-center gap-2 text-xs uppercase tracking-wider text-muted-foreground">
+            <Map className="h-3.5 w-3.5 text-[color:var(--brand)]" /> Learning Roadmap Preview
+          </div>
+          <p className="text-sm text-muted-foreground mb-4">
+            Our curriculum is structured sequentially to build a continuous learning path from prerequisite Python logic to advanced patterns.
+          </p>
+          <ul className="grid gap-3 sm:grid-cols-2 text-sm">
+            {ROADMAP.slice(0, 6).map((r, i) => (
+              <li key={r.slug} className="flex items-center gap-2.5 p-2 rounded border border-border/40 bg-background/20">
+                <span className="grid h-5 w-5 shrink-0 place-items-center rounded-full bg-muted text-[10px] font-bold text-foreground">{i + 1}</span>
+                <Link to={getModuleRoute(r)} className="hover:text-[color:var(--brand)] font-medium truncate text-foreground">{r.title}</Link>
+              </li>
+            ))}
+          </ul>
+          <div className="mt-5 flex justify-end">
+            <Link to="/roadmap" className="inline-flex items-center gap-1.5 text-sm font-medium text-[color:var(--brand)] hover:underline">
+              See full learning roadmap <ArrowRight className="h-4 w-4" />
+            </Link>
+          </div>
         </div>
       </section>
 
@@ -180,7 +192,7 @@ function Landing() {
             <ul className="space-y-2">
               {RECENT.map((r) => (
                 <li key={r.to}>
-                  <Link to={r.to} className="flex items-center justify-between rounded-md border border-border bg-background/40 px-3 py-2 text-sm hover:border-[color:var(--brand)]/60">
+                  <Link to={r.to} className="flex items-center justify-between rounded-md border border-border bg-background/40 px-3 py-2 text-sm hover:border-[color:var(--brand)]/60 text-foreground">
                     <span>{r.title}</span>
                     <ArrowRight className="h-4 w-4 text-muted-foreground" />
                   </Link>
@@ -199,7 +211,7 @@ function Landing() {
               <Link to="/modules/interview" className="inline-flex items-center gap-1 rounded-md gradient-brand px-3 py-1.5 text-xs font-medium text-primary-foreground">
                 <Rocket className="h-3.5 w-3.5" /> Start prep
               </Link>
-              <Link to="/faq" className="inline-flex items-center gap-1 rounded-md border border-border px-3 py-1.5 text-xs font-medium hover:bg-accent">
+              <Link to="/faq" className="inline-flex items-center gap-1 rounded-md border border-border px-3 py-1.5 text-xs font-medium hover:bg-accent text-foreground">
                 Interview Qs
               </Link>
             </div>
@@ -208,7 +220,7 @@ function Landing() {
       </section>
 
       {/* Practice + References */}
-      <section className="mx-auto max-w-6xl px-4 pb-16 sm:px-6">
+      <section className="mx-auto max-w-6xl px-4 pb-8 sm:px-6">
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {[
             { icon: Code2, title: "Coding Practice", desc: "LeetCode & HackerRank roadmaps.", to: "/resources" },
@@ -216,7 +228,7 @@ function Landing() {
             { icon: Cpu, title: "Complexity", desc: "Time & space cheat sheets.", to: "/complexity" },
             { icon: Trophy, title: "Popular Patterns", desc: "20 algorithm techniques.", to: "/algorithms" },
           ].map((c) => (
-            <Link key={c.title} to={c.to} className="card-surface p-5 hover:border-[color:var(--brand)]/60 transition">
+            <Link key={c.title} to={c.to} className="card-surface p-5 hover:border-[color:var(--brand)]/60 transition text-foreground">
               <c.icon className="mb-3 h-5 w-5 text-[color:var(--brand)]" />
               <div className="font-semibold">{c.title}</div>
               <div className="mt-1 text-sm text-muted-foreground">{c.desc}</div>
@@ -224,6 +236,9 @@ function Landing() {
           ))}
         </div>
       </section>
+
+      {/* Final CTA Card */}
+      <PlatformCta />
 
       <Footer />
     </div>
