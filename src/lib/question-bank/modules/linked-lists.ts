@@ -4,11 +4,30 @@ export const linkedListsBank: ModuleBank = {
   moduleSlug: "linked-lists",
   moduleTitle: "Linked Lists",
   edgeCases: [
-    { case: "Empty list (head is None)", why: "Every algorithm must guard `if not head:` first.", example: "head = None" },
-    { case: "Single node", why: "next is None — reversal/cycle logic can misfire.", example: "1 -> None" },
-    { case: "Two nodes", why: "Common off-by-one in slow/fast pointers.", example: "1 -> 2 -> None" },
-    { case: "Cycle present", why: "Naive traversal loops forever; use Floyd's slow/fast.", example: "3 -> 2 -> 0 -> -4 -> (back to 2)" },
-    { case: "Duplicate values", why: "Value-based delete removes only the first match unless you loop." },
+    {
+      case: "Empty list (head is None)",
+      why: "Every algorithm must guard `if not head:` first.",
+      example: "head = None",
+    },
+    {
+      case: "Single node",
+      why: "next is None — reversal/cycle logic can misfire.",
+      example: "1 -> None",
+    },
+    {
+      case: "Two nodes",
+      why: "Common off-by-one in slow/fast pointers.",
+      example: "1 -> 2 -> None",
+    },
+    {
+      case: "Cycle present",
+      why: "Naive traversal loops forever; use Floyd's slow/fast.",
+      example: "3 -> 2 -> 0 -> -4 -> (back to 2)",
+    },
+    {
+      case: "Duplicate values",
+      why: "Value-based delete removes only the first match unless you loop.",
+    },
     { case: "Deleting the head", why: "Special case — return `head.next`." },
     { case: "Deleting the tail", why: "Requires the previous node; keep `prev` while walking." },
   ],
@@ -44,7 +63,9 @@ export const linkedListsBank: ModuleBank = {
       difficulty: "Beginner",
       topic: "Fundamentals",
       description: "Compare memory layout, access patterns, and insertion cost.",
-      hints: ["Arrays: contiguous memory, O(1) random access, O(n) insertion in the middle. Lists: pointers, O(1) head insert, O(n) access."],
+      hints: [
+        "Arrays: contiguous memory, O(1) random access, O(n) insertion in the middle. Lists: pointers, O(1) head insert, O(n) access.",
+      ],
       estimatedMinutes: 5,
       tags: ["theory"],
       interviewFrequency: "High",
@@ -78,7 +99,13 @@ export const linkedListsBank: ModuleBank = {
       pattern: "Two Pointers",
       companies: ["Amazon", "Microsoft", "Meta"],
       interviewFrequency: "Very High",
-      leetcodeLinks: [{ title: "206. Reverse Linked List", url: "https://leetcode.com/problems/reverse-linked-list/", difficulty: "Easy" }],
+      leetcodeLinks: [
+        {
+          title: "206. Reverse Linked List",
+          url: "https://leetcode.com/problems/reverse-linked-list/",
+          difficulty: "Easy",
+        },
+      ],
       relatedQuestions: ["q-ll-merge", "q-ll-middle"],
       tags: ["must-do"],
     },
@@ -109,7 +136,13 @@ export const linkedListsBank: ModuleBank = {
       pattern: "Two Pointers",
       companies: ["Amazon", "Google"],
       interviewFrequency: "Very High",
-      leetcodeLinks: [{ title: "141. Linked List Cycle", url: "https://leetcode.com/problems/linked-list-cycle/", difficulty: "Easy" }],
+      leetcodeLinks: [
+        {
+          title: "141. Linked List Cycle",
+          url: "https://leetcode.com/problems/linked-list-cycle/",
+          difficulty: "Easy",
+        },
+      ],
       tags: ["must-do", "floyd"],
     },
     {
@@ -131,7 +164,13 @@ export const linkedListsBank: ModuleBank = {
       estimatedMinutes: 10,
       pattern: "Two Pointers",
       interviewFrequency: "High",
-      leetcodeLinks: [{ title: "876. Middle of the Linked List", url: "https://leetcode.com/problems/middle-of-the-linked-list/", difficulty: "Easy" }],
+      leetcodeLinks: [
+        {
+          title: "876. Middle of the Linked List",
+          url: "https://leetcode.com/problems/middle-of-the-linked-list/",
+          difficulty: "Easy",
+        },
+      ],
     },
     {
       id: "q-ll-merge",
@@ -153,7 +192,13 @@ export const linkedListsBank: ModuleBank = {
       estimatedMinutes: 15,
       pattern: "Merge",
       interviewFrequency: "Very High",
-      leetcodeLinks: [{ title: "21. Merge Two Sorted Lists", url: "https://leetcode.com/problems/merge-two-sorted-lists/", difficulty: "Easy" }],
+      leetcodeLinks: [
+        {
+          title: "21. Merge Two Sorted Lists",
+          url: "https://leetcode.com/problems/merge-two-sorted-lists/",
+          difficulty: "Easy",
+        },
+      ],
       tags: ["must-do", "dummy-head"],
     },
     {
@@ -176,7 +221,13 @@ export const linkedListsBank: ModuleBank = {
       estimatedMinutes: 20,
       pattern: "Two Pointers",
       interviewFrequency: "High",
-      leetcodeLinks: [{ title: "19. Remove Nth Node From End", url: "https://leetcode.com/problems/remove-nth-node-from-end-of-list/", difficulty: "Medium" }],
+      leetcodeLinks: [
+        {
+          title: "19. Remove Nth Node From End",
+          url: "https://leetcode.com/problems/remove-nth-node-from-end-of-list/",
+          difficulty: "Medium",
+        },
+      ],
     },
     {
       id: "q-ll-edge-head-delete",
@@ -185,8 +236,10 @@ export const linkedListsBank: ModuleBank = {
       category: "edge-case",
       difficulty: "Beginner",
       topic: "Edge Cases",
-      description: "Show how a dummy node eliminates the special case when the target is at the head.",
-      pythonSolution: "dummy = ListNode(0, head)\nprev = dummy\nwhile prev.next:\n    if prev.next.val == target:\n        prev.next = prev.next.next\n    else:\n        prev = prev.next\nreturn dummy.next",
+      description:
+        "Show how a dummy node eliminates the special case when the target is at the head.",
+      pythonSolution:
+        "dummy = ListNode(0, head)\nprev = dummy\nwhile prev.next:\n    if prev.next.val == target:\n        prev.next = prev.next.next\n    else:\n        prev = prev.next\nreturn dummy.next",
       estimatedMinutes: 5,
       tags: ["dummy-head", "edge"],
     },

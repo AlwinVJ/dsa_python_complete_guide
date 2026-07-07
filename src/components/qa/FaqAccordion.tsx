@@ -6,7 +6,12 @@ import { ComplexityBadge } from "@/components/Callout";
 import type { FaqCategory, FaqItem } from "@/lib/qa/types";
 
 const CATEGORIES: (FaqCategory | "All")[] = [
-  "All", "Concepts", "Operations", "Memory", "Design", "Practical",
+  "All",
+  "Concepts",
+  "Operations",
+  "Memory",
+  "Design",
+  "Practical",
 ];
 
 export function FaqAccordion({ faqs }: { faqs: FaqItem[] }) {
@@ -79,7 +84,9 @@ export function FaqAccordion({ faqs }: { faqs: FaqItem[] }) {
               {isOpen && (
                 <div className="border-t border-border bg-background/40 px-4 py-4">
                   <div className="space-y-3 text-sm leading-relaxed text-muted-foreground">
-                    {f.answer.map((p, k) => <p key={k}>{p}</p>)}
+                    {f.answer.map((p, k) => (
+                      <p key={k}>{p}</p>
+                    ))}
                   </div>
 
                   {f.code && (
@@ -109,7 +116,9 @@ export function FaqAccordion({ faqs }: { faqs: FaqItem[] }) {
                     <div className="mt-4 flex gap-3 rounded-md border border-[color:var(--brand)]/30 bg-[color:var(--brand)]/5 p-3 text-sm">
                       <Sparkles className="mt-0.5 h-4 w-4 shrink-0 text-[color:var(--brand)]" />
                       <div>
-                        <div className="text-xs font-semibold uppercase tracking-wider text-[color:var(--brand)]">Did you know?</div>
+                        <div className="text-xs font-semibold uppercase tracking-wider text-[color:var(--brand)]">
+                          Did you know?
+                        </div>
                         <div className="mt-1 text-muted-foreground">{f.didYouKnow}</div>
                       </div>
                     </div>
@@ -119,7 +128,9 @@ export function FaqAccordion({ faqs }: { faqs: FaqItem[] }) {
                     <div className="mt-3 flex gap-3 rounded-md border border-amber-500/30 bg-amber-500/5 p-3 text-sm">
                       <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0 text-amber-500" />
                       <div>
-                        <div className="text-xs font-semibold uppercase tracking-wider text-amber-500">Common mistake</div>
+                        <div className="text-xs font-semibold uppercase tracking-wider text-amber-500">
+                          Common mistake
+                        </div>
                         <div className="mt-1 text-muted-foreground">{f.mistake}</div>
                       </div>
                     </div>

@@ -49,7 +49,9 @@ export function StackVisualizer({
                 }`}
               >
                 <span className="text-xs text-muted-foreground">[{i}]</span>
-                <span className="flex-1 text-center font-semibold text-foreground">{String(v)}</span>
+                <span className="flex-1 text-center font-semibold text-foreground">
+                  {String(v)}
+                </span>
                 <span className="w-20 text-right text-[10px] text-muted-foreground">
                   {showAddresses ? `0x${(base + i * stride).toString(16).toUpperCase()}` : ""}
                 </span>
@@ -73,7 +75,9 @@ export function StackVisualizer({
           <span className="h-px w-8 bg-border" />
         </div>
       </div>
-      {caption && <p className="mt-2 text-center text-xs italic text-muted-foreground">{caption}</p>}
+      {caption && (
+        <p className="mt-2 text-center text-xs italic text-muted-foreground">{caption}</p>
+      )}
     </div>
   );
 }

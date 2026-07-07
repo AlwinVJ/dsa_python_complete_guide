@@ -1,7 +1,14 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
-  Plus, Trash2, Search, RefreshCcw, Play, Pause, SkipForward, Shuffle,
+  Plus,
+  Trash2,
+  Search,
+  RefreshCcw,
+  Play,
+  Pause,
+  SkipForward,
+  Shuffle,
   ArrowRight,
 } from "lucide-react";
 import { TreeVisualizer } from "@/components/TreeVisualizer";
@@ -43,15 +50,22 @@ function fmtAddr(id: string | number) {
   return "0x" + (Math.abs(h) % 0xffff).toString(16).padStart(4, "0").toUpperCase();
 }
 
-const btn = "inline-flex items-center gap-1 rounded-md border border-border px-2.5 py-1 text-xs hover:bg-accent";
-const btnPrimary = "inline-flex items-center gap-1 rounded-md bg-[color:var(--brand)] px-2.5 py-1 text-xs font-medium text-primary-foreground hover:opacity-90";
+const btn =
+  "inline-flex items-center gap-1 rounded-md border border-border px-2.5 py-1 text-xs hover:bg-accent";
+const btnPrimary =
+  "inline-flex items-center gap-1 rounded-md bg-[color:var(--brand)] px-2.5 py-1 text-xs font-medium text-primary-foreground hover:opacity-90";
 
 function Log({ lines }: { lines: string[] }) {
   return (
     <div className="mt-3 max-h-32 overflow-y-auto rounded-md border border-border bg-muted/40 p-2 text-xs">
       <AnimatePresence initial={false}>
         {lines.map((l, i) => (
-          <motion.div key={l + i} initial={{ opacity: 0, y: -4 }} animate={{ opacity: 1, y: 0 }} className="py-0.5 text-muted-foreground">
+          <motion.div
+            key={l + i}
+            initial={{ opacity: 0, y: -4 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="py-0.5 text-muted-foreground"
+          >
             › {l}
           </motion.div>
         ))}
@@ -66,16 +80,21 @@ function Log({ lines }: { lines: string[] }) {
 type BTNode = { id: number; l: BTNode | null; r: BTNode | null };
 let __btid = 100;
 function classify(root: BTNode | null): {
-  viz: TreeNodeViz | null; internal: number; leaves: number;
+  viz: TreeNodeViz | null;
+  internal: number;
+  leaves: number;
 } {
-  let internal = 0, leaves = 0;
+  let internal = 0,
+    leaves = 0;
   const walk = (n: BTNode | null): TreeNodeViz | null => {
     if (!n) return null;
     const isLeaf = !n.l && !n.r;
-    if (isLeaf) leaves++; else internal++;
+    if (isLeaf) leaves++;
+    else internal++;
     const label = n.id === (root?.id ?? -1) ? `R:${n.id}` : String(n.id);
     return {
-      id: n.id, label,
+      id: n.id,
+      label,
       color: n === root ? "brand" : isLeaf ? "visited" : "default",
       badge: isLeaf ? "leaf" : "internal",
       children: [walk(n.l), walk(n.r)].filter((x): x is TreeNodeViz => !!x).length
@@ -114,23 +133,41 @@ export function BinaryTreePlayground() {
     push(`Added node ${__btid} as ${side === "l" ? "left" : "right"} child of ${id}`);
   };
   const remove = (id: number) => {
-    if (root?.id === id) { setRoot(null); push(`Removed root ${id}`); return; }
+    if (root?.id === id) {
+      setRoot(null);
+      push(`Removed root ${id}`);
+      return;
+    }
     const clone = (n: BTNode | null): BTNode | null =>
       n ? { ...n, l: clone(n.l), r: clone(n.r) } : null;
     const r2 = clone(root);
     const strip = (n: BTNode | null): boolean => {
       if (!n) return false;
-      if (n.l?.id === id) { n.l = null; return true; }
-      if (n.r?.id === id) { n.r = null; return true; }
+      if (n.l?.id === id) {
+        n.l = null;
+        return true;
+      }
+      if (n.r?.id === id) {
+        n.r = null;
+        return true;
+      }
       return strip(n.l) || strip(n.r);
     };
-    if (strip(r2)) { setRoot(r2); push(`Removed subtree rooted at ${id}`); }
+    if (strip(r2)) {
+      setRoot(r2);
+      push(`Removed subtree rooted at ${id}`);
+    }
   };
 
   const c = classify(root);
 
   const ids: number[] = [];
-  const collect = (n: BTNode | null) => { if (!n) return; ids.push(n.id); collect(n.l); collect(n.r); };
+  const collect = (n: BTNode | null) => {
+    if (!n) return;
+    ids.push(n.id);
+    collect(n.l);
+    collect(n.r);
+  };
   collect(root);
 
   return (
@@ -138,16 +175,31 @@ export function BinaryTreePlayground() {
       <div className="mb-3 flex items-center justify-between text-sm">
         <div className="font-semibold">Binary Tree Playground</div>
         <div className="flex flex-wrap gap-3 text-xs text-muted-foreground">
-          <span>Root: <span className="text-[color:var(--brand)] font-mono">{root?.id ?? "—"}</span></span>
-          <span>Internal: <span className="font-mono">{c.internal}</span></span>
-          <span>Leaves: <span className="font-mono">{c.leaves}</span></span>
-          <span>Height: <span className="font-mono">{height(root as unknown as Node)}</span></span>
+          <span>
+            Root: <span className="text-[color:var(--brand)] font-mono">{root?.id ?? "—"}</span>
+          </span>
+          <span>
+            Internal: <span className="font-mono">{c.internal}</span>
+          </span>
+          <span>
+            Leaves: <span className="font-mono">{c.leaves}</span>
+          </span>
+          <span>
+            Height: <span className="font-mono">{height(root as unknown as Node)}</span>
+          </span>
         </div>
       </div>
       <TreeVisualizer root={c.viz} caption={root ? undefined : "Empty tree — click New root"} />
       {!root && (
         <div className="mt-3">
-          <button className={btnPrimary} onClick={() => { __btid = 100; setRoot({ id: ++__btid, l: null, r: null }); push("New root created"); }}>
+          <button
+            className={btnPrimary}
+            onClick={() => {
+              __btid = 100;
+              setRoot({ id: ++__btid, l: null, r: null });
+              push("New root created");
+            }}
+          >
             <Plus className="h-3.5 w-3.5" /> New root
           </button>
         </div>
@@ -155,16 +207,29 @@ export function BinaryTreePlayground() {
       <div className="mt-3 flex flex-wrap items-center gap-2">
         <div className="text-xs text-muted-foreground">Select node:</div>
         {ids.map((id) => (
-          <button key={id} onClick={() => setSelected(id)}
-            className={`rounded-md border px-2 py-0.5 text-xs font-mono ${selected === id ? "border-[color:var(--brand)] bg-[color:var(--brand)]/10" : "border-border"}`}>
+          <button
+            key={id}
+            onClick={() => setSelected(id)}
+            className={`rounded-md border px-2 py-0.5 text-xs font-mono ${selected === id ? "border-[color:var(--brand)] bg-[color:var(--brand)]/10" : "border-border"}`}
+          >
             {id}
           </button>
         ))}
         {selected != null && (
           <div className="ml-auto flex flex-wrap gap-2">
-            <button className={btn} onClick={() => addChild(selected, "l")}>+ Left</button>
-            <button className={btn} onClick={() => addChild(selected, "r")}>+ Right</button>
-            <button className={btn} onClick={() => { remove(selected); setSelected(null); }}>
+            <button className={btn} onClick={() => addChild(selected, "l")}>
+              + Left
+            </button>
+            <button className={btn} onClick={() => addChild(selected, "r")}>
+              + Right
+            </button>
+            <button
+              className={btn}
+              onClick={() => {
+                remove(selected);
+                setSelected(null);
+              }}
+            >
               <Trash2 className="h-3.5 w-3.5" /> Remove
             </button>
           </div>
@@ -186,8 +251,7 @@ export function CompleteBinaryTreeViz({ count = 10 }: { count?: number }) {
     const make = (i: number): TreeNodeViz | null => {
       if (i > size) {
         // ghost slot in the "next expected" position only if it's the immediate next
-        if (i === size + 1)
-          return { id: `g${i}`, label: "•", color: "muted", badge: "next slot" };
+        if (i === size + 1) return { id: `g${i}`, label: "•", color: "muted", badge: "next slot" };
         return null;
       }
       const kids = [make(2 * i), make(2 * i + 1)].filter((x): x is TreeNodeViz => !!x);
@@ -205,7 +269,10 @@ export function CompleteBinaryTreeViz({ count = 10 }: { count?: number }) {
           <span className="font-mono">{n}</span>
         </div>
       </div>
-      <TreeVisualizer root={buildTree(n)} caption="Every level filled left-to-right; the muted node marks the next slot." />
+      <TreeVisualizer
+        root={buildTree(n)}
+        caption="Every level filled left-to-right; the muted node marks the next slot."
+      />
     </div>
   );
 }
@@ -218,7 +285,9 @@ export function PerfectBinaryTreeViz({ levels = 3 }: { levels?: number }) {
   const build = (depth: number, id: number): TreeNodeViz => {
     if (depth === 0) return { id, label: id, color: "visited" };
     return {
-      id, label: id, color: "brand",
+      id,
+      label: id,
+      color: "brand",
       children: [build(depth - 1, id * 2), build(depth - 1, id * 2 + 1)],
     };
   };
@@ -230,10 +299,15 @@ export function PerfectBinaryTreeViz({ levels = 3 }: { levels?: number }) {
           <span className="text-muted-foreground">Height:</span>
           <input type="range" min={1} max={4} value={h} onChange={(e) => setH(+e.target.value)} />
           <span className="font-mono">{h}</span>
-          <span className="ml-2 text-muted-foreground">Nodes: <span className="font-mono">{(1 << (h + 1)) - 1}</span></span>
+          <span className="ml-2 text-muted-foreground">
+            Nodes: <span className="font-mono">{(1 << (h + 1)) - 1}</span>
+          </span>
         </div>
       </div>
-      <TreeVisualizer root={build(h, 1)} caption="Every internal node has 2 children · all leaves at the same depth." />
+      <TreeVisualizer
+        root={build(h, 1)}
+        caption="Every internal node has 2 children · all leaves at the same depth."
+      />
     </div>
   );
 }
@@ -244,20 +318,34 @@ export function PerfectBinaryTreeViz({ levels = 3 }: { levels?: number }) {
 export function FullBinaryTreeViz() {
   const [broken, setBroken] = useState(false);
   const valid: TreeNodeViz = {
-    id: 1, label: 1, color: "brand",
+    id: 1,
+    label: 1,
+    color: "brand",
     children: [
-      { id: 2, label: 2, color: "brand", children: [
-        { id: 4, label: 4, color: "visited" },
-        { id: 5, label: 5, color: "visited" },
-      ]},
+      {
+        id: 2,
+        label: 2,
+        color: "brand",
+        children: [
+          { id: 4, label: 4, color: "visited" },
+          { id: 5, label: 5, color: "visited" },
+        ],
+      },
       { id: 3, label: 3, color: "visited" },
     ],
   };
   const invalid: TreeNodeViz = {
-    id: 1, label: 1, color: "brand",
+    id: 1,
+    label: 1,
+    color: "brand",
     children: [
-      { id: 2, label: 2, color: "highlight", badge: "1 child ✗",
-        children: [{ id: 4, label: 4, color: "visited" }] },
+      {
+        id: 2,
+        label: 2,
+        color: "highlight",
+        badge: "1 child ✗",
+        children: [{ id: 4, label: 4, color: "visited" }],
+      },
       { id: 3, label: 3, color: "visited" },
     ],
   };
@@ -269,8 +357,14 @@ export function FullBinaryTreeViz() {
           Show {broken ? "valid" : "invalid"}
         </button>
       </div>
-      <TreeVisualizer root={broken ? invalid : valid}
-        caption={broken ? "Node with exactly 1 child breaks the rule." : "Every node has 0 or exactly 2 children."} />
+      <TreeVisualizer
+        root={broken ? invalid : valid}
+        caption={
+          broken
+            ? "Node with exactly 1 child breaks the rule."
+            : "Every node has 0 or exactly 2 children."
+        }
+      />
     </div>
   );
 }
@@ -283,7 +377,8 @@ function annotate(n: Node | null): TreeNodeViz | null {
   const bf = height(n.l) - height(n.r);
   const kids = [annotate(n.l), annotate(n.r)].filter((x): x is TreeNodeViz => !!x);
   return {
-    id: n.v, label: n.v,
+    id: n.v,
+    label: n.v,
     color: Math.abs(bf) > 1 ? "highlight" : "default",
     badge: `bf=${bf}`,
     children: kids.length ? kids : undefined,
@@ -299,12 +394,24 @@ export function BalancedTreeViz() {
       <div className="mb-2 flex items-center justify-between text-sm">
         <div className="font-semibold">Balanced Binary Tree · live balance factors</div>
         <div className="flex gap-2">
-          <button className={mode === "balanced" ? btnPrimary : btn} onClick={() => setMode("balanced")}>Balanced</button>
-          <button className={mode === "unbalanced" ? btnPrimary : btn} onClick={() => setMode("unbalanced")}>Unbalanced</button>
+          <button
+            className={mode === "balanced" ? btnPrimary : btn}
+            onClick={() => setMode("balanced")}
+          >
+            Balanced
+          </button>
+          <button
+            className={mode === "unbalanced" ? btnPrimary : btn}
+            onClick={() => setMode("unbalanced")}
+          >
+            Unbalanced
+          </button>
         </div>
       </div>
-      <TreeVisualizer root={annotate(cur)}
-        caption="bf = height(left) − height(right). |bf| > 1 (highlighted) means the node is unbalanced." />
+      <TreeVisualizer
+        root={annotate(cur)}
+        caption="bf = height(left) − height(right). |bf| > 1 (highlighted) means the node is unbalanced."
+      />
     </div>
   );
 }
@@ -321,13 +428,21 @@ export function DegenerateTreeViz() {
       <div className="mb-2 flex items-center justify-between text-sm">
         <div className="font-semibold">Degenerate Tree</div>
         <div className="flex items-center gap-2 text-xs">
-          <button className={btn} onClick={() => setStep(1)}><RefreshCcw className="h-3.5 w-3.5" /></button>
-          <button className={btnPrimary} onClick={() => setStep((s) => Math.min(arr.length, s + 1))}>
+          <button className={btn} onClick={() => setStep(1)}>
+            <RefreshCcw className="h-3.5 w-3.5" />
+          </button>
+          <button
+            className={btnPrimary}
+            onClick={() => setStep((s) => Math.min(arr.length, s + 1))}
+          >
             <SkipForward className="h-3.5 w-3.5" /> Insert {arr[Math.min(step, arr.length - 1)]}
           </button>
         </div>
       </div>
-      <TreeVisualizer root={toViz(root)} caption={`Sorted inserts turn a BST into a linked list · height = ${height(root)}, O(n) operations.`} />
+      <TreeVisualizer
+        root={toViz(root)}
+        caption={`Sorted inserts turn a BST into a linked list · height = ${height(root)}, O(n) operations.`}
+      />
     </div>
   );
 }
@@ -335,14 +450,30 @@ export function DegenerateTreeViz() {
 /* =========================================================
  * 7) AVL Playground — with rotations
  * ========================================================= */
-function avlH(n: ANode | null) { return n ? n.h : 0; }
-function bf(n: ANode) { return avlH(n.l as ANode | null) - avlH(n.r as ANode | null); }
-function upd(n: ANode) { n.h = 1 + Math.max(avlH(n.l as ANode | null), avlH(n.r as ANode | null)); }
+function avlH(n: ANode | null) {
+  return n ? n.h : 0;
+}
+function bf(n: ANode) {
+  return avlH(n.l as ANode | null) - avlH(n.r as ANode | null);
+}
+function upd(n: ANode) {
+  n.h = 1 + Math.max(avlH(n.l as ANode | null), avlH(n.r as ANode | null));
+}
 function rotR(y: ANode): ANode {
-  const x = y.l as ANode; y.l = x.r; x.r = y; upd(y); upd(x); return x;
+  const x = y.l as ANode;
+  y.l = x.r;
+  x.r = y;
+  upd(y);
+  upd(x);
+  return x;
 }
 function rotL(x: ANode): ANode {
-  const y = x.r as ANode; x.r = y.l; y.l = x; upd(x); upd(y); return y;
+  const y = x.r as ANode;
+  x.r = y.l;
+  y.l = x;
+  upd(x);
+  upd(y);
+  return y;
 }
 function avlInsert(n: ANode | null, v: number): ANode {
   if (!n) return { v, l: null, r: null, h: 1 };
@@ -353,16 +484,25 @@ function avlInsert(n: ANode | null, v: number): ANode {
   const b = bf(n);
   if (b > 1 && v < (n.l as ANode).v) return rotR(n);
   if (b < -1 && v > (n.r as ANode).v) return rotL(n);
-  if (b > 1 && v > (n.l as ANode).v) { n.l = rotL(n.l as ANode); return rotR(n); }
-  if (b < -1 && v < (n.r as ANode).v) { n.r = rotR(n.r as ANode); return rotL(n); }
+  if (b > 1 && v > (n.l as ANode).v) {
+    n.l = rotL(n.l as ANode);
+    return rotR(n);
+  }
+  if (b < -1 && v < (n.r as ANode).v) {
+    n.r = rotR(n.r as ANode);
+    return rotL(n);
+  }
   return n;
 }
 function avlAnnotate(n: ANode | null): TreeNodeViz | null {
   if (!n) return null;
   const b = bf(n);
-  const kids = [avlAnnotate(n.l as ANode | null), avlAnnotate(n.r as ANode | null)].filter((x): x is TreeNodeViz => !!x);
+  const kids = [avlAnnotate(n.l as ANode | null), avlAnnotate(n.r as ANode | null)].filter(
+    (x): x is TreeNodeViz => !!x,
+  );
   return {
-    id: n.v, label: n.v,
+    id: n.v,
+    label: n.v,
     color: Math.abs(b) > 1 ? "highlight" : "default",
     badge: `bf=${b}`,
     children: kids.length ? kids : undefined,
@@ -376,13 +516,18 @@ export function AVLPlayground() {
   const [log, setLog] = useState<string[]>(["AVL auto-rotates to keep |bf| ≤ 1."]);
   const push = (m: string) => setLog((p) => [m, ...p].slice(0, 6));
   const doInsert = () => {
-    const v = parseInt(val, 10); if (Number.isNaN(v)) return;
+    const v = parseInt(val, 10);
+    if (Number.isNaN(v)) return;
     setRoot((r) => avlInsert(r, v));
-    push(`Inserted ${v}`); setVal("");
+    push(`Inserted ${v}`);
+    setVal("");
   };
   const doPreset = (name: "LL" | "RR" | "LR" | "RL") => {
     const preset: Record<string, number[]> = {
-      LL: [30, 20, 10], RR: [10, 20, 30], LR: [30, 10, 20], RL: [10, 30, 20],
+      LL: [30, 20, 10],
+      RR: [10, 20, 30],
+      LR: [30, 10, 20],
+      RL: [10, 30, 20],
     };
     setRoot(preset[name].reduce<ANode | null>((r, v) => avlInsert(r, v), null));
     push(`${name} rotation preset loaded`);
@@ -391,18 +536,31 @@ export function AVLPlayground() {
     <div className="card-surface p-4">
       <div className="mb-2 text-sm font-semibold">AVL Playground</div>
       <div className="mb-3 flex flex-wrap gap-2">
-        <input value={val} onChange={(e) => setVal(e.target.value.replace(/[^\d]/g, ""))} placeholder="value"
+        <input
+          value={val}
+          onChange={(e) => setVal(e.target.value.replace(/[^\d]/g, ""))}
+          placeholder="value"
           className="w-20 rounded-md border border-border bg-background px-2 py-1 text-sm"
-          onKeyDown={(e) => e.key === "Enter" && doInsert()} />
-        <button className={btnPrimary} onClick={doInsert}><Plus className="h-3.5 w-3.5" /> Insert</button>
+          onKeyDown={(e) => e.key === "Enter" && doInsert()}
+        />
+        <button className={btnPrimary} onClick={doInsert}>
+          <Plus className="h-3.5 w-3.5" /> Insert
+        </button>
         <div className="ml-2 flex gap-1">
           {(["LL", "RR", "LR", "RL"] as const).map((k) => (
-            <button key={k} className={btn} onClick={() => doPreset(k)}>{k}</button>
+            <button key={k} className={btn} onClick={() => doPreset(k)}>
+              {k}
+            </button>
           ))}
         </div>
-        <button className={btn} onClick={() => setRoot(null)}>Clear</button>
+        <button className={btn} onClick={() => setRoot(null)}>
+          Clear
+        </button>
       </div>
-      <TreeVisualizer root={avlAnnotate(root)} caption="Nodes are annotated with their balance factor." />
+      <TreeVisualizer
+        root={avlAnnotate(root)}
+        caption="Nodes are annotated with their balance factor."
+      />
       <Log lines={log} />
     </div>
   );
@@ -424,7 +582,8 @@ function rbInsertSimple(root: RBNode | null, v: number): RBNode {
   // ad-hoc: recolor a red parent's red-child chain to black at depth 2 for illustration
   const paint = (n: RBNode | null, depth: number) => {
     if (!n) return;
-    if (depth > 0 && depth % 2 === 1) n.c = "red"; else if (depth > 0) n.c = "black";
+    if (depth > 0 && depth % 2 === 1) n.c = "red";
+    else if (depth > 0) n.c = "black";
     paint(n.l, depth + 1);
     paint(n.r, depth + 1);
   };
@@ -435,7 +594,9 @@ function rbToViz(n: RBNode | null): TreeNodeViz | null {
   if (!n) return null;
   const kids = [rbToViz(n.l), rbToViz(n.r)].filter((x): x is TreeNodeViz => !!x);
   return {
-    id: n.v, label: n.v, color: n.c,
+    id: n.v,
+    label: n.v,
+    color: n.c,
     children: kids.length ? kids : undefined,
   };
 }
@@ -448,16 +609,31 @@ export function RedBlackPlayground() {
     <div className="card-surface p-4">
       <div className="mb-2 text-sm font-semibold">Red-Black Tree (illustration)</div>
       <div className="mb-3 flex flex-wrap gap-2">
-        <input value={val} onChange={(e) => setVal(e.target.value.replace(/[^\d]/g, ""))} placeholder="value"
-          className="w-20 rounded-md border border-border bg-background px-2 py-1 text-sm" />
-        <button className={btnPrimary} onClick={() => {
-          const v = parseInt(val, 10); if (Number.isNaN(v)) return;
-          setRoot((r) => rbInsertSimple(r, v)); setVal("");
-        }}><Plus className="h-3.5 w-3.5" /> Insert</button>
-        <button className={btn} onClick={() => setRoot(null)}>Clear</button>
+        <input
+          value={val}
+          onChange={(e) => setVal(e.target.value.replace(/[^\d]/g, ""))}
+          placeholder="value"
+          className="w-20 rounded-md border border-border bg-background px-2 py-1 text-sm"
+        />
+        <button
+          className={btnPrimary}
+          onClick={() => {
+            const v = parseInt(val, 10);
+            if (Number.isNaN(v)) return;
+            setRoot((r) => rbInsertSimple(r, v));
+            setVal("");
+          }}
+        >
+          <Plus className="h-3.5 w-3.5" /> Insert
+        </button>
+        <button className={btn} onClick={() => setRoot(null)}>
+          Clear
+        </button>
       </div>
-      <TreeVisualizer root={rbToViz(root)}
-        caption="Red / Black coloring visualized · root is always black · no two consecutive red nodes on any path." />
+      <TreeVisualizer
+        root={rbToViz(root)}
+        caption="Red / Black coloring visualized · root is always black · no two consecutive red nodes on any path."
+      />
     </div>
   );
 }
@@ -468,7 +644,10 @@ export function RedBlackPlayground() {
 type TrieN = { end: boolean; ch: Record<string, TrieN> };
 function trieInsert(t: TrieN, w: string) {
   let cur = t;
-  for (const c of w) { cur.ch[c] ??= { end: false, ch: {} }; cur = cur.ch[c]; }
+  for (const c of w) {
+    cur.ch[c] ??= { end: false, ch: {} };
+    cur = cur.ch[c];
+  }
   cur.end = true;
 }
 function trieCollect(t: TrieN, prefix: string, out: string[], limit = 8) {
@@ -481,7 +660,8 @@ function trieViz(t: TrieN, label = "•", id = "root", hi: Set<string> = new Set
     .sort(([a], [b]) => a.localeCompare(b))
     .map(([c, n]) => trieViz(n, c, id + "/" + c, hi));
   return {
-    id, label,
+    id,
+    label,
     color: hi.has(id) ? "highlight" : t.end ? "visited" : "default",
     badge: t.end ? "★" : undefined,
     children: kids.length ? kids : undefined,
@@ -502,15 +682,21 @@ export function TriePlayground({ seed = ["cat", "car", "cart", "dog"] }: { seed?
     if (!word) return;
     const clone: TrieN = JSON.parse(JSON.stringify(t));
     trieInsert(clone, word.toLowerCase());
-    setT(clone); setWord("");
+    setT(clone);
+    setWord("");
   };
   const doPrefix = () => {
     let cur: TrieN | undefined = t;
     let id = "root";
     const path = new Set<string>([id]);
     for (const c of prefix.toLowerCase()) {
-      if (!cur || !cur.ch[c]) { cur = undefined; break; }
-      cur = cur.ch[c]; id = id + "/" + c; path.add(id);
+      if (!cur || !cur.ch[c]) {
+        cur = undefined;
+        break;
+      }
+      cur = cur.ch[c];
+      id = id + "/" + c;
+      path.add(id);
     }
     setHi(path);
     const out: string[] = [];
@@ -520,27 +706,50 @@ export function TriePlayground({ seed = ["cat", "car", "cart", "dog"] }: { seed?
 
   return (
     <div className="card-surface p-4">
-      <div className="mb-2 text-sm font-semibold">Trie Playground · insert · prefix search · autocomplete</div>
+      <div className="mb-2 text-sm font-semibold">
+        Trie Playground · insert · prefix search · autocomplete
+      </div>
       <div className="mb-3 grid gap-2 sm:grid-cols-2">
         <div className="flex gap-2">
-          <input value={word} onChange={(e) => setWord(e.target.value)} placeholder="word"
-            className="w-32 rounded-md border border-border bg-background px-2 py-1 text-sm" />
-          <button className={btnPrimary} onClick={doInsert}><Plus className="h-3.5 w-3.5" /> Insert</button>
+          <input
+            value={word}
+            onChange={(e) => setWord(e.target.value)}
+            placeholder="word"
+            className="w-32 rounded-md border border-border bg-background px-2 py-1 text-sm"
+          />
+          <button className={btnPrimary} onClick={doInsert}>
+            <Plus className="h-3.5 w-3.5" /> Insert
+          </button>
         </div>
         <div className="flex gap-2">
-          <input value={prefix} onChange={(e) => setPrefix(e.target.value)} placeholder="prefix"
-            className="w-32 rounded-md border border-border bg-background px-2 py-1 text-sm" />
-          <button className={btn} onClick={doPrefix}><Search className="h-3.5 w-3.5" /> Suggest</button>
+          <input
+            value={prefix}
+            onChange={(e) => setPrefix(e.target.value)}
+            placeholder="prefix"
+            className="w-32 rounded-md border border-border bg-background px-2 py-1 text-sm"
+          />
+          <button className={btn} onClick={doPrefix}>
+            <Search className="h-3.5 w-3.5" /> Suggest
+          </button>
         </div>
       </div>
-      <TreeVisualizer root={trieViz(t, "•", "root", hi)}
-        caption="★ marks end-of-word · highlighted path shows the prefix walk." />
+      <TreeVisualizer
+        root={trieViz(t, "•", "root", hi)}
+        caption="★ marks end-of-word · highlighted path shows the prefix walk."
+      />
       {suggest.length > 0 && (
         <div className="mt-3">
-          <div className="mb-1 text-xs font-semibold uppercase tracking-wider text-muted-foreground">Suggestions</div>
+          <div className="mb-1 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+            Suggestions
+          </div>
           <div className="flex flex-wrap gap-2">
             {suggest.map((s) => (
-              <span key={s} className="rounded-md border border-border bg-muted/40 px-2 py-0.5 text-xs font-mono">{s}</span>
+              <span
+                key={s}
+                className="rounded-md border border-border bg-muted/40 px-2 py-0.5 text-xs font-mono"
+              >
+                {s}
+              </span>
             ))}
           </div>
         </div>
@@ -556,22 +765,36 @@ function buildSeg(a: number[]) {
   const n = a.length;
   const seg = new Array(4 * n).fill(0);
   const build = (node: number, l: number, r: number) => {
-    if (l === r) { seg[node] = a[l]; return; }
+    if (l === r) {
+      seg[node] = a[l];
+      return;
+    }
     const m = (l + r) >> 1;
-    build(node * 2, l, m); build(node * 2 + 1, m + 1, r);
+    build(node * 2, l, m);
+    build(node * 2 + 1, m + 1, r);
     seg[node] = seg[node * 2] + seg[node * 2 + 1];
   };
   build(1, 0, n - 1);
   return { seg, n };
 }
-function segQuery(seg: number[], node: number, l: number, r: number, ql: number, qr: number): number {
+function segQuery(
+  seg: number[],
+  node: number,
+  l: number,
+  r: number,
+  ql: number,
+  qr: number,
+): number {
   if (qr < l || r < ql) return 0;
   if (ql <= l && r <= qr) return seg[node];
   const m = (l + r) >> 1;
   return segQuery(seg, node * 2, l, m, ql, qr) + segQuery(seg, node * 2 + 1, m + 1, r, ql, qr);
 }
 function segUpdate(seg: number[], node: number, l: number, r: number, i: number, v: number) {
-  if (l === r) { seg[node] = v; return; }
+  if (l === r) {
+    seg[node] = v;
+    return;
+  }
   const m = (l + r) >> 1;
   if (i <= m) segUpdate(seg, node * 2, l, m, i, v);
   else segUpdate(seg, node * 2 + 1, m + 1, r, i, v);
@@ -586,18 +809,32 @@ function segToViz(seg: number[], node: number, l: number, r: number, hi: Set<num
     kids.push(segToViz(seg, node * 2, l, m, hi));
     kids.push(segToViz(seg, node * 2 + 1, m + 1, r, hi));
   }
-  return { id: node, label, color: hi.has(node) ? "highlight" : "default", badge: meta,
-    children: kids.length ? kids : undefined };
+  return {
+    id: node,
+    label,
+    color: hi.has(node) ? "highlight" : "default",
+    badge: meta,
+    children: kids.length ? kids : undefined,
+  };
 }
 export function SegmentTreePlayground({ data = [2, 1, 5, 3, 4, 7] }: { data?: number[] } = {}) {
   const [arr, setArr] = useState(data);
   const { seg, n } = useMemo(() => buildSeg(arr), [arr]);
-  const [ql, setQl] = useState(1); const [qr, setQr] = useState(4);
+  const [ql, setQl] = useState(1);
+  const [qr, setQr] = useState(4);
   const [result, setResult] = useState<number | null>(null);
   const [hi, setHi] = useState<Set<number>>(new Set());
-  const [ui, setUi] = useState<number>(2); const [uv, setUv] = useState<number>(10);
+  const [ui, setUi] = useState<number>(2);
+  const [uv, setUv] = useState<number>(10);
 
-  const collectPath = (node: number, l: number, r: number, ql2: number, qr2: number, s: Set<number>) => {
+  const collectPath = (
+    node: number,
+    l: number,
+    r: number,
+    ql2: number,
+    qr2: number,
+    s: Set<number>,
+  ) => {
     if (qr2 < l || r < ql2) return;
     s.add(node);
     if (ql2 <= l && r <= qr2) return;
@@ -613,8 +850,11 @@ export function SegmentTreePlayground({ data = [2, 1, 5, 3, 4, 7] }: { data?: nu
     setResult(segQuery(seg, 1, 0, n - 1, ql, qr));
   };
   const doUpdate = () => {
-    const next = [...arr]; next[ui] = uv; setArr(next);
-    setHi(new Set()); setResult(null);
+    const next = [...arr];
+    next[ui] = uv;
+    setArr(next);
+    setHi(new Set());
+    setResult(null);
   };
 
   return (
@@ -626,24 +866,56 @@ export function SegmentTreePlayground({ data = [2, 1, 5, 3, 4, 7] }: { data?: nu
       <div className="mb-3 grid gap-2 sm:grid-cols-2">
         <div className="flex flex-wrap items-center gap-2">
           <span className="text-xs text-muted-foreground">Query [l, r]:</span>
-          <input type="number" min={0} max={n - 1} value={ql} onChange={(e) => setQl(+e.target.value)}
-            className="w-14 rounded-md border border-border bg-background px-2 py-1 text-sm" />
-          <input type="number" min={0} max={n - 1} value={qr} onChange={(e) => setQr(+e.target.value)}
-            className="w-14 rounded-md border border-border bg-background px-2 py-1 text-sm" />
-          <button className={btnPrimary} onClick={doQuery}>Sum</button>
-          {result != null && <span className="rounded-md border border-border px-2 py-0.5 text-xs font-mono">= {result}</span>}
+          <input
+            type="number"
+            min={0}
+            max={n - 1}
+            value={ql}
+            onChange={(e) => setQl(+e.target.value)}
+            className="w-14 rounded-md border border-border bg-background px-2 py-1 text-sm"
+          />
+          <input
+            type="number"
+            min={0}
+            max={n - 1}
+            value={qr}
+            onChange={(e) => setQr(+e.target.value)}
+            className="w-14 rounded-md border border-border bg-background px-2 py-1 text-sm"
+          />
+          <button className={btnPrimary} onClick={doQuery}>
+            Sum
+          </button>
+          {result != null && (
+            <span className="rounded-md border border-border px-2 py-0.5 text-xs font-mono">
+              = {result}
+            </span>
+          )}
         </div>
         <div className="flex flex-wrap items-center gap-2">
           <span className="text-xs text-muted-foreground">Update i, v:</span>
-          <input type="number" min={0} max={n - 1} value={ui} onChange={(e) => setUi(+e.target.value)}
-            className="w-14 rounded-md border border-border bg-background px-2 py-1 text-sm" />
-          <input type="number" value={uv} onChange={(e) => setUv(+e.target.value)}
-            className="w-16 rounded-md border border-border bg-background px-2 py-1 text-sm" />
-          <button className={btn} onClick={doUpdate}>Apply</button>
+          <input
+            type="number"
+            min={0}
+            max={n - 1}
+            value={ui}
+            onChange={(e) => setUi(+e.target.value)}
+            className="w-14 rounded-md border border-border bg-background px-2 py-1 text-sm"
+          />
+          <input
+            type="number"
+            value={uv}
+            onChange={(e) => setUv(+e.target.value)}
+            className="w-16 rounded-md border border-border bg-background px-2 py-1 text-sm"
+          />
+          <button className={btn} onClick={doUpdate}>
+            Apply
+          </button>
         </div>
       </div>
-      <TreeVisualizer root={segToViz(seg, 1, 0, n - 1, hi)}
-        caption="Each node stores the sum of its range · highlighted nodes are visited during query." />
+      <TreeVisualizer
+        root={segToViz(seg, 1, 0, n - 1, hi)}
+        caption="Each node stores the sum of its range · highlighted nodes are visited during query."
+      />
     </div>
   );
 }
@@ -656,10 +928,15 @@ export function FenwickTreeViz({ data = [3, 2, -1, 6, 5, 4, -3, 3] }: { data?: n
   const [i, setI] = useState(0);
   const [d, setD] = useState(1);
   const bit = useMemo(() => {
-    const n = arr.length; const b = new Array(n + 1).fill(0);
+    const n = arr.length;
+    const b = new Array(n + 1).fill(0);
     for (let idx = 1; idx <= n; idx++) {
-      let x = idx; const val = arr[idx - 1];
-      while (x <= n) { b[x] += val; x += x & -x; }
+      let x = idx;
+      const val = arr[idx - 1];
+      while (x <= n) {
+        b[x] += val;
+        x += x & -x;
+      }
     }
     return b;
   }, [arr]);
@@ -667,15 +944,29 @@ export function FenwickTreeViz({ data = [3, 2, -1, 6, 5, 4, -3, 3] }: { data?: n
   const [sum, setSum] = useState<number | null>(null);
 
   const prefix = (k: number) => {
-    let x = k + 1; let s = 0; const path = new Set<number>();
-    while (x > 0) { path.add(x); s += bit[x]; x -= x & -x; }
-    setHi(path); setSum(s);
+    let x = k + 1;
+    let s = 0;
+    const path = new Set<number>();
+    while (x > 0) {
+      path.add(x);
+      s += bit[x];
+      x -= x & -x;
+    }
+    setHi(path);
+    setSum(s);
   };
   const update = (k: number, delta: number) => {
-    const next = [...arr]; next[k] += delta; setArr(next);
-    let x = k + 1; const path = new Set<number>();
-    while (x <= arr.length) { path.add(x); x += x & -x; }
-    setHi(path); setSum(null);
+    const next = [...arr];
+    next[k] += delta;
+    setArr(next);
+    let x = k + 1;
+    const path = new Set<number>();
+    while (x <= arr.length) {
+      path.add(x);
+      x += x & -x;
+    }
+    setHi(path);
+    setSum(null);
   };
 
   return (
@@ -685,29 +976,59 @@ export function FenwickTreeViz({ data = [3, 2, -1, 6, 5, 4, -3, 3] }: { data?: n
       <div className="mb-3 grid gap-2 sm:grid-cols-2">
         <div className="flex flex-wrap items-center gap-2">
           <span className="text-xs text-muted-foreground">Prefix sum [0..i]:</span>
-          <input type="number" min={0} max={arr.length - 1} value={i} onChange={(e) => setI(+e.target.value)}
-            className="w-14 rounded-md border border-border bg-background px-2 py-1 text-sm" />
-          <button className={btnPrimary} onClick={() => prefix(i)}>Compute</button>
-          {sum != null && <span className="rounded-md border border-border px-2 py-0.5 text-xs font-mono">= {sum}</span>}
+          <input
+            type="number"
+            min={0}
+            max={arr.length - 1}
+            value={i}
+            onChange={(e) => setI(+e.target.value)}
+            className="w-14 rounded-md border border-border bg-background px-2 py-1 text-sm"
+          />
+          <button className={btnPrimary} onClick={() => prefix(i)}>
+            Compute
+          </button>
+          {sum != null && (
+            <span className="rounded-md border border-border px-2 py-0.5 text-xs font-mono">
+              = {sum}
+            </span>
+          )}
         </div>
         <div className="flex flex-wrap items-center gap-2">
           <span className="text-xs text-muted-foreground">Point update:</span>
-          <input type="number" min={0} max={arr.length - 1} value={i} onChange={(e) => setI(+e.target.value)}
-            className="w-14 rounded-md border border-border bg-background px-2 py-1 text-sm" />
-          <input type="number" value={d} onChange={(e) => setD(+e.target.value)}
-            className="w-16 rounded-md border border-border bg-background px-2 py-1 text-sm" />
-          <button className={btn} onClick={() => update(i, d)}>+= delta</button>
+          <input
+            type="number"
+            min={0}
+            max={arr.length - 1}
+            value={i}
+            onChange={(e) => setI(+e.target.value)}
+            className="w-14 rounded-md border border-border bg-background px-2 py-1 text-sm"
+          />
+          <input
+            type="number"
+            value={d}
+            onChange={(e) => setD(+e.target.value)}
+            className="w-16 rounded-md border border-border bg-background px-2 py-1 text-sm"
+          />
+          <button className={btn} onClick={() => update(i, d)}>
+            += delta
+          </button>
         </div>
       </div>
       <div className="grid grid-cols-8 gap-1 text-center font-mono text-xs">
         {bit.slice(1).map((v, idx) => (
-          <div key={idx} className={`rounded-md border p-2 ${hi.has(idx + 1) ? "border-[color:var(--brand)] bg-[color:var(--brand)]/10" : "border-border bg-muted/40"}`}>
+          <div
+            key={idx}
+            className={`rounded-md border p-2 ${hi.has(idx + 1) ? "border-[color:var(--brand)] bg-[color:var(--brand)]/10" : "border-border bg-muted/40"}`}
+          >
             <div className="font-semibold">{v}</div>
             <div className="text-[10px] text-muted-foreground">idx {idx + 1}</div>
           </div>
         ))}
       </div>
-      <p className="mt-2 text-xs italic text-muted-foreground">Highlighted cells are the ones visited by the current prefix / update walk (jumping by x &amp;= x-1 or x += x &amp; -x).</p>
+      <p className="mt-2 text-xs italic text-muted-foreground">
+        Highlighted cells are the ones visited by the current prefix / update walk (jumping by x
+        &amp;= x-1 or x += x &amp; -x).
+      </p>
     </div>
   );
 }
@@ -716,12 +1037,19 @@ export function FenwickTreeViz({ data = [3, 2, -1, 6, 5, 4, -3, 3] }: { data?: n
  * 12) Traversal player — step through Pre/In/Post/Level/Morris
  * ========================================================= */
 type VNode = { id: string | number; children?: VNode[] };
-function collectOrder(root: VNode | null, mode: "pre" | "in" | "post" | "level" | "morris"): (string | number)[] {
+function collectOrder(
+  root: VNode | null,
+  mode: "pre" | "in" | "post" | "level" | "morris",
+): (string | number)[] {
   if (!root) return [];
   const out: (string | number)[] = [];
   if (mode === "level" || mode === "morris") {
     const q: VNode[] = [root];
-    while (q.length) { const x = q.shift()!; out.push(x.id); (x.children ?? []).forEach((c) => q.push(c)); }
+    while (q.length) {
+      const x = q.shift()!;
+      out.push(x.id);
+      (x.children ?? []).forEach((c) => q.push(c));
+    }
     return out;
   }
   const walk = (n: VNode | null) => {
@@ -736,8 +1064,12 @@ function collectOrder(root: VNode | null, mode: "pre" | "in" | "post" | "level" 
   return out;
 }
 export function TraversalPlayer({
-  root, mode = "in",
-}: { root: TreeNodeViz; mode?: "pre" | "in" | "post" | "level" | "morris" }) {
+  root,
+  mode = "in",
+}: {
+  root: TreeNodeViz;
+  mode?: "pre" | "in" | "post" | "level" | "morris";
+}) {
   const [m, setM] = useState(mode);
   const order = useMemo(() => collectOrder(root as VNode, m), [root, m]);
   const [i, setI] = useState(0);
@@ -746,14 +1078,22 @@ export function TraversalPlayer({
   useEffect(() => {
     if (!playing) return;
     tref.current = window.setTimeout(() => setI((v) => Math.min(order.length, v + 1)), 700);
-    return () => { if (tref.current) window.clearTimeout(tref.current); };
+    return () => {
+      if (tref.current) window.clearTimeout(tref.current);
+    };
   }, [playing, i, order.length]);
-  useEffect(() => { if (i >= order.length) setPlaying(false); }, [i, order.length]);
+  useEffect(() => {
+    if (i >= order.length) setPlaying(false);
+  }, [i, order.length]);
 
   const visited = new Set(order.slice(0, i).map(String));
   const paint = (n: TreeNodeViz): TreeNodeViz => ({
     ...n,
-    color: visited.has(String(n.id)) ? "visited" : String(order[i]) === String(n.id) ? "highlight" : n.color,
+    color: visited.has(String(n.id))
+      ? "visited"
+      : String(order[i]) === String(n.id)
+        ? "highlight"
+        : n.color,
     children: n.children?.map(paint),
   });
 
@@ -762,15 +1102,24 @@ export function TraversalPlayer({
       <div className="mb-2 flex flex-wrap items-center justify-between gap-2">
         <div className="text-sm font-semibold">Traversal Player</div>
         <div className="flex flex-wrap items-center gap-2">
-          <select value={m} onChange={(e) => { setM(e.target.value as typeof m); setI(0); setPlaying(false); }}
-            className="rounded-md border border-border bg-background px-2 py-1 text-xs">
+          <select
+            value={m}
+            onChange={(e) => {
+              setM(e.target.value as typeof m);
+              setI(0);
+              setPlaying(false);
+            }}
+            className="rounded-md border border-border bg-background px-2 py-1 text-xs"
+          >
             <option value="pre">Preorder</option>
             <option value="in">Inorder</option>
             <option value="post">Postorder</option>
             <option value="level">Level order (BFS)</option>
             <option value="morris">Morris (level-fallback)</option>
           </select>
-          <button className={btn} onClick={() => setI(0)}><RefreshCcw className="h-3.5 w-3.5" /></button>
+          <button className={btn} onClick={() => setI(0)}>
+            <RefreshCcw className="h-3.5 w-3.5" />
+          </button>
           <button className={btnPrimary} onClick={() => setPlaying((p) => !p)}>
             {playing ? <Pause className="h-3.5 w-3.5" /> : <Play className="h-3.5 w-3.5" />}
             {playing ? "Pause" : "Play"}
@@ -783,7 +1132,12 @@ export function TraversalPlayer({
       <TreeVisualizer root={paint(root)} />
       <div className="mt-3 flex flex-wrap items-center gap-1 rounded-md border border-border bg-muted/40 p-2 font-mono text-xs">
         {order.map((v, idx) => (
-          <span key={idx} className={`rounded px-1.5 py-0.5 ${idx < i ? "bg-emerald-500/15 text-emerald-500" : idx === i ? "bg-[color:var(--brand)]/15 text-[color:var(--brand)]" : "text-muted-foreground"}`}>{v}</span>
+          <span
+            key={idx}
+            className={`rounded px-1.5 py-0.5 ${idx < i ? "bg-emerald-500/15 text-emerald-500" : idx === i ? "bg-[color:var(--brand)]/15 text-[color:var(--brand)]" : "text-muted-foreground"}`}
+          >
+            {v}
+          </span>
         ))}
       </div>
     </div>
@@ -806,12 +1160,17 @@ export function MemoryDiagram({
       <div className="mb-3 text-sm font-semibold">Memory Representation</div>
       <div className="flex flex-wrap gap-3">
         {nodes.map((n) => (
-          <div key={n.id} className="rounded-lg border border-border bg-muted/30 p-3 text-xs font-mono">
-            <div className="text-[10px] uppercase tracking-wider text-muted-foreground">{addr[n.id]}</div>
+          <div
+            key={n.id}
+            className="rounded-lg border border-border bg-muted/30 p-3 text-xs font-mono"
+          >
+            <div className="text-[10px] uppercase tracking-wider text-muted-foreground">
+              {addr[n.id]}
+            </div>
             <div className="mt-1 grid grid-cols-3 gap-1 text-center">
               <div className="rounded border border-border bg-background px-2 py-1">
                 <div className="text-[9px] text-muted-foreground">left</div>
-                <div>{n.left ? addr[n.left] ?? "?" : "None"}</div>
+                <div>{n.left ? (addr[n.left] ?? "?") : "None"}</div>
               </div>
               <div className="rounded border border-[color:var(--brand)]/60 bg-[color:var(--brand)]/10 px-2 py-1">
                 <div className="text-[9px] text-[color:var(--brand)]">value</div>
@@ -819,7 +1178,7 @@ export function MemoryDiagram({
               </div>
               <div className="rounded border border-border bg-background px-2 py-1">
                 <div className="text-[9px] text-muted-foreground">right</div>
-                <div>{n.right ? addr[n.right] ?? "?" : "None"}</div>
+                <div>{n.right ? (addr[n.right] ?? "?") : "None"}</div>
               </div>
             </div>
           </div>
@@ -833,4 +1192,5 @@ export function MemoryDiagram({
 /* Re-exports so the SectionRenderer can import from a single module */
 export {};
 // keep unused import warnings quiet when tree-shaking:
-void Shuffle; void ArrowRight;
+void Shuffle;
+void ArrowRight;

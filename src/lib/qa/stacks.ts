@@ -14,9 +14,7 @@ export const stacksQA: ModuleQA = {
         "Think of a pile of plates: you can only touch the top plate. This ordering is exactly what the CPU's call stack, expression parsers, and undo buffers need.",
       ],
       code: `stack = []\nstack.append(10)   # push\nstack.append(20)\nstack.pop()        # 20  (LIFO)`,
-      related: [
-        { label: "Overview", to: "/modules/stacks" },
-      ],
+      related: [{ label: "Overview", to: "/modules/stacks" }],
     },
     {
       category: "Concepts",
@@ -111,9 +109,7 @@ export const stacksQA: ModuleQA = {
         "Track a second stack of running minimums. Every push compares with the current min; every pop pops both stacks in lock-step. Peek `min_stack[-1]` for the current min in O(1).",
       ],
       code: `class MinStack:\n    def __init__(self): self.st, self.mn = [], []\n    def push(self, x):\n        self.st.append(x)\n        self.mn.append(x if not self.mn else min(x, self.mn[-1]))\n    def pop(self):\n        self.st.pop(); self.mn.pop()\n    def top(self):  return self.st[-1]\n    def getMin(self): return self.mn[-1]`,
-      related: [
-        { label: "Interview · MinStack", to: "/stacks/interview" },
-      ],
+      related: [{ label: "Interview · MinStack", to: "/stacks/interview" }],
     },
     {
       category: "Design",
@@ -131,7 +127,8 @@ export const stacksQA: ModuleQA = {
         "Deep-recursion algorithms (naive tree DFS, deep linked-list reverse) can hit `RecursionError`. Convert to iteration with an explicit stack when depth is unbounded.",
       ],
       code: `import sys\nsys.setrecursionlimit(10_000)   # bump if you really must recurse deeper`,
-      mistake: "Bumping the recursion limit as a fix — the underlying OS thread stack can still overflow (~10 000 Python frames on most platforms).",
+      mistake:
+        "Bumping the recursion limit as a fix — the underlying OS thread stack can still overflow (~10 000 Python frames on most platforms).",
     },
     {
       category: "Practical",
@@ -142,9 +139,7 @@ export const stacksQA: ModuleQA = {
       code: `def valid(s):\n    pairs = {')':'(', ']':'[', '}':'{'}\n    st = []\n    for c in s:\n        if c in "([{": st.append(c)\n        elif not st or st.pop() != pairs[c]: return False\n    return not st`,
       time: "O(n)",
       space: "O(n)",
-      related: [
-        { label: "Interview · Valid Parentheses", to: "/stacks/interview" },
-      ],
+      related: [{ label: "Interview · Valid Parentheses", to: "/stacks/interview" }],
     },
     {
       category: "Practical",
@@ -246,7 +241,9 @@ export const stacksQA: ModuleQA = {
       code: `class Node:\n    def __init__(self, v, nxt=None): self.v, self.next = v, nxt\nclass Stack:\n    def __init__(self): self.top = None\n    def push(self, x): self.top = Node(x, self.top)\n    def pop(self):\n        n = self.top; self.top = n.next; return n.v`,
       time: "O(1)",
       space: "O(n)",
-      relatedLessons: [{ label: "Linked Lists · Foundations", to: "/linked-lists/foundations/introduction" }],
+      relatedLessons: [
+        { label: "Linked Lists · Foundations", to: "/linked-lists/foundations/introduction" },
+      ],
     },
     {
       id: "st-i-8",
@@ -261,7 +258,11 @@ export const stacksQA: ModuleQA = {
       code: `from collections import deque\nclass Stack:\n    def __init__(self): self.q1, self.q2 = deque(), deque()\n    def push(self, x): self.q1.append(x)\n    def pop(self):\n        while len(self.q1) > 1: self.q2.append(self.q1.popleft())\n        x = self.q1.popleft(); self.q1, self.q2 = self.q2, self.q1; return x`,
       time: "push O(1) · pop O(n)",
       space: "O(n)",
-      leetcode: { title: "225 · Implement Stack using Queues", url: "https://leetcode.com/problems/implement-stack-using-queues/", difficulty: "Easy" },
+      leetcode: {
+        title: "225 · Implement Stack using Queues",
+        url: "https://leetcode.com/problems/implement-stack-using-queues/",
+        difficulty: "Easy",
+      },
     },
     {
       id: "st-i-9",
@@ -348,7 +349,11 @@ export const stacksQA: ModuleQA = {
       code: `def is_valid(s):\n    pairs = {')':'(', ']':'[', '}':'{'}\n    st = []\n    for c in s:\n        if c in '([{': st.append(c)\n        elif not st or st.pop() != pairs[c]: return False\n    return not st`,
       time: "O(n)",
       space: "O(n)",
-      leetcode: { title: "20 · Valid Parentheses", url: "https://leetcode.com/problems/valid-parentheses/", difficulty: "Easy" },
+      leetcode: {
+        title: "20 · Valid Parentheses",
+        url: "https://leetcode.com/problems/valid-parentheses/",
+        difficulty: "Easy",
+      },
     },
     {
       id: "st-i-15",
@@ -363,7 +368,11 @@ export const stacksQA: ModuleQA = {
       code: `class MinStack:\n    def __init__(self): self.st, self.mn = [], []\n    def push(self, x):\n        self.st.append(x); self.mn.append(x if not self.mn else min(x, self.mn[-1]))\n    def pop(self): self.st.pop(); self.mn.pop()\n    def top(self): return self.st[-1]\n    def getMin(self): return self.mn[-1]`,
       time: "O(1)",
       space: "O(n)",
-      leetcode: { title: "155 · Min Stack", url: "https://leetcode.com/problems/min-stack/", difficulty: "Medium" },
+      leetcode: {
+        title: "155 · Min Stack",
+        url: "https://leetcode.com/problems/min-stack/",
+        difficulty: "Medium",
+      },
     },
     {
       id: "st-i-16",
@@ -378,7 +387,11 @@ export const stacksQA: ModuleQA = {
       code: `def next_greater(a):\n    res, st = [-1] * len(a), []\n    for i in range(len(a) - 1, -1, -1):\n        while st and st[-1] <= a[i]: st.pop()\n        if st: res[i] = st[-1]\n        st.append(a[i])\n    return res`,
       time: "O(n)",
       space: "O(n)",
-      leetcode: { title: "496 · Next Greater Element I", url: "https://leetcode.com/problems/next-greater-element-i/", difficulty: "Easy" },
+      leetcode: {
+        title: "496 · Next Greater Element I",
+        url: "https://leetcode.com/problems/next-greater-element-i/",
+        difficulty: "Easy",
+      },
       relatedAlgorithm: "monotonic-stack",
     },
     {
@@ -394,7 +407,11 @@ export const stacksQA: ModuleQA = {
       code: `def daily_temperatures(t):\n    res, st = [0] * len(t), []\n    for i, x in enumerate(t):\n        while st and t[st[-1]] < x:\n            j = st.pop(); res[j] = i - j\n        st.append(i)\n    return res`,
       time: "O(n)",
       space: "O(n)",
-      leetcode: { title: "739 · Daily Temperatures", url: "https://leetcode.com/problems/daily-temperatures/", difficulty: "Medium" },
+      leetcode: {
+        title: "739 · Daily Temperatures",
+        url: "https://leetcode.com/problems/daily-temperatures/",
+        difficulty: "Medium",
+      },
       relatedAlgorithm: "monotonic-stack",
     },
     {
@@ -409,7 +426,11 @@ export const stacksQA: ModuleQA = {
       ],
       time: "O(n)",
       space: "O(n)",
-      leetcode: { title: "84 · Largest Rectangle in Histogram", url: "https://leetcode.com/problems/largest-rectangle-in-histogram/", difficulty: "Hard" },
+      leetcode: {
+        title: "84 · Largest Rectangle in Histogram",
+        url: "https://leetcode.com/problems/largest-rectangle-in-histogram/",
+        difficulty: "Hard",
+      },
       relatedAlgorithm: "monotonic-stack",
     },
     {
@@ -425,7 +446,11 @@ export const stacksQA: ModuleQA = {
       code: `def eval_rpn(tokens):\n    st = []\n    for t in tokens:\n        if t in '+-*/':\n            b, a = st.pop(), st.pop()\n            st.append(int(a/b) if t == '/' else eval(f'{a}{t}{b}'))\n        else: st.append(int(t))\n    return st[0]`,
       time: "O(n)",
       space: "O(n)",
-      leetcode: { title: "150 · Evaluate Reverse Polish Notation", url: "https://leetcode.com/problems/evaluate-reverse-polish-notation/", difficulty: "Medium" },
+      leetcode: {
+        title: "150 · Evaluate Reverse Polish Notation",
+        url: "https://leetcode.com/problems/evaluate-reverse-polish-notation/",
+        difficulty: "Medium",
+      },
     },
 
     // ── Advanced / Follow-up ─────────────────────────────────────────────
@@ -470,7 +495,11 @@ export const stacksQA: ModuleQA = {
       ],
       code: `class Queue:\n    def __init__(self): self.i, self.o = [], []\n    def enqueue(self, x): self.i.append(x)\n    def dequeue(self):\n        if not self.o:\n            while self.i: self.o.append(self.i.pop())\n        return self.o.pop()`,
       time: "amortised O(1)",
-      leetcode: { title: "232 · Implement Queue using Stacks", url: "https://leetcode.com/problems/implement-queue-using-stacks/", difficulty: "Easy" },
+      leetcode: {
+        title: "232 · Implement Queue using Stacks",
+        url: "https://leetcode.com/problems/implement-queue-using-stacks/",
+        difficulty: "Easy",
+      },
     },
     {
       id: "st-i-23",

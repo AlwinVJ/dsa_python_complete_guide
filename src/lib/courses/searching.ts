@@ -13,19 +13,22 @@ export const searchingCourse: Course = {
     {
       slug: "introduction",
       title: "Introduction",
-      theory: "Search algorithms locate a target value within a collection of data. Finding items efficiently is a foundational computer science problem. The best choice of algorithm depends on whether the data is sorted, contiguous, or dynamically streamed. We cover 6 major algorithms, comparing their complexity and real-world performance.",
+      theory:
+        "Search algorithms locate a target value within a collection of data. Finding items efficiently is a foundational computer science problem. The best choice of algorithm depends on whether the data is sorted, contiguous, or dynamically streamed. We cover 6 major algorithms, comparing their complexity and real-world performance.",
       tip: "For interactive, step-by-step animations, open the Searching Playground at /playgrounds/searching.",
     },
     {
       slug: "linear-search",
       title: "Linear Search",
-      theory: "Linear search (also known as sequential search) is the simplest searching algorithm. It starts at the beginning of a collection and inspects each element sequentially until the target element is found or the end of the collection is reached. Since it makes no assumptions about the order of elements, it is the only general-purpose search for unsorted lists.",
+      theory:
+        "Linear search (also known as sequential search) is the simplest searching algorithm. It starts at the beginning of a collection and inspects each element sequentially until the target element is found or the end of the collection is reached. Since it makes no assumptions about the order of elements, it is the only general-purpose search for unsorted lists.",
       code: `def linear_search(arr, target):
     for i in range(len(arr)):
         if arr[i] == target:
             return i
     return -1`,
-      explanation: "Iterate through the array index-by-index. Compare arr[i] with target. If they are equal, return index i. If the loop completes without a match, return -1.",
+      explanation:
+        "Iterate through the array index-by-index. Compare arr[i] with target. If they are equal, return index i. If the loop completes without a match, return -1.",
       complexity: [
         { op: "Best Case", time: "O(1)", space: "O(1)" },
         { op: "Average Case", time: "O(n)", space: "O(1)" },
@@ -39,7 +42,8 @@ export const searchingCourse: Course = {
     {
       slug: "binary-search",
       title: "Binary Search",
-      theory: "Binary search is a highly efficient algorithm for locating items in a sorted collection. It works by repeatedly dividing the search space in half. It compares the target with the middle element. If the target is smaller, it rules out the right half; if larger, it rules out the left half. This reduces the search space logarithmically.",
+      theory:
+        "Binary search is a highly efficient algorithm for locating items in a sorted collection. It works by repeatedly dividing the search space in half. It compares the target with the middle element. If the target is smaller, it rules out the right half; if larger, it rules out the left half. This reduces the search space logarithmically.",
       code: `def binary_search(arr, target):
     low, high = 0, len(arr) - 1
     while low <= high:
@@ -51,7 +55,8 @@ export const searchingCourse: Course = {
         else:
             high = mid - 1
     return -1`,
-      explanation: "Keep track of the low and high pointers. Calculate mid. If arr[mid] equals target, return mid. If arr[mid] < target, shift low to mid + 1. Otherwise, shift high to mid - 1.",
+      explanation:
+        "Keep track of the low and high pointers. Calculate mid. If arr[mid] equals target, return mid. If arr[mid] < target, shift low to mid + 1. Otherwise, shift high to mid - 1.",
       complexity: [
         { op: "Best Case", time: "O(1)", space: "O(1)" },
         { op: "Average Case", time: "O(log n)", space: "O(1)" },
@@ -67,7 +72,8 @@ export const searchingCourse: Course = {
     {
       slug: "ternary-search",
       title: "Ternary Search",
-      theory: "Ternary search is a decrease-and-conquer algorithm similar to binary search, but it divides the search space into three parts instead of two by using two midpoints: mid1 and mid2. It performs more comparisons per step than binary search, but narrows the search space by two-thirds each iteration. It is mathematically slower for lookup arrays but crucial for optimization problems.",
+      theory:
+        "Ternary search is a decrease-and-conquer algorithm similar to binary search, but it divides the search space into three parts instead of two by using two midpoints: mid1 and mid2. It performs more comparisons per step than binary search, but narrows the search space by two-thirds each iteration. It is mathematically slower for lookup arrays but crucial for optimization problems.",
       code: `def ternary_search(arr, target):
     low, high = 0, len(arr) - 1
     while low <= high:
@@ -98,7 +104,8 @@ export const searchingCourse: Course = {
     {
       slug: "jump-search",
       title: "Jump Search",
-      theory: "Jump search is an algorithm for sorted arrays that checks fewer elements by jumping ahead by a fixed step size (usually √n) instead of scanning element-by-element. Once a block is found where the target could exist, a linear search is performed forward inside that block.",
+      theory:
+        "Jump search is an algorithm for sorted arrays that checks fewer elements by jumping ahead by a fixed step size (usually √n) instead of scanning element-by-element. Once a block is found where the target could exist, a linear search is performed forward inside that block.",
       code: `import math
 
 def jump_search(arr, target):
@@ -128,7 +135,8 @@ def jump_search(arr, target):
     {
       slug: "interpolation-search",
       title: "Interpolation Search",
-      theory: "Interpolation search is an algorithm for sorted arrays with uniformly distributed values. It mimics how humans search a dictionary: if you search for a word starting with 'Z', you look near the end. It calculates a probe position using the values at the current bounds, giving an average time complexity of O(log log n).",
+      theory:
+        "Interpolation search is an algorithm for sorted arrays with uniformly distributed values. It mimics how humans search a dictionary: if you search for a word starting with 'Z', you look near the end. It calculates a probe position using the values at the current bounds, giving an average time complexity of O(log log n).",
       code: `def interpolation_search(arr, target):
     low, high = 0, len(arr) - 1
     while low <= high and target >= arr[low] and target <= arr[high]:
@@ -157,7 +165,8 @@ def jump_search(arr, target):
     {
       slug: "exponential-search",
       title: "Exponential Search",
-      theory: "Exponential search is designed for sorted, unbounded, or infinite arrays. It finds the range containing the target by doubling the index range (1, 2, 4, 8...) until the element at that index is greater than the target. It then performs binary search within this bounded range.",
+      theory:
+        "Exponential search is designed for sorted, unbounded, or infinite arrays. It finds the range containing the target by doubling the index range (1, 2, 4, 8...) until the element at that index is greater than the target. It then performs binary search within this bounded range.",
       code: `def binary_search_range(arr, low, high, target):
     while low <= high:
         mid = low + (high - low) // 2
@@ -190,7 +199,8 @@ def exponential_search(arr, target):
     {
       slug: "bisect",
       title: "Python bisect",
-      theory: "The Python standard library provides the `bisect` module, which implements binary search on sorted lists. It is highly optimized and written in C under the hood, making it the preferred way to perform binary search in Python.",
+      theory:
+        "The Python standard library provides the `bisect` module, which implements binary search on sorted lists. It is highly optimized and written in C under the hood, making it the preferred way to perform binary search in Python.",
       code: `import bisect
 a = [1, 3, 4, 7, 9]
 idx = bisect.bisect_left(a, 4)   # idx = 2
@@ -223,9 +233,21 @@ bisect.insort(a, 5)              # inserts 5 and keeps list sorted`,
       slug: "practice",
       title: "Practice",
       practice: [
-        { title: "LC 704 · Binary Search", url: "https://leetcode.com/problems/binary-search/", difficulty: "Easy" },
-        { title: "LC 33 · Search in Rotated Sorted Array", url: "https://leetcode.com/problems/search-in-rotated-sorted-array/", difficulty: "Medium" },
-        { title: "LC 875 · Koko Eating Bananas", url: "https://leetcode.com/problems/koko-eating-bananas/", difficulty: "Medium" },
+        {
+          title: "LC 704 · Binary Search",
+          url: "https://leetcode.com/problems/binary-search/",
+          difficulty: "Easy",
+        },
+        {
+          title: "LC 33 · Search in Rotated Sorted Array",
+          url: "https://leetcode.com/problems/search-in-rotated-sorted-array/",
+          difficulty: "Medium",
+        },
+        {
+          title: "LC 875 · Koko Eating Bananas",
+          url: "https://leetcode.com/problems/koko-eating-bananas/",
+          difficulty: "Medium",
+        },
       ],
     },
     {
@@ -235,7 +257,8 @@ bisect.insort(a, 5)              # inserts 5 and keeps list sorted`,
         q: "Which searching algorithm yields O(log log n) average time complexity on uniformly distributed sorted values?",
         choices: ["Binary Search", "Interpolation Search", "Jump Search", "Exponential Search"],
         answer: 1,
-        explain: "Interpolation search probes the value dynamically, yielding O(log log n) time on uniform distributions.",
+        explain:
+          "Interpolation search probes the value dynamically, yielding O(log log n) time on uniform distributions.",
       },
     },
     {
@@ -243,7 +266,10 @@ bisect.insort(a, 5)              # inserts 5 and keeps list sorted`,
       title: "References",
       references: [
         { label: "bisect — Python docs", url: "https://docs.python.org/3/library/bisect.html" },
-        { label: "Binary Search — Wikipedia", url: "https://en.wikipedia.org/wiki/Binary_search_algorithm" },
+        {
+          label: "Binary Search — Wikipedia",
+          url: "https://en.wikipedia.org/wiki/Binary_search_algorithm",
+        },
       ],
     },
   ],

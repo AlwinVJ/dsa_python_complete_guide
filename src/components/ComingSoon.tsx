@@ -39,9 +39,7 @@ export function ComingSoon({
           In progress
         </div>
         <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">{title}</h1>
-        <p className="mt-4 max-w-lg text-base text-muted-foreground sm:text-lg">
-          {description}
-        </p>
+        <p className="mt-4 max-w-lg text-base text-muted-foreground sm:text-lg">{description}</p>
 
         <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
           {backHref && (

@@ -7,9 +7,16 @@ export const Route = createFileRoute("/roadmap")({
   head: () => ({
     meta: [
       { title: "DSA Roadmap — DSA with Python" },
-      { name: "description", content: "The complete visual Data Structures & Algorithms learning roadmap in Python, with recommended order and realistic estimated timelines." },
+      {
+        name: "description",
+        content:
+          "The complete visual Data Structures & Algorithms learning roadmap in Python, with recommended order and realistic estimated timelines.",
+      },
       { property: "og:title", content: "DSA Roadmap — DSA with Python" },
-      { property: "og:description", content: "Estimated study timeline and path for mastering DSA with Python." },
+      {
+        property: "og:description",
+        content: "Estimated study timeline and path for mastering DSA with Python.",
+      },
       { property: "og:url", content: "/roadmap" },
     ],
     links: [{ rel: "canonical", href: "/roadmap" }],
@@ -21,19 +28,22 @@ const ROADMAP_STAGES = [
   {
     name: "Prerequisites",
     duration: "2–3 Days",
-    description: "Variables, control loops, functions, basic collections (lists/dicts), and basic recursive patterns.",
+    description:
+      "Variables, control loops, functions, basic collections (lists/dicts), and basic recursive patterns.",
     link: "/modules/python-basics",
   },
   {
     name: "Introduction to DSA",
     duration: "30–60 Minutes",
-    description: "Gateway landing guide explaining what structures and algorithms are and how to study them.",
+    description:
+      "Gateway landing guide explaining what structures and algorithms are and how to study them.",
     link: "/learn/introduction-to-dsa",
   },
   {
     name: "Complexity Analysis",
     duration: "2–4 Hours",
-    description: "Asymptotic notations (Big-O, Omega, Theta), time vs space tradeoffs, and simple loop estimations.",
+    description:
+      "Asymptotic notations (Big-O, Omega, Theta), time vs space tradeoffs, and simple loop estimations.",
     link: "/complexity",
   },
   {
@@ -57,7 +67,8 @@ const ROADMAP_STAGES = [
   {
     name: "Algorithms",
     duration: "2–3 Weeks",
-    description: "Sorting algorithms (Heap, Merge, Quick), searching patterns (Binary, Jump, Interpolation), Greedy, and Dynamic Programming.",
+    description:
+      "Sorting algorithms (Heap, Merge, Quick), searching patterns (Binary, Jump, Interpolation), Greedy, and Dynamic Programming.",
     link: "/sorting",
   },
   {
@@ -76,7 +87,8 @@ function RoadmapPage() {
       <div className="mb-8">
         <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">DSA Roadmap</h1>
         <p className="mt-3 max-w-2xl text-lg text-muted-foreground">
-          A step-by-step learning progression from basic prerequisites to interview-ready software engineering.
+          A step-by-step learning progression from basic prerequisites to interview-ready software
+          engineering.
         </p>
       </div>
 
@@ -106,12 +118,11 @@ function RoadmapPage() {
                       <div className="flex items-center gap-2">
                         <span className="font-semibold text-lg text-foreground">{item.name}</span>
                         <span className="inline-flex items-center gap-1 rounded-md bg-muted px-2 py-0.5 text-xs text-muted-foreground font-medium">
-                          <Clock className="h-3.5 w-3.5 text-[color:var(--brand)]" /> {item.duration}
+                          <Clock className="h-3.5 w-3.5 text-[color:var(--brand)]" />{" "}
+                          {item.duration}
                         </span>
                       </div>
-                      <p className="text-sm text-muted-foreground max-w-2xl">
-                        {item.description}
-                      </p>
+                      <p className="text-sm text-muted-foreground max-w-2xl">{item.description}</p>
                     </div>
 
                     <Link
@@ -132,7 +143,8 @@ function RoadmapPage() {
       <div className="mt-10 flex flex-col items-center border-t border-border pt-8 text-center">
         <h3 className="font-bold text-xl mb-2">Ready to take the first step?</h3>
         <p className="text-sm text-muted-foreground max-w-md mb-4">
-          Prepare your foundation by going through the Prerequisites, or start reading the index list operations.
+          Prepare your foundation by going through the Prerequisites, or start reading the index
+          list operations.
         </p>
         <Link
           to={arraysRoute}

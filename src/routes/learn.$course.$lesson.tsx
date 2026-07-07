@@ -19,7 +19,8 @@ export const Route = createFileRoute("/learn/$course/$lesson")({
     const title = found
       ? `${found.lesson.title} — ${course?.title} — DSA with Python`
       : "Lesson — DSA with Python";
-    const desc = found?.lesson.tagline ?? found?.lesson.theory?.slice(0, 150) ?? course?.tagline ?? "";
+    const desc =
+      found?.lesson.tagline ?? found?.lesson.theory?.slice(0, 150) ?? course?.tagline ?? "";
     return {
       meta: [
         { title },
@@ -36,5 +37,13 @@ function LessonPage() {
   const { course: courseSlug, lesson: lessonSlug } = Route.useLoaderData();
   const found = getLesson(courseSlug, lessonSlug)!;
   const { prev, next } = getPrevNext(found.course, found.index);
-  return <LessonView course={found.course} lesson={found.lesson} index={found.index} prev={prev} next={next} />;
+  return (
+    <LessonView
+      course={found.course}
+      lesson={found.lesson}
+      index={found.index}
+      prev={prev}
+      next={next}
+    />
+  );
 }

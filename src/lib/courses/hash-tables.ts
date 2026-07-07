@@ -9,10 +9,7 @@ import { HT_REVISION } from "@/lib/hash-tables/revision";
 // Sidebar links go through /hash-tables/<tier>/<slug>, handled by the splat
 // route in src/routes/hash-tables.$.tsx.
 
-const toLessons = (
-  tier: string,
-  xs: { slug: string; title: string; description: string }[],
-) =>
+const toLessons = (tier: string, xs: { slug: string; title: string; description: string }[]) =>
   xs.map((l) => ({
     slug: l.slug,
     title: l.title,

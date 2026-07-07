@@ -69,7 +69,12 @@ export const genericBanks: Record<string, ModuleBank> = {
         topic: "Hashing",
         description: "Check whether two strings are anagrams.",
         approaches: [
-          { name: "Brute", code: "return sorted(s) == sorted(t)", time: "O(n log n)", space: "O(n)" },
+          {
+            name: "Brute",
+            code: "return sorted(s) == sorted(t)",
+            time: "O(n log n)",
+            space: "O(n)",
+          },
           {
             name: "Optimal",
             code: "from collections import Counter\nreturn Counter(s) == Counter(t)",
@@ -78,7 +83,13 @@ export const genericBanks: Record<string, ModuleBank> = {
             note: "Counter is O(n); comparison is O(unique chars).",
           },
         ],
-        leetcodeLinks: [{ title: "242. Valid Anagram", url: "https://leetcode.com/problems/valid-anagram/", difficulty: "Easy" }],
+        leetcodeLinks: [
+          {
+            title: "242. Valid Anagram",
+            url: "https://leetcode.com/problems/valid-anagram/",
+            difficulty: "Easy",
+          },
+        ],
         interviewFrequency: "Very High",
         estimatedMinutes: 10,
         tags: ["must-do"],
@@ -90,7 +101,8 @@ export const genericBanks: Record<string, ModuleBank> = {
         category: "implementation",
         difficulty: "Beginner",
         topic: "Two Pointers",
-        description: "Ignoring non-alphanumeric characters, check if a string reads the same forward and backward.",
+        description:
+          "Ignoring non-alphanumeric characters, check if a string reads the same forward and backward.",
         approaches: [
           {
             name: "Optimal",
@@ -99,7 +111,13 @@ export const genericBanks: Record<string, ModuleBank> = {
             space: "O(1)",
           },
         ],
-        leetcodeLinks: [{ title: "125. Valid Palindrome", url: "https://leetcode.com/problems/valid-palindrome/", difficulty: "Easy" }],
+        leetcodeLinks: [
+          {
+            title: "125. Valid Palindrome",
+            url: "https://leetcode.com/problems/valid-palindrome/",
+            difficulty: "Easy",
+          },
+        ],
         interviewFrequency: "High",
         estimatedMinutes: 15,
         tags: ["two-pointers"],
@@ -120,7 +138,13 @@ export const genericBanks: Record<string, ModuleBank> = {
             space: "O(min(n, |Σ|))",
           },
         ],
-        leetcodeLinks: [{ title: "3. Longest Substring Without Repeating Characters", url: "https://leetcode.com/problems/longest-substring-without-repeating-characters/", difficulty: "Medium" }],
+        leetcodeLinks: [
+          {
+            title: "3. Longest Substring Without Repeating Characters",
+            url: "https://leetcode.com/problems/longest-substring-without-repeating-characters/",
+            difficulty: "Medium",
+          },
+        ],
         interviewFrequency: "Very High",
         pattern: "Sliding Window",
         relatedAlgorithm: "sliding-window",
@@ -150,7 +174,13 @@ export const genericBanks: Record<string, ModuleBank> = {
             space: "O(k)",
           },
         ],
-        leetcodeLinks: [{ title: "215. Kth Largest Element", url: "https://leetcode.com/problems/kth-largest-element-in-an-array/", difficulty: "Medium" }],
+        leetcodeLinks: [
+          {
+            title: "215. Kth Largest Element",
+            url: "https://leetcode.com/problems/kth-largest-element-in-an-array/",
+            difficulty: "Medium",
+          },
+        ],
         interviewFrequency: "Very High",
         estimatedMinutes: 15,
         pattern: "Heap",
@@ -172,7 +202,13 @@ export const genericBanks: Record<string, ModuleBank> = {
             space: "O(n)",
           },
         ],
-        leetcodeLinks: [{ title: "347. Top K Frequent", url: "https://leetcode.com/problems/top-k-frequent-elements/", difficulty: "Medium" }],
+        leetcodeLinks: [
+          {
+            title: "347. Top K Frequent",
+            url: "https://leetcode.com/problems/top-k-frequent-elements/",
+            difficulty: "Medium",
+          },
+        ],
         interviewFrequency: "Very High",
         estimatedMinutes: 15,
         tags: ["must-do"],
@@ -194,7 +230,12 @@ export const genericBanks: Record<string, ModuleBank> = {
         topic: "Intro",
         description: "Progress from naive recursion to O(n) memo to O(1) space.",
         approaches: [
-          { name: "Brute", code: "def f(n): return n if n<2 else f(n-1)+f(n-2)", time: "O(2^n)", space: "O(n)" },
+          {
+            name: "Brute",
+            code: "def f(n): return n if n<2 else f(n-1)+f(n-2)",
+            time: "O(2^n)",
+            space: "O(n)",
+          },
           {
             name: "Better",
             code: "from functools import lru_cache\n@lru_cache(None)\ndef f(n): return n if n<2 else f(n-1)+f(n-2)",
@@ -227,7 +268,13 @@ export const genericBanks: Record<string, ModuleBank> = {
             space: "O(1)",
           },
         ],
-        leetcodeLinks: [{ title: "70. Climbing Stairs", url: "https://leetcode.com/problems/climbing-stairs/", difficulty: "Easy" }],
+        leetcodeLinks: [
+          {
+            title: "70. Climbing Stairs",
+            url: "https://leetcode.com/problems/climbing-stairs/",
+            difficulty: "Easy",
+          },
+        ],
         interviewFrequency: "Very High",
         estimatedMinutes: 10,
         tags: ["must-do"],

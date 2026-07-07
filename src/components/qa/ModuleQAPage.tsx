@@ -23,12 +23,12 @@ export function ModuleQAPage({ qa, mode }: { qa: ModuleQA; mode: Mode }) {
         </div>
         <PageHeader
           eyebrow={isFaq ? "FAQ" : "Interview"}
-          title={isFaq
-            ? `${qa.moduleTitle} — FAQ`
-            : `${qa.moduleTitle} — Interview Questions`}
-          description={isFaq
-            ? `Detailed answers to the questions learners ask most often about ${qa.moduleTitle.toLowerCase()}. Every answer is a mini lesson with code, complexity, and cross-links.`
-            : `Interview-ready questions organised by difficulty — from theory warm-ups to FAANG-style problems. Each entry ships with a Python solution, complexity analysis, and lesson pointers.`}
+          title={isFaq ? `${qa.moduleTitle} — FAQ` : `${qa.moduleTitle} — Interview Questions`}
+          description={
+            isFaq
+              ? `Detailed answers to the questions learners ask most often about ${qa.moduleTitle.toLowerCase()}. Every answer is a mini lesson with code, complexity, and cross-links.`
+              : `Interview-ready questions organised by difficulty — from theory warm-ups to FAANG-style problems. Each entry ships with a Python solution, complexity analysis, and lesson pointers.`
+          }
         />
 
         <div className="-mt-4 mb-8 flex flex-wrap items-center gap-2">
@@ -49,9 +49,7 @@ export function ModuleQAPage({ qa, mode }: { qa: ModuleQA; mode: Mode }) {
         </div>
       </motion.div>
 
-      {isFaq
-        ? <FaqAccordion faqs={qa.faqs} />
-        : <InterviewQuestions questions={qa.interview} />}
+      {isFaq ? <FaqAccordion faqs={qa.faqs} /> : <InterviewQuestions questions={qa.interview} />}
     </PageShell>
   );
 }

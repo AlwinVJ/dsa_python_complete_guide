@@ -51,9 +51,11 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
         <p className="mt-2 text-sm text-muted-foreground">
           Something went wrong. Try again or go back home.
         </p>
-        
+
         <div className="mt-4 p-4 rounded-md bg-red-500/10 border border-red-500/20 text-red-600 dark:text-red-400 text-left text-xs font-mono overflow-auto max-h-60 max-w-full">
-          <div><strong>Error:</strong> {error?.message || String(error)}</div>
+          <div>
+            <strong>Error:</strong> {error?.message || String(error)}
+          </div>
           {error?.stack && <pre className="mt-2 white-space-pre-wrap">{error.stack}</pre>}
         </div>
 
@@ -172,7 +174,6 @@ function ThemeToggle() {
   );
 }
 
-
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -200,10 +201,10 @@ function RootComponent() {
             </Link>
             <div className="ml-auto flex items-center gap-2">
               <Link
-                to="/playgrounds/sorting"
+                to="/playgrounds"
                 className="hidden sm:inline-flex items-center rounded-md gradient-brand px-3 py-1.5 text-xs font-medium text-primary-foreground"
               >
-                Playground
+                Playgrounds
               </Link>
               <ThemeToggle />
               <a

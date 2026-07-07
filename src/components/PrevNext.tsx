@@ -14,7 +14,9 @@ export function PrevNext({ current }: { current: string }) {
           <div className="text-xs text-muted-foreground">← Previous</div>
           <div className="mt-1 font-medium">{prev.label}</div>
         </Link>
-      ) : <div />}
+      ) : (
+        <div />
+      )}
       {next ? (
         <Link to={next.to} className="card-surface p-4 hover:bg-accent transition sm:text-right">
           <div className="text-xs text-muted-foreground">Next →</div>
@@ -22,7 +24,9 @@ export function PrevNext({ current }: { current: string }) {
             {next.label} <ChevronRight className="h-4 w-4" />
           </div>
         </Link>
-      ) : <div />}
+      ) : (
+        <div />
+      )}
     </div>
   );
 }

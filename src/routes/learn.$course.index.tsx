@@ -19,7 +19,7 @@ import { ComingSoon } from "@/components/ComingSoon";
 import { TrieRedirect } from "@/components/TrieRedirect";
 import { getModuleRoute } from "@/lib/curriculum";
 
-export const Route = createFileRoute("/learn/$course")({
+export const Route = createFileRoute("/learn/$course/")({
   beforeLoad: ({ params }) => {
     if (params.course === "sorting-algorithms") {
       throw redirect({ to: "/sorting" });
@@ -82,7 +82,14 @@ function CoursePage() {
     slug: string;
     title: string;
     tagline?: string;
-    kind: "flat" | "foundations" | "variant" | "variants" | "implementations" | "applications" | "revision";
+    kind:
+      | "flat"
+      | "foundations"
+      | "variant"
+      | "variants"
+      | "implementations"
+      | "applications"
+      | "revision";
     lessons: Lesson[];
   };
   const sections: Section[] = [];
@@ -154,7 +161,9 @@ function CoursePage() {
             </div>
             <div>
               <div className="text-xs text-muted-foreground">Coding Practice Required</div>
-              <div className="text-base font-semibold mt-0.5">{course.infoCard.practiceRequired ? "Yes" : "No"}</div>
+              <div className="text-base font-semibold mt-0.5">
+                {course.infoCard.practiceRequired ? "Yes" : "No"}
+              </div>
             </div>
             <div>
               <div className="text-xs text-muted-foreground">Programming Language</div>
@@ -165,7 +174,9 @@ function CoursePage() {
 
         {course.whoIsThisFor && (
           <div className="card-surface p-5 mt-6">
-            <h3 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground mb-3">Who is this Course For?</h3>
+            <h3 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground mb-3">
+              Who is this Course For?
+            </h3>
             <ul className="grid gap-2 sm:grid-cols-2 text-sm text-muted-foreground">
               {course.whoIsThisFor.map((item, i) => (
                 <li key={i} className="flex items-center gap-2">
@@ -178,17 +189,35 @@ function CoursePage() {
 
         {course.showRoadmap && (
           <div className="card-surface p-5 mt-6">
-            <h3 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground mb-4">Learning Roadmap</h3>
+            <h3 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground mb-4">
+              Learning Roadmap
+            </h3>
             <div className="relative border-l border-border pl-6 ml-3 space-y-4">
               {[
                 { name: "Prerequisites", duration: "2–3 Days" },
                 { name: "Introduction to DSA", duration: "30–60 Minutes" },
                 { name: "Complexity Analysis", duration: "2–4 Hours" },
-                { name: "Linear Data Structures", duration: "Linear data structures: Arrays (2 Days), Linked Lists (2 Days), Stacks, Queues, Hash Tables" },
-                { name: "Non-Linear Data Structures", duration: "Non-linear structures: Trees (3 Days), Graphs (3–4 Days)" },
-                { name: "Specialized Data Structures", duration: "Specialized structures: Heaps, Tries" },
-                { name: "Algorithms", duration: "2–3 Weeks (Sorting, Searching, and other algorithms)" },
-                { name: "Interview Preparation", duration: "1–2 Weeks (mock interviews, practice)" }
+                {
+                  name: "Linear Data Structures",
+                  duration:
+                    "Linear data structures: Arrays (2 Days), Linked Lists (2 Days), Stacks, Queues, Hash Tables",
+                },
+                {
+                  name: "Non-Linear Data Structures",
+                  duration: "Non-linear structures: Trees (3 Days), Graphs (3–4 Days)",
+                },
+                {
+                  name: "Specialized Data Structures",
+                  duration: "Specialized structures: Heaps, Tries",
+                },
+                {
+                  name: "Algorithms",
+                  duration: "2–3 Weeks (Sorting, Searching, and other algorithms)",
+                },
+                {
+                  name: "Interview Preparation",
+                  duration: "1–2 Weeks (mock interviews, practice)",
+                },
               ].map((stage, idx) => (
                 <div key={stage.name} className="relative">
                   <span className="absolute -left-9 top-1.5 flex h-6 w-6 items-center justify-center rounded-full bg-muted border border-border text-[10px] font-bold">
@@ -202,17 +231,19 @@ function CoursePage() {
           </div>
         )}
 
-        <div className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-3">
-          {summary.map((s) => (
-            <div key={s.label} className="card-surface flex items-center gap-3 p-3">
-              <s.icon className="h-4 w-4 text-[color:var(--brand)]" />
-              <div className="min-w-0">
-                <div className="truncate text-sm font-semibold">{s.value}</div>
-                <div className="truncate text-[11px] text-muted-foreground">{s.label}</div>
+        {course.slug !== "introduction-to-dsa" && (
+          <div className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-3">
+            {summary.map((s) => (
+              <div key={s.label} className="card-surface flex items-center gap-3 p-3">
+                <s.icon className="h-4 w-4 text-[color:var(--brand)]" />
+                <div className="min-w-0">
+                  <div className="truncate text-sm font-semibold">{s.value}</div>
+                  <div className="truncate text-[11px] text-muted-foreground">{s.label}</div>
+                </div>
               </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
       </motion.div>
 
       <div className="mt-10 space-y-10">
@@ -241,12 +272,7 @@ function CoursePage() {
             />
             <div className="space-y-3">
               {variants.map((s, i) => (
-                <VariantGroup
-                  key={s.slug}
-                  course={course}
-                  section={s}
-                  defaultOpen={i === 0}
-                />
+                <VariantGroup key={s.slug} course={course} section={s} defaultOpen={i === 0} />
               ))}
             </div>
           </div>
@@ -332,9 +358,7 @@ function VariantGroup({
         <div className="min-w-0 flex-1">
           <div className="text-sm font-semibold">{section.title}</div>
           {section.tagline && (
-            <div className="mt-0.5 truncate text-xs text-muted-foreground">
-              {section.tagline}
-            </div>
+            <div className="mt-0.5 truncate text-xs text-muted-foreground">{section.tagline}</div>
           )}
         </div>
       </button>
@@ -347,13 +371,7 @@ function VariantGroup({
   );
 }
 
-function LessonGrid({
-  course,
-  lessons,
-}: {
-  course: Course;
-  lessons: Lesson[];
-}) {
+function LessonGrid({ course, lessons }: { course: Course; lessons: Lesson[] }) {
   return (
     <ol className="grid gap-2 sm:grid-cols-2">
       {lessons.map((l, i) => {

@@ -9,7 +9,10 @@ export const Route = createFileRoute("/slicing")({
   head: () => ({
     meta: [
       { title: "List Slicing — DSA with Python" },
-      { name: "description", content: "Master start:stop:step slicing, negatives, and reverse tricks." },
+      {
+        name: "description",
+        content: "Master start:stop:step slicing, negatives, and reverse tricks.",
+      },
     ],
   }),
   component: Page,
@@ -31,8 +34,16 @@ function SlicePlayground({ items }: { items: ListItem[] }) {
     // emulate Python slicing on indices
     const len = src.length;
     const stepN = st;
-    let i = s === undefined ? (stepN > 0 ? 0 : len - 1) : s < 0 ? Math.max(len + s, stepN > 0 ? 0 : -1) : Math.min(s, stepN > 0 ? len : len - 1);
-    const j = e === undefined ? (stepN > 0 ? len : -1) : e < 0 ? Math.max(len + e, -1) : Math.min(e, len);
+    let i =
+      s === undefined
+        ? stepN > 0
+          ? 0
+          : len - 1
+        : s < 0
+          ? Math.max(len + s, stepN > 0 ? 0 : -1)
+          : Math.min(s, stepN > 0 ? len : len - 1);
+    const j =
+      e === undefined ? (stepN > 0 ? len : -1) : e < 0 ? Math.max(len + e, -1) : Math.min(e, len);
     const out: number[] = [];
     if (stepN > 0) for (; i < j; i += stepN) out.push(i);
     else for (; i > j; i += stepN) out.push(i);
@@ -106,8 +117,9 @@ function Page() {
       </Section>
 
       <Callout kind="perf">
-        Slicing creates a <b>new list</b> — that's <ComplexityBadge value="O(k)" /> where k is the slice length. If you
-        only need to iterate, a <code>for</code> loop over the range is cheaper.
+        Slicing creates a <b>new list</b> — that's <ComplexityBadge value="O(k)" /> where k is the
+        slice length. If you only need to iterate, a <code>for</code> loop over the range is
+        cheaper.
       </Callout>
 
       <PrevNext current="/slicing" />

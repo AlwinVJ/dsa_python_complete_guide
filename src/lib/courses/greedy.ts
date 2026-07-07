@@ -32,18 +32,21 @@ export const greedyCourse: Course = {
     {
       slug: "activity-selection",
       title: "Activity Selection",
-      theory: "Given intervals, pick the maximum number that don't overlap. Sort by end time, greedily pick the next non-conflicting interval.",
+      theory:
+        "Given intervals, pick the maximum number that don't overlap. Sort by end time, greedily pick the next non-conflicting interval.",
       code: `def activity(intervals):\n    intervals.sort(key=lambda x: x[1])\n    end, count = -float('inf'), 0\n    for s, e in intervals:\n        if s >= end:\n            end = e; count += 1\n    return count`,
     },
     {
       slug: "huffman-coding",
       title: "Huffman Coding",
-      theory: "Build an optimal prefix code by repeatedly merging the two lowest-frequency nodes using a min-heap.",
+      theory:
+        "Build an optimal prefix code by repeatedly merging the two lowest-frequency nodes using a min-heap.",
     },
     {
       slug: "coin-change",
       title: "Coin Change (Canonical Systems)",
-      theory: "For canonical coin systems (like {1,5,10,25}) greedy always wins; for arbitrary systems switch to DP.",
+      theory:
+        "For canonical coin systems (like {1,5,10,25}) greedy always wins; for arbitrary systems switch to DP.",
     },
     {
       slug: "jump-game",
@@ -54,12 +57,14 @@ export const greedyCourse: Course = {
     {
       slug: "interval-scheduling",
       title: "Interval Scheduling",
-      theory: "Classic greedy on end-time. Extensions: weighted intervals (needs DP), minimum meeting rooms (heap of end times).",
+      theory:
+        "Classic greedy on end-time. Extensions: weighted intervals (needs DP), minimum meeting rooms (heap of end times).",
     },
     {
       slug: "fractional-knapsack",
       title: "Fractional Knapsack",
-      theory: "Sort items by value/weight ratio and take as much as fits — greedy is optimal because we can take fractions.",
+      theory:
+        "Sort items by value/weight ratio and take as much as fits — greedy is optimal because we can take fractions.",
     },
     {
       slug: "applications",
@@ -75,9 +80,21 @@ export const greedyCourse: Course = {
       slug: "practice",
       title: "Practice",
       practice: [
-        { title: "LC 55 · Jump Game", url: "https://leetcode.com/problems/jump-game/", difficulty: "Medium" },
-        { title: "LC 435 · Non-overlapping Intervals", url: "https://leetcode.com/problems/non-overlapping-intervals/", difficulty: "Medium" },
-        { title: "LC 253 · Meeting Rooms II", url: "https://leetcode.com/problems/meeting-rooms-ii/", difficulty: "Medium" },
+        {
+          title: "LC 55 · Jump Game",
+          url: "https://leetcode.com/problems/jump-game/",
+          difficulty: "Medium",
+        },
+        {
+          title: "LC 435 · Non-overlapping Intervals",
+          url: "https://leetcode.com/problems/non-overlapping-intervals/",
+          difficulty: "Medium",
+        },
+        {
+          title: "LC 253 · Meeting Rooms II",
+          url: "https://leetcode.com/problems/meeting-rooms-ii/",
+          difficulty: "Medium",
+        },
       ],
     },
     {
@@ -85,10 +102,24 @@ export const greedyCourse: Course = {
       title: "Quiz",
       quiz: {
         q: "Which strategy proves a greedy algorithm optimal?",
-        choices: ["Backtracking", "Exchange argument or matroid structure", "Memoization", "Amortised analysis"],
+        choices: [
+          "Backtracking",
+          "Exchange argument or matroid structure",
+          "Memoization",
+          "Amortised analysis",
+        ],
         answer: 1,
       },
     },
-    { slug: "references", title: "References", references: [{ label: "CLRS Chapter 16 — Greedy Algorithms", url: "https://mitpress.mit.edu/9780262046305/" }] },
+    {
+      slug: "references",
+      title: "References",
+      references: [
+        {
+          label: "CLRS Chapter 16 — Greedy Algorithms",
+          url: "https://mitpress.mit.edu/9780262046305/",
+        },
+      ],
+    },
   ],
 };

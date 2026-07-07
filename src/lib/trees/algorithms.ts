@@ -10,13 +10,18 @@ export const T_ALGORITHMS: TLesson[] = [
     difficulty: "Beginner",
     readMinutes: 3,
     sections: [
-      { type: "theory", text: "DFS is the parent template of preorder, inorder, and postorder. It uses O(h) space (the recursion stack) and visits every node in O(n)." },
-      { type: "code", code:
-`def dfs(node, visit):
+      {
+        type: "theory",
+        text: "DFS is the parent template of preorder, inorder, and postorder. It uses O(h) space (the recursion stack) and visits every node in O(n).",
+      },
+      {
+        type: "code",
+        code: `def dfs(node, visit):
     if not node: return
     visit(node)
     dfs(node.left,  visit)
-    dfs(node.right, visit)` },
+    dfs(node.right, visit)`,
+      },
       { type: "complexity", rows: [{ op: "DFS", time: "O(n)", space: "O(h)" }] },
     ],
   },
@@ -28,8 +33,9 @@ export const T_ALGORITHMS: TLesson[] = [
     difficulty: "Beginner",
     readMinutes: 3,
     sections: [
-      { type: "code", code:
-`from collections import deque
+      {
+        type: "code",
+        code: `from collections import deque
 def bfs(root, visit):
     if not root: return
     q = deque([root])
@@ -37,9 +43,14 @@ def bfs(root, visit):
         n = q.popleft()
         visit(n)
         if n.left:  q.append(n.left)
-        if n.right: q.append(n.right)` },
-      { type: "callout", kind: "tip", title: "When to pick BFS",
-        text: "Shortest edge-count path in a tree, minimum-depth problems, and any question asking about levels." },
+        if n.right: q.append(n.right)`,
+      },
+      {
+        type: "callout",
+        kind: "tip",
+        title: "When to pick BFS",
+        text: "Shortest edge-count path in a tree, minimum-depth problems, and any question asking about levels.",
+      },
     ],
   },
   {
@@ -50,8 +61,9 @@ def bfs(root, visit):
     difficulty: "Beginner",
     readMinutes: 3,
     sections: [
-      { type: "code", code:
-`def preorder(node, out):
+      {
+        type: "code",
+        code: `def preorder(node, out):
     if not node: return
     out.append(node.val)
     preorder(node.left,  out)
@@ -65,7 +77,8 @@ def preorder_iter(root):
         out.append(n.val)
         if n.right: stack.append(n.right)
         if n.left:  stack.append(n.left)
-    return out` },
+    return out`,
+      },
     ],
   },
   {
@@ -76,8 +89,9 @@ def preorder_iter(root):
     difficulty: "Beginner",
     readMinutes: 3,
     sections: [
-      { type: "code", code:
-`def inorder(node, out):
+      {
+        type: "code",
+        code: `def inorder(node, out):
     if not node: return
     inorder(node.left, out)
     out.append(node.val)
@@ -89,23 +103,27 @@ def inorder_iter(root):
         while cur: stack.append(cur); cur = cur.left
         cur = stack.pop(); out.append(cur.val)
         cur = cur.right
-    return out` },
+    return out`,
+      },
     ],
   },
   {
     slug: "postorder",
     title: "Postorder Traversal",
     eyebrow: "Algorithms · 5",
-    description: "Left → Right → Root. Process children before their parent — used for evaluation and cleanup.",
+    description:
+      "Left → Right → Root. Process children before their parent — used for evaluation and cleanup.",
     difficulty: "Beginner",
     readMinutes: 3,
     sections: [
-      { type: "code", code:
-`def postorder(node, out):
+      {
+        type: "code",
+        code: `def postorder(node, out):
     if not node: return
     postorder(node.left,  out)
     postorder(node.right, out)
-    out.append(node.val)` },
+    out.append(node.val)`,
+      },
     ],
   },
   {
@@ -116,8 +134,9 @@ def inorder_iter(root):
     difficulty: "Intermediate",
     readMinutes: 3,
     sections: [
-      { type: "code", code:
-`from collections import deque
+      {
+        type: "code",
+        code: `from collections import deque
 def level_order(root):
     if not root: return []
     q, out = deque([root]), []
@@ -129,7 +148,8 @@ def level_order(root):
             if n.left:  q.append(n.left)
             if n.right: q.append(n.right)
         out.append(level)
-    return out` },
+    return out`,
+      },
     ],
   },
   {
@@ -140,10 +160,12 @@ def level_order(root):
     difficulty: "Beginner",
     readMinutes: 2,
     sections: [
-      { type: "code", code:
-`def height(node):
+      {
+        type: "code",
+        code: `def height(node):
     if not node: return -1     # 0 for node-count convention
-    return 1 + max(height(node.left), height(node.right))` },
+    return 1 + max(height(node.left), height(node.right))`,
+      },
     ],
   },
   {
@@ -154,13 +176,15 @@ def level_order(root):
     difficulty: "Beginner",
     readMinutes: 2,
     sections: [
-      { type: "code", code:
-`def depth(root, target, d=0):
+      {
+        type: "code",
+        code: `def depth(root, target, d=0):
     if not root: return -1
     if root is target: return d
     left = depth(root.left, target, d + 1)
     if left != -1: return left
-    return depth(root.right, target, d + 1)` },
+    return depth(root.right, target, d + 1)`,
+      },
     ],
   },
   {
@@ -171,8 +195,9 @@ def level_order(root):
     difficulty: "Intermediate",
     readMinutes: 4,
     sections: [
-      { type: "code", code:
-`def diameter(root):
+      {
+        type: "code",
+        code: `def diameter(root):
     best = [0]
     def h(n):
         if not n: return 0
@@ -180,9 +205,14 @@ def level_order(root):
         best[0] = max(best[0], l + r)
         return 1 + max(l, r)
     h(root)
-    return best[0]` },
-      { type: "callout", kind: "tip", title: "Global vs local",
-        text: "The diameter through node n is left_height + right_height. Track the max as you compute heights." },
+    return best[0]`,
+      },
+      {
+        type: "callout",
+        kind: "tip",
+        title: "Global vs local",
+        text: "The diameter through node n is left_height + right_height. Track the max as you compute heights.",
+      },
     ],
   },
   {
@@ -193,18 +223,24 @@ def level_order(root):
     difficulty: "Intermediate",
     readMinutes: 4,
     sections: [
-      { type: "code", title: "general binary tree", code:
-`def lca(root, p, q):
+      {
+        type: "code",
+        title: "general binary tree",
+        code: `def lca(root, p, q):
     if not root or root is p or root is q: return root
     L = lca(root.left,  p, q)
     R = lca(root.right, p, q)
-    return root if L and R else (L or R)` },
-      { type: "code", title: "BST — use the ordering", code:
-`def lca_bst(root, p, q):
+    return root if L and R else (L or R)`,
+      },
+      {
+        type: "code",
+        title: "BST — use the ordering",
+        code: `def lca_bst(root, p, q):
     while root:
         if p.val < root.val and q.val < root.val:  root = root.left
         elif p.val > root.val and q.val > root.val: root = root.right
-        else: return root` },
+        else: return root`,
+      },
     ],
   },
   {
@@ -215,14 +251,16 @@ def level_order(root):
     difficulty: "Intermediate",
     readMinutes: 3,
     sections: [
-      { type: "code", code:
-`def is_balanced(root):
+      {
+        type: "code",
+        code: `def is_balanced(root):
     def h(n):
         if not n: return 0
         l = h(n.left);  r = h(n.right)
         if l < 0 or r < 0 or abs(l - r) > 1: return -1
         return 1 + max(l, r)
-    return h(root) >= 0` },
+    return h(root) >= 0`,
+      },
     ],
   },
   {
@@ -233,11 +271,13 @@ def level_order(root):
     difficulty: "Beginner",
     readMinutes: 2,
     sections: [
-      { type: "code", code:
-`def invert(root):
+      {
+        type: "code",
+        code: `def invert(root):
     if not root: return None
     root.left, root.right = invert(root.right), invert(root.left)
-    return root` },
+    return root`,
+      },
     ],
   },
   {
@@ -248,15 +288,17 @@ def level_order(root):
     difficulty: "Advanced",
     readMinutes: 3,
     sections: [
-      { type: "code", code:
-`def serialize(root):
+      {
+        type: "code",
+        code: `def serialize(root):
     parts = []
     def walk(n):
         if not n: parts.append("#"); return
         parts.append(str(n.val))
         walk(n.left); walk(n.right)
     walk(root)
-    return ",".join(parts)` },
+    return ",".join(parts)`,
+      },
     ],
   },
   {
@@ -267,8 +309,9 @@ def level_order(root):
     difficulty: "Advanced",
     readMinutes: 3,
     sections: [
-      { type: "code", code:
-`def deserialize(data):
+      {
+        type: "code",
+        code: `def deserialize(data):
     it = iter(data.split(","))
     def build():
         v = next(it)
@@ -277,7 +320,8 @@ def level_order(root):
         n.left  = build()
         n.right = build()
         return n
-    return build()` },
+    return build()`,
+      },
     ],
   },
   {
@@ -288,7 +332,10 @@ def level_order(root):
     difficulty: "Advanced",
     readMinutes: 4,
     sections: [
-      { type: "theory", text: "Boundary traversal returns nodes on the outline of the tree in anticlockwise order. Split it into three passes: left boundary (top-down), leaves (left-to-right), right boundary (bottom-up)." },
+      {
+        type: "theory",
+        text: "Boundary traversal returns nodes on the outline of the tree in anticlockwise order. Split it into three passes: left boundary (top-down), leaves (left-to-right), right boundary (bottom-up).",
+      },
     ],
   },
   {
@@ -299,8 +346,9 @@ def level_order(root):
     difficulty: "Advanced",
     readMinutes: 3,
     sections: [
-      { type: "code", code:
-`from collections import defaultdict, deque
+      {
+        type: "code",
+        code: `from collections import defaultdict, deque
 def vertical(root):
     cols = defaultdict(list)
     q = deque([(root, 0)])
@@ -310,7 +358,8 @@ def vertical(root):
         cols[x].append(n.val)
         q.append((n.left,  x - 1))
         q.append((n.right, x + 1))
-    return [cols[k] for k in sorted(cols)]` },
+    return [cols[k] for k in sorted(cols)]`,
+      },
     ],
   },
   {
@@ -321,8 +370,9 @@ def vertical(root):
     difficulty: "Intermediate",
     readMinutes: 3,
     sections: [
-      { type: "code", code:
-`from collections import deque
+      {
+        type: "code",
+        code: `from collections import deque
 def zigzag(root):
     if not root: return []
     q, out, ltr = deque([root]), [], True
@@ -335,7 +385,8 @@ def zigzag(root):
             if n.right: q.append(n.right)
         out.append(lvl if ltr else lvl[::-1])
         ltr = not ltr
-    return out` },
+    return out`,
+      },
     ],
   },
   {
@@ -346,12 +397,16 @@ def zigzag(root):
     difficulty: "Intermediate",
     readMinutes: 4,
     sections: [
-      { type: "table", headers: ["View", "First visited per…"], rows: [
-        ["Top view", "horizontal distance (BFS)"],
-        ["Bottom view", "horizontal distance (BFS, last write wins)"],
-        ["Left view", "depth (BFS, first per level)"],
-        ["Right view", "depth (BFS, last per level)"],
-      ]},
+      {
+        type: "table",
+        headers: ["View", "First visited per…"],
+        rows: [
+          ["Top view", "horizontal distance (BFS)"],
+          ["Bottom view", "horizontal distance (BFS, last write wins)"],
+          ["Left view", "depth (BFS, first per level)"],
+          ["Right view", "depth (BFS, last per level)"],
+        ],
+      },
     ],
   },
   {
@@ -362,11 +417,13 @@ def zigzag(root):
     difficulty: "Beginner",
     readMinutes: 2,
     sections: [
-      { type: "code", code:
-`def mirror(root):
+      {
+        type: "code",
+        code: `def mirror(root):
     if not root: return None
     root.left, root.right = mirror(root.right), mirror(root.left)
-    return root` },
+    return root`,
+      },
     ],
   },
   {
@@ -377,8 +434,10 @@ def zigzag(root):
     difficulty: "Advanced",
     readMinutes: 4,
     sections: [
-      { type: "code", title: "preorder + inorder", code:
-`def build(preorder, inorder):
+      {
+        type: "code",
+        title: "preorder + inorder",
+        code: `def build(preorder, inorder):
     idx = {v: i for i, v in enumerate(inorder)}
     it = iter(preorder)
     def go(l, r):
@@ -389,7 +448,8 @@ def zigzag(root):
         n.left  = go(l, i - 1)
         n.right = go(i + 1, r)
         return n
-    return go(0, len(inorder) - 1)` },
+    return go(0, len(inorder) - 1)`,
+      },
     ],
   },
   {
@@ -400,16 +460,19 @@ def zigzag(root):
     difficulty: "Beginner",
     readMinutes: 3,
     sections: [
-      { type: "complexity", rows: [
-        { op: "DFS / BFS / traversals", time: "O(n)", space: "O(h) / O(w)" },
-        { op: "Height / depth / size", time: "O(n)", space: "O(h)" },
-        { op: "Diameter", time: "O(n)", space: "O(h)" },
-        { op: "LCA (general binary tree)", time: "O(n)", space: "O(h)" },
-        { op: "LCA (BST)", time: "O(h)", space: "O(1)" },
-        { op: "Balanced check", time: "O(n)", space: "O(h)" },
-        { op: "Serialize / deserialize", time: "O(n)", space: "O(n)" },
-        { op: "Reconstruction from two orders", time: "O(n)", space: "O(n)" },
-      ]},
+      {
+        type: "complexity",
+        rows: [
+          { op: "DFS / BFS / traversals", time: "O(n)", space: "O(h) / O(w)" },
+          { op: "Height / depth / size", time: "O(n)", space: "O(h)" },
+          { op: "Diameter", time: "O(n)", space: "O(h)" },
+          { op: "LCA (general binary tree)", time: "O(n)", space: "O(h)" },
+          { op: "LCA (BST)", time: "O(h)", space: "O(1)" },
+          { op: "Balanced check", time: "O(n)", space: "O(h)" },
+          { op: "Serialize / deserialize", time: "O(n)", space: "O(n)" },
+          { op: "Reconstruction from two orders", time: "O(n)", space: "O(n)" },
+        ],
+      },
     ],
   },
   {
@@ -420,24 +483,76 @@ def zigzag(root):
     difficulty: "Intermediate",
     readMinutes: 4,
     sections: [
-      { type: "practice", groups: [
-        { level: "Beginner", items: [
-          { title: "LC 104 · Max Depth", url: "https://leetcode.com/problems/maximum-depth-of-binary-tree/", difficulty: "Easy" },
-          { title: "LC 226 · Invert Binary Tree", url: "https://leetcode.com/problems/invert-binary-tree/", difficulty: "Easy" },
-          { title: "LC 543 · Diameter", url: "https://leetcode.com/problems/diameter-of-binary-tree/", difficulty: "Easy" },
-        ]},
-        { level: "Intermediate", items: [
-          { title: "LC 102 · Level Order", url: "https://leetcode.com/problems/binary-tree-level-order-traversal/", difficulty: "Medium" },
-          { title: "LC 236 · LCA of Binary Tree", url: "https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree/", difficulty: "Medium" },
-          { title: "LC 199 · Right Side View", url: "https://leetcode.com/problems/binary-tree-right-side-view/", difficulty: "Medium" },
-          { title: "LC 103 · Zigzag Level Order", url: "https://leetcode.com/problems/binary-tree-zigzag-level-order-traversal/", difficulty: "Medium" },
-        ]},
-        { level: "Advanced", items: [
-          { title: "LC 297 · Serialize / Deserialize", url: "https://leetcode.com/problems/serialize-and-deserialize-binary-tree/", difficulty: "Hard" },
-          { title: "LC 124 · Max Path Sum", url: "https://leetcode.com/problems/binary-tree-maximum-path-sum/", difficulty: "Hard" },
-          { title: "LC 987 · Vertical Order Traversal", url: "https://leetcode.com/problems/vertical-order-traversal-of-a-binary-tree/", difficulty: "Hard" },
-        ]},
-      ]},
+      {
+        type: "practice",
+        groups: [
+          {
+            level: "Beginner",
+            items: [
+              {
+                title: "LC 104 · Max Depth",
+                url: "https://leetcode.com/problems/maximum-depth-of-binary-tree/",
+                difficulty: "Easy",
+              },
+              {
+                title: "LC 226 · Invert Binary Tree",
+                url: "https://leetcode.com/problems/invert-binary-tree/",
+                difficulty: "Easy",
+              },
+              {
+                title: "LC 543 · Diameter",
+                url: "https://leetcode.com/problems/diameter-of-binary-tree/",
+                difficulty: "Easy",
+              },
+            ],
+          },
+          {
+            level: "Intermediate",
+            items: [
+              {
+                title: "LC 102 · Level Order",
+                url: "https://leetcode.com/problems/binary-tree-level-order-traversal/",
+                difficulty: "Medium",
+              },
+              {
+                title: "LC 236 · LCA of Binary Tree",
+                url: "https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree/",
+                difficulty: "Medium",
+              },
+              {
+                title: "LC 199 · Right Side View",
+                url: "https://leetcode.com/problems/binary-tree-right-side-view/",
+                difficulty: "Medium",
+              },
+              {
+                title: "LC 103 · Zigzag Level Order",
+                url: "https://leetcode.com/problems/binary-tree-zigzag-level-order-traversal/",
+                difficulty: "Medium",
+              },
+            ],
+          },
+          {
+            level: "Advanced",
+            items: [
+              {
+                title: "LC 297 · Serialize / Deserialize",
+                url: "https://leetcode.com/problems/serialize-and-deserialize-binary-tree/",
+                difficulty: "Hard",
+              },
+              {
+                title: "LC 124 · Max Path Sum",
+                url: "https://leetcode.com/problems/binary-tree-maximum-path-sum/",
+                difficulty: "Hard",
+              },
+              {
+                title: "LC 987 · Vertical Order Traversal",
+                url: "https://leetcode.com/problems/vertical-order-traversal-of-a-binary-tree/",
+                difficulty: "Hard",
+              },
+            ],
+          },
+        ],
+      },
     ],
   },
   {
@@ -448,13 +563,16 @@ def zigzag(root):
     difficulty: "Intermediate",
     readMinutes: 3,
     sections: [
-      { type: "interview", items: [
-        "How do you find the diameter of a binary tree in one pass?",
-        "How do LCA algorithms differ between a general binary tree and a BST?",
-        "Which traversal reconstructs a BST from a single output list?",
-        "How would you serialise a tree with duplicate values?",
-        "Design an iterator that returns the next inorder value in O(1) amortised.",
-      ]},
+      {
+        type: "interview",
+        items: [
+          "How do you find the diameter of a binary tree in one pass?",
+          "How do LCA algorithms differ between a general binary tree and a BST?",
+          "Which traversal reconstructs a BST from a single output list?",
+          "How would you serialise a tree with duplicate values?",
+          "Design an iterator that returns the next inorder value in O(1) amortised.",
+        ],
+      },
     ],
   },
 ];

@@ -40,7 +40,8 @@ export function QueuePlayground({
       return;
     }
     const v = value.trim();
-    const parsed = v === "" ? Math.floor(Math.random() * 90) + 10 : /^-?\d+$/.test(v) ? Number(v) : v;
+    const parsed =
+      v === "" ? Math.floor(Math.random() * 90) + 10 : /^-?\d+$/.test(v) ? Number(v) : v;
     setQ((s) => [...s, parsed]);
     setValue("");
     setLastOp("enqueue");
@@ -85,7 +86,12 @@ export function QueuePlayground({
           className="min-w-0 flex-1 rounded-md border border-border bg-background px-3 py-1.5 text-sm"
         />
         <div className="flex flex-wrap gap-2">
-          <Btn onClick={enqueue} icon={<Plus className="h-3.5 w-3.5" />} label="Enqueue" tone="brand" />
+          <Btn
+            onClick={enqueue}
+            icon={<Plus className="h-3.5 w-3.5" />}
+            label="Enqueue"
+            tone="brand"
+          />
           <Btn onClick={dequeue} icon={<Minus className="h-3.5 w-3.5" />} label="Dequeue" />
           <Btn onClick={peek} icon={<Eye className="h-3.5 w-3.5" />} label="Peek" />
           <Btn onClick={reset} icon={<RotateCcw className="h-3.5 w-3.5" />} label="Reset" />
@@ -119,7 +125,17 @@ export function QueuePlayground({
   );
 }
 
-function Btn({ onClick, icon, label, tone }: { onClick: () => void; icon: React.ReactNode; label: string; tone?: "brand" }) {
+function Btn({
+  onClick,
+  icon,
+  label,
+  tone,
+}: {
+  onClick: () => void;
+  icon: React.ReactNode;
+  label: string;
+  tone?: "brand";
+}) {
   return (
     <button
       onClick={onClick}

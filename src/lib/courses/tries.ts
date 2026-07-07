@@ -42,25 +42,29 @@ export const triesCourse: Course = {
     {
       slug: "prefix-match",
       title: "Prefix Match",
-      theory: "Same walk as search, but success is 'we reached the end of the prefix', regardless of whether that node is end-of-word.",
+      theory:
+        "Same walk as search, but success is 'we reached the end of the prefix', regardless of whether that node is end-of-word.",
       code: `def starts_with(root, prefix):\n    cur = root\n    for ch in prefix:\n        if ch not in cur.kids: return False\n        cur = cur.kids[ch]\n    return True`,
     },
     {
       slug: "deletion",
       title: "Deletion",
-      theory: "Unset the end-of-word flag on the terminal node. Optionally walk back up and prune nodes that have no children and no end flag.",
+      theory:
+        "Unset the end-of-word flag on the terminal node. Optionally walk back up and prune nodes that have no children and no end flag.",
       code: `def delete(root, word):\n    def rec(node, i):\n        if i == len(word):\n            node.end = False\n        else:\n            ch = word[i]\n            if ch in node.kids and rec(node.kids[ch], i+1):\n                del node.kids[ch]\n        return not node.end and not node.kids\n    rec(root, 0)`,
     },
     {
       slug: "autocomplete",
       title: "Autocomplete",
-      theory: "After locating the prefix node, DFS from there and yield every path that ends with `end=True`.",
+      theory:
+        "After locating the prefix node, DFS from there and yield every path that ends with `end=True`.",
       code: `def suggest(root, prefix):\n    cur = root\n    for ch in prefix:\n        if ch not in cur.kids: return []\n        cur = cur.kids[ch]\n    out = []\n    def dfs(node, path):\n        if node.end: out.append(prefix + "".join(path))\n        for ch, child in node.kids.items():\n            path.append(ch); dfs(child, path); path.pop()\n    dfs(cur, [])\n    return out`,
     },
     {
       slug: "spell-check",
       title: "Spell Checker",
-      theory: "Combine trie traversal with edit-distance to enumerate every dictionary word within k edits — the algorithm behind most fuzzy-search boxes.",
+      theory:
+        "Combine trie traversal with edit-distance to enumerate every dictionary word within k edits — the algorithm behind most fuzzy-search boxes.",
     },
     {
       slug: "compressed-trie",
@@ -102,10 +106,26 @@ export const triesCourse: Course = {
       slug: "practice",
       title: "Practice",
       practice: [
-        { title: "LC 208 · Implement Trie", url: "https://leetcode.com/problems/implement-trie-prefix-tree/", difficulty: "Medium" },
-        { title: "LC 212 · Word Search II", url: "https://leetcode.com/problems/word-search-ii/", difficulty: "Hard" },
-        { title: "LC 648 · Replace Words", url: "https://leetcode.com/problems/replace-words/", difficulty: "Medium" },
-        { title: "LC 642 · Autocomplete System", url: "https://leetcode.com/problems/design-search-autocomplete-system/", difficulty: "Hard" },
+        {
+          title: "LC 208 · Implement Trie",
+          url: "https://leetcode.com/problems/implement-trie-prefix-tree/",
+          difficulty: "Medium",
+        },
+        {
+          title: "LC 212 · Word Search II",
+          url: "https://leetcode.com/problems/word-search-ii/",
+          difficulty: "Hard",
+        },
+        {
+          title: "LC 648 · Replace Words",
+          url: "https://leetcode.com/problems/replace-words/",
+          difficulty: "Medium",
+        },
+        {
+          title: "LC 642 · Autocomplete System",
+          url: "https://leetcode.com/problems/design-search-autocomplete-system/",
+          difficulty: "Hard",
+        },
       ],
     },
     {
@@ -122,7 +142,10 @@ export const triesCourse: Course = {
       slug: "references",
       title: "References",
       references: [
-        { label: "Sedgewick — Algorithms Ch 5 (Tries)", url: "https://algs4.cs.princeton.edu/52trie/" },
+        {
+          label: "Sedgewick — Algorithms Ch 5 (Tries)",
+          url: "https://algs4.cs.princeton.edu/52trie/",
+        },
       ],
     },
   ],

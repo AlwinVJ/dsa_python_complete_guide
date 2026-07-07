@@ -1,10 +1,27 @@
 import { useMemo, useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
-  BookOpen, CheckCircle2, ChevronDown, Circle, Clock, ExternalLink,
-  Filter, Search, Sparkles, Bookmark, BookmarkCheck, StickyNote, Trophy,
+  BookOpen,
+  CheckCircle2,
+  ChevronDown,
+  Circle,
+  Clock,
+  ExternalLink,
+  Filter,
+  Search,
+  Sparkles,
+  Bookmark,
+  BookmarkCheck,
+  StickyNote,
+  Trophy,
 } from "lucide-react";
-import type { Question, ModuleBank, Difficulty, QuestionCategory, Approach } from "@/lib/question-bank/types";
+import type {
+  Question,
+  ModuleBank,
+  Difficulty,
+  QuestionCategory,
+  Approach,
+} from "@/lib/question-bank/types";
 import { CATEGORY_LABELS } from "@/lib/question-bank";
 import { CodeBlock } from "@/components/CodeBlock";
 import { useLocalSet } from "@/lib/useLocalSet";
@@ -18,14 +35,30 @@ const DIFF_COLOR: Record<Difficulty, string> = {
 };
 
 const CATEGORIES: QuestionCategory[] = [
-  "theory", "implementation", "intermediate", "advanced", "edge-case", "optimization", "interview",
+  "theory",
+  "implementation",
+  "intermediate",
+  "advanced",
+  "edge-case",
+  "optimization",
+  "interview",
 ];
 
-function Pill({ children, color = "hsl(var(--muted-foreground))" }: { children: React.ReactNode; color?: string }) {
+function Pill({
+  children,
+  color = "hsl(var(--muted-foreground))",
+}: {
+  children: React.ReactNode;
+  color?: string;
+}) {
   return (
     <span
       className="inline-flex items-center rounded border px-1.5 py-0.5 text-[10px] font-medium"
-      style={{ borderColor: color, color, background: `color-mix(in oklab, ${color} 12%, transparent)` }}
+      style={{
+        borderColor: color,
+        color,
+        background: `color-mix(in oklab, ${color} 12%, transparent)`,
+      }}
     >
       {children}
     </span>
@@ -43,7 +76,9 @@ function ApproachTabs({ approaches }: { approaches: Approach[] }) {
             key={ap.name}
             onClick={() => setI(idx)}
             className={`rounded px-2.5 py-1 text-xs font-medium transition ${
-              i === idx ? "bg-[color:var(--brand)] text-primary-foreground" : "border border-border bg-card text-muted-foreground hover:text-foreground"
+              i === idx
+                ? "bg-[color:var(--brand)] text-primary-foreground"
+                : "border border-border bg-card text-muted-foreground hover:text-foreground"
             }`}
           >
             {ap.name}
@@ -65,21 +100,37 @@ function useNotes(qid: string) {
   const [val, setVal] = useState("");
   useEffect(() => {
     if (typeof window === "undefined") return;
-    try { setVal(localStorage.getItem(key) ?? ""); } catch { /* noop */ }
+    try {
+      setVal(localStorage.getItem(key) ?? "");
+    } catch {
+      /* noop */
+    }
   }, [key]);
   const save = (v: string) => {
     setVal(v);
-    try { localStorage.setItem(key, v); } catch { /* noop */ }
+    try {
+      localStorage.setItem(key, v);
+    } catch {
+      /* noop */
+    }
   };
   return [val, save] as const;
 }
 
 const FLOW = ["Theory", "Visualize", "Python", "Complexity", "Related", "Notes"] as const;
-type FlowStep = typeof FLOW[number];
+type FlowStep = (typeof FLOW)[number];
 
 function QuestionCard({
-  q, allQs, solvedKey, bookmarkKey,
-}: { q: Question; allQs: Question[]; solvedKey: string; bookmarkKey: string }) {
+  q,
+  allQs,
+  solvedKey,
+  bookmarkKey,
+}: {
+  q: Question;
+  allQs: Question[];
+  solvedKey: string;
+  bookmarkKey: string;
+}) {
   const [open, setOpen] = useState(false);
   const [step, setStep] = useState<FlowStep>("Theory");
   const [revealed, setRevealed] = useState(false);
@@ -90,21 +141,31 @@ function QuestionCard({
   const isSaved = bookmarks.has(q.id);
   const diffColor = DIFF_COLOR[q.difficulty];
 
-  const related = (q.relatedQuestions ?? []).map((id) => allQs.find((x) => x.id === id)).filter(Boolean) as Question[];
+  const related = (q.relatedQuestions ?? [])
+    .map((id) => allQs.find((x) => x.id === id))
+    .filter(Boolean) as Question[];
 
   return (
-    <div className={`rounded-lg border border-border bg-card transition ${isDone ? "opacity-80" : ""}`}>
+    <div
+      className={`rounded-lg border border-border bg-card transition ${isDone ? "opacity-80" : ""}`}
+    >
       <div className="flex items-start gap-3 p-3">
         <button
           onClick={() => solved.toggle(q.id)}
           className="mt-0.5 shrink-0 text-muted-foreground hover:text-[color:var(--good)]"
           aria-label={isDone ? "Mark not solved" : "Mark solved"}
         >
-          {isDone ? <CheckCircle2 className="h-5 w-5 text-[color:var(--good)]" /> : <Circle className="h-5 w-5" />}
+          {isDone ? (
+            <CheckCircle2 className="h-5 w-5 text-[color:var(--good)]" />
+          ) : (
+            <Circle className="h-5 w-5" />
+          )}
         </button>
         <button onClick={() => setOpen((o) => !o)} className="min-w-0 flex-1 text-left">
           <div className="flex flex-wrap items-center gap-2">
-            <span className={`text-sm font-semibold ${isDone ? "line-through" : ""}`}>{q.title}</span>
+            <span className={`text-sm font-semibold ${isDone ? "line-through" : ""}`}>
+              {q.title}
+            </span>
             <Pill color={diffColor}>{q.difficulty}</Pill>
             <Pill>{CATEGORY_LABELS[q.category]}</Pill>
             {q.pattern && <Pill>{q.pattern}</Pill>}
@@ -124,9 +185,15 @@ function QuestionCard({
           className="shrink-0 text-muted-foreground hover:text-[color:var(--brand)]"
           aria-label={isSaved ? "Remove bookmark" : "Bookmark"}
         >
-          {isSaved ? <BookmarkCheck className="h-4 w-4 text-[color:var(--brand)]" /> : <Bookmark className="h-4 w-4" />}
+          {isSaved ? (
+            <BookmarkCheck className="h-4 w-4 text-[color:var(--brand)]" />
+          ) : (
+            <Bookmark className="h-4 w-4" />
+          )}
         </button>
-        <ChevronDown className={`h-4 w-4 shrink-0 text-muted-foreground transition ${open ? "rotate-180" : ""}`} />
+        <ChevronDown
+          className={`h-4 w-4 shrink-0 text-muted-foreground transition ${open ? "rotate-180" : ""}`}
+        />
       </div>
 
       <AnimatePresence initial={false}>
@@ -140,7 +207,11 @@ function QuestionCard({
             <div className="p-4">
               {/* metadata strip */}
               <div className="mb-3 flex flex-wrap gap-2 text-[11px] text-muted-foreground">
-                {q.topic && <span>Topic: <span className="text-foreground">{q.topic}</span></span>}
+                {q.topic && (
+                  <span>
+                    Topic: <span className="text-foreground">{q.topic}</span>
+                  </span>
+                )}
                 {q.relatedDataStructure && <span>· DS: {q.relatedDataStructure}</span>}
                 {q.relatedAlgorithm && <span>· Pattern: {q.relatedAlgorithm}</span>}
                 {q.companies && q.companies.length > 0 && (
@@ -155,7 +226,9 @@ function QuestionCard({
                     key={s}
                     onClick={() => setStep(s)}
                     className={`border-b-2 px-2.5 py-1.5 text-xs transition ${
-                      step === s ? "border-[color:var(--brand)] text-foreground" : "border-transparent text-muted-foreground hover:text-foreground"
+                      step === s
+                        ? "border-[color:var(--brand)] text-foreground"
+                        : "border-transparent text-muted-foreground hover:text-foreground"
                     }`}
                   >
                     {s}
@@ -168,9 +241,13 @@ function QuestionCard({
                   <p>{q.description}</p>
                   {q.hints && q.hints.length > 0 && (
                     <details className="rounded border border-border bg-background p-2 text-xs">
-                      <summary className="cursor-pointer font-medium">Hints ({q.hints.length})</summary>
+                      <summary className="cursor-pointer font-medium">
+                        Hints ({q.hints.length})
+                      </summary>
                       <ol className="mt-2 list-decimal space-y-1 pl-5 text-muted-foreground">
-                        {q.hints.map((h, i) => <li key={i}>{h}</li>)}
+                        {q.hints.map((h, i) => (
+                          <li key={i}>{h}</li>
+                        ))}
                       </ol>
                     </details>
                   )}
@@ -183,7 +260,9 @@ function QuestionCard({
                     ? `Interactive ${q.visualizationType} visualization available on the module page's Visualization tab.`
                     : "No dedicated visualization for this question. Trace it on paper with a small example."}
                   {q.dryRun && (
-                    <pre className="mt-3 whitespace-pre-wrap rounded bg-background p-3 font-mono text-[11px] text-foreground">{q.dryRun}</pre>
+                    <pre className="mt-3 whitespace-pre-wrap rounded bg-background p-3 font-mono text-[11px] text-foreground">
+                      {q.dryRun}
+                    </pre>
                   )}
                 </div>
               )}
@@ -200,11 +279,15 @@ function QuestionCard({
                   )}
                   {revealed && (
                     <>
-                      {q.approaches && q.approaches.length > 0
-                        ? <ApproachTabs approaches={q.approaches} />
-                        : q.pythonSolution
-                          ? <CodeBlock code={q.pythonSolution} title={`${q.id}.py`} />
-                          : <p className="text-xs text-muted-foreground">Solution walkthrough coming soon.</p>}
+                      {q.approaches && q.approaches.length > 0 ? (
+                        <ApproachTabs approaches={q.approaches} />
+                      ) : q.pythonSolution ? (
+                        <CodeBlock code={q.pythonSolution} title={`${q.id}.py`} />
+                      ) : (
+                        <p className="text-xs text-muted-foreground">
+                          Solution walkthrough coming soon.
+                        </p>
+                      )}
                     </>
                   )}
                 </div>
@@ -214,16 +297,31 @@ function QuestionCard({
                 <div className="grid gap-3 sm:grid-cols-2">
                   {q.approaches && q.approaches.length > 0 ? (
                     q.approaches.map((a) => (
-                      <div key={a.name} className="rounded border border-border bg-background p-3 text-xs">
+                      <div
+                        key={a.name}
+                        className="rounded border border-border bg-background p-3 text-xs"
+                      >
                         <div className="mb-1 font-semibold">{a.name}</div>
-                        <div>Time: <span className="font-mono text-[color:var(--brand)]">{a.time}</span></div>
-                        <div>Space: <span className="font-mono">{a.space}</span></div>
+                        <div>
+                          Time:{" "}
+                          <span className="font-mono text-[color:var(--brand)]">{a.time}</span>
+                        </div>
+                        <div>
+                          Space: <span className="font-mono">{a.space}</span>
+                        </div>
                       </div>
                     ))
                   ) : (
                     <div className="rounded border border-border bg-background p-3 text-xs">
-                      <div>Time: <span className="font-mono text-[color:var(--brand)]">{q.timeComplexity ?? "—"}</span></div>
-                      <div>Space: <span className="font-mono">{q.spaceComplexity ?? "—"}</span></div>
+                      <div>
+                        Time:{" "}
+                        <span className="font-mono text-[color:var(--brand)]">
+                          {q.timeComplexity ?? "—"}
+                        </span>
+                      </div>
+                      <div>
+                        Space: <span className="font-mono">{q.spaceComplexity ?? "—"}</span>
+                      </div>
                     </div>
                   )}
                 </div>
@@ -237,7 +335,12 @@ function QuestionCard({
                       <ul className="space-y-1">
                         {q.leetcodeLinks.map((l) => (
                           <li key={l.url}>
-                            <a href={l.url} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 text-[color:var(--brand)] hover:underline">
+                            <a
+                              href={l.url}
+                              target="_blank"
+                              rel="noreferrer"
+                              className="inline-flex items-center gap-1 text-[color:var(--brand)] hover:underline"
+                            >
                               {l.title} <ExternalLink className="h-3 w-3" />
                             </a>
                           </li>
@@ -251,7 +354,12 @@ function QuestionCard({
                       <ul className="space-y-1">
                         {q.hackerRankLinks.map((l) => (
                           <li key={l.url}>
-                            <a href={l.url} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 text-[color:var(--brand)] hover:underline">
+                            <a
+                              href={l.url}
+                              target="_blank"
+                              rel="noreferrer"
+                              className="inline-flex items-center gap-1 text-[color:var(--brand)] hover:underline"
+                            >
                               {l.title} <ExternalLink className="h-3 w-3" />
                             </a>
                           </li>
@@ -264,7 +372,9 @@ function QuestionCard({
                       <div className="mb-1 font-semibold">You should solve these next</div>
                       <ul className="space-y-1">
                         {related.map((r) => (
-                          <li key={r.id} className="text-muted-foreground">↳ {r.title}</li>
+                          <li key={r.id} className="text-muted-foreground">
+                            ↳ {r.title}
+                          </li>
                         ))}
                       </ul>
                     </div>
@@ -313,7 +423,13 @@ export function QuestionBank({ bank, filterTopic }: { bank: ModuleBank; filterTo
       if (onlyOpen === "unsolved" && solved.has(q.id)) return false;
       if (onlyOpen === "solved" && !solved.has(q.id)) return false;
       if (onlyOpen === "bookmarked" && !bookmarks.has(q.id)) return false;
-      if (t && !`${q.title} ${q.description} ${q.tags?.join(" ") ?? ""} ${q.pattern ?? ""}`.toLowerCase().includes(t)) return false;
+      if (
+        t &&
+        !`${q.title} ${q.description} ${q.tags?.join(" ") ?? ""} ${q.pattern ?? ""}`
+          .toLowerCase()
+          .includes(t)
+      )
+        return false;
       return true;
     });
   }, [bank.questions, category, diff, onlyOpen, search, solved, bookmarks, filterTopic]);
@@ -337,7 +453,11 @@ export function QuestionBank({ bank, filterTopic }: { bank: ModuleBank; filterTo
         </div>
         <div className="flex items-center gap-3">
           <div className="h-2 w-40 overflow-hidden rounded-full bg-accent">
-            <motion.div className="h-full gradient-brand" initial={{ width: 0 }} animate={{ width: `${pct}%` }} />
+            <motion.div
+              className="h-full gradient-brand"
+              initial={{ width: 0 }}
+              animate={{ width: `${pct}%` }}
+            />
           </div>
           {complete && (
             <span className="inline-flex items-center gap-1 rounded-md bg-emerald-500/15 px-2 py-1 text-xs font-semibold text-emerald-600 dark:text-emerald-400">
@@ -358,13 +478,25 @@ export function QuestionBank({ bank, filterTopic }: { bank: ModuleBank; filterTo
             className="w-full rounded border border-input bg-background py-1.5 pl-7 pr-2 text-xs outline-none focus:ring-2 focus:ring-[color:var(--brand)]"
           />
         </div>
-        <select value={diff} onChange={(e) => setDiff(e.target.value as Difficulty | "all")} className="rounded border border-input bg-background px-2 py-1.5 text-xs">
+        <select
+          value={diff}
+          onChange={(e) => setDiff(e.target.value as Difficulty | "all")}
+          className="rounded border border-input bg-background px-2 py-1.5 text-xs"
+        >
           <option value="all">All difficulty</option>
-          {(["Beginner", "Intermediate", "Advanced", "Interview", "Competitive"] as Difficulty[]).map((d) => (
-            <option key={d} value={d}>{d}</option>
+          {(
+            ["Beginner", "Intermediate", "Advanced", "Interview", "Competitive"] as Difficulty[]
+          ).map((d) => (
+            <option key={d} value={d}>
+              {d}
+            </option>
           ))}
         </select>
-        <select value={onlyOpen} onChange={(e) => setOnlyOpen(e.target.value as typeof onlyOpen)} className="rounded border border-input bg-background px-2 py-1.5 text-xs">
+        <select
+          value={onlyOpen}
+          onChange={(e) => setOnlyOpen(e.target.value as typeof onlyOpen)}
+          className="rounded border border-input bg-background px-2 py-1.5 text-xs"
+        >
           <option value="all">All</option>
           <option value="unsolved">Unsolved</option>
           <option value="solved">Solved</option>
@@ -378,7 +510,9 @@ export function QuestionBank({ bank, filterTopic }: { bank: ModuleBank; filterTo
         <button
           onClick={() => setCategory("all")}
           className={`rounded-full px-3 py-1 text-xs font-medium transition ${
-            category === "all" ? "bg-[color:var(--brand)] text-primary-foreground" : "border border-border bg-card text-muted-foreground hover:text-foreground"
+            category === "all"
+              ? "bg-[color:var(--brand)] text-primary-foreground"
+              : "border border-border bg-card text-muted-foreground hover:text-foreground"
           }`}
         >
           All ({bank.questions.length})
@@ -391,7 +525,9 @@ export function QuestionBank({ bank, filterTopic }: { bank: ModuleBank; filterTo
               key={c}
               onClick={() => setCategory(c)}
               className={`rounded-full px-3 py-1 text-xs font-medium transition ${
-                category === c ? "bg-[color:var(--brand)] text-primary-foreground" : "border border-border bg-card text-muted-foreground hover:text-foreground"
+                category === c
+                  ? "bg-[color:var(--brand)] text-primary-foreground"
+                  : "border border-border bg-card text-muted-foreground hover:text-foreground"
               }`}
             >
               {CATEGORY_LABELS[c]} ({n})
@@ -408,7 +544,13 @@ export function QuestionBank({ bank, filterTopic }: { bank: ModuleBank; filterTo
           </div>
         ) : (
           filtered.map((q) => (
-            <QuestionCard key={q.id} q={q} allQs={bank.questions} solvedKey={solvedKey} bookmarkKey={bookmarkKey} />
+            <QuestionCard
+              key={q.id}
+              q={q}
+              allQs={bank.questions}
+              solvedKey={solvedKey}
+              bookmarkKey={bookmarkKey}
+            />
           ))
         )}
       </div>
@@ -441,7 +583,9 @@ export function RevisionSheet({ bank }: { bank: ModuleBank }) {
           <div className="mb-2 text-sm font-semibold">Key formulas & patterns</div>
           <ul className="space-y-1">
             {r.formulas.map((f, i) => (
-              <li key={i} className="rounded border border-border bg-card p-2 font-mono text-xs">{f}</li>
+              <li key={i} className="rounded border border-border bg-card p-2 font-mono text-xs">
+                {f}
+              </li>
             ))}
           </ul>
         </div>
@@ -452,7 +596,10 @@ export function RevisionSheet({ bank }: { bank: ModuleBank }) {
         <div className="overflow-hidden rounded-lg border border-border">
           <table className="w-full text-xs">
             <thead className="bg-muted/50">
-              <tr><th className="px-3 py-2 text-left">Operation</th><th className="px-3 py-2 text-left">Time</th></tr>
+              <tr>
+                <th className="px-3 py-2 text-left">Operation</th>
+                <th className="px-3 py-2 text-left">Time</th>
+              </tr>
             </thead>
             <tbody>
               {r.timeComplexity.map((row) => (
@@ -472,7 +619,10 @@ export function RevisionSheet({ bank }: { bank: ModuleBank }) {
           <div className="overflow-hidden rounded-lg border border-border">
             <table className="w-full text-xs">
               <thead className="bg-muted/50">
-                <tr><th className="px-3 py-2 text-left">Situation</th><th className="px-3 py-2 text-left">Space</th></tr>
+                <tr>
+                  <th className="px-3 py-2 text-left">Situation</th>
+                  <th className="px-3 py-2 text-left">Space</th>
+                </tr>
               </thead>
               <tbody>
                 {r.spaceComplexity.map((row) => (
@@ -491,13 +641,17 @@ export function RevisionSheet({ bank }: { bank: ModuleBank }) {
         <div className="rounded-lg border border-border bg-card p-4">
           <div className="mb-2 text-sm font-semibold">Common mistakes</div>
           <ul className="list-disc space-y-1 pl-5 text-xs text-muted-foreground">
-            {r.commonMistakes.map((m, i) => <li key={i}>{m}</li>)}
+            {r.commonMistakes.map((m, i) => (
+              <li key={i}>{m}</li>
+            ))}
           </ul>
         </div>
         <div className="rounded-lg border border-border bg-card p-4">
           <div className="mb-2 text-sm font-semibold">Memory tricks</div>
           <ul className="list-disc space-y-1 pl-5 text-xs text-muted-foreground">
-            {r.memoryTricks.map((m, i) => <li key={i}>{m}</li>)}
+            {r.memoryTricks.map((m, i) => (
+              <li key={i}>{m}</li>
+            ))}
           </ul>
         </div>
       </div>

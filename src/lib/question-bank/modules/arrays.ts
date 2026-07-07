@@ -4,17 +4,53 @@ export const arraysBank: ModuleBank = {
   moduleSlug: "arrays",
   moduleTitle: "Arrays & Python Lists",
   edgeCases: [
-    { case: "Empty array", why: "Most algorithms need a guard: len(arr) == 0 to avoid IndexError.", example: "arr = []" },
-    { case: "Single element", why: "Two-pointer and window logic often collapses; return early.", example: "arr = [5]" },
-    { case: "All duplicates", why: "Sets/frequency approaches degenerate; watch for O(n²) with naive scan.", example: "arr = [3,3,3,3]" },
-    { case: "Already sorted", why: "Best case for many algorithms — verify complexity stays bounded.", example: "arr = [1,2,3,4,5]" },
-    { case: "Reverse sorted", why: "Worst case for many sorts, particularly quicksort with naive pivot.", example: "arr = [9,7,5,3,1]" },
-    { case: "Negative numbers", why: "Prefix sums, Kadane's, and min/max init to 0 fail.", example: "arr = [-3,-1,-4]" },
-    { case: "Very large input", why: "Watch O(n²) — 10^5 items = 10^10 ops = timeout.", example: "n = 10**6" },
-    { case: "Off-by-one at boundaries", why: "Loops using range(len(arr)-1) are the #1 bug source.", example: "for i in range(n-1)" },
+    {
+      case: "Empty array",
+      why: "Most algorithms need a guard: len(arr) == 0 to avoid IndexError.",
+      example: "arr = []",
+    },
+    {
+      case: "Single element",
+      why: "Two-pointer and window logic often collapses; return early.",
+      example: "arr = [5]",
+    },
+    {
+      case: "All duplicates",
+      why: "Sets/frequency approaches degenerate; watch for O(n²) with naive scan.",
+      example: "arr = [3,3,3,3]",
+    },
+    {
+      case: "Already sorted",
+      why: "Best case for many algorithms — verify complexity stays bounded.",
+      example: "arr = [1,2,3,4,5]",
+    },
+    {
+      case: "Reverse sorted",
+      why: "Worst case for many sorts, particularly quicksort with naive pivot.",
+      example: "arr = [9,7,5,3,1]",
+    },
+    {
+      case: "Negative numbers",
+      why: "Prefix sums, Kadane's, and min/max init to 0 fail.",
+      example: "arr = [-3,-1,-4]",
+    },
+    {
+      case: "Very large input",
+      why: "Watch O(n²) — 10^5 items = 10^10 ops = timeout.",
+      example: "n = 10**6",
+    },
+    {
+      case: "Off-by-one at boundaries",
+      why: "Loops using range(len(arr)-1) are the #1 bug source.",
+      example: "for i in range(n-1)",
+    },
   ],
   revisionSheet: {
-    formulas: ["mid = left + (right - left) // 2", "prefix[i] = prefix[i-1] + arr[i]", "windowSum += arr[right] - arr[left]"],
+    formulas: [
+      "mid = left + (right - left) // 2",
+      "prefix[i] = prefix[i-1] + arr[i]",
+      "windowSum += arr[right] - arr[left]",
+    ],
     timeComplexity: [
       { op: "Access arr[i]", time: "O(1)" },
       { op: "Append", time: "O(1) amortized" },
@@ -76,7 +112,12 @@ export const arraysBank: ModuleBank = {
       description: "Reverse the elements of an array without using extra space.",
       hints: ["Two pointers from both ends.", "Swap and move inward until they meet."],
       approaches: [
-        { name: "Brute", code: "return arr[::-1]  # creates a new list (O(n) space)", time: "O(n)", space: "O(n)" },
+        {
+          name: "Brute",
+          code: "return arr[::-1]  # creates a new list (O(n) space)",
+          time: "O(n)",
+          space: "O(n)",
+        },
         {
           name: "Optimal",
           code: "l, r = 0, len(arr) - 1\nwhile l < r:\n    arr[l], arr[r] = arr[r], arr[l]\n    l += 1\n    r -= 1",
@@ -91,7 +132,13 @@ export const arraysBank: ModuleBank = {
       estimatedMinutes: 8,
       pattern: "Two Pointers",
       relatedDataStructure: "Array",
-      leetcodeLinks: [{ title: "Reverse String", url: "https://leetcode.com/problems/reverse-string/", difficulty: "Easy" }],
+      leetcodeLinks: [
+        {
+          title: "Reverse String",
+          url: "https://leetcode.com/problems/reverse-string/",
+          difficulty: "Easy",
+        },
+      ],
       tags: ["two-pointers", "in-place"],
       interviewFrequency: "High",
     },
@@ -102,7 +149,8 @@ export const arraysBank: ModuleBank = {
       category: "intermediate",
       difficulty: "Interview",
       topic: "Hashing",
-      description: "Given nums and target, return indices of the two numbers that add up to target.",
+      description:
+        "Given nums and target, return indices of the two numbers that add up to target.",
       hints: ["Brute force is O(n²).", "What if you stored complements in a hash map as you scan?"],
       approaches: [
         {
@@ -129,7 +177,9 @@ export const arraysBank: ModuleBank = {
       relatedAlgorithm: "hash-map",
       companies: ["Amazon", "Google", "Microsoft", "Meta", "Apple"],
       interviewFrequency: "Very High",
-      leetcodeLinks: [{ title: "1. Two Sum", url: "https://leetcode.com/problems/two-sum/", difficulty: "Easy" }],
+      leetcodeLinks: [
+        { title: "1. Two Sum", url: "https://leetcode.com/problems/two-sum/", difficulty: "Easy" },
+      ],
       relatedQuestions: ["q-arr-product-except", "q-arr-max-subarray"],
       tags: ["hash-map", "array", "must-do"],
     },
@@ -165,7 +215,13 @@ export const arraysBank: ModuleBank = {
       relatedAlgorithm: "kadane",
       companies: ["Amazon", "Microsoft", "Bloomberg"],
       interviewFrequency: "Very High",
-      leetcodeLinks: [{ title: "53. Maximum Subarray", url: "https://leetcode.com/problems/maximum-subarray/", difficulty: "Medium" }],
+      leetcodeLinks: [
+        {
+          title: "53. Maximum Subarray",
+          url: "https://leetcode.com/problems/maximum-subarray/",
+          difficulty: "Medium",
+        },
+      ],
       tags: ["dp", "kadane"],
     },
     {
@@ -175,8 +231,13 @@ export const arraysBank: ModuleBank = {
       category: "advanced",
       difficulty: "Interview",
       topic: "Prefix",
-      description: "Return an array such that answer[i] equals the product of all elements except nums[i]. No division allowed.",
-      hints: ["Prefix products from the left.", "Suffix products from the right.", "Combine in O(1) extra space."],
+      description:
+        "Return an array such that answer[i] equals the product of all elements except nums[i]. No division allowed.",
+      hints: [
+        "Prefix products from the left.",
+        "Suffix products from the right.",
+        "Combine in O(1) extra space.",
+      ],
       approaches: [
         {
           name: "Better",
@@ -197,7 +258,13 @@ export const arraysBank: ModuleBank = {
       pattern: "Prefix Sum",
       interviewFrequency: "Very High",
       companies: ["Amazon", "Meta", "Google"],
-      leetcodeLinks: [{ title: "238. Product of Array Except Self", url: "https://leetcode.com/problems/product-of-array-except-self/", difficulty: "Medium" }],
+      leetcodeLinks: [
+        {
+          title: "238. Product of Array Except Self",
+          url: "https://leetcode.com/problems/product-of-array-except-self/",
+          difficulty: "Medium",
+        },
+      ],
       tags: ["prefix", "must-do"],
     },
     {
@@ -219,7 +286,13 @@ export const arraysBank: ModuleBank = {
       ],
       estimatedMinutes: 15,
       pattern: "Reversal",
-      leetcodeLinks: [{ title: "189. Rotate Array", url: "https://leetcode.com/problems/rotate-array/", difficulty: "Medium" }],
+      leetcodeLinks: [
+        {
+          title: "189. Rotate Array",
+          url: "https://leetcode.com/problems/rotate-array/",
+          difficulty: "Medium",
+        },
+      ],
       tags: ["in-place", "reversal"],
       interviewFrequency: "High",
     },
@@ -230,8 +303,10 @@ export const arraysBank: ModuleBank = {
       category: "edge-case",
       difficulty: "Beginner",
       topic: "Edge Cases",
-      description: "Design your function so it returns a sensible default for `[]` and `[x]` before your main logic runs.",
-      pythonSolution: "def max_sum(arr):\n    if not arr: return 0\n    if len(arr) == 1: return arr[0]\n    # ... main logic\n    return sum(arr)",
+      description:
+        "Design your function so it returns a sensible default for `[]` and `[x]` before your main logic runs.",
+      pythonSolution:
+        "def max_sum(arr):\n    if not arr: return 0\n    if len(arr) == 1: return arr[0]\n    # ... main logic\n    return sum(arr)",
       estimatedMinutes: 5,
       tags: ["edge", "defensive"],
     },

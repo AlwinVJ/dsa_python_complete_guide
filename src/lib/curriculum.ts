@@ -29,32 +29,82 @@ export type Module = {
 // Roadmap (ordered progression)
 // -----------------------------------------------------------------------------
 export const ROADMAP: { slug: string; title: string; route: string; group: string }[] = [
-  { slug: "python-basics", title: "Prerequisites", route: "/modules/python-basics", group: "Foundations" },
+  {
+    slug: "python-basics",
+    title: "Prerequisites",
+    route: "/modules/python-basics",
+    group: "Foundations",
+  },
   { slug: "big-o", title: "Time Complexity (Big-O)", route: "/complexity", group: "Foundations" },
   { slug: "arrays", title: "Arrays & Python Lists", route: "/introduction", group: "Linear DS" },
   { slug: "strings", title: "Strings", route: "/modules/strings", group: "Linear DS" },
   { slug: "recursion", title: "Recursion", route: "/modules/recursion", group: "Foundations" },
   { slug: "searching", title: "Searching Algorithms", route: "/searching", group: "Algorithms" },
   { slug: "sorting", title: "Sorting Algorithms", route: "/sorting", group: "Algorithms" },
-  { slug: "linked-lists", title: "Linked Lists", route: "/modules/linked-lists", group: "Linear DS" },
+  {
+    slug: "linked-lists",
+    title: "Linked Lists",
+    route: "/modules/linked-lists",
+    group: "Linear DS",
+  },
   { slug: "stacks", title: "Stacks", route: "/modules/stacks", group: "Linear DS" },
   { slug: "queues", title: "Queues", route: "/modules/queues", group: "Linear DS" },
-  { slug: "hashing", title: "Hash Tables & Hashing", route: "/modules/hashing", group: "Linear DS" },
+  {
+    slug: "hashing",
+    title: "Hash Tables & Hashing",
+    route: "/modules/hashing",
+    group: "Linear DS",
+  },
   { slug: "trees", title: "Trees", route: "/modules/trees", group: "Non-Linear DS" },
   { slug: "bst", title: "Binary Search Trees", route: "/modules/bst", group: "Non-Linear DS" },
   { slug: "avl", title: "AVL Trees", route: "/modules/avl", group: "Non-Linear DS" },
   { slug: "heaps", title: "Heaps", route: "/modules/heaps", group: "Non-Linear DS" },
-  { slug: "priority-queues", title: "Priority Queues", route: "/modules/priority-queues", group: "Non-Linear DS" },
+  {
+    slug: "priority-queues",
+    title: "Priority Queues",
+    route: "/modules/priority-queues",
+    group: "Non-Linear DS",
+  },
   { slug: "tries", title: "Tries", route: "/modules/tries", group: "Non-Linear DS" },
   { slug: "graphs", title: "Graphs", route: "/modules/graphs", group: "Non-Linear DS" },
-  { slug: "graph-algorithms", title: "Graph Algorithms", route: "/modules/graph-algorithms", group: "Algorithms" },
+  {
+    slug: "graph-algorithms",
+    title: "Graph Algorithms",
+    route: "/modules/graph-algorithms",
+    group: "Algorithms",
+  },
   { slug: "greedy", title: "Greedy Algorithms", route: "/algorithms/greedy", group: "Patterns" },
-  { slug: "backtracking", title: "Backtracking", route: "/algorithms/backtracking", group: "Patterns" },
-  { slug: "divide-and-conquer", title: "Divide & Conquer", route: "/algorithms/divide-and-conquer", group: "Patterns" },
+  {
+    slug: "backtracking",
+    title: "Backtracking",
+    route: "/algorithms/backtracking",
+    group: "Patterns",
+  },
+  {
+    slug: "divide-and-conquer",
+    title: "Divide & Conquer",
+    route: "/algorithms/divide-and-conquer",
+    group: "Patterns",
+  },
   { slug: "dp", title: "Dynamic Programming", route: "/modules/dp", group: "Patterns" },
-  { slug: "advanced-graphs", title: "Advanced Graph Algorithms", route: "/modules/advanced-graphs", group: "Algorithms" },
-  { slug: "cp", title: "Competitive Programming Patterns", route: "/modules/cp", group: "Advanced" },
-  { slug: "interview", title: "Interview Preparation", route: "/modules/interview", group: "Advanced" },
+  {
+    slug: "advanced-graphs",
+    title: "Advanced Graph Algorithms",
+    route: "/modules/advanced-graphs",
+    group: "Algorithms",
+  },
+  {
+    slug: "cp",
+    title: "Competitive Programming Patterns",
+    route: "/modules/cp",
+    group: "Advanced",
+  },
+  {
+    slug: "interview",
+    title: "Interview Preparation",
+    route: "/modules/interview",
+    group: "Advanced",
+  },
 ];
 
 // -----------------------------------------------------------------------------
@@ -75,7 +125,13 @@ export const MODULES: Record<string, Module> = Object.fromEntries([
       "Everything is an object: numbers, strings, functions, classes.",
       "Indentation defines blocks — 4 spaces is the standard.",
     ],
-    operations: ["print / input", "if / elif / else", "for / while", "def / return", "try / except"],
+    operations: [
+      "print / input",
+      "if / elif / else",
+      "for / while",
+      "def / return",
+      "try / except",
+    ],
     applications: ["Scripts", "Automation", "Data pipelines", "Web backends", "ML prototypes"],
     interviewQs: [
       "What is the difference between `is` and `==`?",
@@ -85,7 +141,11 @@ export const MODULES: Record<string, Module> = Object.fromEntries([
     pythonSnippet: `def greet(name: str) -> str:\n    return f"Hello, {name}!"\n\nprint(greet("DSA"))`,
     practice: [
       { title: "FizzBuzz", url: "https://leetcode.com/problems/fizz-buzz/", difficulty: "Easy" },
-      { title: "Palindrome Number", url: "https://leetcode.com/problems/palindrome-number/", difficulty: "Easy" },
+      {
+        title: "Palindrome Number",
+        url: "https://leetcode.com/problems/palindrome-number/",
+        difficulty: "Easy",
+      },
     ],
   }),
   M({
@@ -99,8 +159,21 @@ export const MODULES: Record<string, Module> = Object.fromEntries([
       "Strings in Python are immutable sequences of Unicode code points.",
       "Every mutation creates a new string; prefer `''.join(...)` over `+=` in loops.",
     ],
-    operations: ["slicing", "find / index", "split / join", "replace", "startswith / endswith", "f-strings"],
-    applications: ["Text processing", "Parsers", "DNA/bioinformatics", "Compilers", "Search engines"],
+    operations: [
+      "slicing",
+      "find / index",
+      "split / join",
+      "replace",
+      "startswith / endswith",
+      "f-strings",
+    ],
+    applications: [
+      "Text processing",
+      "Parsers",
+      "DNA/bioinformatics",
+      "Compilers",
+      "Search engines",
+    ],
     interviewQs: [
       "Reverse a string in place (as list).",
       "Check if two strings are anagrams.",
@@ -116,9 +189,21 @@ export const MODULES: Record<string, Module> = Object.fromEntries([
     ],
     pythonSnippet: `def is_palindrome(s: str) -> bool:\n    s = s.lower()\n    return s == s[::-1]\n\nprint(is_palindrome("Racecar"))`,
     practice: [
-      { title: "Valid Anagram", url: "https://leetcode.com/problems/valid-anagram/", difficulty: "Easy" },
-      { title: "Longest Palindromic Substring", url: "https://leetcode.com/problems/longest-palindromic-substring/", difficulty: "Medium" },
-      { title: "Implement strStr()", url: "https://leetcode.com/problems/find-the-index-of-the-first-occurrence-in-a-string/", difficulty: "Easy" },
+      {
+        title: "Valid Anagram",
+        url: "https://leetcode.com/problems/valid-anagram/",
+        difficulty: "Easy",
+      },
+      {
+        title: "Longest Palindromic Substring",
+        url: "https://leetcode.com/problems/longest-palindromic-substring/",
+        difficulty: "Medium",
+      },
+      {
+        title: "Implement strStr()",
+        url: "https://leetcode.com/problems/find-the-index-of-the-first-occurrence-in-a-string/",
+        difficulty: "Easy",
+      },
     ],
   }),
   M({
@@ -142,7 +227,11 @@ export const MODULES: Record<string, Module> = Object.fromEntries([
     ],
     pythonSnippet: `def fact(n: int) -> int:\n    if n <= 1:\n        return 1\n    return n * fact(n - 1)\n\nprint(fact(6))  # 720`,
     practice: [
-      { title: "Fibonacci Number", url: "https://leetcode.com/problems/fibonacci-number/", difficulty: "Easy" },
+      {
+        title: "Fibonacci Number",
+        url: "https://leetcode.com/problems/fibonacci-number/",
+        difficulty: "Easy",
+      },
       { title: "Subsets", url: "https://leetcode.com/problems/subsets/", difficulty: "Medium" },
     ],
   }),
@@ -157,8 +246,22 @@ export const MODULES: Record<string, Module> = Object.fromEntries([
       "A linked list stores elements as nodes; each node points to the next (and previous in doubly-linked).",
       "Unlike arrays, insertion/deletion at the head is O(1) but random access is O(n).",
     ],
-    operations: ["Insert head/tail", "Delete", "Search", "Reverse", "Detect cycle (Floyd's)", "Find middle", "Merge two sorted"],
-    applications: ["Undo history", "Music playlists", "Adjacency lists", "LRU cache", "Polynomial arithmetic"],
+    operations: [
+      "Insert head/tail",
+      "Delete",
+      "Search",
+      "Reverse",
+      "Detect cycle (Floyd's)",
+      "Find middle",
+      "Merge two sorted",
+    ],
+    applications: [
+      "Undo history",
+      "Music playlists",
+      "Adjacency lists",
+      "LRU cache",
+      "Polynomial arithmetic",
+    ],
     interviewQs: [
       "Reverse a linked list (iterative + recursive).",
       "Detect cycle using slow/fast pointers.",
@@ -174,9 +277,21 @@ export const MODULES: Record<string, Module> = Object.fromEntries([
     ],
     pythonSnippet: `class Node:\n    def __init__(self, val, nxt=None):\n        self.val, self.next = val, nxt\n\ndef reverse(head):\n    prev, cur = None, head\n    while cur:\n        cur.next, prev, cur = prev, cur, cur.next\n    return prev`,
     practice: [
-      { title: "Reverse Linked List", url: "https://leetcode.com/problems/reverse-linked-list/", difficulty: "Easy" },
-      { title: "Linked List Cycle", url: "https://leetcode.com/problems/linked-list-cycle/", difficulty: "Easy" },
-      { title: "Merge Two Sorted Lists", url: "https://leetcode.com/problems/merge-two-sorted-lists/", difficulty: "Easy" },
+      {
+        title: "Reverse Linked List",
+        url: "https://leetcode.com/problems/reverse-linked-list/",
+        difficulty: "Easy",
+      },
+      {
+        title: "Linked List Cycle",
+        url: "https://leetcode.com/problems/linked-list-cycle/",
+        difficulty: "Easy",
+      },
+      {
+        title: "Merge Two Sorted Lists",
+        url: "https://leetcode.com/problems/merge-two-sorted-lists/",
+        difficulty: "Easy",
+      },
     ],
   }),
   M({
@@ -186,9 +301,19 @@ export const MODULES: Record<string, Module> = Object.fromEntries([
     route: "/modules/stacks",
     status: "stub",
     group: "Linear DS",
-    theory: ["Stack follows Last-In-First-Out order.", "Python's `list.append` and `list.pop` give an O(1) stack."],
+    theory: [
+      "Stack follows Last-In-First-Out order.",
+      "Python's `list.append` and `list.pop` give an O(1) stack.",
+    ],
     operations: ["push", "pop", "peek / top", "isEmpty", "size"],
-    applications: ["Expression evaluation", "Balanced parentheses", "Undo/redo", "Browser back button", "DFS traversal", "Function call stack"],
+    applications: [
+      "Expression evaluation",
+      "Balanced parentheses",
+      "Undo/redo",
+      "Browser back button",
+      "DFS traversal",
+      "Function call stack",
+    ],
     interviewQs: [
       "Valid parentheses.",
       "Evaluate Reverse Polish Notation.",
@@ -202,9 +327,17 @@ export const MODULES: Record<string, Module> = Object.fromEntries([
     ],
     pythonSnippet: `stack = []\nstack.append(1); stack.append(2); stack.append(3)\nprint(stack.pop())  # 3\nprint(stack[-1])    # 2 (peek)`,
     practice: [
-      { title: "Valid Parentheses", url: "https://leetcode.com/problems/valid-parentheses/", difficulty: "Easy" },
+      {
+        title: "Valid Parentheses",
+        url: "https://leetcode.com/problems/valid-parentheses/",
+        difficulty: "Easy",
+      },
       { title: "Min Stack", url: "https://leetcode.com/problems/min-stack/", difficulty: "Medium" },
-      { title: "Daily Temperatures", url: "https://leetcode.com/problems/daily-temperatures/", difficulty: "Medium" },
+      {
+        title: "Daily Temperatures",
+        url: "https://leetcode.com/problems/daily-temperatures/",
+        difficulty: "Medium",
+      },
     ],
   }),
   M({
@@ -219,7 +352,14 @@ export const MODULES: Record<string, Module> = Object.fromEntries([
       "Use `collections.deque` for O(1) both-end operations; `queue.PriorityQueue` for priorities.",
     ],
     operations: ["enqueue", "dequeue", "front", "rear", "isEmpty", "size"],
-    applications: ["BFS", "CPU scheduling", "Printer queue", "Message brokers", "Task scheduling", "Rate limiting"],
+    applications: [
+      "BFS",
+      "CPU scheduling",
+      "Printer queue",
+      "Message brokers",
+      "Task scheduling",
+      "Rate limiting",
+    ],
     interviewQs: [
       "Implement queue using two stacks.",
       "Sliding window maximum.",
@@ -228,8 +368,16 @@ export const MODULES: Record<string, Module> = Object.fromEntries([
     ],
     pythonSnippet: `from collections import deque\nq = deque()\nq.append(1); q.append(2)\nprint(q.popleft())  # 1`,
     practice: [
-      { title: "Implement Queue using Stacks", url: "https://leetcode.com/problems/implement-queue-using-stacks/", difficulty: "Easy" },
-      { title: "Sliding Window Maximum", url: "https://leetcode.com/problems/sliding-window-maximum/", difficulty: "Hard" },
+      {
+        title: "Implement Queue using Stacks",
+        url: "https://leetcode.com/problems/implement-queue-using-stacks/",
+        difficulty: "Easy",
+      },
+      {
+        title: "Sliding Window Maximum",
+        url: "https://leetcode.com/problems/sliding-window-maximum/",
+        difficulty: "Hard",
+      },
     ],
   }),
   M({
@@ -245,7 +393,13 @@ export const MODULES: Record<string, Module> = Object.fromEntries([
       "Python's `dict` and `set` are open-addressed hash tables.",
     ],
     operations: ["insert", "get", "delete", "contains", "resize / rehash"],
-    applications: ["Caches (LRU)", "Symbol tables", "De-duplication", "Databases (indexes)", "Bloom filters"],
+    applications: [
+      "Caches (LRU)",
+      "Symbol tables",
+      "De-duplication",
+      "Databases (indexes)",
+      "Bloom filters",
+    ],
     interviewQs: [
       "Two Sum.",
       "Group anagrams.",
@@ -253,13 +407,15 @@ export const MODULES: Record<string, Module> = Object.fromEntries([
       "Design a hash map.",
       "Subarray sum equals K.",
     ],
-    complexity: [
-      { op: "insert / get / delete", time: "O(1) avg, O(n) worst" },
-    ],
+    complexity: [{ op: "insert / get / delete", time: "O(1) avg, O(n) worst" }],
     pythonSnippet: `d = {"a": 1, "b": 2}\nd["c"] = 3\nprint(d.get("a"))     # 1\nprint("b" in d)       # True`,
     practice: [
       { title: "Two Sum", url: "https://leetcode.com/problems/two-sum/", difficulty: "Easy" },
-      { title: "Group Anagrams", url: "https://leetcode.com/problems/group-anagrams/", difficulty: "Medium" },
+      {
+        title: "Group Anagrams",
+        url: "https://leetcode.com/problems/group-anagrams/",
+        difficulty: "Medium",
+      },
       { title: "LRU Cache", url: "https://leetcode.com/problems/lru-cache/", difficulty: "Medium" },
     ],
   }),
@@ -275,7 +431,13 @@ export const MODULES: Record<string, Module> = Object.fromEntries([
       "Traversals: pre-order (N-L-R), in-order (L-N-R), post-order (L-R-N), level-order (BFS).",
     ],
     operations: ["insert", "delete", "search", "traversals", "height", "diameter", "LCA"],
-    applications: ["File systems", "DOM", "Compilers (AST)", "Databases (B-trees)", "Routing tables"],
+    applications: [
+      "File systems",
+      "DOM",
+      "Compilers (AST)",
+      "Databases (B-trees)",
+      "Routing tables",
+    ],
     interviewQs: [
       "Invert a binary tree.",
       "Max depth of binary tree.",
@@ -285,8 +447,16 @@ export const MODULES: Record<string, Module> = Object.fromEntries([
     ],
     pythonSnippet: `class TreeNode:\n    def __init__(self, val, left=None, right=None):\n        self.val, self.left, self.right = val, left, right\n\ndef inorder(root):\n    if not root: return []\n    return inorder(root.left) + [root.val] + inorder(root.right)`,
     practice: [
-      { title: "Invert Binary Tree", url: "https://leetcode.com/problems/invert-binary-tree/", difficulty: "Easy" },
-      { title: "Binary Tree Level Order Traversal", url: "https://leetcode.com/problems/binary-tree-level-order-traversal/", difficulty: "Medium" },
+      {
+        title: "Invert Binary Tree",
+        url: "https://leetcode.com/problems/invert-binary-tree/",
+        difficulty: "Easy",
+      },
+      {
+        title: "Binary Tree Level Order Traversal",
+        url: "https://leetcode.com/problems/binary-tree-level-order-traversal/",
+        difficulty: "Medium",
+      },
     ],
   }),
   M({
@@ -300,8 +470,16 @@ export const MODULES: Record<string, Module> = Object.fromEntries([
     operations: ["insert", "search", "delete (3 cases)", "successor / predecessor", "range query"],
     interviewQs: ["Validate BST.", "Kth smallest in BST.", "Convert sorted array to BST."],
     practice: [
-      { title: "Validate Binary Search Tree", url: "https://leetcode.com/problems/validate-binary-search-tree/", difficulty: "Medium" },
-      { title: "Kth Smallest Element in a BST", url: "https://leetcode.com/problems/kth-smallest-element-in-a-bst/", difficulty: "Medium" },
+      {
+        title: "Validate Binary Search Tree",
+        url: "https://leetcode.com/problems/validate-binary-search-tree/",
+        difficulty: "Medium",
+      },
+      {
+        title: "Kth Smallest Element in a BST",
+        url: "https://leetcode.com/problems/kth-smallest-element-in-a-bst/",
+        difficulty: "Medium",
+      },
     ],
   }),
   M({
@@ -311,7 +489,10 @@ export const MODULES: Record<string, Module> = Object.fromEntries([
     route: "/modules/avl",
     status: "stub",
     group: "Non-Linear DS",
-    theory: ["Balance factor = height(left) - height(right); must stay in {-1, 0, 1}.", "Four rotation cases: LL, RR, LR, RL."],
+    theory: [
+      "Balance factor = height(left) - height(right); must stay in {-1, 0, 1}.",
+      "Four rotation cases: LL, RR, LR, RL.",
+    ],
     operations: ["insert (with rebalance)", "delete (with rebalance)", "rotate left/right"],
     interviewQs: ["Explain rotations.", "Insert sequence and show balance."],
   }),
@@ -328,11 +509,24 @@ export const MODULES: Record<string, Module> = Object.fromEntries([
     ],
     operations: ["push (sift-up)", "pop (sift-down)", "peek", "heapify O(n)"],
     applications: ["Priority queues", "Dijkstra", "Heap sort", "Kth largest", "Median from stream"],
-    interviewQs: ["Kth largest element.", "Top K frequent elements.", "Merge K sorted lists.", "Find median from data stream."],
+    interviewQs: [
+      "Kth largest element.",
+      "Top K frequent elements.",
+      "Merge K sorted lists.",
+      "Find median from data stream.",
+    ],
     pythonSnippet: `import heapq\nh = []\nheapq.heappush(h, 3); heapq.heappush(h, 1); heapq.heappush(h, 2)\nprint(heapq.heappop(h))  # 1`,
     practice: [
-      { title: "Kth Largest Element in an Array", url: "https://leetcode.com/problems/kth-largest-element-in-an-array/", difficulty: "Medium" },
-      { title: "Top K Frequent Elements", url: "https://leetcode.com/problems/top-k-frequent-elements/", difficulty: "Medium" },
+      {
+        title: "Kth Largest Element in an Array",
+        url: "https://leetcode.com/problems/kth-largest-element-in-an-array/",
+        difficulty: "Medium",
+      },
+      {
+        title: "Top K Frequent Elements",
+        url: "https://leetcode.com/problems/top-k-frequent-elements/",
+        difficulty: "Medium",
+      },
     ],
   }),
   M({
@@ -352,13 +546,24 @@ export const MODULES: Record<string, Module> = Object.fromEntries([
     route: "/modules/tries",
     status: "stub",
     group: "Non-Linear DS",
-    theory: ["Each edge is a character; each node may mark end-of-word.", "Search is O(L) where L = key length."],
+    theory: [
+      "Each edge is a character; each node may mark end-of-word.",
+      "Search is O(L) where L = key length.",
+    ],
     operations: ["insert", "search", "startsWith", "delete"],
     applications: ["Autocomplete", "Spell check", "IP routing", "Dictionary compression"],
     interviewQs: ["Implement Trie.", "Word search II.", "Replace words."],
     practice: [
-      { title: "Implement Trie", url: "https://leetcode.com/problems/implement-trie-prefix-tree/", difficulty: "Medium" },
-      { title: "Word Search II", url: "https://leetcode.com/problems/word-search-ii/", difficulty: "Hard" },
+      {
+        title: "Implement Trie",
+        url: "https://leetcode.com/problems/implement-trie-prefix-tree/",
+        difficulty: "Medium",
+      },
+      {
+        title: "Word Search II",
+        url: "https://leetcode.com/problems/word-search-ii/",
+        difficulty: "Hard",
+      },
     ],
   }),
   M({
@@ -373,8 +578,19 @@ export const MODULES: Record<string, Module> = Object.fromEntries([
       "Representations: adjacency list (space O(V+E)) or matrix (O(V²)).",
     ],
     operations: ["addVertex", "addEdge", "removeEdge", "neighbors(v)"],
-    applications: ["Social networks", "Maps & routing", "Web crawling", "Dependency resolution", "Circuit design"],
-    interviewQs: ["Clone graph.", "Number of islands.", "Course schedule (cycle in directed).", "Connected components."],
+    applications: [
+      "Social networks",
+      "Maps & routing",
+      "Web crawling",
+      "Dependency resolution",
+      "Circuit design",
+    ],
+    interviewQs: [
+      "Clone graph.",
+      "Number of islands.",
+      "Course schedule (cycle in directed).",
+      "Connected components.",
+    ],
   }),
   M({
     slug: "graph-algorithms",
@@ -383,9 +599,27 @@ export const MODULES: Record<string, Module> = Object.fromEntries([
     route: "/modules/graph-algorithms",
     status: "stub",
     group: "Algorithms",
-    theory: ["BFS finds shortest path in unweighted graphs.", "Dijkstra requires non-negative weights.", "Bellman-Ford handles negatives, detects negative cycles."],
-    operations: ["BFS", "DFS", "Dijkstra", "Bellman-Ford", "Floyd-Warshall", "Prim", "Kruskal", "Topological Sort", "Union-Find"],
-    interviewQs: ["Shortest path in binary matrix.", "Network delay time.", "Redundant connection."],
+    theory: [
+      "BFS finds shortest path in unweighted graphs.",
+      "Dijkstra requires non-negative weights.",
+      "Bellman-Ford handles negatives, detects negative cycles.",
+    ],
+    operations: [
+      "BFS",
+      "DFS",
+      "Dijkstra",
+      "Bellman-Ford",
+      "Floyd-Warshall",
+      "Prim",
+      "Kruskal",
+      "Topological Sort",
+      "Union-Find",
+    ],
+    interviewQs: [
+      "Shortest path in binary matrix.",
+      "Network delay time.",
+      "Redundant connection.",
+    ],
   }),
   M({
     slug: "dp",
@@ -399,7 +633,13 @@ export const MODULES: Record<string, Module> = Object.fromEntries([
       "Two techniques: top-down memoization vs bottom-up tabulation.",
       "Design steps: state → transition → base case → order → answer.",
     ],
-    operations: ["Define state", "Write recurrence", "Add memo", "Convert to table", "Space-optimize"],
+    operations: [
+      "Define state",
+      "Write recurrence",
+      "Add memo",
+      "Convert to table",
+      "Space-optimize",
+    ],
     interviewQs: [
       "Fibonacci.",
       "Climbing stairs.",
@@ -412,10 +652,26 @@ export const MODULES: Record<string, Module> = Object.fromEntries([
     ],
     pythonSnippet: `def climb(n: int) -> int:\n    a, b = 1, 1\n    for _ in range(n):\n        a, b = b, a + b\n    return a`,
     practice: [
-      { title: "Climbing Stairs", url: "https://leetcode.com/problems/climbing-stairs/", difficulty: "Easy" },
-      { title: "Coin Change", url: "https://leetcode.com/problems/coin-change/", difficulty: "Medium" },
-      { title: "Longest Increasing Subsequence", url: "https://leetcode.com/problems/longest-increasing-subsequence/", difficulty: "Medium" },
-      { title: "Edit Distance", url: "https://leetcode.com/problems/edit-distance/", difficulty: "Hard" },
+      {
+        title: "Climbing Stairs",
+        url: "https://leetcode.com/problems/climbing-stairs/",
+        difficulty: "Easy",
+      },
+      {
+        title: "Coin Change",
+        url: "https://leetcode.com/problems/coin-change/",
+        difficulty: "Medium",
+      },
+      {
+        title: "Longest Increasing Subsequence",
+        url: "https://leetcode.com/problems/longest-increasing-subsequence/",
+        difficulty: "Medium",
+      },
+      {
+        title: "Edit Distance",
+        url: "https://leetcode.com/problems/edit-distance/",
+        difficulty: "Hard",
+      },
     ],
   }),
   M({
@@ -425,7 +681,13 @@ export const MODULES: Record<string, Module> = Object.fromEntries([
     route: "/modules/advanced-graphs",
     status: "stub",
     group: "Algorithms",
-    operations: ["Tarjan's SCC", "Articulation points", "Bridges", "Ford-Fulkerson", "Bipartite matching"],
+    operations: [
+      "Tarjan's SCC",
+      "Articulation points",
+      "Bridges",
+      "Ford-Fulkerson",
+      "Bipartite matching",
+    ],
   }),
   M({
     slug: "cp",
@@ -434,7 +696,13 @@ export const MODULES: Record<string, Module> = Object.fromEntries([
     route: "/modules/cp",
     status: "stub",
     group: "Advanced",
-    operations: ["Sqrt decomposition", "Mo's algorithm", "Bitmask DP", "Persistent DS", "Heavy-light decomposition"],
+    operations: [
+      "Sqrt decomposition",
+      "Mo's algorithm",
+      "Bitmask DP",
+      "Persistent DS",
+      "Heavy-light decomposition",
+    ],
   }),
   M({
     slug: "interview",
@@ -458,20 +726,90 @@ export const MODULES: Record<string, Module> = Object.fromEntries([
 // Lightweight stubs for variant modules referenced from the nav. These render
 // via modules.$slug.tsx and get upgraded to full RichModule content over time.
 const VARIANT_STUBS: { slug: string; title: string; group: string; tagline: string }[] = [
-  { slug: "singly-linked-list", title: "Singly Linked List", group: "Linear Data Structures", tagline: "The simplest linked list — one pointer, one direction." },
-  { slug: "doubly-linked-list", title: "Doubly Linked List", group: "Linear Data Structures", tagline: "Bidirectional traversal with prev and next pointers." },
-  { slug: "circular-linked-list", title: "Circular Linked List", group: "Linear Data Structures", tagline: "The tail wraps back to head — great for round-robin." },
-  { slug: "circular-doubly-linked-list", title: "Circular Doubly Linked List", group: "Linear Data Structures", tagline: "Cyclic ring with prev and next pointers." },
-  { slug: "linear-queue", title: "Linear Queue", group: "Linear Data Structures", tagline: "First-in first-out with fixed capacity." },
-  { slug: "circular-queue", title: "Circular Queue", group: "Linear Data Structures", tagline: "Ring buffer — reuses freed slots." },
-  { slug: "deque", title: "Deque", group: "Linear Data Structures", tagline: "Double-ended queue — O(1) at both ends." },
-  { slug: "hash-sets", title: "Hash Sets", group: "Non-Linear Data Structures", tagline: "Hash-backed sets for O(1) membership." },
-  { slug: "binary-tree", title: "Binary Tree", group: "Non-Linear Data Structures", tagline: "Every node has at most two children." },
-  { slug: "red-black-tree", title: "Red-Black Tree", group: "Non-Linear Data Structures", tagline: "Self-balancing BST with color invariants." },
-  { slug: "b-tree", title: "B Tree", group: "Non-Linear Data Structures", tagline: "Multi-way search tree for disk-based databases." },
-  { slug: "b-plus-tree", title: "B+ Tree", group: "Non-Linear Data Structures", tagline: "B tree variant with linked leaves — the backbone of RDBMS indexes." },
-  { slug: "segment-tree", title: "Segment Tree", group: "Non-Linear Data Structures", tagline: "Range queries and point updates in O(log n)." },
-  { slug: "fenwick-tree", title: "Fenwick Tree (BIT)", group: "Non-Linear Data Structures", tagline: "Compact prefix-sum tree for range aggregates." },
+  {
+    slug: "singly-linked-list",
+    title: "Singly Linked List",
+    group: "Linear Data Structures",
+    tagline: "The simplest linked list — one pointer, one direction.",
+  },
+  {
+    slug: "doubly-linked-list",
+    title: "Doubly Linked List",
+    group: "Linear Data Structures",
+    tagline: "Bidirectional traversal with prev and next pointers.",
+  },
+  {
+    slug: "circular-linked-list",
+    title: "Circular Linked List",
+    group: "Linear Data Structures",
+    tagline: "The tail wraps back to head — great for round-robin.",
+  },
+  {
+    slug: "circular-doubly-linked-list",
+    title: "Circular Doubly Linked List",
+    group: "Linear Data Structures",
+    tagline: "Cyclic ring with prev and next pointers.",
+  },
+  {
+    slug: "linear-queue",
+    title: "Linear Queue",
+    group: "Linear Data Structures",
+    tagline: "First-in first-out with fixed capacity.",
+  },
+  {
+    slug: "circular-queue",
+    title: "Circular Queue",
+    group: "Linear Data Structures",
+    tagline: "Ring buffer — reuses freed slots.",
+  },
+  {
+    slug: "deque",
+    title: "Deque",
+    group: "Linear Data Structures",
+    tagline: "Double-ended queue — O(1) at both ends.",
+  },
+  {
+    slug: "hash-sets",
+    title: "Hash Sets",
+    group: "Non-Linear Data Structures",
+    tagline: "Hash-backed sets for O(1) membership.",
+  },
+  {
+    slug: "binary-tree",
+    title: "Binary Tree",
+    group: "Non-Linear Data Structures",
+    tagline: "Every node has at most two children.",
+  },
+  {
+    slug: "red-black-tree",
+    title: "Red-Black Tree",
+    group: "Non-Linear Data Structures",
+    tagline: "Self-balancing BST with color invariants.",
+  },
+  {
+    slug: "b-tree",
+    title: "B Tree",
+    group: "Non-Linear Data Structures",
+    tagline: "Multi-way search tree for disk-based databases.",
+  },
+  {
+    slug: "b-plus-tree",
+    title: "B+ Tree",
+    group: "Non-Linear Data Structures",
+    tagline: "B tree variant with linked leaves — the backbone of RDBMS indexes.",
+  },
+  {
+    slug: "segment-tree",
+    title: "Segment Tree",
+    group: "Non-Linear Data Structures",
+    tagline: "Range queries and point updates in O(log n).",
+  },
+  {
+    slug: "fenwick-tree",
+    title: "Fenwick Tree (BIT)",
+    group: "Non-Linear Data Structures",
+    tagline: "Compact prefix-sum tree for range aggregates.",
+  },
 ];
 for (const v of VARIANT_STUBS) {
   MODULES[v.slug] = {
@@ -489,7 +827,12 @@ export function getAllModuleSlugs() {
 }
 
 export function getModuleRoute(item: { slug: string; route: string }): string {
-  const courseSlug = item.slug === "sorting" ? "sorting-algorithms" : item.slug === "hashing" ? "hash-tables" : item.slug;
+  const courseSlug =
+    item.slug === "sorting"
+      ? "sorting-algorithms"
+      : item.slug === "hashing"
+        ? "hash-tables"
+        : item.slug;
   const course = getCourse(courseSlug);
   if (course) {
     if (course.slug === "sorting-algorithms") {
@@ -502,4 +845,3 @@ export function getModuleRoute(item: { slug: string; route: string }): string {
   }
   return item.route;
 }
-

@@ -1,6 +1,20 @@
 import { useState, useMemo } from "react";
-import { LinkedListVisualizer, LinkedListMemory, makeNodes, type LLNode } from "./LinkedListVisualizer";
-import { Plus, Trash2, RotateCcw, Search, Repeat, Shuffle, ArrowRight, ArrowLeft } from "lucide-react";
+import {
+  LinkedListVisualizer,
+  LinkedListMemory,
+  makeNodes,
+  type LLNode,
+} from "./LinkedListVisualizer";
+import {
+  Plus,
+  Trash2,
+  RotateCcw,
+  Search,
+  Repeat,
+  Shuffle,
+  ArrowRight,
+  ArrowLeft,
+} from "lucide-react";
 
 type Variant = "singly" | "doubly" | "circular" | "circular-doubly";
 
@@ -77,13 +91,15 @@ export function LinkedListPlayground({
   const pushFront = () => {
     const [nn] = makeNodes([parsed]);
     setNodes((s) => [nn, ...s]);
-    setHighlight([0]); clearHighlightSoon();
+    setHighlight([0]);
+    clearHighlightSoon();
     setLastOp({ kind: "push-front", value: parsed });
   };
   const pushBack = () => {
     const [nn] = makeNodes([parsed]);
     setNodes((s) => {
-      setHighlight([s.length]); clearHighlightSoon();
+      setHighlight([s.length]);
+      clearHighlightSoon();
       return [...s, nn];
     });
     setLastOp({ kind: "push-back", value: parsed });
@@ -96,7 +112,8 @@ export function LinkedListPlayground({
       c.splice(i, 0, nn);
       return c;
     });
-    setHighlight([i]); clearHighlightSoon();
+    setHighlight([i]);
+    clearHighlightSoon();
     setLastOp({ kind: "insert-at", index: i, value: parsed });
   };
 
@@ -104,28 +121,43 @@ export function LinkedListPlayground({
   const deleteFront = () => {
     if (nodes.length === 0) return;
     setHighlight([0]);
-    setTimeout(() => { setNodes((s) => s.slice(1)); setHighlight([]); }, 350);
+    setTimeout(() => {
+      setNodes((s) => s.slice(1));
+      setHighlight([]);
+    }, 350);
     setLastOp({ kind: "delete-front" });
   };
   const deleteBack = () => {
     if (nodes.length === 0) return;
     const i = nodes.length - 1;
     setHighlight([i]);
-    setTimeout(() => { setNodes((s) => s.slice(0, -1)); setHighlight([]); }, 350);
+    setTimeout(() => {
+      setNodes((s) => s.slice(0, -1));
+      setHighlight([]);
+    }, 350);
     setLastOp({ kind: "delete-back" });
   };
   const deleteAt = () => {
     const i = Math.max(0, Math.min(nodes.length - 1, Number(index) || 0));
     if (nodes.length === 0) return;
     setHighlight([i]);
-    setTimeout(() => { setNodes((s) => s.filter((_, k) => k !== i)); setHighlight([]); }, 350);
+    setTimeout(() => {
+      setNodes((s) => s.filter((_, k) => k !== i));
+      setHighlight([]);
+    }, 350);
     setLastOp({ kind: "delete-at", index: i });
   };
   const deleteValue = () => {
     const i = nodes.findIndex((n) => n.value === parsed);
-    if (i === -1) { setLastOp({ kind: "delete-value", value: parsed }); return; }
+    if (i === -1) {
+      setLastOp({ kind: "delete-value", value: parsed });
+      return;
+    }
     setHighlight([i]);
-    setTimeout(() => { setNodes((s) => s.filter((_, k) => k !== i)); setHighlight([]); }, 350);
+    setTimeout(() => {
+      setNodes((s) => s.filter((_, k) => k !== i));
+      setHighlight([]);
+    }, 350);
     setLastOp({ kind: "delete-value", value: parsed });
   };
 
@@ -150,11 +182,19 @@ export function LinkedListPlayground({
   };
 
   // Utilities
-  const reverse = () => { setNodes((s) => s.slice().reverse()); setLastOp({ kind: "reverse" }); };
-  const reset = () => { setNodes(makeNodes(initial)); setHighlight([]); setLastOp({ kind: "reset" }); };
+  const reverse = () => {
+    setNodes((s) => s.slice().reverse());
+    setLastOp({ kind: "reverse" });
+  };
+  const reset = () => {
+    setNodes(makeNodes(initial));
+    setHighlight([]);
+    setLastOp({ kind: "reset" });
+  };
   const shuffle = () => {
-    const vals = Array.from({ length: 4 + Math.floor(Math.random() * 3) }, () =>
-      Math.floor(Math.random() * 90) + 10,
+    const vals = Array.from(
+      { length: 4 + Math.floor(Math.random() * 3) },
+      () => Math.floor(Math.random() * 90) + 10,
     );
     setNodes(makeNodes(vals));
     setLastOp({ kind: "shuffle" });
@@ -185,7 +225,9 @@ export function LinkedListPlayground({
         <InfoStat label="Tail" value={String(tail)} />
         <InfoStat label="Complexity" value={currentComplexity} mono />
         <div className="col-span-2 sm:col-span-4">
-          <div className="text-[10px] uppercase tracking-wider text-muted-foreground">Current Operation</div>
+          <div className="text-[10px] uppercase tracking-wider text-muted-foreground">
+            Current Operation
+          </div>
           <div className="mt-0.5 text-sm font-medium">{currentOp}</div>
         </div>
       </div>
@@ -215,13 +257,27 @@ export function LinkedListPlayground({
       {/* Grouped Controls */}
       <div className="mt-4 grid gap-3 lg:grid-cols-2">
         <ControlGroup title="Insert">
-          <ActionBtn icon={<Plus className="h-3.5 w-3.5" />} label="Front" primary onClick={pushFront} />
-          <ActionBtn icon={<Plus className="h-3.5 w-3.5" />} label="Back" primary onClick={pushBack} />
+          <ActionBtn
+            icon={<Plus className="h-3.5 w-3.5" />}
+            label="Front"
+            primary
+            onClick={pushFront}
+          />
+          <ActionBtn
+            icon={<Plus className="h-3.5 w-3.5" />}
+            label="Back"
+            primary
+            onClick={pushBack}
+          />
           <ActionBtn label="At Position" onClick={insertAt} />
         </ControlGroup>
 
         <ControlGroup title="Delete">
-          <ActionBtn icon={<Trash2 className="h-3.5 w-3.5" />} label="Front" onClick={deleteFront} />
+          <ActionBtn
+            icon={<Trash2 className="h-3.5 w-3.5" />}
+            label="Front"
+            onClick={deleteFront}
+          />
           <ActionBtn icon={<Trash2 className="h-3.5 w-3.5" />} label="Back" onClick={deleteBack} />
           <ActionBtn label="Position" onClick={deleteAt} />
           <ActionBtn label="Value" onClick={deleteValue} />
@@ -229,9 +285,17 @@ export function LinkedListPlayground({
 
         <ControlGroup title="Search & Traverse">
           <ActionBtn icon={<Search className="h-3.5 w-3.5" />} label="Find" onClick={search} />
-          <ActionBtn icon={<ArrowRight className="h-3.5 w-3.5" />} label="Forward" onClick={() => runTraversal(false)} />
+          <ActionBtn
+            icon={<ArrowRight className="h-3.5 w-3.5" />}
+            label="Forward"
+            onClick={() => runTraversal(false)}
+          />
           {isDoubly && (
-            <ActionBtn icon={<ArrowLeft className="h-3.5 w-3.5" />} label="Backward" onClick={() => runTraversal(true)} />
+            <ActionBtn
+              icon={<ArrowLeft className="h-3.5 w-3.5" />}
+              label="Backward"
+              onClick={() => runTraversal(true)}
+            />
           )}
         </ControlGroup>
 
@@ -274,16 +338,27 @@ function InfoStat({ label, value, mono }: { label: string; value: string; mono?:
 function ControlGroup({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <div className="rounded-lg border border-border bg-background/40 p-3">
-      <div className="mb-2 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">{title}</div>
+      <div className="mb-2 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+        {title}
+      </div>
       <div className="flex flex-wrap gap-1.5">{children}</div>
     </div>
   );
 }
 
 function ActionBtn({
-  label, icon, onClick, primary,
-}: { label: string; icon?: React.ReactNode; onClick: () => void; primary?: boolean }) {
-  const base = "inline-flex items-center gap-1 rounded-md px-2.5 py-1.5 text-xs font-medium transition whitespace-nowrap";
+  label,
+  icon,
+  onClick,
+  primary,
+}: {
+  label: string;
+  icon?: React.ReactNode;
+  onClick: () => void;
+  primary?: boolean;
+}) {
+  const base =
+    "inline-flex items-center gap-1 rounded-md px-2.5 py-1.5 text-xs font-medium transition whitespace-nowrap";
   const cls = primary
     ? "gradient-brand text-primary-foreground hover:opacity-90"
     : "border border-border bg-card hover:bg-accent";
@@ -296,24 +371,44 @@ function ActionBtn({
 }
 
 function opDescription(op: Op, variant: Variant): string {
-  const v = variant === "circular" ? "circular" : variant === "doubly" ? "doubly" : variant === "circular-doubly" ? "circular-doubly" : "singly";
+  const v =
+    variant === "circular"
+      ? "circular"
+      : variant === "doubly"
+        ? "doubly"
+        : variant === "circular-doubly"
+          ? "circular-doubly"
+          : "singly";
   switch (op.kind) {
-    case "push-front": return `${v}.push_front(${JSON.stringify(op.value)})   # O(1)`;
-    case "push-back": return `${v}.push_back(${JSON.stringify(op.value)})   # O(1) w/ tail`;
-    case "insert-at": return `${v}.insert_at(${op.index}, ${JSON.stringify(op.value)})   # O(k)`;
-    case "delete-front": return `${v}.pop_front()   # O(1)`;
-    case "delete-back": return variant === "doubly" || variant === "circular-doubly"
-      ? `${v}.pop_back()   # O(1) — prev pointer available`
-      : `${v}.pop_back()   # O(n) — must walk to tail`;
-    case "delete-at": return `${v}.delete_at(${op.index})   # O(k)`;
-    case "delete-value": return `${v}.delete_value(${JSON.stringify(op.value)})   # O(n)`;
-    case "search": return op.foundAt === -1
-      ? `${v}.find(${JSON.stringify(op.value)}) → -1   # not found`
-      : `${v}.find(${JSON.stringify(op.value)}) → index ${op.foundAt}   # O(n)`;
-    case "traverse-forward": return `for node in ${v}: print(node.value)   # O(n)`;
-    case "traverse-backward": return `for node in reversed(${v}): print(node.value)   # O(n)`;
-    case "reverse": return `${v}.reverse()   # O(n) time, O(1) space`;
-    case "reset": return `# reset to initial list`;
-    case "shuffle": return `# random list`;
+    case "push-front":
+      return `${v}.push_front(${JSON.stringify(op.value)})   # O(1)`;
+    case "push-back":
+      return `${v}.push_back(${JSON.stringify(op.value)})   # O(1) w/ tail`;
+    case "insert-at":
+      return `${v}.insert_at(${op.index}, ${JSON.stringify(op.value)})   # O(k)`;
+    case "delete-front":
+      return `${v}.pop_front()   # O(1)`;
+    case "delete-back":
+      return variant === "doubly" || variant === "circular-doubly"
+        ? `${v}.pop_back()   # O(1) — prev pointer available`
+        : `${v}.pop_back()   # O(n) — must walk to tail`;
+    case "delete-at":
+      return `${v}.delete_at(${op.index})   # O(k)`;
+    case "delete-value":
+      return `${v}.delete_value(${JSON.stringify(op.value)})   # O(n)`;
+    case "search":
+      return op.foundAt === -1
+        ? `${v}.find(${JSON.stringify(op.value)}) → -1   # not found`
+        : `${v}.find(${JSON.stringify(op.value)}) → index ${op.foundAt}   # O(n)`;
+    case "traverse-forward":
+      return `for node in ${v}: print(node.value)   # O(n)`;
+    case "traverse-backward":
+      return `for node in reversed(${v}): print(node.value)   # O(n)`;
+    case "reverse":
+      return `${v}.reverse()   # O(n) time, O(1) space`;
+    case "reset":
+      return `# reset to initial list`;
+    case "shuffle":
+      return `# random list`;
   }
 }

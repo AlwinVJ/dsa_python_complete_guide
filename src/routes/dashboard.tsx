@@ -7,13 +7,27 @@ export const Route = createFileRoute("/dashboard")({
   head: () => ({
     meta: [
       { title: "Study Hub — DSA with Python" },
-      { name: "description", content: "Review your bookmarks, solve practice problems, and explore topics across the curriculum." },
+      {
+        name: "description",
+        content:
+          "Review your bookmarks, solve practice problems, and explore topics across the curriculum.",
+      },
     ],
   }),
   component: DashboardPage,
 });
 
-function StatCard({ icon: Icon, label, value, hint }: { icon: typeof Bookmark; label: string; value: string | number; hint?: string }) {
+function StatCard({
+  icon: Icon,
+  label,
+  value,
+  hint,
+}: {
+  icon: typeof Bookmark;
+  label: string;
+  value: string | number;
+  hint?: string;
+}) {
   return (
     <div className="card-surface p-5">
       <div className="flex items-center gap-2 text-xs uppercase tracking-wider text-muted-foreground">
@@ -33,11 +47,23 @@ function DashboardPage() {
   return (
     <div className="mx-auto max-w-5xl px-4 py-10 sm:px-6">
       <h1 className="text-4xl font-bold tracking-tight">Study Hub</h1>
-      <p className="mt-2 text-muted-foreground">Review your bookmarks and practice logs across the curriculum.</p>
+      <p className="mt-2 text-muted-foreground">
+        Review your bookmarks and practice logs across the curriculum.
+      </p>
 
       <div className="mt-6 grid gap-4 sm:grid-cols-2">
-        <StatCard icon={Bookmark} label="Bookmarks" value={bookmarks.size} hint="saved reference links" />
-        <StatCard icon={CheckCircle2} label="Practice Problems Solved" value={solved.size} hint="completed practice challenges" />
+        <StatCard
+          icon={Bookmark}
+          label="Bookmarks"
+          value={bookmarks.size}
+          hint="saved reference links"
+        />
+        <StatCard
+          icon={CheckCircle2}
+          label="Practice Problems Solved"
+          value={solved.size}
+          hint="completed practice challenges"
+        />
       </div>
 
       <div className="mt-8">

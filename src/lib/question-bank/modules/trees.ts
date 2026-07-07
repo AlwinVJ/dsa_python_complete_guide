@@ -6,8 +6,14 @@ export const treesBank: ModuleBank = {
   edgeCases: [
     { case: "Empty tree", why: "root is None — return 0 / [] / True as appropriate." },
     { case: "Single node", why: "Depth 1, no children." },
-    { case: "Skewed tree", why: "Behaves like a linked list — recursion depth = n → risk of stack overflow." },
-    { case: "Duplicate values", why: "Validate BST logic must allow (or forbid) duplicates consistently." },
+    {
+      case: "Skewed tree",
+      why: "Behaves like a linked list — recursion depth = n → risk of stack overflow.",
+    },
+    {
+      case: "Duplicate values",
+      why: "Validate BST logic must allow (or forbid) duplicates consistently.",
+    },
   ],
   revisionSheet: {
     timeComplexity: [
@@ -58,7 +64,13 @@ export const treesBank: ModuleBank = {
           space: "O(h)",
         },
       ],
-      leetcodeLinks: [{ title: "104. Maximum Depth of Binary Tree", url: "https://leetcode.com/problems/maximum-depth-of-binary-tree/", difficulty: "Easy" }],
+      leetcodeLinks: [
+        {
+          title: "104. Maximum Depth of Binary Tree",
+          url: "https://leetcode.com/problems/maximum-depth-of-binary-tree/",
+          difficulty: "Easy",
+        },
+      ],
       estimatedMinutes: 10,
       interviewFrequency: "Very High",
       pattern: "DFS",
@@ -72,8 +84,15 @@ export const treesBank: ModuleBank = {
       difficulty: "Interview",
       topic: "DFS",
       description: "Swap left and right subtrees for every node.",
-      pythonSolution: "def invert(r):\n    if not r: return None\n    r.left, r.right = invert(r.right), invert(r.left)\n    return r",
-      leetcodeLinks: [{ title: "226. Invert Binary Tree", url: "https://leetcode.com/problems/invert-binary-tree/", difficulty: "Easy" }],
+      pythonSolution:
+        "def invert(r):\n    if not r: return None\n    r.left, r.right = invert(r.right), invert(r.left)\n    return r",
+      leetcodeLinks: [
+        {
+          title: "226. Invert Binary Tree",
+          url: "https://leetcode.com/problems/invert-binary-tree/",
+          difficulty: "Easy",
+        },
+      ],
       estimatedMinutes: 5,
       interviewFrequency: "Very High",
       companies: ["Google"],
@@ -95,7 +114,13 @@ export const treesBank: ModuleBank = {
           space: "O(n)",
         },
       ],
-      leetcodeLinks: [{ title: "102. Binary Tree Level Order Traversal", url: "https://leetcode.com/problems/binary-tree-level-order-traversal/", difficulty: "Medium" }],
+      leetcodeLinks: [
+        {
+          title: "102. Binary Tree Level Order Traversal",
+          url: "https://leetcode.com/problems/binary-tree-level-order-traversal/",
+          difficulty: "Medium",
+        },
+      ],
       interviewFrequency: "Very High",
       pattern: "BFS",
       estimatedMinutes: 15,
@@ -117,7 +142,13 @@ export const treesBank: ModuleBank = {
           space: "O(h)",
         },
       ],
-      leetcodeLinks: [{ title: "236. Lowest Common Ancestor", url: "https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree/", difficulty: "Medium" }],
+      leetcodeLinks: [
+        {
+          title: "236. Lowest Common Ancestor",
+          url: "https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree/",
+          difficulty: "Medium",
+        },
+      ],
       interviewFrequency: "Very High",
       companies: ["Meta", "Amazon"],
       estimatedMinutes: 25,

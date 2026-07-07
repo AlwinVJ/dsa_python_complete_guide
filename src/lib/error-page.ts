@@ -22,10 +22,14 @@ export function renderErrorPage(error?: any): string {
     <div class="card">
       <h1>This page didn't load</h1>
       <p>Something went wrong on our end. You can try refreshing or head back home.</p>
-      ${error ? `<div style="text-align: left; background: #fee2e2; color: #991b1b; padding: 1rem; border-radius: 0.375rem; font-family: monospace; font-size: 12px; margin-bottom: 1.5rem; overflow-x: auto; max-width: 100%;">
+      ${
+        error
+          ? `<div style="text-align: left; background: #fee2e2; color: #991b1b; padding: 1rem; border-radius: 0.375rem; font-family: monospace; font-size: 12px; margin-bottom: 1.5rem; overflow-x: auto; max-width: 100%;">
         <strong>Error:</strong> ${msg}<br/><br/>
         <strong>Stack:</strong><pre style="margin: 0; white-space: pre-wrap; font-family: inherit;">${stack}</pre>
-      </div>` : ""}
+      </div>`
+          : ""
+      }
       <div class="actions">
         <button class="primary" onclick="location.reload()">Try again</button>
         <a class="secondary" href="/">Go home</a>

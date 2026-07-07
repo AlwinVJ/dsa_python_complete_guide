@@ -2,15 +2,21 @@ import { createFileRoute, notFound, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { motion } from "framer-motion";
 import {
-  CheckCircle2, Circle, Sparkles, Clock, BookOpen, ExternalLink,
-  AlertTriangle, Lightbulb, Trophy, ChevronDown,
+  CheckCircle2,
+  Circle,
+  Sparkles,
+  Clock,
+  BookOpen,
+  ExternalLink,
+  AlertTriangle,
+  Lightbulb,
+  Trophy,
+  ChevronDown,
 } from "lucide-react";
 import { PageShell, PageHeader, Callout } from "@/components/Callout";
 import { CodeBlock } from "@/components/CodeBlock";
 import { TreeVisualizer } from "@/components/TreeVisualizer";
-import {
-  HeapVisualizer, IndexDiagram, HeapPlayground,
-} from "@/components/heaps/Visualizers";
+import { HeapVisualizer, IndexDiagram, HeapPlayground } from "@/components/heaps/Visualizers";
 import { CoursePrevNext } from "@/components/CoursePrevNext";
 import { useLessonProgress } from "@/lib/lesson-progress";
 import type { HLesson, HSection, HQuizItem } from "@/lib/heaps/types";
@@ -23,11 +29,11 @@ import { H_REVISION } from "@/lib/heaps/revision";
 type Tier = { title: string; lessons: HLesson[] };
 
 const TIERS: Record<string, Tier> = {
-  foundations: { title: "Foundations",  lessons: H_FOUNDATIONS },
-  "min-heap":  { title: "Min Heap",     lessons: H_MIN_HEAP },
-  "max-heap":  { title: "Max Heap",     lessons: H_MAX_HEAP },
-  algorithms:  { title: "Heap Algorithms", lessons: H_ALGORITHMS },
-  revision:    { title: "Review & Practice", lessons: H_REVISION },
+  foundations: { title: "Foundations", lessons: H_FOUNDATIONS },
+  "min-heap": { title: "Min Heap", lessons: H_MIN_HEAP },
+  "max-heap": { title: "Max Heap", lessons: H_MAX_HEAP },
+  algorithms: { title: "Heap Algorithms", lessons: H_ALGORITHMS },
+  revision: { title: "Review & Practice", lessons: H_REVISION },
 };
 
 type Resolved = { tierKey: string; tierTitle: string; lesson: HLesson };
@@ -51,13 +57,16 @@ export const Route = createFileRoute("/heaps/$")({
   head: ({ params }) => {
     const splat = (params as { _splat?: string })._splat ?? "";
     const r = resolvePath(splat);
-    const title = r
-      ? `${r.lesson.title} — Heaps — DSA with Python`
-      : "Heaps — DSA with Python";
+    const title = r ? `${r.lesson.title} — Heaps — DSA with Python` : "Heaps — DSA with Python";
     return {
       meta: [
         { title },
-        { name: "description", content: r?.lesson.description ?? "Heaps in Python — foundations, min & max, algorithms, and review." },
+        {
+          name: "description",
+          content:
+            r?.lesson.description ??
+            "Heaps in Python — foundations, min & max, algorithms, and review.",
+        },
         { property: "og:title", content: title },
         { property: "og:description", content: r?.lesson.description ?? "" },
         { property: "og:type", content: "article" },
@@ -96,7 +105,9 @@ function HeapsLessonPage() {
         <PageHeader eyebrow={eyebrow} title={data.title} description={data.description} />
 
         <div className="-mt-6 mb-8 flex flex-wrap items-center gap-3 text-sm">
-          <span className={`inline-flex items-center gap-1 rounded-md border px-2 py-0.5 text-xs font-medium ${diffColor}`}>
+          <span
+            className={`inline-flex items-center gap-1 rounded-md border px-2 py-0.5 text-xs font-medium ${diffColor}`}
+          >
             {data.difficulty}
           </span>
           <span className="inline-flex items-center gap-1 text-muted-foreground">
@@ -113,15 +124,20 @@ function HeapsLessonPage() {
             {done ? <CheckCircle2 className="h-3.5 w-3.5" /> : <Circle className="h-3.5 w-3.5" />}
             {done ? "Completed" : "Mark complete"}
           </button>
-          <Link to="/learn/$course" params={{ course: "heaps" }}
-            className="inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground">
+          <Link
+            to="/learn/$course"
+            params={{ course: "heaps" }}
+            className="inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground"
+          >
             <BookOpen className="h-3.5 w-3.5" /> Course outline
           </Link>
         </div>
       </motion.div>
 
       <div className="space-y-6">
-        {data.sections.map((s, i) => <SectionRenderer key={i} s={s} />)}
+        {data.sections.map((s, i) => (
+          <SectionRenderer key={i} s={s} />
+        ))}
       </div>
 
       <CoursePrevNext courseSlug="heaps" lessonSlug={progressKey} />
@@ -139,7 +155,9 @@ function SectionRenderer({ s }: { s: HSection }) {
           {s.text && <p>{s.text}</p>}
           {s.bullets && (
             <ul className="list-disc space-y-1 pl-6">
-              {s.bullets.map((b, i) => <li key={i}>{b}</li>)}
+              {s.bullets.map((b, i) => (
+                <li key={i}>{b}</li>
+              ))}
             </ul>
           )}
         </div>
@@ -183,13 +201,24 @@ function SectionRenderer({ s }: { s: HSection }) {
           <div className="overflow-hidden rounded-lg border border-border">
             <table className="w-full text-sm">
               <thead className="bg-muted/50">
-                <tr>{s.headers.map((h) => <th key={h} className="px-4 py-2 text-left font-semibold">{h}</th>)}</tr>
+                <tr>
+                  {s.headers.map((h) => (
+                    <th key={h} className="px-4 py-2 text-left font-semibold">
+                      {h}
+                    </th>
+                  ))}
+                </tr>
               </thead>
               <tbody>
                 {s.rows.map((r, i) => (
                   <tr key={i} className="border-t border-border">
                     {r.map((c, j) => (
-                      <td key={j} className={`px-4 py-2 ${s.type === "dryRun" ? "font-mono text-xs text-muted-foreground" : "text-sm text-muted-foreground"}`}>{c}</td>
+                      <td
+                        key={j}
+                        className={`px-4 py-2 ${s.type === "dryRun" ? "font-mono text-xs text-muted-foreground" : "text-sm text-muted-foreground"}`}
+                      >
+                        {c}
+                      </td>
                     ))}
                   </tr>
                 ))}
@@ -202,7 +231,9 @@ function SectionRenderer({ s }: { s: HSection }) {
     case "complexity":
       return (
         <div>
-          <h3 className="mb-2 text-sm font-semibold uppercase tracking-wider text-[color:var(--brand)]">Complexity</h3>
+          <h3 className="mb-2 text-sm font-semibold uppercase tracking-wider text-[color:var(--brand)]">
+            Complexity
+          </h3>
           <div className="overflow-hidden rounded-lg border border-border">
             <table className="w-full text-sm">
               <thead className="bg-muted/50">
@@ -218,7 +249,9 @@ function SectionRenderer({ s }: { s: HSection }) {
                   <tr key={i} className="border-t border-border">
                     <td className="px-4 py-2">{r.op}</td>
                     <td className="px-4 py-2 font-mono text-xs">{r.time}</td>
-                    <td className="px-4 py-2 font-mono text-xs text-muted-foreground">{r.space ?? "—"}</td>
+                    <td className="px-4 py-2 font-mono text-xs text-muted-foreground">
+                      {r.space ?? "—"}
+                    </td>
                     <td className="px-4 py-2 text-xs text-muted-foreground">{r.note ?? ""}</td>
                   </tr>
                 ))}
@@ -235,7 +268,9 @@ function SectionRenderer({ s }: { s: HSection }) {
           </h3>
           <ul className="space-y-2">
             {s.items.map((m, i) => (
-              <li key={i} className="card-surface p-3 text-sm text-muted-foreground">{m}</li>
+              <li key={i} className="card-surface p-3 text-sm text-muted-foreground">
+                {m}
+              </li>
             ))}
           </ul>
         </section>
@@ -251,7 +286,11 @@ function SectionRenderer({ s }: { s: HSection }) {
         </div>
       );
     case "callout":
-      return <Callout kind={s.kind} title={s.title}>{s.text}</Callout>;
+      return (
+        <Callout kind={s.kind} title={s.title}>
+          {s.text}
+        </Callout>
+      );
     case "quiz":
       return (
         <section>
@@ -259,7 +298,9 @@ function SectionRenderer({ s }: { s: HSection }) {
             <Trophy className="h-5 w-5 text-amber-500" /> Quiz
           </h3>
           <div className="space-y-3">
-            {s.items.map((q, i) => <QuizCard key={i} q={q} />)}
+            {s.items.map((q, i) => (
+              <QuizCard key={i} q={q} />
+            ))}
           </div>
         </section>
       );
@@ -270,12 +311,18 @@ function SectionRenderer({ s }: { s: HSection }) {
           <div className="space-y-5">
             {s.groups.map((g) => (
               <div key={g.level}>
-                <div className="mb-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">{g.level}</div>
+                <div className="mb-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                  {g.level}
+                </div>
                 <ul className="space-y-2">
                   {g.items.map((p) => (
                     <li key={p.url}>
-                      <a href={p.url} target="_blank" rel="noreferrer"
-                        className="card-surface flex flex-wrap items-center justify-between gap-2 p-3 hover:border-[color:var(--brand)]/60 transition">
+                      <a
+                        href={p.url}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="card-surface flex flex-wrap items-center justify-between gap-2 p-3 hover:border-[color:var(--brand)]/60 transition"
+                      >
                         <div>
                           <div className="text-sm font-medium">{p.title}</div>
                           <div className="mt-0.5 flex flex-wrap items-center gap-3 text-xs text-muted-foreground">
@@ -283,11 +330,17 @@ function SectionRenderer({ s }: { s: HSection }) {
                             {p.time && <span>~{p.time}</span>}
                           </div>
                         </div>
-                        <span className={`rounded-md px-2 py-0.5 text-xs ${
-                          p.difficulty === "Easy" ? "bg-emerald-500/15 text-emerald-500" :
-                          p.difficulty === "Medium" ? "bg-amber-500/15 text-amber-500" :
-                          "bg-rose-500/15 text-rose-500"
-                        }`}>{p.difficulty}</span>
+                        <span
+                          className={`rounded-md px-2 py-0.5 text-xs ${
+                            p.difficulty === "Easy"
+                              ? "bg-emerald-500/15 text-emerald-500"
+                              : p.difficulty === "Medium"
+                                ? "bg-amber-500/15 text-amber-500"
+                                : "bg-rose-500/15 text-rose-500"
+                          }`}
+                        >
+                          {p.difficulty}
+                        </span>
                       </a>
                     </li>
                   ))}
@@ -304,8 +357,12 @@ function SectionRenderer({ s }: { s: HSection }) {
           <ul className="grid gap-2 sm:grid-cols-2">
             {s.items.map((r) => (
               <li key={r.url}>
-                <a href={r.url} target="_blank" rel="noreferrer"
-                  className="card-surface flex items-center justify-between gap-2 p-3 text-sm hover:border-[color:var(--brand)]/60 transition">
+                <a
+                  href={r.url}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="card-surface flex items-center justify-between gap-2 p-3 text-sm hover:border-[color:var(--brand)]/60 transition"
+                >
                   <span>{r.label}</span>
                   <ExternalLink className="h-3.5 w-3.5 text-muted-foreground" />
                 </a>
@@ -320,7 +377,9 @@ function SectionRenderer({ s }: { s: HSection }) {
           <h3 className="mb-3 text-xl font-semibold">Interview Questions</h3>
           <ul className="space-y-2">
             {s.items.map((q, i) => (
-              <li key={i} className="card-surface p-3 text-sm">{q}</li>
+              <li key={i} className="card-surface p-3 text-sm">
+                {q}
+              </li>
             ))}
           </ul>
         </section>
@@ -330,7 +389,9 @@ function SectionRenderer({ s }: { s: HSection }) {
         <section>
           <h3 className="mb-3 text-xl font-semibold">Frequently Asked</h3>
           <div className="space-y-2">
-            {s.items.map((item, i) => <FaqRow key={i} q={item.q} a={item.a} />)}
+            {s.items.map((item, i) => (
+              <FaqRow key={i} q={item.q} a={item.a} />
+            ))}
           </div>
         </section>
       );
@@ -350,12 +411,17 @@ function QuizCard({ q }: { q: HQuizItem }) {
           const isCorrect = picked !== null && i === q.answer;
           const isWrong = isPicked && i !== q.answer;
           return (
-            <button key={i} onClick={() => setPicked(i)}
+            <button
+              key={i}
+              onClick={() => setPicked(i)}
               className={`w-full rounded-md border px-3 py-1.5 text-left text-sm transition ${
-                isCorrect ? "border-emerald-500/50 bg-emerald-500/10" :
-                isWrong ? "border-rose-500/50 bg-rose-500/10" :
-                "border-border hover:bg-accent"
-              }`}>
+                isCorrect
+                  ? "border-emerald-500/50 bg-emerald-500/10"
+                  : isWrong
+                    ? "border-rose-500/50 bg-rose-500/10"
+                    : "border-border hover:bg-accent"
+              }`}
+            >
               {c}
             </button>
           );
@@ -372,8 +438,10 @@ function FaqRow({ q, a }: { q: string; a: string }) {
   const [open, setOpen] = useState(false);
   return (
     <div className="card-surface overflow-hidden">
-      <button onClick={() => setOpen((o) => !o)}
-        className="flex w-full items-center justify-between gap-2 p-3 text-left text-sm font-medium hover:bg-accent/30">
+      <button
+        onClick={() => setOpen((o) => !o)}
+        className="flex w-full items-center justify-between gap-2 p-3 text-left text-sm font-medium hover:bg-accent/30"
+      >
         <span>{q}</span>
         <ChevronDown className={`h-4 w-4 shrink-0 transition ${open ? "rotate-180" : ""}`} />
       </button>

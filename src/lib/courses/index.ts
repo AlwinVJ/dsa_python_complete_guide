@@ -49,19 +49,28 @@ export function getCourse(slug: string): Course | undefined {
   return COURSES.find((c) => c.slug === slug);
 }
 
-export function getLesson(courseSlug: string, lessonSlug: string):
-  | { course: Course; lesson: Lesson; index: number }
-  | undefined {
+export function getLesson(
+  courseSlug: string,
+  lessonSlug: string,
+): { course: Course; lesson: Lesson; index: number } | undefined {
   const course = getCourse(courseSlug);
   if (!course) return undefined;
-  const all = [...course.lessons, ...(course.groups?.flatMap((g) => g.lessons) ?? []), ...(course.outro ?? [])];
+  const all = [
+    ...course.lessons,
+    ...(course.groups?.flatMap((g) => g.lessons) ?? []),
+    ...(course.outro ?? []),
+  ];
   const index = all.findIndex((l) => l.slug === lessonSlug);
   if (index === -1) return undefined;
   return { course, lesson: all[index], index };
 }
 
 export function getPrevNext(course: Course, index: number) {
-  const all = [...course.lessons, ...(course.groups?.flatMap((g) => g.lessons) ?? []), ...(course.outro ?? [])];
+  const all = [
+    ...course.lessons,
+    ...(course.groups?.flatMap((g) => g.lessons) ?? []),
+    ...(course.outro ?? []),
+  ];
   const prev = index > 0 ? all[index - 1] : undefined;
   const next = index < all.length - 1 ? all[index + 1] : undefined;
   return { prev, next };

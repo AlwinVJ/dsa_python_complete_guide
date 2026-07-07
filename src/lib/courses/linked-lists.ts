@@ -44,10 +44,20 @@ export const linkedListsCourse: Course = {
   // No top-level lessons — everything lives inside a tier group.
   lessons: [],
   groups: [
-    { slug: "foundations", title: "Foundations", tagline: "Shared concepts for every variant.",
-      kind: "foundations", lessons: foundations },
+    {
+      slug: "foundations",
+      title: "Foundations",
+      tagline: "Shared concepts for every variant.",
+      kind: "foundations",
+      lessons: foundations,
+    },
     ...variantGroups,
-    { slug: "revision", title: "Revision", tagline: "Recap, cheat sheets, interview prep.",
-      kind: "revision", lessons: revision },
+    {
+      slug: "revision",
+      title: "Revision",
+      tagline: "Recap, cheat sheets, interview prep.",
+      kind: "revision",
+      lessons: revision,
+    },
   ],
 };

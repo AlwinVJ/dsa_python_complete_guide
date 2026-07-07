@@ -9,7 +9,10 @@ export const Route = createFileRoute("/nested")({
   head: () => ({
     meta: [
       { title: "Nested Lists & Matrices — DSA with Python" },
-      { name: "description", content: "2D lists visualized. Click a cell to see matrix[row][col]." },
+      {
+        name: "description",
+        content: "2D lists visualized. Click a cell to see matrix[row][col].",
+      },
     ],
   }),
   component: Page,
@@ -24,7 +27,10 @@ function Matrix() {
   const [sel, setSel] = useState<[number, number] | null>(null);
   return (
     <div className="card-surface p-4">
-      <div className="inline-grid" style={{ gridTemplateColumns: `auto repeat(${m[0].length}, minmax(52px, 1fr))` }}>
+      <div
+        className="inline-grid"
+        style={{ gridTemplateColumns: `auto repeat(${m[0].length}, minmax(52px, 1fr))` }}
+      >
         <div />
         {m[0].map((_, c) => (
           <div key={c} className="pb-2 text-center text-xs text-muted-foreground">
@@ -46,8 +52,8 @@ function Matrix() {
                     isSel
                       ? "border-[color:var(--brand)] bg-[color:var(--brand)]/25"
                       : rowHi || colHi
-                      ? "border-[color:var(--brand)]/50 bg-[color:var(--brand)]/10"
-                      : "border-border bg-card hover:bg-accent"
+                        ? "border-[color:var(--brand)]/50 bg-[color:var(--brand)]/10"
+                        : "border-border bg-card hover:bg-accent"
                   }`}
                 >
                   {v}
@@ -81,7 +87,9 @@ function Page() {
       </Section>
 
       <Section title="Creating a matrix safely">
-        <CodeBlock code={`# Wrong — every row is the SAME list\nbad = [[0]*3]*3\nbad[0][0] = 9\n# bad -> [[9,0,0],[9,0,0],[9,0,0]]\n\n# Right — a fresh list per row\ngood = [[0]*3 for _ in range(3)]`} />
+        <CodeBlock
+          code={`# Wrong — every row is the SAME list\nbad = [[0]*3]*3\nbad[0][0] = 9\n# bad -> [[9,0,0],[9,0,0],[9,0,0]]\n\n# Right — a fresh list per row\ngood = [[0]*3 for _ in range(3)]`}
+        />
       </Section>
 
       <Section title="Iterating a matrix">
@@ -91,8 +99,8 @@ function Page() {
       </Section>
 
       <Callout kind="perf">
-        For heavy numeric work, reach for <code>numpy</code> — its arrays are contiguous, typed, and support vectorized
-        operations that outperform nested Python lists by orders of magnitude.
+        For heavy numeric work, reach for <code>numpy</code> — its arrays are contiguous, typed, and
+        support vectorized operations that outperform nested Python lists by orders of magnitude.
       </Callout>
 
       <PrevNext current="/nested" />

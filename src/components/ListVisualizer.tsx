@@ -4,7 +4,10 @@ import type { ReactNode } from "react";
 export type ListItem = { id: string; value: string | number | boolean | null };
 
 export function makeItems(values: Array<string | number | boolean | null>): ListItem[] {
-  return values.map((v, i) => ({ id: `${i}-${String(v)}-${Math.random().toString(36).slice(2, 7)}`, value: v }));
+  return values.map((v, i) => ({
+    id: `${i}-${String(v)}-${Math.random().toString(36).slice(2, 7)}`,
+    value: v,
+  }));
 }
 
 function displayValue(v: ListItem["value"]) {
@@ -43,7 +46,10 @@ export function ListVisualizer({
         {showIndices && (
           <div className="flex gap-2">
             {items.map((_, i) => (
-              <div key={i} className={`${sizeMap} flex items-center justify-center text-xs text-muted-foreground`}>
+              <div
+                key={i}
+                className={`${sizeMap} flex items-center justify-center text-xs text-muted-foreground`}
+              >
                 {i}
               </div>
             ))}
@@ -79,7 +85,10 @@ export function ListVisualizer({
         {showNegative && (
           <div className="flex gap-2">
             {items.map((_, i) => (
-              <div key={i} className={`${sizeMap} flex items-center justify-center text-xs text-muted-foreground`}>
+              <div
+                key={i}
+                className={`${sizeMap} flex items-center justify-center text-xs text-muted-foreground`}
+              >
                 -{items.length - i}
               </div>
             ))}
@@ -113,10 +122,10 @@ export function BarVisualizer({
         const color = isHi
           ? "var(--brand)"
           : isCmp
-          ? "var(--warn)"
-          : isSorted
-          ? "var(--good)"
-          : "color-mix(in oklab, var(--foreground) 25%, transparent)";
+            ? "var(--warn)"
+            : isSorted
+              ? "var(--good)"
+              : "color-mix(in oklab, var(--foreground) 25%, transparent)";
         return (
           <motion.div
             key={i}
@@ -155,7 +164,11 @@ export function Section({
 }) {
   return (
     <section className="mb-12">
-      {eyebrow && <div className="mb-1 text-xs font-semibold uppercase tracking-wider text-[color:var(--brand)]">{eyebrow}</div>}
+      {eyebrow && (
+        <div className="mb-1 text-xs font-semibold uppercase tracking-wider text-[color:var(--brand)]">
+          {eyebrow}
+        </div>
+      )}
       <h2 className="mb-4 text-2xl font-semibold">{title}</h2>
       <div className="space-y-4 text-[15px] leading-relaxed text-muted-foreground">{children}</div>
     </section>

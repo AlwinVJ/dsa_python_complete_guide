@@ -9,10 +9,7 @@ import { QUEUE_REVISION } from "@/lib/queues/revision";
 // Every lesson uses a fully-qualified href so the sidebar links directly into
 // /queues/<tier>/<slug>, handled by the splat route in src/routes/queues.$.tsx.
 
-const toLessons = (
-  tier: string,
-  xs: { slug: string; title: string; description: string }[],
-) =>
+const toLessons = (tier: string, xs: { slug: string; title: string; description: string }[]) =>
   xs.map((l) => ({
     slug: l.slug,
     title: l.title,
@@ -23,8 +20,7 @@ const toLessons = (
 export const queuesCourse: Course = {
   slug: "queues",
   title: "Queues",
-  tagline:
-    "First-in first-out containers — foundations, variants, algorithms, and revision.",
+  tagline: "First-in first-out containers — foundations, variants, algorithms, and revision.",
   category: "linear",
   order: 5,
   icon: "ArrowRightLeft",
@@ -56,8 +52,7 @@ export const queuesCourse: Course = {
     {
       slug: "revision",
       title: "Review & Practice",
-      tagline:
-        "Common mistakes, FAQ, interview bank, cheat sheet, and final quiz.",
+      tagline: "Common mistakes, FAQ, interview bank, cheat sheet, and final quiz.",
       kind: "revision",
       lessons: toLessons("revision", QUEUE_REVISION),
     },

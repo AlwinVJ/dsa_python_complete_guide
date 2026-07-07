@@ -81,12 +81,34 @@ export type THeading = { type: "heading"; text: string };
 export type TTable = { type: "table"; headers: string[]; rows: string[][]; caption?: string };
 
 export type TSection =
-  | TreeViz | TreePlaygroundSec
-  | BinaryPlaygroundSec | CompleteVizSec | PerfectVizSec | FullVizSec
-  | BalancedVizSec | DegenerateVizSec | AVLPlaygroundSec | RBPlaygroundSec
-  | TriePlaygroundSec | SegTreeSec | FenwickSec | TraversalPlayerSec | MemoryDiagramSec
-  | TTheory | TCode | TDryRun | TComplexity | TMistakes | TTip | TCallout
-  | TQuiz | TPractice | TRefs | TInterview | THeading | TTable;
+  | TreeViz
+  | TreePlaygroundSec
+  | BinaryPlaygroundSec
+  | CompleteVizSec
+  | PerfectVizSec
+  | FullVizSec
+  | BalancedVizSec
+  | DegenerateVizSec
+  | AVLPlaygroundSec
+  | RBPlaygroundSec
+  | TriePlaygroundSec
+  | SegTreeSec
+  | FenwickSec
+  | TraversalPlayerSec
+  | MemoryDiagramSec
+  | TTheory
+  | TCode
+  | TDryRun
+  | TComplexity
+  | TMistakes
+  | TTip
+  | TCallout
+  | TQuiz
+  | TPractice
+  | TRefs
+  | TInterview
+  | THeading
+  | TTable;
 
 export type TLesson = {
   slug: string;

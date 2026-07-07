@@ -49,7 +49,9 @@ function IndexPicker({ items, negative }: { items: ListItem[]; negative?: boolea
         <div className="mt-4 rounded-md bg-muted p-3 font-mono text-sm">
           items[{negative ? -(items.length - selected) : selected}] ={" "}
           <span className="text-[color:var(--brand)]">
-            {typeof items[selected].value === "string" ? `"${items[selected].value}"` : String(items[selected].value)}
+            {typeof items[selected].value === "string"
+              ? `"${items[selected].value}"`
+              : String(items[selected].value)}
           </span>
         </div>
       )}
@@ -68,25 +70,33 @@ function Page() {
       />
 
       <Section title="Positive indexing">
-        <p>Positive indices start at <code>0</code> and count forward.</p>
+        <p>
+          Positive indices start at <code>0</code> and count forward.
+        </p>
         <IndexPicker items={fruits} />
-        <CodeBlock code={`fruits = ["Apple", "Banana", "Mango", "Orange"]\nprint(fruits[0])  # Apple\nprint(fruits[2])  # Mango`} />
+        <CodeBlock
+          code={`fruits = ["Apple", "Banana", "Mango", "Orange"]\nprint(fruits[0])  # Apple\nprint(fruits[2])  # Mango`}
+        />
       </Section>
 
       <Section title="Negative indexing">
-        <p>Negative indices count from the end. <code>-1</code> is the last element.</p>
+        <p>
+          Negative indices count from the end. <code>-1</code> is the last element.
+        </p>
         <IndexPicker items={fruits} negative />
         <CodeBlock code={`print(fruits[-1])  # Orange\nprint(fruits[-2])  # Mango`} />
       </Section>
 
       <Section title="Updating elements">
         <p>Because lists are mutable, you can assign to any valid index.</p>
-        <CodeBlock code={`numbers = [10, 20, 30, 40]\nnumbers[2] = 100\nprint(numbers)  # [10, 20, 100, 40]`} />
+        <CodeBlock
+          code={`numbers = [10, 20, 30, 40]\nnumbers[2] = 100\nprint(numbers)  # [10, 20, 100, 40]`}
+        />
       </Section>
 
       <Callout kind="warn">
-        Accessing an out-of-range index raises <code>IndexError</code>. Use <code>len(lst)</code> to check bounds, or
-        catch it with <code>try / except</code>.
+        Accessing an out-of-range index raises <code>IndexError</code>. Use <code>len(lst)</code> to
+        check bounds, or catch it with <code>try / except</code>.
       </Callout>
 
       <PrevNext current="/accessing" />

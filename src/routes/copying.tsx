@@ -27,10 +27,15 @@ function Diagram({
       <div className="flex flex-wrap gap-4">
         {boxes.map((b) => (
           <div key={b.label} className="min-w-[160px]">
-            <div className="mb-1 text-xs" style={{ color: b.color }}>{b.label}</div>
+            <div className="mb-1 text-xs" style={{ color: b.color }}>
+              {b.label}
+            </div>
             <div className="flex gap-1 rounded-md border p-2" style={{ borderColor: b.color }}>
               {b.items.map((it, i) => (
-                <div key={i} className="grid h-9 w-9 place-items-center rounded border border-border bg-background font-mono text-sm">
+                <div
+                  key={i}
+                  className="grid h-9 w-9 place-items-center rounded border border-border bg-background font-mono text-sm"
+                >
                   {it}
                 </div>
               ))}
@@ -59,7 +64,9 @@ function Page() {
             { label: "b  →  (same list)", items: [1, 2, 3], color: "var(--brand)" },
           ]}
         />
-        <CodeBlock code={`a = [1, 2, 3]\nb = a\nb.append(4)\nprint(a)  # [1, 2, 3, 4]  <- both changed!`} />
+        <CodeBlock
+          code={`a = [1, 2, 3]\nb = a\nb.append(4)\nprint(a)  # [1, 2, 3, 4]  <- both changed!`}
+        />
       </Section>
 
       <Section title="2 · Shallow copy">
@@ -84,8 +91,8 @@ function Page() {
       </Section>
 
       <Callout kind="warn">
-        <b>Common bug:</b> Using <code>a.copy()</code> and expecting nested lists to be independent. For any nested
-        structure, always use <code>copy.deepcopy()</code>.
+        <b>Common bug:</b> Using <code>a.copy()</code> and expecting nested lists to be independent.
+        For any nested structure, always use <code>copy.deepcopy()</code>.
       </Callout>
 
       <PrevNext current="/copying" />

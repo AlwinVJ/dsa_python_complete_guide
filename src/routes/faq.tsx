@@ -11,7 +11,11 @@ export const Route = createFileRoute("/faq")({
   head: () => ({
     meta: [
       { title: "Python List FAQ & Interview Questions" },
-      { name: "description", content: "Concepts, operations, and coding-interview classics for Python lists — with visual step-by-step solutions and complexity analysis." },
+      {
+        name: "description",
+        content:
+          "Concepts, operations, and coding-interview classics for Python lists — with visual step-by-step solutions and complexity analysis.",
+      },
     ],
   }),
   component: Page,
@@ -38,7 +42,8 @@ const faqs: FAQ[] = [
     q: "What is the difference between a Python List and a traditional Array?",
     a: "A Python list is a dynamic array of pointers to Python objects. A traditional (C-style) array is a fixed-size block of contiguous, same-typed values. Lists trade a bit of memory and cache locality for flexibility.",
     code: `arr = [10, 20, 30]           # each slot holds a pointer\narr.append("hello")          # mixed types are fine\narr[0] = [1, 2]              # any object`,
-    didYouKnow: "Use array.array or numpy.ndarray when you need packed, homogeneous, cache-friendly storage.",
+    didYouKnow:
+      "Use array.array or numpy.ndarray when you need packed, homogeneous, cache-friendly storage.",
   },
   {
     category: "Concepts",
@@ -63,7 +68,8 @@ const faqs: FAQ[] = [
     a: "insert(0, x) has to shift every existing element one slot to the right. append() just writes at the end.",
     code: `a.insert(0, x)   # O(n)  — shift everything\na.append(x)      # O(1)* — amortized`,
     time: "insert(0): O(n) — append: O(1) amortized",
-    mistakes: "Building a list by inserting at index 0 in a loop is O(n²). Append and reverse at the end instead.",
+    mistakes:
+      "Building a list by inserting at index 0 in a loop is O(n²). Append and reverse at the end instead.",
   },
   {
     category: "Concepts",
@@ -450,12 +456,14 @@ type Step = { arr: number[]; highlight?: number[]; compare?: number[]; msg: stri
 function reverseSteps(a: number[]): Step[] {
   const arr = [...a];
   const steps: Step[] = [{ arr: [...arr], msg: "Start — two pointers at both ends." }];
-  let i = 0, j = arr.length - 1;
+  let i = 0,
+    j = arr.length - 1;
   while (i < j) {
     steps.push({ arr: [...arr], compare: [i, j], msg: `Swap indices ${i} and ${j}.` });
     [arr[i], arr[j]] = [arr[j], arr[i]];
     steps.push({ arr: [...arr], highlight: [i, j], msg: `After swap.` });
-    i++; j--;
+    i++;
+    j--;
   }
   steps.push({ arr: [...arr], msg: "Done — array reversed." });
   return steps;
@@ -463,14 +471,24 @@ function reverseSteps(a: number[]): Step[] {
 
 function twoSumSteps(a: number[], target: number): Step[] {
   const seen = new Map<number, number>();
-  const steps: Step[] = [{ arr: [...a], msg: `Looking for two indices whose values sum to ${target}.` }];
+  const steps: Step[] = [
+    { arr: [...a], msg: `Looking for two indices whose values sum to ${target}.` },
+  ];
   for (let i = 0; i < a.length; i++) {
     const need = target - a[i];
     if (seen.has(need)) {
-      steps.push({ arr: [...a], highlight: [seen.get(need)!, i], msg: `Found: a[${seen.get(need)}] + a[${i}] = ${target} ✓` });
+      steps.push({
+        arr: [...a],
+        highlight: [seen.get(need)!, i],
+        msg: `Found: a[${seen.get(need)}] + a[${i}] = ${target} ✓`,
+      });
       return steps;
     }
-    steps.push({ arr: [...a], compare: [i], msg: `Check a[${i}]=${a[i]} — need ${need}. Store it.` });
+    steps.push({
+      arr: [...a],
+      compare: [i],
+      msg: `Check a[${i}]=${a[i]} — need ${need}. Store it.`,
+    });
     seen.set(a[i], i);
   }
   steps.push({ arr: [...a], msg: "No pair found." });
@@ -479,14 +497,29 @@ function twoSumSteps(a: number[], target: number): Step[] {
 
 function kadaneSteps(a: number[]): Step[] {
   const steps: Step[] = [{ arr: [...a], msg: "Start Kadane's." }];
-  let best = a[0], cur = a[0], bestStart = 0, bestEnd = 0, curStart = 0;
+  let best = a[0],
+    cur = a[0],
+    bestStart = 0,
+    bestEnd = 0,
+    curStart = 0;
   for (let i = 1; i < a.length; i++) {
-    if (a[i] > cur + a[i]) { cur = a[i]; curStart = i; }
-    else cur += a[i];
-    if (cur > best) { best = cur; bestStart = curStart; bestEnd = i; }
+    if (a[i] > cur + a[i]) {
+      cur = a[i];
+      curStart = i;
+    } else cur += a[i];
+    if (cur > best) {
+      best = cur;
+      bestStart = curStart;
+      bestEnd = i;
+    }
     const win = [];
     for (let k = curStart; k <= i; k++) win.push(k);
-    steps.push({ arr: [...a], compare: win, highlight: [i], msg: `i=${i}: cur=${cur}, best=${best}` });
+    steps.push({
+      arr: [...a],
+      compare: win,
+      highlight: [i],
+      msg: `i=${i}: cur=${cur}, best=${best}`,
+    });
   }
   const finalWin = [];
   for (let k = bestStart; k <= bestEnd; k++) finalWin.push(k);
@@ -589,7 +622,10 @@ function ProblemRunner({ p }: { p: ProblemDef }) {
     setSteps(s);
     setI(0);
   };
-  const reset = () => { setSteps(null); setI(0); };
+  const reset = () => {
+    setSteps(null);
+    setI(0);
+  };
   const step = steps?.[i];
 
   return (
@@ -615,17 +651,28 @@ function ProblemRunner({ p }: { p: ProblemDef }) {
             className="h-9 w-20 rounded-md border border-input bg-background px-2 text-sm font-mono"
           />
         )}
-        <button onClick={run} className="inline-flex h-9 items-center gap-1 rounded-md gradient-brand px-3 text-xs font-medium text-primary-foreground">
+        <button
+          onClick={run}
+          className="inline-flex h-9 items-center gap-1 rounded-md gradient-brand px-3 text-xs font-medium text-primary-foreground"
+        >
           <Play className="h-3.5 w-3.5" /> Run
         </button>
-        <button onClick={reset} className="inline-flex h-9 items-center gap-1 rounded-md border border-input bg-background px-3 text-xs hover:bg-accent">
+        <button
+          onClick={reset}
+          className="inline-flex h-9 items-center gap-1 rounded-md border border-input bg-background px-3 text-xs hover:bg-accent"
+        >
           <RotateCcw className="h-3.5 w-3.5" /> Reset
         </button>
       </div>
 
       {step && (
         <div className="mt-4">
-          <ListVisualizer items={makeItems(step.arr)} highlight={step.highlight} compare={step.compare} size="sm" />
+          <ListVisualizer
+            items={makeItems(step.arr)}
+            highlight={step.highlight}
+            compare={step.compare}
+            size="sm"
+          />
           <div className="mt-2 text-sm text-muted-foreground">{step.msg}</div>
           <div className="mt-3 flex items-center gap-2">
             <button
@@ -650,7 +697,9 @@ function ProblemRunner({ p }: { p: ProblemDef }) {
       )}
 
       <details className="mt-3">
-        <summary className="cursor-pointer text-xs text-muted-foreground hover:text-foreground">Show code</summary>
+        <summary className="cursor-pointer text-xs text-muted-foreground hover:text-foreground">
+          Show code
+        </summary>
         <CodeBlock code={p.code} />
       </details>
     </div>
@@ -666,7 +715,9 @@ function FAQCard({ f }: { f: FAQ }) {
         className="flex w-full items-start justify-between gap-4 py-4 text-left"
       >
         <div className="min-w-0">
-          <div className="text-xs font-semibold uppercase tracking-wider text-[color:var(--brand)]">{f.category}</div>
+          <div className="text-xs font-semibold uppercase tracking-wider text-[color:var(--brand)]">
+            {f.category}
+          </div>
           <div className="mt-0.5 font-medium">{f.q}</div>
         </div>
         <ChevronDown className={`mt-1 h-4 w-4 shrink-0 transition ${open ? "rotate-180" : ""}`} />
@@ -677,8 +728,18 @@ function FAQCard({ f }: { f: FAQ }) {
           {f.code && <CodeBlock code={f.code} />}
           {(f.time || f.space) && (
             <div className="mt-3 flex flex-wrap gap-2">
-              {f.time && <span className="text-xs text-muted-foreground">Time: <ComplexityBadgeCell value={f.time.split(" ")[0]} /> {f.time.replace(/^O\([^)]+\)\s*/, "")}</span>}
-              {f.space && <span className="text-xs text-muted-foreground">Space: <ComplexityBadgeCell value={f.space.split(" ")[0]} /> {f.space.replace(/^O\([^)]+\)\s*/, "")}</span>}
+              {f.time && (
+                <span className="text-xs text-muted-foreground">
+                  Time: <ComplexityBadgeCell value={f.time.split(" ")[0]} />{" "}
+                  {f.time.replace(/^O\([^)]+\)\s*/, "")}
+                </span>
+              )}
+              {f.space && (
+                <span className="text-xs text-muted-foreground">
+                  Space: <ComplexityBadgeCell value={f.space.split(" ")[0]} />{" "}
+                  {f.space.replace(/^O\([^)]+\)\s*/, "")}
+                </span>
+              )}
             </div>
           )}
           {f.edge && (
@@ -708,7 +769,11 @@ function Page() {
   const [q, setQ] = useState("");
   const filtered = useMemo(() => {
     const query = q.trim().toLowerCase();
-    return faqs.filter((f) => (cat === "All" || f.category === cat) && (!query || f.q.toLowerCase().includes(query) || f.a.toLowerCase().includes(query)));
+    return faqs.filter(
+      (f) =>
+        (cat === "All" || f.category === cat) &&
+        (!query || f.q.toLowerCase().includes(query) || f.a.toLowerCase().includes(query)),
+    );
   }, [cat, q]);
 
   return (
@@ -720,11 +785,16 @@ function Page() {
       />
 
       <Callout kind="did" title="Try the interactive problems">
-        <p>Below you'll find four fully interactive problem visualizers — edit the input, hit Run, and step through the algorithm one operation at a time.</p>
+        <p>
+          Below you'll find four fully interactive problem visualizers — edit the input, hit Run,
+          and step through the algorithm one operation at a time.
+        </p>
       </Callout>
 
       <div className="mb-8 grid gap-4 md:grid-cols-2">
-        {problems.map((p) => <ProblemRunner key={p.id} p={p} />)}
+        {problems.map((p) => (
+          <ProblemRunner key={p.id} p={p} />
+        ))}
       </div>
 
       <div className="mb-4 flex flex-wrap gap-2">
@@ -733,7 +803,9 @@ function Page() {
             key={c}
             onClick={() => setCat(c as Category | "All")}
             className={`rounded-full border px-3 py-1 text-xs font-medium transition ${
-              cat === c ? "gradient-brand text-primary-foreground border-transparent" : "border-border text-muted-foreground hover:bg-accent"
+              cat === c
+                ? "gradient-brand text-primary-foreground border-transparent"
+                : "border-border text-muted-foreground hover:bg-accent"
             }`}
           >
             {c}

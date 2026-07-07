@@ -1,10 +1,28 @@
 import { Link } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import {
-  BookOpen, PlayCircle, Code2, FileCode2, Sparkles, MemoryStick,
-  LineChart, Globe, HelpCircle, GraduationCap, Target, Map,
-  Route as RouteIcon, Award, Lightbulb, Trophy, Check, X,
-  ChevronRight, Rocket, Boxes, LayoutDashboard,
+  BookOpen,
+  PlayCircle,
+  Code2,
+  FileCode2,
+  Sparkles,
+  MemoryStick,
+  LineChart,
+  Globe,
+  HelpCircle,
+  GraduationCap,
+  Target,
+  Map,
+  Route as RouteIcon,
+  Award,
+  Lightbulb,
+  Trophy,
+  Check,
+  X,
+  ChevronRight,
+  Rocket,
+  Boxes,
+  LayoutDashboard,
 } from "lucide-react";
 
 const fade = {
@@ -18,8 +36,16 @@ const fade = {
 export function PlatformStatistics() {
   const stats = [
     { value: "12+", label: "Learning Modules", hint: "From Arrays to Dynamic Programming" },
-    { value: "100+", label: "Interactive Visualizations", hint: "Step-by-step memory and execution visualizers" },
-    { value: "50+", label: "Interview Coding Problems", hint: "Curated with LeetCode links & approaches" },
+    {
+      value: "100+",
+      label: "Interactive Visualizations",
+      hint: "Step-by-step memory and execution visualizers",
+    },
+    {
+      value: "50+",
+      label: "Interview Coding Problems",
+      hint: "Curated with LeetCode links & approaches",
+    },
     { value: "100%", label: "Python-First", hint: "Clean implementations and OOP structures" },
   ];
 
@@ -67,10 +93,13 @@ export function PlatformFeatures() {
   return (
     <section className="mx-auto max-w-6xl px-4 py-12 sm:px-6">
       <div className="mb-8 text-center md:text-left">
-        <div className="mb-2 text-xs font-semibold uppercase tracking-wider text-[color:var(--brand)]">Everything Included</div>
+        <div className="mb-2 text-xs font-semibold uppercase tracking-wider text-[color:var(--brand)]">
+          Everything Included
+        </div>
         <h2 className="text-2xl font-semibold sm:text-3xl">Meet Your Learning Companion</h2>
         <p className="mt-2 max-w-3xl text-sm text-muted-foreground sm:text-base">
-          This platform is a comprehensive learning ecosystem designed to help you build solid intuitive models for how code runs.
+          This platform is a comprehensive learning ecosystem designed to help you build solid
+          intuitive models for how code runs.
         </p>
       </div>
 
@@ -111,10 +140,13 @@ export function PlatformComparison() {
   return (
     <section className="mx-auto max-w-6xl px-4 py-12 sm:px-6">
       <div className="mb-8 text-center md:text-left">
-        <div className="mb-2 text-xs font-semibold uppercase tracking-wider text-[color:var(--brand)]">Why Us</div>
+        <div className="mb-2 text-xs font-semibold uppercase tracking-wider text-[color:var(--brand)]">
+          Why Us
+        </div>
         <h2 className="text-2xl font-semibold sm:text-3xl">Why This Platform is Different</h2>
         <p className="mt-2 max-w-3xl text-sm text-muted-foreground sm:text-base">
-          Traditional tutorials rely on static text and screenshots. We believe complex algorithms are best learned through direct interaction and visual feedback.
+          Traditional tutorials rely on static text and screenshots. We believe complex algorithms
+          are best learned through direct interaction and visual feedback.
         </p>
       </div>
 
@@ -123,7 +155,9 @@ export function PlatformComparison() {
           <thead className="bg-muted/40 text-xs uppercase tracking-wider text-muted-foreground">
             <tr>
               <th className="px-4 py-3 text-left">Feature</th>
-              <th className="px-4 py-3 text-center text-[color:var(--brand)] font-semibold">DSA with Python</th>
+              <th className="px-4 py-3 text-center text-[color:var(--brand)] font-semibold">
+                DSA with Python
+              </th>
               <th className="px-4 py-3 text-center">Traditional Tutorials</th>
             </tr>
           </thead>
@@ -163,16 +197,26 @@ export function PlatformCta() {
             <span className="text-gradient">Start Your DSA Journey Today</span>
           </h2>
           <p className="mx-auto mt-3 max-w-2xl text-muted-foreground">
-            From foundations to interview-ready. Gain a visual understanding of memory, complexity, and coding logic from day one.
+            From foundations to interview-ready. Gain a visual understanding of memory, complexity,
+            and coding logic from day one.
           </p>
           <div className="mt-8 flex flex-wrap justify-center gap-3">
-            <Link to="/roadmap" className="inline-flex items-center gap-2 rounded-md gradient-brand px-5 py-2.5 text-sm font-medium text-primary-foreground shadow-lg shadow-[color:var(--brand)]/25">
+            <Link
+              to="/roadmap"
+              className="inline-flex items-center gap-2 rounded-md gradient-brand px-5 py-2.5 text-sm font-medium text-primary-foreground shadow-lg shadow-[color:var(--brand)]/25"
+            >
               <Map className="h-4 w-4" /> Explore the Roadmap
             </Link>
-            <Link to="/learn/introduction-to-dsa" className="inline-flex items-center gap-2 rounded-md border border-border bg-card px-5 py-2.5 text-sm font-medium hover:bg-accent transition">
+            <Link
+              to="/learn/introduction-to-dsa"
+              className="inline-flex items-center gap-2 rounded-md border border-border bg-card px-5 py-2.5 text-sm font-medium hover:bg-accent transition"
+            >
               <BookOpen className="h-4 w-4" /> Introduction to DSA
             </Link>
-            <Link to="/dashboard" className="inline-flex items-center gap-2 rounded-md border border-border bg-card px-5 py-2.5 text-sm font-medium hover:bg-accent transition">
+            <Link
+              to="/dashboard"
+              className="inline-flex items-center gap-2 rounded-md border border-border bg-card px-5 py-2.5 text-sm font-medium hover:bg-accent transition"
+            >
               <LayoutDashboard className="h-4 w-4" /> View Dashboard
             </Link>
           </div>

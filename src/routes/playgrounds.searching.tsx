@@ -4,14 +4,27 @@ import { PageShell, PageHeader, ComplexityBadge } from "@/components/Callout";
 import { Legend } from "@/components/ListVisualizer";
 import { CodeBlock } from "@/components/CodeBlock";
 import { ALGORITHMS } from "@/lib/searching";
-import { Play, Pause, RotateCcw, Shuffle, StepForward, StepBack, BookOpen, Settings2 } from "lucide-react";
+import {
+  Play,
+  Pause,
+  RotateCcw,
+  Shuffle,
+  StepForward,
+  StepBack,
+  BookOpen,
+  Settings2,
+} from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 export const Route = createFileRoute("/playgrounds/searching")({
   head: () => ({
     meta: [
       { title: "Searching Playground — DSA with Python" },
-      { name: "description", content: "Interactive lab for 6 searching algorithms — animations, stats, controls, and Python code side by side." },
+      {
+        name: "description",
+        content:
+          "Interactive lab for 6 searching algorithms — animations, stats, controls, and Python code side by side.",
+      },
     ],
   }),
   component: Page,
@@ -21,7 +34,9 @@ const defaultArray = [5, 12, 15, 23, 38, 42, 50, 64, 78, 85, 92, 100];
 
 function Page() {
   const [algoId, setAlgoId] = useState("linear");
-  const [customArrayStr, setCustomArrayStr] = useState("5, 12, 15, 23, 38, 42, 50, 64, 78, 85, 92, 100");
+  const [customArrayStr, setCustomArrayStr] = useState(
+    "5, 12, 15, 23, 38, 42, 50, 64, 78, 85, 92, 100",
+  );
   const [targetVal, setTargetVal] = useState("42");
   const [speed, setSpeed] = useState(150);
   const [running, setRunning] = useState(false);
@@ -131,7 +146,9 @@ function Page() {
 
       {/* Algorithm selector */}
       <div className="mb-4">
-        <div className="mb-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">Algorithm</div>
+        <div className="mb-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+          Algorithm
+        </div>
         <div className="flex flex-wrap gap-2">
           {ALGORITHMS.map((a) => (
             <button
@@ -271,7 +288,9 @@ function Page() {
           ) : (
             /* Custom Array Input */
             <div className="flex-1 flex flex-col gap-1.5 min-w-[200px]">
-              <span className="font-semibold text-muted-foreground">Enter numbers (comma-separated)</span>
+              <span className="font-semibold text-muted-foreground">
+                Enter numbers (comma-separated)
+              </span>
               <input
                 type="text"
                 value={customArrayStr}
@@ -291,7 +310,10 @@ function Page() {
             {/* Index row */}
             <div className="flex gap-2.5 justify-center">
               {array.map((_, i) => (
-                <div key={i} className="w-12 text-center text-xs font-semibold text-muted-foreground/80">
+                <div
+                  key={i}
+                  className="w-12 text-center text-xs font-semibold text-muted-foreground/80"
+                >
                   {i}
                 </div>
               ))}
@@ -310,11 +332,14 @@ function Page() {
                   let extraStyle = "";
 
                   if (isFound) {
-                    borderClass = "border-emerald-500 bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 font-bold shadow-[0_0_0_2px_rgba(16,185,129,0.2)]";
+                    borderClass =
+                      "border-emerald-500 bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 font-bold shadow-[0_0_0_2px_rgba(16,185,129,0.2)]";
                   } else if (isCurrent) {
-                    borderClass = "border-[color:var(--brand)] bg-[color:var(--brand)]/15 text-[color:var(--brand)] font-bold shadow-[0_0_0_2px_rgba(244,63,94,0.2)]";
+                    borderClass =
+                      "border-[color:var(--brand)] bg-[color:var(--brand)]/15 text-[color:var(--brand)] font-bold shadow-[0_0_0_2px_rgba(244,63,94,0.2)]";
                   } else if (isCompare) {
-                    borderClass = "border-amber-500 bg-amber-500/10 text-amber-600 dark:text-amber-400 font-semibold";
+                    borderClass =
+                      "border-amber-500 bg-amber-500/10 text-amber-600 dark:text-amber-400 font-semibold";
                   }
 
                   if (isVisited && !isFound && !isCurrent) {
@@ -358,52 +383,79 @@ function Page() {
 
       {/* Live Statistics */}
       <div className="mt-6">
-        <h3 className="mb-3 text-sm font-semibold uppercase tracking-wider text-muted-foreground">Statistics</h3>
+        <h3 className="mb-3 text-sm font-semibold uppercase tracking-wider text-muted-foreground">
+          Statistics
+        </h3>
         <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
           <Stat label="Current Algorithm" value={algo.name} />
           <Stat label="Comparisons" value={String(stats.comparisons)} />
           <Stat label="Active Search Interval" value={currentInterval} />
-          <Stat label="Result" value={currentStep.foundIndex !== undefined ? `Found at index ${currentStep.foundIndex}` : currentStep.notFound ? "Not Found" : "Searching..."} />
+          <Stat
+            label="Result"
+            value={
+              currentStep.foundIndex !== undefined
+                ? `Found at index ${currentStep.foundIndex}`
+                : currentStep.notFound
+                  ? "Not Found"
+                  : "Searching..."
+            }
+          />
           <div className="card-surface p-3">
             <div className="text-xs text-muted-foreground">Best Case</div>
-            <div className="mt-1"><ComplexityBadge value={algo.timeBest} /></div>
+            <div className="mt-1">
+              <ComplexityBadge value={algo.timeBest} />
+            </div>
           </div>
           <div className="card-surface p-3">
             <div className="text-xs text-muted-foreground">Average Case</div>
-            <div className="mt-1"><ComplexityBadge value={algo.timeAvg} /></div>
+            <div className="mt-1">
+              <ComplexityBadge value={algo.timeAvg} />
+            </div>
           </div>
           <div className="card-surface p-3">
             <div className="text-xs text-muted-foreground">Worst Case</div>
-            <div className="mt-1"><ComplexityBadge value={algo.timeWorst} /></div>
+            <div className="mt-1">
+              <ComplexityBadge value={algo.timeWorst} />
+            </div>
           </div>
           <div className="card-surface p-3">
             <div className="text-xs text-muted-foreground">Space Complexity</div>
-            <div className="mt-1"><ComplexityBadge value={algo.space} /></div>
+            <div className="mt-1">
+              <ComplexityBadge value={algo.space} />
+            </div>
           </div>
         </div>
       </div>
 
       {/* Python implementation code */}
       <div className="mt-6">
-        <h3 className="mb-3 text-sm font-semibold uppercase tracking-wider text-muted-foreground">Python Code</h3>
+        <h3 className="mb-3 text-sm font-semibold uppercase tracking-wider text-muted-foreground">
+          Python Code
+        </h3>
         <CodeBlock code={algo.code} title={`${algo.id}_search.py`} />
       </div>
 
       {/* Algorithm description card */}
       <div className="mt-6 card-surface p-4">
-        <h3 className="mb-2 text-sm font-semibold uppercase tracking-wider text-muted-foreground">Algorithm Overview</h3>
+        <h3 className="mb-2 text-sm font-semibold uppercase tracking-wider text-muted-foreground">
+          Algorithm Overview
+        </h3>
         <p className="text-sm text-muted-foreground">{algo.description}</p>
         <div className="mt-3 grid gap-3 sm:grid-cols-2">
           <div>
             <div className="mb-1 text-xs font-semibold text-[color:var(--good)]">Advantages</div>
             <ul className="list-disc space-y-1 pl-5 text-sm text-muted-foreground">
-              {algo.advantages.map((x) => <li key={x}>{x}</li>)}
+              {algo.advantages.map((x) => (
+                <li key={x}>{x}</li>
+              ))}
             </ul>
           </div>
           <div>
             <div className="mb-1 text-xs font-semibold text-[color:var(--bad)]">Disadvantages</div>
             <ul className="list-disc space-y-1 pl-5 text-sm text-muted-foreground">
-              {algo.disadvantages.map((x) => <li key={x}>{x}</li>)}
+              {algo.disadvantages.map((x) => (
+                <li key={x}>{x}</li>
+              ))}
             </ul>
           </div>
         </div>
@@ -411,7 +463,9 @@ function Page() {
 
       {/* Related lessons */}
       <div className="mt-6 card-surface p-4">
-        <h3 className="mb-2 text-sm font-semibold uppercase tracking-wider text-muted-foreground">Related Lessons</h3>
+        <h3 className="mb-2 text-sm font-semibold uppercase tracking-wider text-muted-foreground">
+          Related Lessons
+        </h3>
         <div className="flex flex-wrap gap-2">
           <Link
             to="/searching"

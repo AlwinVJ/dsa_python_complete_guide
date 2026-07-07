@@ -68,10 +68,14 @@ export function HashTableVisualizer({
               ].join(" ")}
             >
               <div className="flex w-16 shrink-0 flex-col items-center justify-center border-r border-border bg-background/40 px-2 py-2 text-center">
-                <div className="text-[10px] uppercase tracking-wider text-muted-foreground">bucket</div>
+                <div className="text-[10px] uppercase tracking-wider text-muted-foreground">
+                  bucket
+                </div>
                 <div className="font-mono text-sm font-semibold">{i}</div>
                 {labels?.[i] && (
-                  <div className="mt-0.5 font-mono text-[9px] text-muted-foreground">{labels[i]}</div>
+                  <div className="mt-0.5 font-mono text-[9px] text-muted-foreground">
+                    {labels[i]}
+                  </div>
                 )}
               </div>
               <div className="flex min-w-0 flex-1 flex-wrap items-center gap-1.5 p-2">
@@ -137,7 +141,9 @@ export function HashFlowDiagram({
           <div
             key={i}
             className={`flex flex-col items-center justify-center rounded-lg border p-3 text-center ${
-              s.brand ? "border-[color:var(--brand)]/50 bg-[color:var(--brand)]/10" : "border-border bg-muted/30"
+              s.brand
+                ? "border-[color:var(--brand)]/50 bg-[color:var(--brand)]/10"
+                : "border-border bg-muted/30"
             }`}
           >
             <div className="flex items-center gap-1 text-[10px] uppercase tracking-wider text-muted-foreground">

@@ -17,7 +17,8 @@ export const divideConquerCourse: Course = {
     {
       slug: "introduction",
       title: "Introduction",
-      theory: "Divide & conquer solves a problem by breaking it into disjoint subproblems, solving each recursively, and combining the results.",
+      theory:
+        "Divide & conquer solves a problem by breaking it into disjoint subproblems, solving each recursively, and combining the results.",
     },
     {
       slug: "pattern",
@@ -37,7 +38,8 @@ export const divideConquerCourse: Course = {
     {
       slug: "quick-sort",
       title: "Quick Sort",
-      theory: "Divide via a partition around a pivot; conquer by recursing into each side; combine is a no-op because sorting happens in place.",
+      theory:
+        "Divide via a partition around a pivot; conquer by recursing into each side; combine is a no-op because sorting happens in place.",
     },
     {
       slug: "binary-search",
@@ -54,12 +56,14 @@ export const divideConquerCourse: Course = {
     {
       slug: "closest-pair",
       title: "Closest Pair of Points",
-      theory: "Sort by x, recurse into halves, then scan a narrow strip around the median. O(n log n).",
+      theory:
+        "Sort by x, recurse into halves, then scan a narrow strip around the median. O(n log n).",
     },
     {
       slug: "karatsuba",
       title: "Karatsuba Multiplication",
-      theory: "Multiplies two n-digit numbers with 3 (not 4) recursive half-size multiplications. T(n) = 3T(n/2) + O(n) = O(n^log2 3) ≈ O(n^1.585).",
+      theory:
+        "Multiplies two n-digit numbers with 3 (not 4) recursive half-size multiplications. T(n) = 3T(n/2) + O(n) = O(n^log2 3) ≈ O(n^1.585).",
     },
     {
       slug: "applications",
@@ -75,9 +79,21 @@ export const divideConquerCourse: Course = {
       slug: "practice",
       title: "Practice",
       practice: [
-        { title: "LC 53 · Maximum Subarray (D&C)", url: "https://leetcode.com/problems/maximum-subarray/", difficulty: "Medium" },
-        { title: "LC 169 · Majority Element", url: "https://leetcode.com/problems/majority-element/", difficulty: "Easy" },
-        { title: "LC 315 · Count Smaller Numbers After Self", url: "https://leetcode.com/problems/count-of-smaller-numbers-after-self/", difficulty: "Hard" },
+        {
+          title: "LC 53 · Maximum Subarray (D&C)",
+          url: "https://leetcode.com/problems/maximum-subarray/",
+          difficulty: "Medium",
+        },
+        {
+          title: "LC 169 · Majority Element",
+          url: "https://leetcode.com/problems/majority-element/",
+          difficulty: "Easy",
+        },
+        {
+          title: "LC 315 · Count Smaller Numbers After Self",
+          url: "https://leetcode.com/problems/count-of-smaller-numbers-after-self/",
+          difficulty: "Hard",
+        },
       ],
     },
     {
@@ -89,6 +105,15 @@ export const divideConquerCourse: Course = {
         answer: 1,
       },
     },
-    { slug: "references", title: "References", references: [{ label: "CLRS Chapter 4 — Divide and Conquer", url: "https://mitpress.mit.edu/9780262046305/" }] },
+    {
+      slug: "references",
+      title: "References",
+      references: [
+        {
+          label: "CLRS Chapter 4 — Divide and Conquer",
+          url: "https://mitpress.mit.edu/9780262046305/",
+        },
+      ],
+    },
   ],
 };

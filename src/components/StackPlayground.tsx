@@ -39,7 +39,8 @@ export function StackPlayground({
       return;
     }
     const v = value.trim();
-    const parsed = v === "" ? Math.floor(Math.random() * 90) + 10 : /^-?\d+$/.test(v) ? Number(v) : v;
+    const parsed =
+      v === "" ? Math.floor(Math.random() * 90) + 10 : /^-?\d+$/.test(v) ? Number(v) : v;
     setStack((s) => [...s, parsed]);
     setValue("");
     setLastOp("push");
@@ -119,8 +120,16 @@ export function StackPlayground({
 }
 
 function Btn({
-  onClick, icon, label, tone,
-}: { onClick: () => void; icon: React.ReactNode; label: string; tone?: "brand" }) {
+  onClick,
+  icon,
+  label,
+  tone,
+}: {
+  onClick: () => void;
+  icon: React.ReactNode;
+  label: string;
+  tone?: "brand";
+}) {
   return (
     <button
       onClick={onClick}
@@ -136,12 +145,22 @@ function Btn({
 }
 
 function Stat({
-  label, value, tone, mono,
-}: { label: string; value: string; tone?: string; mono?: boolean }) {
+  label,
+  value,
+  tone,
+  mono,
+}: {
+  label: string;
+  value: string;
+  tone?: string;
+  mono?: boolean;
+}) {
   return (
     <div className="rounded-md border border-border bg-card px-3 py-2">
       <div className="text-[10px] uppercase tracking-wider text-muted-foreground">{label}</div>
-      <div className={`mt-0.5 truncate text-sm font-semibold ${tone ?? ""} ${mono ? "font-mono" : ""}`}>
+      <div
+        className={`mt-0.5 truncate text-sm font-semibold ${tone ?? ""} ${mono ? "font-mono" : ""}`}
+      >
         {value}
       </div>
     </div>

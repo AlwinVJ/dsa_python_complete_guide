@@ -10,40 +10,55 @@ export const QUEUE_REVISION: QueueLesson[] = [
     difficulty: "Beginner",
     readMinutes: 4,
     sections: [
-      { type: "mistakes", items: [
-        "Using `list.pop(0)` as a queue — O(n) per call. Reach for `collections.deque`.",
-        "Forgetting to wrap indices modulo capacity in a circular queue.",
-        "Confusing full vs empty when front == rear — track `size` separately.",
-        "Not resetting `tail` to None when a linked queue becomes empty on dequeue.",
-        "Assuming `heapq` is a max-heap. It's not — push negatives.",
-        "Relying on `dq[k]` for random access — indexing a deque is O(k).",
-      ]},
-      { type: "callout", kind: "warn", title: "Rule of thumb",
-        text: "If your queue solution feels slow, you are almost certainly using a list where you should be using a deque." },
+      {
+        type: "mistakes",
+        items: [
+          "Using `list.pop(0)` as a queue — O(n) per call. Reach for `collections.deque`.",
+          "Forgetting to wrap indices modulo capacity in a circular queue.",
+          "Confusing full vs empty when front == rear — track `size` separately.",
+          "Not resetting `tail` to None when a linked queue becomes empty on dequeue.",
+          "Assuming `heapq` is a max-heap. It's not — push negatives.",
+          "Relying on `dq[k]` for random access — indexing a deque is O(k).",
+        ],
+      },
+      {
+        type: "callout",
+        kind: "warn",
+        title: "Rule of thumb",
+        text: "If your queue solution feels slow, you are almost certainly using a list where you should be using a deque.",
+      },
     ],
   },
   {
     slug: "interview-questions",
     title: "Interview Questions",
     eyebrow: "Revision · 2",
-    description: "The canonical queue problems every FAANG-track engineer should recognise on sight.",
+    description:
+      "The canonical queue problems every FAANG-track engineer should recognise on sight.",
     difficulty: "Intermediate",
     readMinutes: 5,
     sections: [
-      { type: "interview", items: [
-        "Implement Queue using Stacks (LeetCode 232) — amortised O(1) dequeue.",
-        "Design Circular Queue (LeetCode 622) — modulo arithmetic on front/size.",
-        "Sliding Window Maximum (LeetCode 239) — monotonic deque in O(n).",
-        "Number of Islands (LeetCode 200) — BFS flood fill on a grid.",
-        "Task Scheduler (LeetCode 621) — priority queue + cooldown queue.",
-        "Design Hit Counter (LeetCode 362) — deque of timestamps.",
-        "Rotting Oranges (LeetCode 994) — multi-source BFS.",
-        "Open the Lock (LeetCode 752) — BFS over states.",
-        "Reveal Cards in Increasing Order (LeetCode 950) — simulate with a deque.",
-        "First Unique Character in a Stream — queue + hash map of counts.",
-      ]},
-      { type: "callout", kind: "interview", title: "Pattern spotting",
-        text: "'Shortest path' or 'level order' → BFS with a queue. 'Sliding window extremum' → monotonic deque. 'Kth' or 'top K' → heap." },
+      {
+        type: "interview",
+        items: [
+          "Implement Queue using Stacks (LeetCode 232) — amortised O(1) dequeue.",
+          "Design Circular Queue (LeetCode 622) — modulo arithmetic on front/size.",
+          "Sliding Window Maximum (LeetCode 239) — monotonic deque in O(n).",
+          "Number of Islands (LeetCode 200) — BFS flood fill on a grid.",
+          "Task Scheduler (LeetCode 621) — priority queue + cooldown queue.",
+          "Design Hit Counter (LeetCode 362) — deque of timestamps.",
+          "Rotting Oranges (LeetCode 994) — multi-source BFS.",
+          "Open the Lock (LeetCode 752) — BFS over states.",
+          "Reveal Cards in Increasing Order (LeetCode 950) — simulate with a deque.",
+          "First Unique Character in a Stream — queue + hash map of counts.",
+        ],
+      },
+      {
+        type: "callout",
+        kind: "interview",
+        title: "Pattern spotting",
+        text: "'Shortest path' or 'level order' → BFS with a queue. 'Sliding window extremum' → monotonic deque. 'Kth' or 'top K' → heap.",
+      },
     ],
   },
   {
@@ -54,13 +69,16 @@ export const QUEUE_REVISION: QueueLesson[] = [
     difficulty: "Beginner",
     readMinutes: 5,
     sections: [
-      { type: "theory", bullets: [
-        "Q · Why not just use a Python list? — Because `list.pop(0)` is O(n). Every queue op stays O(1) with `deque`.",
-        "Q · When should I use a deque vs a queue.Queue? — Use `collections.deque` in single-threaded code and `queue.Queue` when threads need to share the queue safely.",
-        "Q · Is a priority queue really a queue? — Only by the ADT: it enqueues and dequeues. Ordering is by priority, not arrival, so it's a queue in name only.",
-        "Q · Is a deque a stack or a queue? — Both. It supports O(1) push/pop at both ends, so you can use it as either.",
-        "Q · How do I make a max-heap in Python? — Negate priorities on push and pop, or wrap items in a comparator class.",
-      ]},
+      {
+        type: "theory",
+        bullets: [
+          "Q · Why not just use a Python list? — Because `list.pop(0)` is O(n). Every queue op stays O(1) with `deque`.",
+          "Q · When should I use a deque vs a queue.Queue? — Use `collections.deque` in single-threaded code and `queue.Queue` when threads need to share the queue safely.",
+          "Q · Is a priority queue really a queue? — Only by the ADT: it enqueues and dequeues. Ordering is by priority, not arrival, so it's a queue in name only.",
+          "Q · Is a deque a stack or a queue? — Both. It supports O(1) push/pop at both ends, so you can use it as either.",
+          "Q · How do I make a max-heap in Python? — Negate priorities on push and pop, or wrap items in a comparator class.",
+        ],
+      },
     ],
   },
   {
@@ -71,16 +89,19 @@ export const QUEUE_REVISION: QueueLesson[] = [
     difficulty: "Beginner",
     readMinutes: 3,
     sections: [
-      { type: "complexity", rows: [
-        { op: "deque.append / popleft",  time: "O(1)" },
-        { op: "linked-list queue",       time: "O(1)", note: "head/tail pointers" },
-        { op: "circular queue",          time: "O(1)", space: "O(cap)" },
-        { op: "queue from two stacks",   time: "O(1) amortised" },
-        { op: "priority queue push/pop", time: "O(log n)" },
-        { op: "priority queue peek",     time: "O(1)" },
-        { op: "list.pop(0)",             time: "O(n)", note: "never use as a queue" },
-        { op: "BFS traversal",           time: "O(V + E)", space: "O(V)" },
-      ]},
+      {
+        type: "complexity",
+        rows: [
+          { op: "deque.append / popleft", time: "O(1)" },
+          { op: "linked-list queue", time: "O(1)", note: "head/tail pointers" },
+          { op: "circular queue", time: "O(1)", space: "O(cap)" },
+          { op: "queue from two stacks", time: "O(1) amortised" },
+          { op: "priority queue push/pop", time: "O(log n)" },
+          { op: "priority queue peek", time: "O(1)" },
+          { op: "list.pop(0)", time: "O(n)", note: "never use as a queue" },
+          { op: "BFS traversal", time: "O(V + E)", space: "O(V)" },
+        ],
+      },
     ],
   },
   {
@@ -91,26 +112,98 @@ export const QUEUE_REVISION: QueueLesson[] = [
     difficulty: "Intermediate",
     readMinutes: 4,
     sections: [
-      { type: "practice", groups: [
-        { level: "Beginner", items: [
-          { title: "LC 225 · Implement Stack using Queues",  url: "https://leetcode.com/problems/implement-stack-using-queues/",  difficulty: "Easy", pattern: "queue basics" },
-          { title: "LC 232 · Implement Queue using Stacks",   url: "https://leetcode.com/problems/implement-queue-using-stacks/",   difficulty: "Easy", pattern: "two stacks" },
-          { title: "LC 933 · Number of Recent Calls",         url: "https://leetcode.com/problems/number-of-recent-calls/",         difficulty: "Easy", pattern: "sliding window queue" },
-        ]},
-        { level: "Intermediate", items: [
-          { title: "LC 622 · Design Circular Queue",  url: "https://leetcode.com/problems/design-circular-queue/",  difficulty: "Medium", pattern: "modulo arithmetic" },
-          { title: "LC 641 · Design Circular Deque",  url: "https://leetcode.com/problems/design-circular-deque/",  difficulty: "Medium", pattern: "double-ended" },
-          { title: "LC 200 · Number of Islands",       url: "https://leetcode.com/problems/number-of-islands/",       difficulty: "Medium", pattern: "BFS flood fill" },
-          { title: "LC 994 · Rotting Oranges",         url: "https://leetcode.com/problems/rotting-oranges/",         difficulty: "Medium", pattern: "multi-source BFS" },
-          { title: "LC 621 · Task Scheduler",          url: "https://leetcode.com/problems/task-scheduler/",          difficulty: "Medium", pattern: "priority queue + cooldown" },
-          { title: "LC 950 · Reveal Cards in Increasing Order", url: "https://leetcode.com/problems/reveal-cards-in-increasing-order/", difficulty: "Medium", pattern: "deque simulation" },
-        ]},
-        { level: "Advanced", items: [
-          { title: "LC 239 · Sliding Window Maximum",  url: "https://leetcode.com/problems/sliding-window-maximum/", difficulty: "Hard",   pattern: "monotonic deque" },
-          { title: "LC 862 · Shortest Subarray with Sum at Least K", url: "https://leetcode.com/problems/shortest-subarray-with-sum-at-least-k/", difficulty: "Hard", pattern: "monotonic deque + prefix sum" },
-          { title: "LC 1425 · Constrained Subsequence Sum",  url: "https://leetcode.com/problems/constrained-subsequence-sum/", difficulty: "Hard", pattern: "monotonic deque + DP" },
-        ]},
-      ]},
+      {
+        type: "practice",
+        groups: [
+          {
+            level: "Beginner",
+            items: [
+              {
+                title: "LC 225 · Implement Stack using Queues",
+                url: "https://leetcode.com/problems/implement-stack-using-queues/",
+                difficulty: "Easy",
+                pattern: "queue basics",
+              },
+              {
+                title: "LC 232 · Implement Queue using Stacks",
+                url: "https://leetcode.com/problems/implement-queue-using-stacks/",
+                difficulty: "Easy",
+                pattern: "two stacks",
+              },
+              {
+                title: "LC 933 · Number of Recent Calls",
+                url: "https://leetcode.com/problems/number-of-recent-calls/",
+                difficulty: "Easy",
+                pattern: "sliding window queue",
+              },
+            ],
+          },
+          {
+            level: "Intermediate",
+            items: [
+              {
+                title: "LC 622 · Design Circular Queue",
+                url: "https://leetcode.com/problems/design-circular-queue/",
+                difficulty: "Medium",
+                pattern: "modulo arithmetic",
+              },
+              {
+                title: "LC 641 · Design Circular Deque",
+                url: "https://leetcode.com/problems/design-circular-deque/",
+                difficulty: "Medium",
+                pattern: "double-ended",
+              },
+              {
+                title: "LC 200 · Number of Islands",
+                url: "https://leetcode.com/problems/number-of-islands/",
+                difficulty: "Medium",
+                pattern: "BFS flood fill",
+              },
+              {
+                title: "LC 994 · Rotting Oranges",
+                url: "https://leetcode.com/problems/rotting-oranges/",
+                difficulty: "Medium",
+                pattern: "multi-source BFS",
+              },
+              {
+                title: "LC 621 · Task Scheduler",
+                url: "https://leetcode.com/problems/task-scheduler/",
+                difficulty: "Medium",
+                pattern: "priority queue + cooldown",
+              },
+              {
+                title: "LC 950 · Reveal Cards in Increasing Order",
+                url: "https://leetcode.com/problems/reveal-cards-in-increasing-order/",
+                difficulty: "Medium",
+                pattern: "deque simulation",
+              },
+            ],
+          },
+          {
+            level: "Advanced",
+            items: [
+              {
+                title: "LC 239 · Sliding Window Maximum",
+                url: "https://leetcode.com/problems/sliding-window-maximum/",
+                difficulty: "Hard",
+                pattern: "monotonic deque",
+              },
+              {
+                title: "LC 862 · Shortest Subarray with Sum at Least K",
+                url: "https://leetcode.com/problems/shortest-subarray-with-sum-at-least-k/",
+                difficulty: "Hard",
+                pattern: "monotonic deque + prefix sum",
+              },
+              {
+                title: "LC 1425 · Constrained Subsequence Sum",
+                url: "https://leetcode.com/problems/constrained-subsequence-sum/",
+                difficulty: "Hard",
+                pattern: "monotonic deque + DP",
+              },
+            ],
+          },
+        ],
+      },
     ],
   },
   {
@@ -121,28 +214,41 @@ export const QUEUE_REVISION: QueueLesson[] = [
     difficulty: "Beginner",
     readMinutes: 5,
     sections: [
-      { type: "quiz", items: [
-        { q: "What is the time complexity of `list.pop(0)` in Python?",
-          choices: ["O(1)", "O(log n)", "O(n)", "O(n²)"],
-          answer: 2,
-          explain: "Removing from the front shifts every remaining element left by one slot." },
-        { q: "Which data structure best implements a queue for interview code?",
-          choices: ["list", "collections.deque", "set", "tuple"],
-          answer: 1,
-          explain: "deque gives O(1) at both ends and is the idiomatic Python queue." },
-        { q: "In a circular queue, an empty queue is signalled by:",
-          choices: ["front == rear", "size == 0", "buf[0] is None", "rear < front"],
-          answer: 1,
-          explain: "Tracking size explicitly disambiguates empty from full when front == rear." },
-        { q: "A monotonic deque solves sliding-window maximum in:",
-          choices: ["O(n·k)", "O(n log k)", "O(n)", "O(k log k)"],
-          answer: 2,
-          explain: "Every element enters and leaves the deque at most once — amortised O(n)." },
-        { q: "Two stacks give you a queue with what dequeue cost?",
-          choices: ["O(n) always", "O(log n)", "O(1) amortised", "O(1) worst case"],
-          answer: 2,
-          explain: "Each element moves at most twice — amortised O(1), worst case O(n)." },
-      ]},
+      {
+        type: "quiz",
+        items: [
+          {
+            q: "What is the time complexity of `list.pop(0)` in Python?",
+            choices: ["O(1)", "O(log n)", "O(n)", "O(n²)"],
+            answer: 2,
+            explain: "Removing from the front shifts every remaining element left by one slot.",
+          },
+          {
+            q: "Which data structure best implements a queue for interview code?",
+            choices: ["list", "collections.deque", "set", "tuple"],
+            answer: 1,
+            explain: "deque gives O(1) at both ends and is the idiomatic Python queue.",
+          },
+          {
+            q: "In a circular queue, an empty queue is signalled by:",
+            choices: ["front == rear", "size == 0", "buf[0] is None", "rear < front"],
+            answer: 1,
+            explain: "Tracking size explicitly disambiguates empty from full when front == rear.",
+          },
+          {
+            q: "A monotonic deque solves sliding-window maximum in:",
+            choices: ["O(n·k)", "O(n log k)", "O(n)", "O(k log k)"],
+            answer: 2,
+            explain: "Every element enters and leaves the deque at most once — amortised O(n).",
+          },
+          {
+            q: "Two stacks give you a queue with what dequeue cost?",
+            choices: ["O(n) always", "O(log n)", "O(1) amortised", "O(1) worst case"],
+            answer: 2,
+            explain: "Each element moves at most twice — amortised O(1), worst case O(n).",
+          },
+        ],
+      },
     ],
   },
   {
@@ -153,14 +259,35 @@ export const QUEUE_REVISION: QueueLesson[] = [
     difficulty: "Beginner",
     readMinutes: 2,
     sections: [
-      { type: "references", items: [
-        { label: "Python docs · collections.deque", url: "https://docs.python.org/3/library/collections.html#collections.deque" },
-        { label: "Python docs · heapq (heap queue algorithm)", url: "https://docs.python.org/3/library/heapq.html" },
-        { label: "Python docs · queue (thread-safe queues)", url: "https://docs.python.org/3/library/queue.html" },
-        { label: "Wikipedia · Queue (abstract data type)", url: "https://en.wikipedia.org/wiki/Queue_(abstract_data_type)" },
-        { label: "Wikipedia · Circular buffer", url: "https://en.wikipedia.org/wiki/Circular_buffer" },
-        { label: "CP-Algorithms · Monotonic queue", url: "https://cp-algorithms.com/data_structures/stack_queue_modification.html" },
-      ]},
+      {
+        type: "references",
+        items: [
+          {
+            label: "Python docs · collections.deque",
+            url: "https://docs.python.org/3/library/collections.html#collections.deque",
+          },
+          {
+            label: "Python docs · heapq (heap queue algorithm)",
+            url: "https://docs.python.org/3/library/heapq.html",
+          },
+          {
+            label: "Python docs · queue (thread-safe queues)",
+            url: "https://docs.python.org/3/library/queue.html",
+          },
+          {
+            label: "Wikipedia · Queue (abstract data type)",
+            url: "https://en.wikipedia.org/wiki/Queue_(abstract_data_type)",
+          },
+          {
+            label: "Wikipedia · Circular buffer",
+            url: "https://en.wikipedia.org/wiki/Circular_buffer",
+          },
+          {
+            label: "CP-Algorithms · Monotonic queue",
+            url: "https://cp-algorithms.com/data_structures/stack_queue_modification.html",
+          },
+        ],
+      },
     ],
   },
 ];

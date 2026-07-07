@@ -38,9 +38,18 @@ export const LINKED_LISTS: RichModule = {
       "Memory is extremely tight (pointer overhead matters).",
     ],
     comparedWith: [
-      { name: "Array / Python list", note: "O(1) index, O(n) insert-middle. Linked list is the opposite." },
-      { name: "Deque (collections.deque)", note: "A doubly linked list under the hood — use it in Python instead of hand-rolling." },
-      { name: "Stack / Queue", note: "Both can be implemented with a linked list for true O(1) ops." },
+      {
+        name: "Array / Python list",
+        note: "O(1) index, O(n) insert-middle. Linked list is the opposite.",
+      },
+      {
+        name: "Deque (collections.deque)",
+        note: "A doubly linked list under the hood — use it in Python instead of hand-rolling.",
+      },
+      {
+        name: "Stack / Queue",
+        note: "Both can be implemented with a linked list for true O(1) ops.",
+      },
     ],
   },
 
@@ -274,7 +283,11 @@ class DoublyLinkedList:
     {
       name: "Search",
       summary: "Linear scan comparing each node value.",
-      steps: ["cur = head", "while cur: if cur.value == target return True; cur = cur.next", "return False"],
+      steps: [
+        "cur = head",
+        "while cur: if cur.value == target return True; cur = cur.next",
+        "return False",
+      ],
       python: {
         title: "contains(target)",
         language: "python",
@@ -500,7 +513,10 @@ class DoublyLinkedList:
 
   applications: [
     { area: "Browsers", example: "Back / forward history as a doubly linked list." },
-    { area: "Music players", example: "Playlist with previous / next track as a circular doubly list." },
+    {
+      area: "Music players",
+      example: "Playlist with previous / next track as a circular doubly list.",
+    },
     { area: "Editors", example: "Undo / redo stacks implemented over linked nodes." },
     { area: "Operating systems", example: "Free memory blocks, process scheduling queues." },
     { area: "Databases", example: "LRU cache eviction using a doubly linked list + hash map." },
@@ -545,75 +561,300 @@ class DoublyLinkedList:
   },
 
   faqs: [
-    { q: "How is a linked list different from an array?", a: "Arrays use contiguous memory and support O(1) indexing; linked lists use pointer-connected nodes and support O(1) insertion once positioned." },
-    { q: "Why is random access O(n)?", a: "Because nodes aren't contiguous in memory — the only way to reach index k is to hop from the head k times." },
-    { q: "Should I ever hand-roll a linked list in Python?", a: "Usually no. Use collections.deque for O(1) appends at both ends. Roll your own when interviewing or when you need explicit node references." },
-    { q: "Can Python garbage collect a cyclic list?", a: "Yes — CPython has a cycle collector on top of reference counting. Still, avoid unnecessary cycles." },
-    { q: "How do I detect a cycle without extra space?", a: "Use Floyd's tortoise-and-hare: slow moves 1, fast moves 2; they meet iff there's a cycle." },
-    { q: "Why use a dummy head?", a: "It removes the special case for inserting/deleting at the head, simplifying pointer code." },
-    { q: "What's the space cost of a Python node object?", a: "Roughly 56 bytes for the object header plus attributes — much heavier than a raw C struct." },
-    { q: "When is a doubly linked list worth the overhead?", a: "When you need O(1) deletion of an arbitrary node given its reference (e.g. LRU cache) or bidirectional traversal." },
-    { q: "How do I reverse a linked list recursively?", a: "Reverse the tail, then set head.next.next = head; head.next = None." },
-    { q: "How do I find the middle in one pass?", a: "Slow/fast pointers — when fast reaches the end, slow is at the middle." },
-    { q: "What's a sentinel node?", a: "A dummy node that's always present at head/tail to remove edge cases from insert/delete code." },
-    { q: "Can I sort a linked list faster than O(n log n)?", a: "No comparison sort beats O(n log n); merge sort is the standard because it doesn't rely on random access." },
-    { q: "How do I merge two sorted linked lists?", a: "Use a dummy tail and repeatedly attach the smaller current node until one list is empty; then attach the rest." },
-    { q: "How do I remove the nth node from the end in one pass?", a: "Advance a fast pointer n steps, then move slow and fast together until fast hits the end; slow.next is the target." },
-    { q: "How does an LRU cache use a linked list?", a: "A doubly linked list holds items by recency; a hash map maps keys to nodes for O(1) access. Access moves the node to head; eviction removes the tail." },
-    { q: "What's a skip list?", a: "A probabilistic layered linked list that supports O(log n) search — used as a simpler alternative to balanced trees." },
-    { q: "How do I detect palindrome linked list in O(1) space?", a: "Find middle, reverse the second half, compare with the first half, then optionally restore." },
-    { q: "Is a Python list a linked list?", a: "No — CPython's list is a dynamic array. Use collections.deque for doubly linked behavior." },
-    { q: "Do linked lists suffer from cache misses?", a: "Yes — nodes are scattered on the heap, breaking CPU cache prefetching. Arrays are far faster to iterate." },
-    { q: "What is the tail pointer good for?", a: "Constant-time appends. Without it, insert-at-tail is O(n)." },
-    { q: "How do I clone a list with random pointers?", a: "Interleave copies with originals, wire random pointers, then unweave; or use a hash map from original to clone." },
-    { q: "Can I do binary search on a linked list?", a: "Not efficiently — indexing is O(n), so the whole point of binary search is lost. Use a skip list or convert to array." },
-    { q: "What is a self-adjusting list?", a: "A list that reorders itself on access (e.g. move-to-front) to speed up common queries." },
-    { q: "How do I safely delete during iteration?", a: "Keep a prev pointer, or use a dummy head so head deletion is uniform." },
-    { q: "Why 'floyd' for cycle detection and not a hash set?", a: "Floyd's is O(1) space; hashing is O(n). Both are O(n) time." },
+    {
+      q: "How is a linked list different from an array?",
+      a: "Arrays use contiguous memory and support O(1) indexing; linked lists use pointer-connected nodes and support O(1) insertion once positioned.",
+    },
+    {
+      q: "Why is random access O(n)?",
+      a: "Because nodes aren't contiguous in memory — the only way to reach index k is to hop from the head k times.",
+    },
+    {
+      q: "Should I ever hand-roll a linked list in Python?",
+      a: "Usually no. Use collections.deque for O(1) appends at both ends. Roll your own when interviewing or when you need explicit node references.",
+    },
+    {
+      q: "Can Python garbage collect a cyclic list?",
+      a: "Yes — CPython has a cycle collector on top of reference counting. Still, avoid unnecessary cycles.",
+    },
+    {
+      q: "How do I detect a cycle without extra space?",
+      a: "Use Floyd's tortoise-and-hare: slow moves 1, fast moves 2; they meet iff there's a cycle.",
+    },
+    {
+      q: "Why use a dummy head?",
+      a: "It removes the special case for inserting/deleting at the head, simplifying pointer code.",
+    },
+    {
+      q: "What's the space cost of a Python node object?",
+      a: "Roughly 56 bytes for the object header plus attributes — much heavier than a raw C struct.",
+    },
+    {
+      q: "When is a doubly linked list worth the overhead?",
+      a: "When you need O(1) deletion of an arbitrary node given its reference (e.g. LRU cache) or bidirectional traversal.",
+    },
+    {
+      q: "How do I reverse a linked list recursively?",
+      a: "Reverse the tail, then set head.next.next = head; head.next = None.",
+    },
+    {
+      q: "How do I find the middle in one pass?",
+      a: "Slow/fast pointers — when fast reaches the end, slow is at the middle.",
+    },
+    {
+      q: "What's a sentinel node?",
+      a: "A dummy node that's always present at head/tail to remove edge cases from insert/delete code.",
+    },
+    {
+      q: "Can I sort a linked list faster than O(n log n)?",
+      a: "No comparison sort beats O(n log n); merge sort is the standard because it doesn't rely on random access.",
+    },
+    {
+      q: "How do I merge two sorted linked lists?",
+      a: "Use a dummy tail and repeatedly attach the smaller current node until one list is empty; then attach the rest.",
+    },
+    {
+      q: "How do I remove the nth node from the end in one pass?",
+      a: "Advance a fast pointer n steps, then move slow and fast together until fast hits the end; slow.next is the target.",
+    },
+    {
+      q: "How does an LRU cache use a linked list?",
+      a: "A doubly linked list holds items by recency; a hash map maps keys to nodes for O(1) access. Access moves the node to head; eviction removes the tail.",
+    },
+    {
+      q: "What's a skip list?",
+      a: "A probabilistic layered linked list that supports O(log n) search — used as a simpler alternative to balanced trees.",
+    },
+    {
+      q: "How do I detect palindrome linked list in O(1) space?",
+      a: "Find middle, reverse the second half, compare with the first half, then optionally restore.",
+    },
+    {
+      q: "Is a Python list a linked list?",
+      a: "No — CPython's list is a dynamic array. Use collections.deque for doubly linked behavior.",
+    },
+    {
+      q: "Do linked lists suffer from cache misses?",
+      a: "Yes — nodes are scattered on the heap, breaking CPU cache prefetching. Arrays are far faster to iterate.",
+    },
+    {
+      q: "What is the tail pointer good for?",
+      a: "Constant-time appends. Without it, insert-at-tail is O(n).",
+    },
+    {
+      q: "How do I clone a list with random pointers?",
+      a: "Interleave copies with originals, wire random pointers, then unweave; or use a hash map from original to clone.",
+    },
+    {
+      q: "Can I do binary search on a linked list?",
+      a: "Not efficiently — indexing is O(n), so the whole point of binary search is lost. Use a skip list or convert to array.",
+    },
+    {
+      q: "What is a self-adjusting list?",
+      a: "A list that reorders itself on access (e.g. move-to-front) to speed up common queries.",
+    },
+    {
+      q: "How do I safely delete during iteration?",
+      a: "Keep a prev pointer, or use a dummy head so head deletion is uniform.",
+    },
+    {
+      q: "Why 'floyd' for cycle detection and not a hash set?",
+      a: "Floyd's is O(1) space; hashing is O(n). Both are O(n) time.",
+    },
   ],
 
   practice: {
     beginner: [
-      { title: "Design Singly Linked List", url: "https://leetcode.com/problems/design-linked-list/", difficulty: "Easy", pattern: "Design", estMin: 30 },
-      { title: "Reverse Linked List", url: "https://leetcode.com/problems/reverse-linked-list/", difficulty: "Easy", pattern: "Pointers", estMin: 15 },
-      { title: "Merge Two Sorted Lists", url: "https://leetcode.com/problems/merge-two-sorted-lists/", difficulty: "Easy", pattern: "Two pointers", estMin: 15 },
-      { title: "Middle of the Linked List", url: "https://leetcode.com/problems/middle-of-the-linked-list/", difficulty: "Easy", pattern: "Fast/slow", estMin: 10 },
-      { title: "Remove Duplicates from Sorted List", url: "https://leetcode.com/problems/remove-duplicates-from-sorted-list/", difficulty: "Easy", pattern: "Traversal", estMin: 10 },
+      {
+        title: "Design Singly Linked List",
+        url: "https://leetcode.com/problems/design-linked-list/",
+        difficulty: "Easy",
+        pattern: "Design",
+        estMin: 30,
+      },
+      {
+        title: "Reverse Linked List",
+        url: "https://leetcode.com/problems/reverse-linked-list/",
+        difficulty: "Easy",
+        pattern: "Pointers",
+        estMin: 15,
+      },
+      {
+        title: "Merge Two Sorted Lists",
+        url: "https://leetcode.com/problems/merge-two-sorted-lists/",
+        difficulty: "Easy",
+        pattern: "Two pointers",
+        estMin: 15,
+      },
+      {
+        title: "Middle of the Linked List",
+        url: "https://leetcode.com/problems/middle-of-the-linked-list/",
+        difficulty: "Easy",
+        pattern: "Fast/slow",
+        estMin: 10,
+      },
+      {
+        title: "Remove Duplicates from Sorted List",
+        url: "https://leetcode.com/problems/remove-duplicates-from-sorted-list/",
+        difficulty: "Easy",
+        pattern: "Traversal",
+        estMin: 10,
+      },
     ],
     intermediate: [
-      { title: "Linked List Cycle II", url: "https://leetcode.com/problems/linked-list-cycle-ii/", difficulty: "Medium", pattern: "Fast/slow", estMin: 25 },
-      { title: "Reorder List", url: "https://leetcode.com/problems/reorder-list/", difficulty: "Medium", pattern: "Reverse+merge", estMin: 25 },
-      { title: "Add Two Numbers", url: "https://leetcode.com/problems/add-two-numbers/", difficulty: "Medium", pattern: "Simulation", estMin: 20 },
-      { title: "Copy List with Random Pointer", url: "https://leetcode.com/problems/copy-list-with-random-pointer/", difficulty: "Medium", pattern: "Hash / weave", estMin: 30 },
-      { title: "Odd Even Linked List", url: "https://leetcode.com/problems/odd-even-linked-list/", difficulty: "Medium", pattern: "Pointers", estMin: 20 },
-      { title: "Sort List", url: "https://leetcode.com/problems/sort-list/", difficulty: "Medium", pattern: "Merge sort", estMin: 35 },
-      { title: "Rotate List", url: "https://leetcode.com/problems/rotate-list/", difficulty: "Medium", pattern: "Two pointers", estMin: 20 },
+      {
+        title: "Linked List Cycle II",
+        url: "https://leetcode.com/problems/linked-list-cycle-ii/",
+        difficulty: "Medium",
+        pattern: "Fast/slow",
+        estMin: 25,
+      },
+      {
+        title: "Reorder List",
+        url: "https://leetcode.com/problems/reorder-list/",
+        difficulty: "Medium",
+        pattern: "Reverse+merge",
+        estMin: 25,
+      },
+      {
+        title: "Add Two Numbers",
+        url: "https://leetcode.com/problems/add-two-numbers/",
+        difficulty: "Medium",
+        pattern: "Simulation",
+        estMin: 20,
+      },
+      {
+        title: "Copy List with Random Pointer",
+        url: "https://leetcode.com/problems/copy-list-with-random-pointer/",
+        difficulty: "Medium",
+        pattern: "Hash / weave",
+        estMin: 30,
+      },
+      {
+        title: "Odd Even Linked List",
+        url: "https://leetcode.com/problems/odd-even-linked-list/",
+        difficulty: "Medium",
+        pattern: "Pointers",
+        estMin: 20,
+      },
+      {
+        title: "Sort List",
+        url: "https://leetcode.com/problems/sort-list/",
+        difficulty: "Medium",
+        pattern: "Merge sort",
+        estMin: 35,
+      },
+      {
+        title: "Rotate List",
+        url: "https://leetcode.com/problems/rotate-list/",
+        difficulty: "Medium",
+        pattern: "Two pointers",
+        estMin: 20,
+      },
     ],
     advanced: [
-      { title: "Reverse Nodes in k-Group", url: "https://leetcode.com/problems/reverse-nodes-in-k-group/", difficulty: "Hard", pattern: "Reverse", estMin: 45 },
-      { title: "Merge k Sorted Lists", url: "https://leetcode.com/problems/merge-k-sorted-lists/", difficulty: "Hard", pattern: "Heap", estMin: 40 },
-      { title: "LRU Cache", url: "https://leetcode.com/problems/lru-cache/", difficulty: "Medium", pattern: "Hash + DLL", estMin: 45 },
-      { title: "LFU Cache", url: "https://leetcode.com/problems/lfu-cache/", difficulty: "Hard", pattern: "Hash + DLL", estMin: 60 },
+      {
+        title: "Reverse Nodes in k-Group",
+        url: "https://leetcode.com/problems/reverse-nodes-in-k-group/",
+        difficulty: "Hard",
+        pattern: "Reverse",
+        estMin: 45,
+      },
+      {
+        title: "Merge k Sorted Lists",
+        url: "https://leetcode.com/problems/merge-k-sorted-lists/",
+        difficulty: "Hard",
+        pattern: "Heap",
+        estMin: 40,
+      },
+      {
+        title: "LRU Cache",
+        url: "https://leetcode.com/problems/lru-cache/",
+        difficulty: "Medium",
+        pattern: "Hash + DLL",
+        estMin: 45,
+      },
+      {
+        title: "LFU Cache",
+        url: "https://leetcode.com/problems/lfu-cache/",
+        difficulty: "Hard",
+        pattern: "Hash + DLL",
+        estMin: 60,
+      },
     ],
     interview: [
-      { title: "Palindrome Linked List", url: "https://leetcode.com/problems/palindrome-linked-list/", difficulty: "Easy", pattern: "Reverse half", estMin: 25 },
-      { title: "Intersection of Two Linked Lists", url: "https://leetcode.com/problems/intersection-of-two-linked-lists/", difficulty: "Easy", pattern: "Two pointers", estMin: 20 },
-      { title: "Remove Nth Node From End", url: "https://leetcode.com/problems/remove-nth-node-from-end-of-list/", difficulty: "Medium", pattern: "Fast/slow", estMin: 15 },
-      { title: "Swap Nodes in Pairs", url: "https://leetcode.com/problems/swap-nodes-in-pairs/", difficulty: "Medium", pattern: "Pointers", estMin: 20 },
+      {
+        title: "Palindrome Linked List",
+        url: "https://leetcode.com/problems/palindrome-linked-list/",
+        difficulty: "Easy",
+        pattern: "Reverse half",
+        estMin: 25,
+      },
+      {
+        title: "Intersection of Two Linked Lists",
+        url: "https://leetcode.com/problems/intersection-of-two-linked-lists/",
+        difficulty: "Easy",
+        pattern: "Two pointers",
+        estMin: 20,
+      },
+      {
+        title: "Remove Nth Node From End",
+        url: "https://leetcode.com/problems/remove-nth-node-from-end-of-list/",
+        difficulty: "Medium",
+        pattern: "Fast/slow",
+        estMin: 15,
+      },
+      {
+        title: "Swap Nodes in Pairs",
+        url: "https://leetcode.com/problems/swap-nodes-in-pairs/",
+        difficulty: "Medium",
+        pattern: "Pointers",
+        estMin: 20,
+      },
     ],
     competitive: [
-      { title: "Flatten a Multilevel DLL", url: "https://leetcode.com/problems/flatten-a-multilevel-doubly-linked-list/", difficulty: "Medium", pattern: "DFS", estMin: 30 },
-      { title: "Split Linked List in Parts", url: "https://leetcode.com/problems/split-linked-list-in-parts/", difficulty: "Medium", pattern: "Math", estMin: 20 },
+      {
+        title: "Flatten a Multilevel DLL",
+        url: "https://leetcode.com/problems/flatten-a-multilevel-doubly-linked-list/",
+        difficulty: "Medium",
+        pattern: "DFS",
+        estMin: 30,
+      },
+      {
+        title: "Split Linked List in Parts",
+        url: "https://leetcode.com/problems/split-linked-list-in-parts/",
+        difficulty: "Medium",
+        pattern: "Math",
+        estMin: 20,
+      },
     ],
   },
 
   mistakes: [
-    { mistake: "Forgetting to update prev.next after deleting a node.", fix: "Always assign prev.next = target.next before losing the reference." },
-    { mistake: "Creating a cycle when reversing (setting head.next = head).", fix: "Set the old head's next to None once you become the tail." },
-    { mistake: "Losing the head reference during in-place reversal.", fix: "Save head.next in a temp before overwriting head.next." },
-    { mistake: "Infinite loop in circular lists.", fix: "Terminate on `cur.next is start` rather than `cur.next is None`." },
-    { mistake: "Off-by-one in insert_at(k).", fix: "Walk k-1 steps to reach the predecessor, not k." },
-    { mistake: "Not handling empty list in every method.", fix: "Guard `if not self.head:` at the top of pop/delete/find." },
+    {
+      mistake: "Forgetting to update prev.next after deleting a node.",
+      fix: "Always assign prev.next = target.next before losing the reference.",
+    },
+    {
+      mistake: "Creating a cycle when reversing (setting head.next = head).",
+      fix: "Set the old head's next to None once you become the tail.",
+    },
+    {
+      mistake: "Losing the head reference during in-place reversal.",
+      fix: "Save head.next in a temp before overwriting head.next.",
+    },
+    {
+      mistake: "Infinite loop in circular lists.",
+      fix: "Terminate on `cur.next is start` rather than `cur.next is None`.",
+    },
+    {
+      mistake: "Off-by-one in insert_at(k).",
+      fix: "Walk k-1 steps to reach the predecessor, not k.",
+    },
+    {
+      mistake: "Not handling empty list in every method.",
+      fix: "Guard `if not self.head:` at the top of pop/delete/find.",
+    },
   ],
 
   quiz: [
@@ -627,7 +868,8 @@ class DoublyLinkedList:
       q: "Which pointers do you need to delete an arbitrary node in O(1) in a doubly linked list?",
       choices: ["The head only", "The node itself", "prev and next", "size and tail"],
       answer: 1,
-      explain: "With the node in hand you can rewire node.prev.next and node.next.prev — no traversal needed.",
+      explain:
+        "With the node in hand you can rewire node.prev.next and node.next.prev — no traversal needed.",
     },
     {
       q: "In Floyd's cycle detection, how many steps does fast move per iteration?",
@@ -673,15 +915,43 @@ class DoublyLinkedList:
   ],
 
   references: [
-    { label: "Python collections.deque docs", url: "https://docs.python.org/3/library/collections.html#collections.deque", kind: "docs" },
-    { label: "GeeksforGeeks — Linked List", url: "https://www.geeksforgeeks.org/data-structures/linked-list/", kind: "article" },
-    { label: "Programiz — Linked List in Python", url: "https://www.programiz.com/dsa/linked-list", kind: "article" },
-    { label: "Real Python — Linked Lists", url: "https://realpython.com/linked-lists-python/", kind: "article" },
+    {
+      label: "Python collections.deque docs",
+      url: "https://docs.python.org/3/library/collections.html#collections.deque",
+      kind: "docs",
+    },
+    {
+      label: "GeeksforGeeks — Linked List",
+      url: "https://www.geeksforgeeks.org/data-structures/linked-list/",
+      kind: "article",
+    },
+    {
+      label: "Programiz — Linked List in Python",
+      url: "https://www.programiz.com/dsa/linked-list",
+      kind: "article",
+    },
+    {
+      label: "Real Python — Linked Lists",
+      url: "https://realpython.com/linked-lists-python/",
+      kind: "article",
+    },
     { label: "NeetCode — Linked List playlist", url: "https://neetcode.io/roadmap", kind: "video" },
     { label: "VisuAlgo — Linked List", url: "https://visualgo.net/en/list", kind: "visualization" },
-    { label: "LeetCode — Linked List tag", url: "https://leetcode.com/tag/linked-list/", kind: "practice" },
-    { label: "HackerRank — Linked Lists", url: "https://www.hackerrank.com/domains/data-structures?filters%5Bsubdomains%5D%5B%5D=linked-lists", kind: "practice" },
-    { label: "CLRS — Introduction to Algorithms (Ch. 10)", url: "https://mitpress.mit.edu/9780262046305/introduction-to-algorithms/", kind: "book" },
+    {
+      label: "LeetCode — Linked List tag",
+      url: "https://leetcode.com/tag/linked-list/",
+      kind: "practice",
+    },
+    {
+      label: "HackerRank — Linked Lists",
+      url: "https://www.hackerrank.com/domains/data-structures?filters%5Bsubdomains%5D%5B%5D=linked-lists",
+      kind: "practice",
+    },
+    {
+      label: "CLRS — Introduction to Algorithms (Ch. 10)",
+      url: "https://mitpress.mit.edu/9780262046305/introduction-to-algorithms/",
+      kind: "book",
+    },
   ],
 
   revision: {

@@ -4,7 +4,10 @@ import { ArrowRight, ArrowLeft } from "lucide-react";
 export type LLNode = { id: string; value: string | number };
 
 export function makeNodes(values: Array<string | number>): LLNode[] {
-  return values.map((v, i) => ({ id: `n-${i}-${String(v)}-${Math.random().toString(36).slice(2, 6)}`, value: v }));
+  return values.map((v, i) => ({
+    id: `n-${i}-${String(v)}-${Math.random().toString(36).slice(2, 6)}`,
+    value: v,
+  }));
 }
 
 /**
@@ -72,8 +75,14 @@ export function LinkedListVisualizer({
               )}
               {(isSlow || isFast) && (
                 <div className="absolute -bottom-6 left-1/2 -translate-x-1/2 whitespace-nowrap text-[10px] font-semibold">
-                  {isSlow && <span className="mr-1 rounded bg-emerald-500/20 px-1 text-emerald-500">slow</span>}
-                  {isFast && <span className="rounded bg-amber-500/20 px-1 text-amber-500">fast</span>}
+                  {isSlow && (
+                    <span className="mr-1 rounded bg-emerald-500/20 px-1 text-emerald-500">
+                      slow
+                    </span>
+                  )}
+                  {isFast && (
+                    <span className="rounded bg-amber-500/20 px-1 text-amber-500">fast</span>
+                  )}
                 </div>
               )}
               <AnimatePresence initial={false}>

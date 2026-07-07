@@ -10,15 +10,18 @@ export const T_REVISION: TLesson[] = [
     difficulty: "Beginner",
     readMinutes: 4,
     sections: [
-      { type: "mistakes", items: [
-        "Validating a BST by checking only immediate children — you must carry min/max bounds down the recursion.",
-        "Hitting Python's recursion limit on a skewed tree — call sys.setrecursionlimit(10_000) or iterate.",
-        "Confusing 'height in edges' with 'height in nodes' — different LeetCode problems use different conventions.",
-        "Inserting sorted data into a plain BST and expecting O(log n) — it becomes a linked list.",
-        "Forgetting to update parent pointers after a rotation in an AVL / RB tree.",
-        "Using `if node.left is None: return` inside a preorder — you still need to visit right children after a null left.",
-        "Assuming inorder of any binary tree is sorted — it's only true for a BST.",
-      ]},
+      {
+        type: "mistakes",
+        items: [
+          "Validating a BST by checking only immediate children — you must carry min/max bounds down the recursion.",
+          "Hitting Python's recursion limit on a skewed tree — call sys.setrecursionlimit(10_000) or iterate.",
+          "Confusing 'height in edges' with 'height in nodes' — different LeetCode problems use different conventions.",
+          "Inserting sorted data into a plain BST and expecting O(log n) — it becomes a linked list.",
+          "Forgetting to update parent pointers after a rotation in an AVL / RB tree.",
+          "Using `if node.left is None: return` inside a preorder — you still need to visit right children after a null left.",
+          "Assuming inorder of any binary tree is sorted — it's only true for a BST.",
+        ],
+      },
     ],
   },
   {
@@ -30,35 +33,71 @@ export const T_REVISION: TLesson[] = [
     readMinutes: 6,
     sections: [
       { type: "heading", text: "What is the difference between a Tree and a Graph?" },
-      { type: "theory", text: "A tree is a connected acyclic graph with a designated root and exactly n−1 edges for n nodes. A graph may have cycles, disconnected components, and any number of edges." },
+      {
+        type: "theory",
+        text: "A tree is a connected acyclic graph with a designated root and exactly n−1 edges for n nodes. A graph may have cycles, disconnected components, and any number of edges.",
+      },
       { type: "heading", text: "Binary Tree vs Binary Search Tree?" },
-      { type: "theory", text: "A binary tree only limits fan-out to two. A BST adds the ordering invariant left < node < right, unlocking O(log n) search when balanced." },
+      {
+        type: "theory",
+        text: "A binary tree only limits fan-out to two. A BST adds the ordering invariant left < node < right, unlocking O(log n) search when balanced.",
+      },
       { type: "heading", text: "AVL vs BST?" },
-      { type: "theory", text: "AVL is a BST with an added balance invariant. Every insert/delete may trigger rotations to keep |bf| ≤ 1, guaranteeing O(log n)." },
+      {
+        type: "theory",
+        text: "AVL is a BST with an added balance invariant. Every insert/delete may trigger rotations to keep |bf| ≤ 1, guaranteeing O(log n).",
+      },
       { type: "heading", text: "Why does AVL need rotations?" },
-      { type: "theory", text: "Without rotations, worst-case inputs (sorted or reverse-sorted) turn the BST into a linked list. Rotations locally restructure the tree to preserve balance without breaking the BST property." },
+      {
+        type: "theory",
+        text: "Without rotations, worst-case inputs (sorted or reverse-sorted) turn the BST into a linked list. Rotations locally restructure the tree to preserve balance without breaking the BST property.",
+      },
       { type: "heading", text: "State the Red-Black Tree properties." },
-      { type: "theory", bullets: [
-        "Every node is red or black.",
-        "The root is black.",
-        "Every NIL leaf is black.",
-        "No red node has a red child.",
-        "Every root-to-leaf path has the same number of black nodes.",
-      ]},
+      {
+        type: "theory",
+        bullets: [
+          "Every node is red or black.",
+          "The root is black.",
+          "Every NIL leaf is black.",
+          "No red node has a red child.",
+          "Every root-to-leaf path has the same number of black nodes.",
+        ],
+      },
       { type: "heading", text: "What is a Trie?" },
-      { type: "theory", text: "A tree indexed by character — each edge is a letter, each path spells a word. Lookup and prefix search are O(L) in the key length." },
+      {
+        type: "theory",
+        text: "A tree indexed by character — each edge is a letter, each path spells a word. Lookup and prefix search are O(L) in the key length.",
+      },
       { type: "heading", text: "Segment Tree vs Fenwick Tree?" },
-      { type: "theory", text: "Segment trees handle any associative range query (min, max, gcd…) and lazy range updates. Fenwick trees only handle prefix sums but use half the memory with a smaller constant factor." },
+      {
+        type: "theory",
+        text: "Segment trees handle any associative range query (min, max, gcd…) and lazy range updates. Fenwick trees only handle prefix sums but use half the memory with a smaller constant factor.",
+      },
       { type: "heading", text: "Recursive vs Iterative traversal?" },
-      { type: "theory", text: "Recursive is short and reads like the definition; iterative avoids Python's recursion limit and can be marginally faster. For interviews, know both." },
+      {
+        type: "theory",
+        text: "Recursive is short and reads like the definition; iterative avoids Python's recursion limit and can be marginally faster. For interviews, know both.",
+      },
       { type: "heading", text: "Why is inorder traversal of a BST sorted?" },
-      { type: "theory", text: "The BST invariant guarantees left < root < right at every node. Visiting L → root → R across the whole tree therefore visits values in ascending order." },
+      {
+        type: "theory",
+        text: "The BST invariant guarantees left < root < right at every node. Visiting L → root → R across the whole tree therefore visits values in ascending order.",
+      },
       { type: "heading", text: "What is the Lowest Common Ancestor?" },
-      { type: "theory", text: "The deepest node that has both targets in its subtree. On a general binary tree it's O(n) with one recursion; on a BST you can walk down in O(h) using the ordering." },
+      {
+        type: "theory",
+        text: "The deepest node that has both targets in its subtree. On a general binary tree it's O(n) with one recursion; on a BST you can walk down in O(h) using the ordering.",
+      },
       { type: "heading", text: "How do you find the diameter of a tree?" },
-      { type: "theory", text: "In one post-order pass: at each node compute left height + right height, keeping a running maximum. Return that max." },
+      {
+        type: "theory",
+        text: "In one post-order pass: at each node compute left height + right height, keeping a running maximum. Return that max.",
+      },
       { type: "heading", text: "How do you check if a tree is balanced?" },
-      { type: "theory", text: "Post-order recursion returning height; if any subtree returns −1 (imbalance detected), propagate −1 up. Otherwise the tree is balanced." },
+      {
+        type: "theory",
+        text: "Post-order recursion returning height; if any subtree returns −1 (imbalance detected), propagate −1 up. Otherwise the tree is balanced.",
+      },
     ],
   },
   {
@@ -70,48 +109,63 @@ export const T_REVISION: TLesson[] = [
     readMinutes: 8,
     sections: [
       { type: "heading", text: "Traversals & Views" },
-      { type: "interview", items: [
-        "Preorder / inorder / postorder — recursive and iterative.",
-        "Level order — BFS with per-level grouping.",
-        "Zig-zag level order.",
-        "Left / right / top / bottom view.",
-        "Boundary traversal of a binary tree.",
-      ]},
+      {
+        type: "interview",
+        items: [
+          "Preorder / inorder / postorder — recursive and iterative.",
+          "Level order — BFS with per-level grouping.",
+          "Zig-zag level order.",
+          "Left / right / top / bottom view.",
+          "Boundary traversal of a binary tree.",
+        ],
+      },
       { type: "heading", text: "Structure & Properties" },
-      { type: "interview", items: [
-        "Height, depth, and diameter of a tree.",
-        "Count leaves / internal nodes / total nodes.",
-        "Check balanced binary tree.",
-        "Check if two trees are identical / mirrors.",
-        "Symmetric tree check.",
-      ]},
+      {
+        type: "interview",
+        items: [
+          "Height, depth, and diameter of a tree.",
+          "Count leaves / internal nodes / total nodes.",
+          "Check balanced binary tree.",
+          "Check if two trees are identical / mirrors.",
+          "Symmetric tree check.",
+        ],
+      },
       { type: "heading", text: "BST" },
-      { type: "interview", items: [
-        "Validate a BST using bounds recursion.",
-        "Kth smallest / largest element.",
-        "Convert sorted array / linked list to balanced BST.",
-        "Inorder successor and predecessor.",
-        "Recover a BST where two nodes were swapped.",
-      ]},
+      {
+        type: "interview",
+        items: [
+          "Validate a BST using bounds recursion.",
+          "Kth smallest / largest element.",
+          "Convert sorted array / linked list to balanced BST.",
+          "Inorder successor and predecessor.",
+          "Recover a BST where two nodes were swapped.",
+        ],
+      },
       { type: "heading", text: "Path Problems" },
-      { type: "interview", items: [
-        "Root-to-leaf path sum.",
-        "Path with maximum sum in a binary tree.",
-        "All root-to-leaf paths as strings.",
-        "Sum of all root-to-leaf numbers.",
-        "Longest path with equal values.",
-      ]},
+      {
+        type: "interview",
+        items: [
+          "Root-to-leaf path sum.",
+          "Path with maximum sum in a binary tree.",
+          "All root-to-leaf paths as strings.",
+          "Sum of all root-to-leaf numbers.",
+          "Longest path with equal values.",
+        ],
+      },
       { type: "heading", text: "Advanced" },
-      { type: "interview", items: [
-        "Serialize and deserialize a binary tree.",
-        "Lowest Common Ancestor (BT and BST).",
-        "Construct tree from preorder + inorder.",
-        "Flatten binary tree to linked list.",
-        "Populate next right pointers in each node.",
-        "Trie — implement, add/search words with wildcards.",
-        "Segment tree — range sum with point updates.",
-        "AVL rotations — LL / RR / LR / RL.",
-      ]},
+      {
+        type: "interview",
+        items: [
+          "Serialize and deserialize a binary tree.",
+          "Lowest Common Ancestor (BT and BST).",
+          "Construct tree from preorder + inorder.",
+          "Flatten binary tree to linked list.",
+          "Populate next right pointers in each node.",
+          "Trie — implement, add/search words with wildcards.",
+          "Segment tree — range sum with point updates.",
+          "AVL rotations — LL / RR / LR / RL.",
+        ],
+      },
     ],
   },
   {
@@ -122,19 +176,23 @@ export const T_REVISION: TLesson[] = [
     difficulty: "Beginner",
     readMinutes: 4,
     sections: [
-      { type: "table", headers: ["Structure", "Search", "Insert", "Delete", "Extra"], rows: [
-        ["General tree", "O(n)", "O(1) at known node", "O(n)", "Any fan-out"],
-        ["Binary tree", "O(n)", "O(n)", "O(n)", "No ordering"],
-        ["BST (balanced)", "O(log n)", "O(log n)", "O(log n)", "Inorder = sorted"],
-        ["BST (worst)", "O(n)", "O(n)", "O(n)", "Skewed to linked list"],
-        ["AVL", "O(log n)", "O(log n)", "O(log n)", "≤ 2 rotations / insert"],
-        ["Red-Black", "O(log n)", "O(log n)", "O(log n)", "Cheaper mutation than AVL"],
-        ["B-Tree (t)", "O(log_t n)", "O(log_t n)", "O(log_t n)", "Disk-friendly"],
-        ["B+ Tree", "O(log_t n)", "O(log_t n)", "O(log_t n)", "Range scan via leaf list"],
-        ["Trie (L)", "O(L)", "O(L)", "O(L)", "L = key length"],
-        ["Segment tree", "O(log n)", "—", "—", "Range query / point update"],
-        ["Fenwick tree", "—", "O(log n)", "—", "Prefix sum in n words"],
-      ]},
+      {
+        type: "table",
+        headers: ["Structure", "Search", "Insert", "Delete", "Extra"],
+        rows: [
+          ["General tree", "O(n)", "O(1) at known node", "O(n)", "Any fan-out"],
+          ["Binary tree", "O(n)", "O(n)", "O(n)", "No ordering"],
+          ["BST (balanced)", "O(log n)", "O(log n)", "O(log n)", "Inorder = sorted"],
+          ["BST (worst)", "O(n)", "O(n)", "O(n)", "Skewed to linked list"],
+          ["AVL", "O(log n)", "O(log n)", "O(log n)", "≤ 2 rotations / insert"],
+          ["Red-Black", "O(log n)", "O(log n)", "O(log n)", "Cheaper mutation than AVL"],
+          ["B-Tree (t)", "O(log_t n)", "O(log_t n)", "O(log_t n)", "Disk-friendly"],
+          ["B+ Tree", "O(log_t n)", "O(log_t n)", "O(log_t n)", "Range scan via leaf list"],
+          ["Trie (L)", "O(L)", "O(L)", "O(L)", "L = key length"],
+          ["Segment tree", "O(log n)", "—", "—", "Range query / point update"],
+          ["Fenwick tree", "—", "O(log n)", "—", "Prefix sum in n words"],
+        ],
+      },
     ],
   },
   {
@@ -145,16 +203,20 @@ export const T_REVISION: TLesson[] = [
     difficulty: "Beginner",
     readMinutes: 3,
     sections: [
-      { type: "table", headers: ["Need", "Pick"], rows: [
-        ["Hierarchy modelling (files, DOM)", "General tree"],
-        ["Ordered map / set in memory", "Red-Black or AVL"],
-        ["Autocomplete / prefix search", "Trie"],
-        ["Range sum / min / max queries", "Segment tree"],
-        ["Prefix sum only, tight memory", "Fenwick tree"],
-        ["Disk-based index", "B-Tree / B+ Tree"],
-        ["Priority queue", "Binary heap (implicit binary tree)"],
-        ["Expression parsing", "Full binary tree"],
-      ]},
+      {
+        type: "table",
+        headers: ["Need", "Pick"],
+        rows: [
+          ["Hierarchy modelling (files, DOM)", "General tree"],
+          ["Ordered map / set in memory", "Red-Black or AVL"],
+          ["Autocomplete / prefix search", "Trie"],
+          ["Range sum / min / max queries", "Segment tree"],
+          ["Prefix sum only, tight memory", "Fenwick tree"],
+          ["Disk-based index", "B-Tree / B+ Tree"],
+          ["Priority queue", "Binary heap (implicit binary tree)"],
+          ["Expression parsing", "Full binary tree"],
+        ],
+      },
     ],
   },
   {
@@ -165,12 +227,16 @@ export const T_REVISION: TLesson[] = [
     difficulty: "Beginner",
     readMinutes: 3,
     sections: [
-      { type: "table", headers: ["Traversal", "Order", "Uses"], rows: [
-        ["Preorder", "N → L → R", "Copy tree, serialize, prefix expressions"],
-        ["Inorder", "L → N → R", "Sorted output on a BST"],
-        ["Postorder", "L → R → N", "Delete children first, evaluate expressions"],
-        ["Level order", "By depth (BFS)", "Widths, shortest paths, views"],
-      ]},
+      {
+        type: "table",
+        headers: ["Traversal", "Order", "Uses"],
+        rows: [
+          ["Preorder", "N → L → R", "Copy tree, serialize, prefix expressions"],
+          ["Inorder", "L → N → R", "Sorted output on a BST"],
+          ["Postorder", "L → R → N", "Delete children first, evaluate expressions"],
+          ["Level order", "By depth (BFS)", "Widths, shortest paths, views"],
+        ],
+      },
     ],
   },
   {
@@ -181,29 +247,101 @@ export const T_REVISION: TLesson[] = [
     difficulty: "Intermediate",
     readMinutes: 4,
     sections: [
-      { type: "practice", groups: [
-        { level: "Beginner", items: [
-          { title: "LC 104 · Max Depth", url: "https://leetcode.com/problems/maximum-depth-of-binary-tree/", difficulty: "Easy" },
-          { title: "LC 226 · Invert Binary Tree", url: "https://leetcode.com/problems/invert-binary-tree/", difficulty: "Easy" },
-          { title: "LC 100 · Same Tree", url: "https://leetcode.com/problems/same-tree/", difficulty: "Easy" },
-          { title: "LC 543 · Diameter", url: "https://leetcode.com/problems/diameter-of-binary-tree/", difficulty: "Easy" },
-          { title: "LC 110 · Balanced Binary Tree", url: "https://leetcode.com/problems/balanced-binary-tree/", difficulty: "Easy" },
-        ]},
-        { level: "Intermediate", items: [
-          { title: "LC 102 · Level Order", url: "https://leetcode.com/problems/binary-tree-level-order-traversal/", difficulty: "Medium" },
-          { title: "LC 98 · Validate BST", url: "https://leetcode.com/problems/validate-binary-search-tree/", difficulty: "Medium" },
-          { title: "LC 199 · Right Side View", url: "https://leetcode.com/problems/binary-tree-right-side-view/", difficulty: "Medium" },
-          { title: "LC 236 · LCA", url: "https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree/", difficulty: "Medium" },
-          { title: "LC 208 · Implement Trie", url: "https://leetcode.com/problems/implement-trie-prefix-tree/", difficulty: "Medium" },
-        ]},
-        { level: "Advanced", items: [
-          { title: "LC 124 · Max Path Sum", url: "https://leetcode.com/problems/binary-tree-maximum-path-sum/", difficulty: "Hard" },
-          { title: "LC 297 · Serialize / Deserialize", url: "https://leetcode.com/problems/serialize-and-deserialize-binary-tree/", difficulty: "Hard" },
-          { title: "LC 212 · Word Search II (Trie + DFS)", url: "https://leetcode.com/problems/word-search-ii/", difficulty: "Hard" },
-          { title: "LC 307 · Range Sum Query — Mutable", url: "https://leetcode.com/problems/range-sum-query-mutable/", difficulty: "Medium" },
-          { title: "LC 987 · Vertical Order Traversal", url: "https://leetcode.com/problems/vertical-order-traversal-of-a-binary-tree/", difficulty: "Hard" },
-        ]},
-      ]},
+      {
+        type: "practice",
+        groups: [
+          {
+            level: "Beginner",
+            items: [
+              {
+                title: "LC 104 · Max Depth",
+                url: "https://leetcode.com/problems/maximum-depth-of-binary-tree/",
+                difficulty: "Easy",
+              },
+              {
+                title: "LC 226 · Invert Binary Tree",
+                url: "https://leetcode.com/problems/invert-binary-tree/",
+                difficulty: "Easy",
+              },
+              {
+                title: "LC 100 · Same Tree",
+                url: "https://leetcode.com/problems/same-tree/",
+                difficulty: "Easy",
+              },
+              {
+                title: "LC 543 · Diameter",
+                url: "https://leetcode.com/problems/diameter-of-binary-tree/",
+                difficulty: "Easy",
+              },
+              {
+                title: "LC 110 · Balanced Binary Tree",
+                url: "https://leetcode.com/problems/balanced-binary-tree/",
+                difficulty: "Easy",
+              },
+            ],
+          },
+          {
+            level: "Intermediate",
+            items: [
+              {
+                title: "LC 102 · Level Order",
+                url: "https://leetcode.com/problems/binary-tree-level-order-traversal/",
+                difficulty: "Medium",
+              },
+              {
+                title: "LC 98 · Validate BST",
+                url: "https://leetcode.com/problems/validate-binary-search-tree/",
+                difficulty: "Medium",
+              },
+              {
+                title: "LC 199 · Right Side View",
+                url: "https://leetcode.com/problems/binary-tree-right-side-view/",
+                difficulty: "Medium",
+              },
+              {
+                title: "LC 236 · LCA",
+                url: "https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree/",
+                difficulty: "Medium",
+              },
+              {
+                title: "LC 208 · Implement Trie",
+                url: "https://leetcode.com/problems/implement-trie-prefix-tree/",
+                difficulty: "Medium",
+              },
+            ],
+          },
+          {
+            level: "Advanced",
+            items: [
+              {
+                title: "LC 124 · Max Path Sum",
+                url: "https://leetcode.com/problems/binary-tree-maximum-path-sum/",
+                difficulty: "Hard",
+              },
+              {
+                title: "LC 297 · Serialize / Deserialize",
+                url: "https://leetcode.com/problems/serialize-and-deserialize-binary-tree/",
+                difficulty: "Hard",
+              },
+              {
+                title: "LC 212 · Word Search II (Trie + DFS)",
+                url: "https://leetcode.com/problems/word-search-ii/",
+                difficulty: "Hard",
+              },
+              {
+                title: "LC 307 · Range Sum Query — Mutable",
+                url: "https://leetcode.com/problems/range-sum-query-mutable/",
+                difficulty: "Medium",
+              },
+              {
+                title: "LC 987 · Vertical Order Traversal",
+                url: "https://leetcode.com/problems/vertical-order-traversal-of-a-binary-tree/",
+                difficulty: "Hard",
+              },
+            ],
+          },
+        ],
+      },
     ],
   },
   {
@@ -214,22 +352,26 @@ export const T_REVISION: TLesson[] = [
     difficulty: "Intermediate",
     readMinutes: 4,
     sections: [
-      { type: "table", headers: ["Week / Day", "Focus", "Problems"], rows: [
-        ["Day 1", "Traversals", "94, 144, 145, 102"],
-        ["Day 2", "Depth & size", "104, 111, 222"],
-        ["Day 3", "Structure checks", "100, 101, 110"],
-        ["Day 4", "Views", "199, 987, 314"],
-        ["Day 5", "Path problems", "112, 113, 129, 543"],
-        ["Day 6", "LCA & construction", "236, 105, 106"],
-        ["Day 7", "BST basics", "700, 701, 98, 230"],
-        ["Day 8", "Advanced BST", "108, 109, 173, 1382"],
-        ["Day 9", "Serialize / iterators", "297, 449, 173"],
-        ["Day 10", "Tries", "208, 211, 212, 648"],
-        ["Day 11", "Segment / Fenwick", "307, 315, 493"],
-        ["Day 12", "Hard classics", "124, 968, 834"],
-        ["Day 13", "Mixed review", "Any 5 unsolved"],
-        ["Day 14", "Timed mocks", "3 mediums under 60 min"],
-      ]},
+      {
+        type: "table",
+        headers: ["Week / Day", "Focus", "Problems"],
+        rows: [
+          ["Day 1", "Traversals", "94, 144, 145, 102"],
+          ["Day 2", "Depth & size", "104, 111, 222"],
+          ["Day 3", "Structure checks", "100, 101, 110"],
+          ["Day 4", "Views", "199, 987, 314"],
+          ["Day 5", "Path problems", "112, 113, 129, 543"],
+          ["Day 6", "LCA & construction", "236, 105, 106"],
+          ["Day 7", "BST basics", "700, 701, 98, 230"],
+          ["Day 8", "Advanced BST", "108, 109, 173, 1382"],
+          ["Day 9", "Serialize / iterators", "297, 449, 173"],
+          ["Day 10", "Tries", "208, 211, 212, 648"],
+          ["Day 11", "Segment / Fenwick", "307, 315, 493"],
+          ["Day 12", "Hard classics", "124, 968, 834"],
+          ["Day 13", "Mixed review", "Any 5 unsolved"],
+          ["Day 14", "Timed mocks", "3 mediums under 60 min"],
+        ],
+      },
     ],
   },
   {
@@ -240,10 +382,19 @@ export const T_REVISION: TLesson[] = [
     difficulty: "Intermediate",
     readMinutes: 2,
     sections: [
-      { type: "references", items: [
-        { label: "HackerRank — Data Structures / Trees", url: "https://www.hackerrank.com/domains/data-structures?filters%5Bsubdomains%5D%5B%5D=trees" },
-        { label: "HackerRank — BST track", url: "https://www.hackerrank.com/domains/data-structures?filters%5Bsubdomains%5D%5B%5D=binary-search-tree" },
-      ]},
+      {
+        type: "references",
+        items: [
+          {
+            label: "HackerRank — Data Structures / Trees",
+            url: "https://www.hackerrank.com/domains/data-structures?filters%5Bsubdomains%5D%5B%5D=trees",
+          },
+          {
+            label: "HackerRank — BST track",
+            url: "https://www.hackerrank.com/domains/data-structures?filters%5Bsubdomains%5D%5B%5D=binary-search-tree",
+          },
+        ],
+      },
     ],
   },
   {
@@ -254,13 +405,22 @@ export const T_REVISION: TLesson[] = [
     difficulty: "Beginner",
     readMinutes: 2,
     sections: [
-      { type: "references", items: [
-        { label: "CLRS — Introduction to Algorithms (Trees chapters)", url: "https://mitpress.mit.edu/9780262046305/" },
-        { label: "Sedgewick — Algorithms 4th ed.", url: "https://algs4.cs.princeton.edu/32bst/" },
-        { label: "Visualgo — BST / AVL", url: "https://visualgo.net/en/bst" },
-        { label: "Wikipedia — B-Tree", url: "https://en.wikipedia.org/wiki/B-tree" },
-        { label: "Peter Fenwick — A New Data Structure for Cumulative Frequency Tables (1994)", url: "https://citeseerx.ist.psu.edu/document?doi=10.1.1.14.8917" },
-      ]},
+      {
+        type: "references",
+        items: [
+          {
+            label: "CLRS — Introduction to Algorithms (Trees chapters)",
+            url: "https://mitpress.mit.edu/9780262046305/",
+          },
+          { label: "Sedgewick — Algorithms 4th ed.", url: "https://algs4.cs.princeton.edu/32bst/" },
+          { label: "Visualgo — BST / AVL", url: "https://visualgo.net/en/bst" },
+          { label: "Wikipedia — B-Tree", url: "https://en.wikipedia.org/wiki/B-tree" },
+          {
+            label: "Peter Fenwick — A New Data Structure for Cumulative Frequency Tables (1994)",
+            url: "https://citeseerx.ist.psu.edu/document?doi=10.1.1.14.8917",
+          },
+        ],
+      },
     ],
   },
   {
@@ -271,18 +431,63 @@ export const T_REVISION: TLesson[] = [
     difficulty: "Intermediate",
     readMinutes: 6,
     sections: [
-      { type: "quiz", items: [
-        { q: "A tree with 15 nodes has how many edges?", choices: ["14", "15", "16", "30"], answer: 0, explain: "n nodes → n − 1 edges." },
-        { q: "Which traversal returns BST values in sorted order?", choices: ["Preorder", "Inorder", "Postorder", "Level order"], answer: 1 },
-        { q: "The minimum height of a binary tree with n nodes is roughly…", choices: ["n", "n / 2", "log₂ n", "√n"], answer: 2 },
-        { q: "In an AVL tree, |balance factor| must be at most…", choices: ["0", "1", "2", "log n"], answer: 1 },
-        { q: "In a Red-Black tree, the root must be…", choices: ["Red", "Black", "Either", "Coloured only if internal"], answer: 1 },
-        { q: "A trie lookup over an n-word dictionary and length-L key runs in…", choices: ["O(n)", "O(log n)", "O(L)", "O(L · n)"], answer: 2 },
-        { q: "Segment trees support any operation that is…", choices: ["Commutative", "Associative", "Idempotent", "Invertible"], answer: 1, explain: "Associativity is what lets you combine child aggregates." },
-        { q: "A Fenwick Tree gives O(log n) prefix sums using how much memory?", choices: ["O(√n)", "O(n)", "O(n log n)", "O(4n)"], answer: 1 },
-        { q: "The LCA of two nodes in a general binary tree is best solved in…", choices: ["O(log n)", "O(n)", "O(h)", "O(n log n)"], answer: 1 },
-        { q: "Which of these guarantees O(log n) height on any insert order?", choices: ["Plain BST", "AVL", "Trie", "General tree"], answer: 1 },
-      ]},
+      {
+        type: "quiz",
+        items: [
+          {
+            q: "A tree with 15 nodes has how many edges?",
+            choices: ["14", "15", "16", "30"],
+            answer: 0,
+            explain: "n nodes → n − 1 edges.",
+          },
+          {
+            q: "Which traversal returns BST values in sorted order?",
+            choices: ["Preorder", "Inorder", "Postorder", "Level order"],
+            answer: 1,
+          },
+          {
+            q: "The minimum height of a binary tree with n nodes is roughly…",
+            choices: ["n", "n / 2", "log₂ n", "√n"],
+            answer: 2,
+          },
+          {
+            q: "In an AVL tree, |balance factor| must be at most…",
+            choices: ["0", "1", "2", "log n"],
+            answer: 1,
+          },
+          {
+            q: "In a Red-Black tree, the root must be…",
+            choices: ["Red", "Black", "Either", "Coloured only if internal"],
+            answer: 1,
+          },
+          {
+            q: "A trie lookup over an n-word dictionary and length-L key runs in…",
+            choices: ["O(n)", "O(log n)", "O(L)", "O(L · n)"],
+            answer: 2,
+          },
+          {
+            q: "Segment trees support any operation that is…",
+            choices: ["Commutative", "Associative", "Idempotent", "Invertible"],
+            answer: 1,
+            explain: "Associativity is what lets you combine child aggregates.",
+          },
+          {
+            q: "A Fenwick Tree gives O(log n) prefix sums using how much memory?",
+            choices: ["O(√n)", "O(n)", "O(n log n)", "O(4n)"],
+            answer: 1,
+          },
+          {
+            q: "The LCA of two nodes in a general binary tree is best solved in…",
+            choices: ["O(log n)", "O(n)", "O(h)", "O(n log n)"],
+            answer: 1,
+          },
+          {
+            q: "Which of these guarantees O(log n) height on any insert order?",
+            choices: ["Plain BST", "AVL", "Trie", "General tree"],
+            answer: 1,
+          },
+        ],
+      },
     ],
   },
   {
@@ -293,13 +498,20 @@ export const T_REVISION: TLesson[] = [
     difficulty: "Beginner",
     readMinutes: 2,
     sections: [
-      { type: "theory", bullets: [
-        "Heaps — a special binary tree that gives you O(log n) priority queues.",
-        "Graphs — trees are a special case; DFS and BFS carry straight over.",
-        "Advanced algorithms — DP on trees, tree DP, Euler tour, HLD, LCA with binary lifting.",
-      ]},
-      { type: "callout", kind: "did", title: "Well done",
-        text: "You've completed the Trees flagship module. Next up: Heaps, then Graphs, then the algorithmic-patterns tier." },
+      {
+        type: "theory",
+        bullets: [
+          "Heaps — a special binary tree that gives you O(log n) priority queues.",
+          "Graphs — trees are a special case; DFS and BFS carry straight over.",
+          "Advanced algorithms — DP on trees, tree DP, Euler tour, HLD, LCA with binary lifting.",
+        ],
+      },
+      {
+        type: "callout",
+        kind: "did",
+        title: "Well done",
+        text: "You've completed the Trees flagship module. Next up: Heaps, then Graphs, then the algorithmic-patterns tier.",
+      },
     ],
   },
 ];

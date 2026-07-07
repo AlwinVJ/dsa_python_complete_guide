@@ -526,7 +526,7 @@ def exponential_search(arr, target):
 
       const lo = Math.floor(i / 2);
       const hi = Math.min(i, n - 1);
-      
+
       for (let k = 0; k < lo; k++) {
         if (!visited.includes(k)) visited.push(k);
       }

@@ -6,7 +6,10 @@ export const hashingBank: ModuleBank = {
   edgeCases: [
     { case: "Multiple collisions", why: "All keys hash to the same bucket — worst case O(n)." },
     { case: "Load factor exceeded", why: "Triggers rehashing — resize + re-insert all keys." },
-    { case: "Duplicate keys", why: "Overwrites the value — check with `key in d` first if you want to detect." },
+    {
+      case: "Duplicate keys",
+      why: "Overwrites the value — check with `key in d` first if you want to detect.",
+    },
     { case: "Unhashable key (list)", why: "TypeError — convert to tuple." },
   ],
   revisionSheet: {
@@ -60,7 +63,9 @@ export const hashingBank: ModuleBank = {
       pattern: "Hash Map",
       relatedAlgorithm: "hash-map",
       interviewFrequency: "Very High",
-      leetcodeLinks: [{ title: "1. Two Sum", url: "https://leetcode.com/problems/two-sum/", difficulty: "Easy" }],
+      leetcodeLinks: [
+        { title: "1. Two Sum", url: "https://leetcode.com/problems/two-sum/", difficulty: "Easy" },
+      ],
       estimatedMinutes: 10,
       tags: ["must-do"],
     },
@@ -80,7 +85,13 @@ export const hashingBank: ModuleBank = {
           space: "O(n·k)",
         },
       ],
-      leetcodeLinks: [{ title: "49. Group Anagrams", url: "https://leetcode.com/problems/group-anagrams/", difficulty: "Medium" }],
+      leetcodeLinks: [
+        {
+          title: "49. Group Anagrams",
+          url: "https://leetcode.com/problems/group-anagrams/",
+          difficulty: "Medium",
+        },
+      ],
       interviewFrequency: "Very High",
       estimatedMinutes: 15,
       pattern: "Hash Map",
@@ -97,7 +108,13 @@ export const hashingBank: ModuleBank = {
       hints: ["OrderedDict, or hash-map + doubly linked list."],
       pythonSolution:
         "from collections import OrderedDict\nclass LRUCache:\n    def __init__(self, cap):\n        self.d = OrderedDict(); self.cap = cap\n    def get(self, k):\n        if k not in self.d: return -1\n        self.d.move_to_end(k); return self.d[k]\n    def put(self, k, v):\n        if k in self.d: self.d.move_to_end(k)\n        self.d[k] = v\n        if len(self.d) > self.cap: self.d.popitem(last=False)",
-      leetcodeLinks: [{ title: "146. LRU Cache", url: "https://leetcode.com/problems/lru-cache/", difficulty: "Medium" }],
+      leetcodeLinks: [
+        {
+          title: "146. LRU Cache",
+          url: "https://leetcode.com/problems/lru-cache/",
+          difficulty: "Medium",
+        },
+      ],
       interviewFrequency: "Very High",
       companies: ["Amazon", "Google", "Bloomberg"],
       estimatedMinutes: 30,
@@ -119,7 +136,13 @@ export const hashingBank: ModuleBank = {
           space: "O(n)",
         },
       ],
-      leetcodeLinks: [{ title: "560. Subarray Sum Equals K", url: "https://leetcode.com/problems/subarray-sum-equals-k/", difficulty: "Medium" }],
+      leetcodeLinks: [
+        {
+          title: "560. Subarray Sum Equals K",
+          url: "https://leetcode.com/problems/subarray-sum-equals-k/",
+          difficulty: "Medium",
+        },
+      ],
       pattern: "Prefix Sum + Hash",
       interviewFrequency: "Very High",
       estimatedMinutes: 25,

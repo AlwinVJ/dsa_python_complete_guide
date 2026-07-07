@@ -14,12 +14,19 @@ function arrayToTree(
   i = 0,
 ): TreeNodeViz | null {
   if (i >= a.length) return null;
-  const kids = [arrayToTree(a, opts, 2 * i + 1), arrayToTree(a, opts, 2 * i + 2)]
-    .filter((c): c is TreeNodeViz => c !== null);
+  const kids = [arrayToTree(a, opts, 2 * i + 1), arrayToTree(a, opts, 2 * i + 2)].filter(
+    (c): c is TreeNodeViz => c !== null,
+  );
   return {
     id: `${i}:${a[i]}`,
     label: a[i],
-    color: opts.hi?.has(i) ? "highlight" : opts.path?.has(i) ? "visited" : i === 0 ? "brand" : "default",
+    color: opts.hi?.has(i)
+      ? "highlight"
+      : opts.path?.has(i)
+        ? "visited"
+        : i === 0
+          ? "brand"
+          : "default",
     badge: `i=${i}`,
     children: kids.length ? kids : undefined,
   };
@@ -29,7 +36,10 @@ function arrayToTree(
  * ArrayStrip — the "underlying array" view
  * ========================================================= */
 function ArrayStrip({
-  data, highlight, path, focus,
+  data,
+  highlight,
+  path,
+  focus,
 }: {
   data: number[];
   highlight?: Set<number>;
@@ -38,7 +48,9 @@ function ArrayStrip({
 }) {
   return (
     <div className="card-surface p-3">
-      <div className="mb-2 text-xs uppercase tracking-wider text-muted-foreground">Underlying array</div>
+      <div className="mb-2 text-xs uppercase tracking-wider text-muted-foreground">
+        Underlying array
+      </div>
       <div className="flex flex-wrap gap-1.5">
         {data.map((v, i) => {
           const isHi = highlight?.has(i);
@@ -72,7 +84,12 @@ function ArrayStrip({
  * Static HeapVisualizer — used for heapViz sections
  * ========================================================= */
 export function HeapVisualizer({
-  data, kind = "min", highlight, path, caption, showArray = true,
+  data,
+  kind = "min",
+  highlight,
+  path,
+  caption,
+  showArray = true,
 }: {
   data: number[];
   kind?: HeapKind;
@@ -105,8 +122,14 @@ export function HeapVisualizer({
  * IndexDiagram — highlight parent/left/right for one index
  * ========================================================= */
 export function IndexDiagram({
-  data, focus, caption,
-}: { data: number[]; focus: number; caption?: string }) {
+  data,
+  focus,
+  caption,
+}: {
+  data: number[];
+  focus: number;
+  caption?: string;
+}) {
   const parent = focus > 0 ? Math.floor((focus - 1) / 2) : -1;
   const left = 2 * focus + 1;
   const right = 2 * focus + 2;
@@ -158,7 +181,12 @@ type Frame = {
   op: string;
 };
 
-function heapifyUpFrames(a: number[], start: number, cmp: (x: number, y: number) => boolean, base: Frame[]) {
+function heapifyUpFrames(
+  a: number[],
+  start: number,
+  cmp: (x: number, y: number) => boolean,
+  base: Frame[],
+) {
   const arr = a.slice();
   let i = start;
   base.push({ arr: arr.slice(), hi: [i], op: `sift-up · start at i=${i}` });
@@ -177,12 +205,19 @@ function heapifyUpFrames(a: number[], start: number, cmp: (x: number, y: number)
   return arr;
 }
 
-function heapifyDownFrames(a: number[], start: number, n: number, cmp: (x: number, y: number) => boolean, base: Frame[]) {
+function heapifyDownFrames(
+  a: number[],
+  start: number,
+  n: number,
+  cmp: (x: number, y: number) => boolean,
+  base: Frame[],
+) {
   const arr = a.slice();
   let i = start;
   base.push({ arr: arr.slice(), hi: [i], op: `sift-down · start at i=${i}` });
   while (true) {
-    const l = 2 * i + 1, r = 2 * i + 2;
+    const l = 2 * i + 1,
+      r = 2 * i + 2;
     let best = i;
     if (l < n && cmp(arr[l], arr[best])) best = l;
     if (r < n && cmp(arr[r], arr[best])) best = r;
@@ -198,8 +233,14 @@ function heapifyDownFrames(a: number[], start: number, n: number, cmp: (x: numbe
 }
 
 export function HeapPlayground({
-  seed = [], kind: kindProp = "min", caption,
-}: { seed?: number[]; kind?: HeapKind; caption?: string }) {
+  seed = [],
+  kind: kindProp = "min",
+  caption,
+}: {
+  seed?: number[];
+  kind?: HeapKind;
+  caption?: string;
+}) {
   const [kind, setKind] = useState<HeapKind>(kindProp);
   const [arr, setArr] = useState<number[]>(seed);
   const [input, setInput] = useState("");
@@ -210,9 +251,7 @@ export function HeapPlayground({
   const [lastOp, setLastOp] = useState<string>("");
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const cmp = kind === "min"
-    ? (x: number, y: number) => x < y
-    : (x: number, y: number) => x > y;
+  const cmp = kind === "min" ? (x: number, y: number) => x < y : (x: number, y: number) => x > y;
 
   // Auto-play frames at ~700ms/step
   useEffect(() => {
@@ -221,7 +260,9 @@ export function HeapPlayground({
       return;
     }
     timerRef.current = setTimeout(() => setStep((s) => s + 1), 700);
-    return () => { if (timerRef.current) clearTimeout(timerRef.current); };
+    return () => {
+      if (timerRef.current) clearTimeout(timerRef.current);
+    };
   }, [playing, step, frames.length]);
 
   // When user toggles heap kind on an existing heap, rebuild for correctness.
@@ -234,7 +275,8 @@ export function HeapPlayground({
         // apply in place using a helper mirror of the frames logic
         let k = i;
         while (true) {
-          const l = 2 * k + 1, r = 2 * k + 2;
+          const l = 2 * k + 1,
+            r = 2 * k + 2;
           let best = k;
           if (l < n && cmp(rebuilt[l], rebuilt[best])) best = l;
           if (r < n && cmp(rebuilt[r], rebuilt[best])) best = r;
@@ -244,13 +286,17 @@ export function HeapPlayground({
         }
       }
       setArr(rebuilt);
-      setFrames([]); setStep(0); setLastOp(`toggled to ${kind}-heap · rebuilt in O(n)`);
+      setFrames([]);
+      setStep(0);
+      setLastOp(`toggled to ${kind}-heap · rebuilt in O(n)`);
     }
-     
   }, [kind]);
 
   function runFrames(fs: Frame[], finalArr: number[], op: string) {
-    setFrames(fs); setStep(0); setPlaying(true); setLastOp(op);
+    setFrames(fs);
+    setStep(0);
+    setPlaying(true);
+    setLastOp(op);
     // Commit the final array now; the visual highlights animate through frames.
     setArr(finalArr);
   }
@@ -259,8 +305,11 @@ export function HeapPlayground({
     const v = Number(input);
     if (!Number.isFinite(v)) return;
     setInput("");
-    const next = arr.slice(); next.push(v);
-    const fs: Frame[] = [{ arr: next.slice(), hi: [next.length - 1], op: `append ${v} at index ${next.length - 1}` }];
+    const next = arr.slice();
+    next.push(v);
+    const fs: Frame[] = [
+      { arr: next.slice(), hi: [next.length - 1], op: `append ${v} at index ${next.length - 1}` },
+    ];
     const finalArr = heapifyUpFrames(next, next.length - 1, cmp, fs);
     runFrames(fs, finalArr, `insert(${v})`);
   }
@@ -268,15 +317,26 @@ export function HeapPlayground({
   function doPop() {
     if (arr.length === 0) return;
     if (arr.length === 1) {
-      setArr([]); setFrames([]); setStep(0); setLastOp(`pop root (${arr[0]}) · heap now empty`);
+      setArr([]);
+      setFrames([]);
+      setStep(0);
+      setLastOp(`pop root (${arr[0]}) · heap now empty`);
       return;
     }
     const next = arr.slice();
     const top = next[0];
     const last = next.pop()!;
     const fs: Frame[] = [
-      { arr: arr.slice(), hi: [0, arr.length - 1], op: `pop root (${top}) · swap with last (${last})` },
-      { arr: [last, ...next.slice(1)], hi: [0], op: `promoted ${last} to root · shrink to size ${next.length}` },
+      {
+        arr: arr.slice(),
+        hi: [0, arr.length - 1],
+        op: `pop root (${top}) · swap with last (${last})`,
+      },
+      {
+        arr: [last, ...next.slice(1)],
+        hi: [0],
+        op: `promoted ${last} to root · shrink to size ${next.length}`,
+      },
     ];
     next[0] = last;
     const finalArr = heapifyDownFrames(next, 0, next.length, cmp, fs);
@@ -284,17 +344,23 @@ export function HeapPlayground({
   }
 
   function doBuild() {
-    const parts = buildInput.split(/[,\s]+/).map((s) => Number(s.trim())).filter((n) => Number.isFinite(n));
+    const parts = buildInput
+      .split(/[,\s]+/)
+      .map((s) => Number(s.trim()))
+      .filter((n) => Number.isFinite(n));
     if (parts.length === 0) return;
     const next = parts.slice();
     const n = next.length;
-    const fs: Frame[] = [{ arr: next.slice(), op: `start · bottom-up heapify from i = ${Math.floor(n / 2) - 1}` }];
+    const fs: Frame[] = [
+      { arr: next.slice(), op: `start · bottom-up heapify from i = ${Math.floor(n / 2) - 1}` },
+    ];
     for (let i = Math.floor(n / 2) - 1; i >= 0; i--) {
       heapifyDownFrames(next, i, n, cmp, fs);
       // Apply in place to keep frames consistent with the running array.
       let k = i;
       while (true) {
-        const l = 2 * k + 1, r = 2 * k + 2;
+        const l = 2 * k + 1,
+          r = 2 * k + 2;
         let best = k;
         if (l < n && cmp(next[l], next[best])) best = l;
         if (r < n && cmp(next[r], next[best])) best = r;
@@ -308,8 +374,13 @@ export function HeapPlayground({
   }
 
   function doPeek() {
-    if (arr.length === 0) { setLastOp("peek · heap is empty"); return; }
-    setFrames([{ arr: arr.slice(), hi: [0], op: `peek → ${arr[0]}` }]); setStep(0); setPlaying(false);
+    if (arr.length === 0) {
+      setLastOp("peek · heap is empty");
+      return;
+    }
+    setFrames([{ arr: arr.slice(), hi: [0], op: `peek → ${arr[0]}` }]);
+    setStep(0);
+    setPlaying(false);
     setLastOp(`peek() → ${arr[0]}`);
   }
 
@@ -318,12 +389,18 @@ export function HeapPlayground({
     const nums: number[] = [];
     for (let i = 0; i < n; i++) nums.push(1 + Math.floor(Math.random() * 99));
     setBuildInput(nums.join(", "));
-    setArr(nums); setFrames([]); setStep(0);
+    setArr(nums);
+    setFrames([]);
+    setStep(0);
     setLastOp(`shuffled · ${n} random values loaded — hit Build`);
   }
 
   function doReset() {
-    setArr([]); setFrames([]); setStep(0); setBuildInput(""); setInput("");
+    setArr([]);
+    setFrames([]);
+    setStep(0);
+    setBuildInput("");
+    setInput("");
     setLastOp("reset");
   }
 
@@ -333,8 +410,10 @@ export function HeapPlayground({
   const path = frame?.path;
   const height = displayArr.length ? Math.floor(Math.log2(displayArr.length)) : 0;
 
-  const btn = "inline-flex items-center gap-1 rounded-md border border-border bg-background px-2.5 py-1 text-xs hover:bg-accent transition";
-  const btnPrimary = "inline-flex items-center gap-1 rounded-md bg-[color:var(--brand)] px-2.5 py-1 text-xs font-medium text-primary-foreground hover:opacity-90 transition";
+  const btn =
+    "inline-flex items-center gap-1 rounded-md border border-border bg-background px-2.5 py-1 text-xs hover:bg-accent transition";
+  const btnPrimary =
+    "inline-flex items-center gap-1 rounded-md bg-[color:var(--brand)] px-2.5 py-1 text-xs font-medium text-primary-foreground hover:opacity-90 transition";
 
   return (
     <div className="space-y-3">
@@ -344,15 +423,23 @@ export function HeapPlayground({
             <button
               className={`px-2 py-1 rounded-sm ${kind === "min" ? "bg-[color:var(--brand)] text-primary-foreground" : "text-muted-foreground hover:text-foreground"}`}
               onClick={() => setKind("min")}
-            >Min-heap</button>
+            >
+              Min-heap
+            </button>
             <button
               className={`px-2 py-1 rounded-sm ${kind === "max" ? "bg-[color:var(--brand)] text-primary-foreground" : "text-muted-foreground hover:text-foreground"}`}
               onClick={() => setKind("max")}
-            >Max-heap</button>
+            >
+              Max-heap
+            </button>
           </div>
           <div className="ml-auto flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
-            <span>size <span className="font-mono text-foreground">{arr.length}</span></span>
-            <span>height <span className="font-mono text-foreground">{height}</span></span>
+            <span>
+              size <span className="font-mono text-foreground">{arr.length}</span>
+            </span>
+            <span>
+              height <span className="font-mono text-foreground">{height}</span>
+            </span>
           </div>
         </div>
 
@@ -360,13 +447,21 @@ export function HeapPlayground({
           <input
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            onKeyDown={(e) => { if (e.key === "Enter") doInsert(); }}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") doInsert();
+            }}
             placeholder="value"
             className="w-20 rounded-md border border-border bg-background px-2 py-1 text-xs"
           />
-          <button className={btnPrimary} onClick={doInsert}><Plus className="h-3.5 w-3.5" /> Insert</button>
-          <button className={btn} onClick={doPop}><Trash2 className="h-3.5 w-3.5" /> Pop root</button>
-          <button className={btn} onClick={doPeek}><Eye className="h-3.5 w-3.5" /> Peek</button>
+          <button className={btnPrimary} onClick={doInsert}>
+            <Plus className="h-3.5 w-3.5" /> Insert
+          </button>
+          <button className={btn} onClick={doPop}>
+            <Trash2 className="h-3.5 w-3.5" /> Pop root
+          </button>
+          <button className={btn} onClick={doPeek}>
+            <Eye className="h-3.5 w-3.5" /> Peek
+          </button>
         </div>
 
         <div className="flex flex-wrap gap-2">
@@ -376,9 +471,15 @@ export function HeapPlayground({
             placeholder="e.g. 9, 4, 7, 1, 3"
             className="min-w-[10rem] flex-1 rounded-md border border-border bg-background px-2 py-1 text-xs font-mono"
           />
-          <button className={btn} onClick={doBuild}><Layers className="h-3.5 w-3.5" /> Build heap</button>
-          <button className={btn} onClick={doShuffle}><Shuffle className="h-3.5 w-3.5" /> Shuffle</button>
-          <button className={btn} onClick={doReset}><RefreshCcw className="h-3.5 w-3.5" /> Reset</button>
+          <button className={btn} onClick={doBuild}>
+            <Layers className="h-3.5 w-3.5" /> Build heap
+          </button>
+          <button className={btn} onClick={doShuffle}>
+            <Shuffle className="h-3.5 w-3.5" /> Shuffle
+          </button>
+          <button className={btn} onClick={doReset}>
+            <RefreshCcw className="h-3.5 w-3.5" /> Reset
+          </button>
         </div>
       </div>
 
@@ -393,11 +494,7 @@ export function HeapPlayground({
             minHeight={200}
           />
         </div>
-        <ArrayStrip
-          data={displayArr}
-          highlight={new Set(hi ?? [])}
-          path={new Set(path ?? [])}
-        />
+        <ArrayStrip data={displayArr} highlight={new Set(hi ?? [])} path={new Set(path ?? [])} />
       </div>
 
       <div className="card-surface p-2 text-xs">
@@ -406,11 +503,25 @@ export function HeapPlayground({
           <span className="font-mono text-foreground">{frame?.op ?? lastOp ?? "—"}</span>
           {frames.length > 0 && (
             <>
-              <span className="ml-auto text-muted-foreground">step {step + 1} / {frames.length}</span>
-              <button className={btn} onClick={() => { setStep((s) => Math.max(0, s - 1)); setPlaying(false); }}>
+              <span className="ml-auto text-muted-foreground">
+                step {step + 1} / {frames.length}
+              </span>
+              <button
+                className={btn}
+                onClick={() => {
+                  setStep((s) => Math.max(0, s - 1));
+                  setPlaying(false);
+                }}
+              >
                 <ArrowUp className="h-3.5 w-3.5 rotate-[-90deg]" /> Prev
               </button>
-              <button className={btn} onClick={() => { setStep((s) => Math.min(frames.length - 1, s + 1)); setPlaying(false); }}>
+              <button
+                className={btn}
+                onClick={() => {
+                  setStep((s) => Math.min(frames.length - 1, s + 1));
+                  setPlaying(false);
+                }}
+              >
                 <ArrowDown className="h-3.5 w-3.5 rotate-[-90deg]" /> Next
               </button>
               <button className={btnPrimary} onClick={() => setPlaying((p) => !p)}>
@@ -420,12 +531,19 @@ export function HeapPlayground({
           )}
         </div>
         <AnimatePresence initial={false}>
-          {frames.slice(0, step + 1).slice(-3).map((f, i) => (
-            <motion.div key={`${step}-${i}`} initial={{ opacity: 0, y: -4 }} animate={{ opacity: 1, y: 0 }}
-              className="mt-1 text-muted-foreground">
-              › {f.op}
-            </motion.div>
-          ))}
+          {frames
+            .slice(0, step + 1)
+            .slice(-3)
+            .map((f, i) => (
+              <motion.div
+                key={`${step}-${i}`}
+                initial={{ opacity: 0, y: -4 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="mt-1 text-muted-foreground"
+              >
+                › {f.op}
+              </motion.div>
+            ))}
         </AnimatePresence>
       </div>
 

@@ -6,20 +6,35 @@ export const QUEUE_FOUNDATIONS: QueueLesson[] = [
     slug: "introduction",
     title: "Introduction to Queues",
     eyebrow: "Foundations · 1",
-    description: "A queue is a FIFO container — the first item enqueued is the first one dequeued. Build the mental model before touching code.",
+    description:
+      "A queue is a FIFO container — the first item enqueued is the first one dequeued. Build the mental model before touching code.",
     difficulty: "Beginner",
     readMinutes: 5,
     sections: [
-      { type: "theory", text: "A queue is a linear data structure where insertions happen at one end (the rear) and removals at the other (the front). That single rule — FIFO — is what makes queues perfect for fairness-based scheduling." },
-      { type: "viz", items: [10, 20, 30, 40], caption: "A 4-element queue. 10 is at FRONT, 40 is at REAR." },
-      { type: "theory", bullets: [
-        "Insertions go to the rear (enqueue).",
-        "Removals come from the front (dequeue).",
-        "Every core operation is O(1) when implemented properly.",
-        "The abstraction underlies BFS, print queues, and CPU scheduling.",
-      ]},
-      { type: "callout", kind: "did", title: "Where you already use one",
-        text: "The line at a coffee shop, the print queue on your laptop, and messages waiting in a Kafka topic are all real-world FIFO queues." },
+      {
+        type: "theory",
+        text: "A queue is a linear data structure where insertions happen at one end (the rear) and removals at the other (the front). That single rule — FIFO — is what makes queues perfect for fairness-based scheduling.",
+      },
+      {
+        type: "viz",
+        items: [10, 20, 30, 40],
+        caption: "A 4-element queue. 10 is at FRONT, 40 is at REAR.",
+      },
+      {
+        type: "theory",
+        bullets: [
+          "Insertions go to the rear (enqueue).",
+          "Removals come from the front (dequeue).",
+          "Every core operation is O(1) when implemented properly.",
+          "The abstraction underlies BFS, print queues, and CPU scheduling.",
+        ],
+      },
+      {
+        type: "callout",
+        kind: "did",
+        title: "Where you already use one",
+        text: "The line at a coffee shop, the print queue on your laptop, and messages waiting in a Kafka topic are all real-world FIFO queues.",
+      },
     ],
   },
   {
@@ -30,15 +45,25 @@ export const QUEUE_FOUNDATIONS: QueueLesson[] = [
     difficulty: "Beginner",
     readMinutes: 4,
     sections: [
-      { type: "theory", text: "Formally, a queue is an Abstract Data Type (ADT) that supports enqueue(x) at the rear and dequeue() at the front, plus a read-only peek()/front(). The order of removal exactly matches the order of insertion." },
-      { type: "code", title: "the ADT contract", code:
-`enqueue(x) -> None    # add x at the rear
+      {
+        type: "theory",
+        text: "Formally, a queue is an Abstract Data Type (ADT) that supports enqueue(x) at the rear and dequeue() at the front, plus a read-only peek()/front(). The order of removal exactly matches the order of insertion.",
+      },
+      {
+        type: "code",
+        title: "the ADT contract",
+        code: `enqueue(x) -> None    # add x at the rear
 dequeue()  -> x       # remove & return front
 peek()     -> x       # look at front, don't remove
 is_empty() -> bool
-size()     -> int` },
-      { type: "callout", kind: "info", title: "ADT vs implementation",
-        text: "The ADT says what a queue does; a deque, a linked list, a circular buffer, or two stacks can all fulfil that contract." },
+size()     -> int`,
+      },
+      {
+        type: "callout",
+        kind: "info",
+        title: "ADT vs implementation",
+        text: "The ADT says what a queue does; a deque, a linked list, a circular buffer, or two stacks can all fulfil that contract.",
+      },
     ],
   },
   {
@@ -49,28 +74,53 @@ size()     -> int` },
     difficulty: "Beginner",
     readMinutes: 4,
     sections: [
-      { type: "theory", text: "FIFO means the first item enqueued is the next one dequeued. Picture a ticket line — the person who arrived first gets served first." },
+      {
+        type: "theory",
+        text: "FIFO means the first item enqueued is the next one dequeued. Picture a ticket line — the person who arrived first gets served first.",
+      },
       { type: "viz", items: ["A"], caption: "enqueue('A')" },
       { type: "viz", items: ["A", "B"], caption: "enqueue('B')" },
       { type: "viz", items: ["A", "B", "C"], caption: "enqueue('C')" },
-      { type: "viz", items: ["B", "C"], caption: "dequeue() → 'A' — the first one in is the first one out." },
-      { type: "callout", kind: "did", title: "Contrast with LIFO",
-        text: "Stacks are LIFO. Same building blocks, opposite discipline — that single flip changes everything an algorithm can do." },
+      {
+        type: "viz",
+        items: ["B", "C"],
+        caption: "dequeue() → 'A' — the first one in is the first one out.",
+      },
+      {
+        type: "callout",
+        kind: "did",
+        title: "Contrast with LIFO",
+        text: "Stacks are LIFO. Same building blocks, opposite discipline — that single flip changes everything an algorithm can do.",
+      },
     ],
   },
   {
     slug: "memory-representation",
     title: "Memory Representation",
     eyebrow: "Foundations · 4",
-    description: "How a queue lives in memory — contiguous slots, circular buffers, or scattered nodes.",
+    description:
+      "How a queue lives in memory — contiguous slots, circular buffers, or scattered nodes.",
     difficulty: "Beginner",
     readMinutes: 5,
     sections: [
-      { type: "theory", text: "An array-backed linear queue occupies one contiguous block but wastes slots as the front advances. A circular buffer reclaims those slots. A linked-list queue scatters nodes across the heap with head/tail pointers." },
-      { type: "viz", items: [10, 20, 30], showAddresses: true, base: 0x2000, stride: 0x20,
-        caption: "Array-backed: each slot is base + index × stride." },
-      { type: "callout", kind: "perf", title: "Cache impact",
-        text: "Contiguous storage is cache-friendly but wastes memory once dequeue moves the front. The circular buffer variant is the usual fix." },
+      {
+        type: "theory",
+        text: "An array-backed linear queue occupies one contiguous block but wastes slots as the front advances. A circular buffer reclaims those slots. A linked-list queue scatters nodes across the heap with head/tail pointers.",
+      },
+      {
+        type: "viz",
+        items: [10, 20, 30],
+        showAddresses: true,
+        base: 0x2000,
+        stride: 0x20,
+        caption: "Array-backed: each slot is base + index × stride.",
+      },
+      {
+        type: "callout",
+        kind: "perf",
+        title: "Cache impact",
+        text: "Contiguous storage is cache-friendly but wastes memory once dequeue moves the front. The circular buffer variant is the usual fix.",
+      },
     ],
   },
   {
@@ -81,9 +131,14 @@ size()     -> int` },
     difficulty: "Beginner",
     readMinutes: 4,
     sections: [
-      { type: "theory", text: "The front pointer says 'the next item to dequeue lives here'. The rear pointer says 'the next enqueue goes here'. Together they carve out the live window inside the buffer." },
-      { type: "code", title: "two-pointer push/pop", code:
-`buf   = [None] * 8
+      {
+        type: "theory",
+        text: "The front pointer says 'the next item to dequeue lives here'. The rear pointer says 'the next enqueue goes here'. Together they carve out the live window inside the buffer.",
+      },
+      {
+        type: "code",
+        title: "two-pointer push/pop",
+        code: `buf   = [None] * 8
 front = 0
 rear  = 0
 
@@ -96,9 +151,14 @@ def dequeue():
     global front
     x = buf[front]
     front += 1
-    return x` },
-      { type: "callout", kind: "warn", title: "Wasted space",
-        text: "As front advances, the slots behind it are dead weight. That's exactly why circular queues exist." },
+    return x`,
+      },
+      {
+        type: "callout",
+        kind: "warn",
+        title: "Wasted space",
+        text: "As front advances, the slots behind it are dead weight. That's exactly why circular queues exist.",
+      },
     ],
   },
   {
@@ -109,12 +169,15 @@ def dequeue():
     difficulty: "Beginner",
     readMinutes: 3,
     sections: [
-      { type: "theory", bullets: [
-        "Front — the oldest live element; the next one dequeue will return.",
-        "Rear — the newest element; the last one enqueued.",
-        "size = rear − front (in the simple linear model).",
-        "front == rear ⇒ the queue is empty.",
-      ]},
+      {
+        type: "theory",
+        bullets: [
+          "Front — the oldest live element; the next one dequeue will return.",
+          "Rear — the newest element; the last one enqueued.",
+          "size = rear − front (in the simple linear model).",
+          "front == rear ⇒ the queue is empty.",
+        ],
+      },
       { type: "viz", items: [10, 20, 30, 40], caption: "front points to 10, rear points to 40." },
     ],
   },
@@ -127,13 +190,25 @@ def dequeue():
     readMinutes: 4,
     sections: [
       { type: "viz", items: [10, 20], caption: "before enqueue(30)" },
-      { type: "viz", items: [10, 20, 30], caption: "after enqueue(30) — REAR moved right one slot" },
-      { type: "code", title: "python — deque backed", code: `from collections import deque\nq = deque([10, 20])\nq.append(30)   # enqueue — O(1)` },
-      { type: "dryRun", headers: ["step", "action", "front", "rear"], rows: [
-        ["1", "read incoming value 30", "0", "2"],
-        ["2", "buf[rear] = 30", "0", "2"],
-        ["3", "rear += 1", "0", "3"],
-      ]},
+      {
+        type: "viz",
+        items: [10, 20, 30],
+        caption: "after enqueue(30) — REAR moved right one slot",
+      },
+      {
+        type: "code",
+        title: "python — deque backed",
+        code: `from collections import deque\nq = deque([10, 20])\nq.append(30)   # enqueue — O(1)`,
+      },
+      {
+        type: "dryRun",
+        headers: ["step", "action", "front", "rear"],
+        rows: [
+          ["1", "read incoming value 30", "0", "2"],
+          ["2", "buf[rear] = 30", "0", "2"],
+          ["3", "rear += 1", "0", "3"],
+        ],
+      },
       { type: "complexity", rows: [{ op: "enqueue", time: "O(1)", space: "O(1)" }] },
     ],
   },
@@ -147,11 +222,17 @@ def dequeue():
     sections: [
       { type: "viz", items: [10, 20, 30], caption: "before dequeue()" },
       { type: "viz", items: [20, 30], caption: "after dequeue() — 10 removed, FRONT advanced" },
-      { type: "code", code: `from collections import deque\nq = deque([10, 20, 30])\nx = q.popleft()   # O(1); raises IndexError if empty` },
-      { type: "mistakes", items: [
-        "Never use `list.pop(0)` — it's O(n) because every remaining element shifts.",
-        "Always guard against empty dequeue — Python raises `IndexError`.",
-      ]},
+      {
+        type: "code",
+        code: `from collections import deque\nq = deque([10, 20, 30])\nx = q.popleft()   # O(1); raises IndexError if empty`,
+      },
+      {
+        type: "mistakes",
+        items: [
+          "Never use `list.pop(0)` — it's O(n) because every remaining element shifts.",
+          "Always guard against empty dequeue — Python raises `IndexError`.",
+        ],
+      },
       { type: "complexity", rows: [{ op: "dequeue", time: "O(1)", space: "O(1)" }] },
     ],
   },
@@ -163,13 +244,19 @@ def dequeue():
     difficulty: "Beginner",
     readMinutes: 3,
     sections: [
-      { type: "code", code:
-`def peek(q):
+      {
+        type: "code",
+        code: `def peek(q):
     if not q:
         return None
-    return q[0]   # O(1)` },
-      { type: "callout", kind: "tip", title: "Design choice",
-        text: "Some libraries raise on empty peek; others return None. Pick one and document it." },
+    return q[0]   # O(1)`,
+      },
+      {
+        type: "callout",
+        kind: "tip",
+        title: "Design choice",
+        text: "Some libraries raise on empty peek; others return None. Pick one and document it.",
+      },
       { type: "complexity", rows: [{ op: "peek", time: "O(1)", space: "O(1)" }] },
     ],
   },
@@ -181,17 +268,27 @@ def dequeue():
     difficulty: "Beginner",
     readMinutes: 4,
     sections: [
-      { type: "theory", bullets: [
-        "Overflow — enqueueing onto a full bounded queue. Only matters for fixed-capacity buffers.",
-        "Underflow — dequeueing (or peeking) an empty queue. Always the caller's responsibility to check.",
-      ]},
-      { type: "code", title: "defensive dequeue", code:
-`def safe_dequeue(q):
+      {
+        type: "theory",
+        bullets: [
+          "Overflow — enqueueing onto a full bounded queue. Only matters for fixed-capacity buffers.",
+          "Underflow — dequeueing (or peeking) an empty queue. Always the caller's responsibility to check.",
+        ],
+      },
+      {
+        type: "code",
+        title: "defensive dequeue",
+        code: `def safe_dequeue(q):
     if not q:
         raise IndexError("dequeue from empty queue")
-    return q.popleft()` },
-      { type: "callout", kind: "warn", title: "Silent bugs",
-        text: "Returning None on underflow instead of raising is a common source of hard-to-find bugs — the caller keeps working with garbage." },
+    return q.popleft()`,
+      },
+      {
+        type: "callout",
+        kind: "warn",
+        title: "Silent bugs",
+        text: "Returning None on underflow instead of raising is a common source of hard-to-find bugs — the caller keeps working with garbage.",
+      },
     ],
   },
   {
@@ -203,8 +300,12 @@ def dequeue():
     readMinutes: 6,
     sections: [
       { type: "playground", initial: [10, 20, 30] },
-      { type: "callout", kind: "tip", title: "Suggested experiments",
-        text: "Dequeue an empty queue (underflow). Enqueue until you hit the max size (overflow). Peek repeatedly to confirm it doesn't mutate the queue." },
+      {
+        type: "callout",
+        kind: "tip",
+        title: "Suggested experiments",
+        text: "Dequeue an empty queue (underflow). Enqueue until you hit the max size (overflow). Peek repeatedly to confirm it doesn't mutate the queue.",
+      },
     ],
   },
   {
@@ -215,12 +316,15 @@ def dequeue():
     difficulty: "Beginner",
     readMinutes: 3,
     sections: [
-      { type: "theory", bullets: [
-        "✅ All core operations run in O(1) with the right backing store.",
-        "✅ Preserves arrival order — the model of fairness.",
-        "✅ Natural fit for BFS, buffering, scheduling, and streaming.",
-        "✅ Enables producer-consumer decoupling across threads or services.",
-      ]},
+      {
+        type: "theory",
+        bullets: [
+          "✅ All core operations run in O(1) with the right backing store.",
+          "✅ Preserves arrival order — the model of fairness.",
+          "✅ Natural fit for BFS, buffering, scheduling, and streaming.",
+          "✅ Enables producer-consumer decoupling across threads or services.",
+        ],
+      },
     ],
   },
   {
@@ -231,12 +335,15 @@ def dequeue():
     difficulty: "Beginner",
     readMinutes: 3,
     sections: [
-      { type: "theory", bullets: [
-        "❌ No random access — you can't jump to the middle.",
-        "❌ Searching is O(n).",
-        "❌ Naive array queues waste memory as the front advances.",
-        "❌ `list.pop(0)` is O(n) — the wrong tool trips beginners constantly.",
-      ]},
+      {
+        type: "theory",
+        bullets: [
+          "❌ No random access — you can't jump to the middle.",
+          "❌ Searching is O(n).",
+          "❌ Naive array queues waste memory as the front advances.",
+          "❌ `list.pop(0)` is O(n) — the wrong tool trips beginners constantly.",
+        ],
+      },
     ],
   },
   {
@@ -247,14 +354,21 @@ def dequeue():
     difficulty: "Beginner",
     readMinutes: 3,
     sections: [
-      { type: "complexity", rows: [
-        { op: "Ordering",       time: "FIFO · LIFO" },
-        { op: "Add",            time: "enqueue (rear) · push (top)" },
-        { op: "Remove",         time: "dequeue (front) · pop (top)" },
-        { op: "Typical uses",   time: "BFS, scheduling · DFS, undo, parsing" },
-      ]},
-      { type: "callout", kind: "did", title: "Two stacks = a queue",
-        text: "You can build a queue with amortised O(1) dequeue using two stacks. We build it in the Variants tier." },
+      {
+        type: "complexity",
+        rows: [
+          { op: "Ordering", time: "FIFO · LIFO" },
+          { op: "Add", time: "enqueue (rear) · push (top)" },
+          { op: "Remove", time: "dequeue (front) · pop (top)" },
+          { op: "Typical uses", time: "BFS, scheduling · DFS, undo, parsing" },
+        ],
+      },
+      {
+        type: "callout",
+        kind: "did",
+        title: "Two stacks = a queue",
+        text: "You can build a queue with amortised O(1) dequeue using two stacks. We build it in the Variants tier.",
+      },
     ],
   },
   {
@@ -265,14 +379,17 @@ def dequeue():
     difficulty: "Beginner",
     readMinutes: 2,
     sections: [
-      { type: "complexity", rows: [
-        { op: "enqueue (deque)",  time: "O(1)" },
-        { op: "dequeue (deque)",  time: "O(1)" },
-        { op: "peek / front",     time: "O(1)" },
-        { op: "is_empty / size",  time: "O(1)" },
-        { op: "search",           time: "O(n)" },
-        { op: "list.pop(0)",      time: "O(n)", note: "the wrong tool — do not use" },
-      ]},
+      {
+        type: "complexity",
+        rows: [
+          { op: "enqueue (deque)", time: "O(1)" },
+          { op: "dequeue (deque)", time: "O(1)" },
+          { op: "peek / front", time: "O(1)" },
+          { op: "is_empty / size", time: "O(1)" },
+          { op: "search", time: "O(n)" },
+          { op: "list.pop(0)", time: "O(n)", note: "the wrong tool — do not use" },
+        ],
+      },
     ],
   },
   {
@@ -283,12 +400,19 @@ def dequeue():
     difficulty: "Beginner",
     readMinutes: 2,
     sections: [
-      { type: "complexity", rows: [
-        { op: "n-element deque",         time: "O(n)", space: "linked blocks of 64" },
-        { op: "n-element linked queue",  time: "O(n)", space: "1 slot + 1 pointer per item" },
-        { op: "circular buffer (cap k)", time: "O(k)", space: "fixed regardless of enqueue count" },
-        { op: "BFS traversal",           time: "O(V+E)", space: "O(V) queue + O(V) visited" },
-      ]},
+      {
+        type: "complexity",
+        rows: [
+          { op: "n-element deque", time: "O(n)", space: "linked blocks of 64" },
+          { op: "n-element linked queue", time: "O(n)", space: "1 slot + 1 pointer per item" },
+          {
+            op: "circular buffer (cap k)",
+            time: "O(k)",
+            space: "fixed regardless of enqueue count",
+          },
+          { op: "BFS traversal", time: "O(V+E)", space: "O(V) queue + O(V) visited" },
+        ],
+      },
     ],
   },
   {
@@ -299,17 +423,24 @@ def dequeue():
     difficulty: "Beginner",
     readMinutes: 4,
     sections: [
-      { type: "theory", bullets: [
-        "Breadth-first search on graphs and trees.",
-        "CPU / task schedulers (round-robin, ready queues).",
-        "Print queues on a shared printer.",
-        "Message brokers — Kafka, RabbitMQ, SQS.",
-        "Network packet buffers and request queues on web servers.",
-        "Producer-consumer pipelines across threads.",
-        "Sliding-window maximum via a monotonic deque.",
-      ]},
-      { type: "callout", kind: "interview", title: "Interview angle",
-        text: "'Give me three real-world uses of a queue' is a warm-up. Answer with BFS, scheduling, and message brokers — then offer to code any of them." },
+      {
+        type: "theory",
+        bullets: [
+          "Breadth-first search on graphs and trees.",
+          "CPU / task schedulers (round-robin, ready queues).",
+          "Print queues on a shared printer.",
+          "Message brokers — Kafka, RabbitMQ, SQS.",
+          "Network packet buffers and request queues on web servers.",
+          "Producer-consumer pipelines across threads.",
+          "Sliding-window maximum via a monotonic deque.",
+        ],
+      },
+      {
+        type: "callout",
+        kind: "interview",
+        title: "Interview angle",
+        text: "'Give me three real-world uses of a queue' is a warm-up. Answer with BFS, scheduling, and message brokers — then offer to code any of them.",
+      },
     ],
   },
   {
@@ -320,15 +451,22 @@ def dequeue():
     difficulty: "Beginner",
     readMinutes: 3,
     sections: [
-      { type: "theory", bullets: [
-        "A queue is a FIFO container: enqueue at rear, dequeue from front.",
-        "Every core operation is O(1) with `collections.deque`; `list.pop(0)` is O(n).",
-        "A queue is 'a buffer + front + rear pointers'.",
-        "Overflow (bounded enqueue) and underflow (empty dequeue) are the two error modes.",
-        "Prefer `collections.deque`; reach for a circular buffer, linked list, or heap only when the problem demands it.",
-      ]},
-      { type: "callout", kind: "did", title: "Ready for the next tier",
-        text: "You now know what a queue is. Next tier — Variants — shows six different ways to build one." },
+      {
+        type: "theory",
+        bullets: [
+          "A queue is a FIFO container: enqueue at rear, dequeue from front.",
+          "Every core operation is O(1) with `collections.deque`; `list.pop(0)` is O(n).",
+          "A queue is 'a buffer + front + rear pointers'.",
+          "Overflow (bounded enqueue) and underflow (empty dequeue) are the two error modes.",
+          "Prefer `collections.deque`; reach for a circular buffer, linked list, or heap only when the problem demands it.",
+        ],
+      },
+      {
+        type: "callout",
+        kind: "did",
+        title: "Ready for the next tier",
+        text: "You now know what a queue is. Next tier — Variants — shows six different ways to build one.",
+      },
     ],
   },
 ];

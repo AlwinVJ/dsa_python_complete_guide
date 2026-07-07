@@ -8,10 +8,7 @@ import { TREE_VARIANTS } from "@/lib/trees/variants";
 //   Foundations → Variants (10 mini-courses) → Tree Algorithms → Review & Practice.
 // Sidebar links go through /trees/<tier>/<slug>, handled by src/routes/trees.$.tsx.
 
-const toLessons = (
-  tier: string,
-  xs: { slug: string; title: string; description: string }[],
-) =>
+const toLessons = (tier: string, xs: { slug: string; title: string; description: string }[]) =>
   xs.map((l) => ({
     slug: l.slug,
     title: l.title,
@@ -31,7 +28,8 @@ export const treesCourse: Course = {
     {
       slug: "foundations",
       title: "Foundations",
-      tagline: "Vocabulary, memory layout, and the recursive nature of trees — before touching any variant.",
+      tagline:
+        "Vocabulary, memory layout, and the recursive nature of trees — before touching any variant.",
       kind: "foundations",
       lessons: toLessons("foundations", T_FOUNDATIONS),
     },
@@ -45,7 +43,8 @@ export const treesCourse: Course = {
     {
       slug: "algorithms",
       title: "Tree Algorithms",
-      tagline: "DFS, BFS, LCA, diameter, serialize/deserialize — one place for every tree algorithm.",
+      tagline:
+        "DFS, BFS, LCA, diameter, serialize/deserialize — one place for every tree algorithm.",
       kind: "applications",
       lessons: toLessons("algorithms", T_ALGORITHMS),
     },

@@ -42,9 +42,7 @@ export const NAV_SECTIONS: NavSection[] = [
   },
   {
     title: "Linear · Strings",
-    items: [
-      { to: "/learn/strings", label: "Strings — Overview" },
-    ],
+    items: [{ to: "/learn/strings", label: "Strings — Overview" }],
   },
   {
     title: "Linear · Linked Lists",
@@ -115,9 +113,7 @@ export const NAV_SECTIONS: NavSection[] = [
   },
   {
     title: "Non-Linear · Heaps",
-    items: [
-      { to: "/learn/heaps", label: "Heaps" },
-    ],
+    items: [{ to: "/learn/heaps", label: "Heaps" }],
   },
   {
     title: "Non-Linear · Graphs",
@@ -183,7 +179,10 @@ export const NAV_SECTIONS: NavSection[] = [
   {
     title: "Playgrounds",
     items: [
+      { to: "/playgrounds", label: "All Playgrounds" },
+      { to: "/playgrounds/searching", label: "Searching Playground" },
       { to: "/playgrounds/sorting", label: "Sorting Playground" },
+      { to: "/playgrounds/graph", label: "Graph Playground" },
     ],
   },
   {

@@ -35,8 +35,7 @@ function InsertPlayground() {
       return copy;
     });
   };
-  const doExtend = () =>
-    setItems((s) => [...s, ...makeItems([parsed as never, "x", 42])]);
+  const doExtend = () => setItems((s) => [...s, ...makeItems([parsed as never, "x", 42])]);
   const doReset = () => setItems(makeItems([1, 2, 3, 4]));
 
   return (
@@ -55,16 +54,28 @@ function InsertPlayground() {
           placeholder="index"
           className="rounded-md border border-input bg-background px-3 py-1.5 font-mono text-sm"
         />
-        <button onClick={doAppend} className="inline-flex items-center gap-1 rounded-md gradient-brand px-3 py-1.5 text-sm text-primary-foreground">
+        <button
+          onClick={doAppend}
+          className="inline-flex items-center gap-1 rounded-md gradient-brand px-3 py-1.5 text-sm text-primary-foreground"
+        >
           <Plus className="h-4 w-4" /> append
         </button>
-        <button onClick={doInsert} className="rounded-md border border-border bg-card px-3 py-1.5 text-sm hover:bg-accent">
+        <button
+          onClick={doInsert}
+          className="rounded-md border border-border bg-card px-3 py-1.5 text-sm hover:bg-accent"
+        >
           insert
         </button>
-        <button onClick={doExtend} className="rounded-md border border-border bg-card px-3 py-1.5 text-sm hover:bg-accent">
+        <button
+          onClick={doExtend}
+          className="rounded-md border border-border bg-card px-3 py-1.5 text-sm hover:bg-accent"
+        >
           extend
         </button>
-        <button onClick={doReset} className="rounded-md border border-border bg-card px-3 py-1.5 text-sm hover:bg-accent">
+        <button
+          onClick={doReset}
+          className="rounded-md border border-border bg-card px-3 py-1.5 text-sm hover:bg-accent"
+        >
           reset
         </button>
       </div>
@@ -142,7 +153,8 @@ function Page() {
       </div>
 
       <Callout kind="warn">
-        <b>append vs extend:</b> <code>lst.append([1,2])</code> adds a nested list, while <code>lst.extend([1,2])</code>
+        <b>append vs extend:</b> <code>lst.append([1,2])</code> adds a nested list, while{" "}
+        <code>lst.extend([1,2])</code>
         adds each element. Confusing them is one of the most common Python bugs.
       </Callout>
 

@@ -232,7 +232,9 @@ function ProblemRow({
         )}
       </button>
       <div className="min-w-0 flex-1">
-        <div className={`truncate text-sm font-medium ${done ? "line-through text-muted-foreground" : ""}`}>
+        <div
+          className={`truncate text-sm font-medium ${done ? "line-through text-muted-foreground" : ""}`}
+        >
           {p.title}
         </div>
         <div className="mt-0.5 flex flex-wrap items-center gap-1.5 text-[11px] text-muted-foreground">
@@ -412,7 +414,9 @@ function ResourcesPage() {
           <div className="text-xs uppercase tracking-wider text-muted-foreground">Bookmarks</div>
           <div className="mt-1 flex items-baseline gap-2">
             <span className="text-2xl font-semibold">{bookmarks.size}</span>
-            <span className="text-xs text-muted-foreground">/ {ALL_RESOURCES.length} resources</span>
+            <span className="text-xs text-muted-foreground">
+              / {ALL_RESOURCES.length} resources
+            </span>
           </div>
         </div>
         <div className="card-surface p-4">
@@ -423,7 +427,9 @@ function ResourcesPage() {
           </div>
         </div>
         <div className="card-surface p-4">
-          <div className="text-xs uppercase tracking-wider text-muted-foreground">Problems solved</div>
+          <div className="text-xs uppercase tracking-wider text-muted-foreground">
+            Problems solved
+          </div>
           <div className="mt-1 flex items-baseline gap-2">
             <span className="text-2xl font-semibold">{problemsDone.size}</span>
             <span className="text-xs text-muted-foreground">/ {totalProblems}</span>
@@ -621,7 +627,8 @@ function ResourcesPage() {
                   <p className="text-xs text-muted-foreground">{lvl.description}</p>
                 </div>
                 <div className="text-xs text-muted-foreground">
-                  {lvl.problems.filter((p) => problemsDone.has(p.id)).length} / {lvl.problems.length}
+                  {lvl.problems.filter((p) => problemsDone.has(p.id)).length} /{" "}
+                  {lvl.problems.length}
                 </div>
               </div>
               <div className="grid gap-2">
@@ -662,7 +669,8 @@ function ResourcesPage() {
                   <p className="text-xs text-muted-foreground">{lvl.description}</p>
                 </div>
                 <div className="text-xs text-muted-foreground">
-                  {lvl.problems.filter((p) => problemsDone.has(p.id)).length} / {lvl.problems.length}
+                  {lvl.problems.filter((p) => problemsDone.has(p.id)).length} /{" "}
+                  {lvl.problems.length}
                 </div>
               </div>
               <div className="grid gap-2">
@@ -738,8 +746,8 @@ function ResourcesPage() {
         {bookmarkedResources.length === 0 ? (
           <div className="rounded-md border border-dashed border-border p-6 text-center text-sm text-muted-foreground">
             <Sparkles className="mx-auto mb-2 h-5 w-5 text-[color:var(--brand)]" />
-            No bookmarks yet — click the <BookOpen className="inline h-3 w-3" /> icon on any resource
-            to save it.
+            No bookmarks yet — click the <BookOpen className="inline h-3 w-3" /> icon on any
+            resource to save it.
           </div>
         ) : (
           <ResourceGrid items={bookmarkedResources} bookmarks={bookmarks} visited={visited} />

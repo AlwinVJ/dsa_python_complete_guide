@@ -1,7 +1,22 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { Check, ChevronRight, X, ArrowRight, Boxes, Layers, ListChecks, Trophy } from "lucide-react";
-import type { RichModule, VariantSpec, OperationSpec, AlgorithmSpec, QuizItem } from "@/lib/module-schema";
+import {
+  Check,
+  ChevronRight,
+  X,
+  ArrowRight,
+  Boxes,
+  Layers,
+  ListChecks,
+  Trophy,
+} from "lucide-react";
+import type {
+  RichModule,
+  VariantSpec,
+  OperationSpec,
+  AlgorithmSpec,
+  QuizItem,
+} from "@/lib/module-schema";
 import { CodeBlock } from "@/components/CodeBlock";
 
 /* ---------- Introduction ---------- */
@@ -10,7 +25,9 @@ export function IntroductionSection({ m }: { m: RichModule }) {
   return (
     <div className="space-y-6">
       <div className="card-surface p-5">
-        <div className="mb-2 text-xs font-semibold uppercase tracking-wider text-[color:var(--brand)]">Definition</div>
+        <div className="mb-2 text-xs font-semibold uppercase tracking-wider text-[color:var(--brand)]">
+          Definition
+        </div>
         <p className="text-foreground">{i.definition}</p>
       </div>
       <div className="grid gap-4 md:grid-cols-2">
@@ -50,7 +67,15 @@ export function IntroductionSection({ m }: { m: RichModule }) {
   );
 }
 
-function PillList({ title, items, tone }: { title: string; items: string[]; tone: "good" | "bad" }) {
+function PillList({
+  title,
+  items,
+  tone,
+}: {
+  title: string;
+  items: string[];
+  tone: "good" | "bad";
+}) {
   const Icon = tone === "good" ? Check : X;
   const color = tone === "good" ? "text-emerald-500" : "text-rose-500";
   return (
@@ -109,10 +134,13 @@ export function MemoryDiagram({ m }: { m: RichModule }) {
                   transition={{ delay: i * 0.1 }}
                   className="rounded-md border border-[color:var(--brand)]/50 bg-[color:var(--brand)]/10 px-3 py-2 text-sm font-mono"
                 >
-                  {v}<span className="ml-2 text-xs text-muted-foreground">·next</span>
+                  {v}
+                  <span className="ml-2 text-xs text-muted-foreground">·next</span>
                 </motion.div>
                 <ArrowRight className="h-4 w-4 text-muted-foreground" />
-                {i === 2 && <span className="rounded bg-muted px-2 py-1 text-xs font-mono">None</span>}
+                {i === 2 && (
+                  <span className="rounded bg-muted px-2 py-1 text-xs font-mono">None</span>
+                )}
               </div>
             ))}
           </div>
@@ -120,7 +148,10 @@ export function MemoryDiagram({ m }: { m: RichModule }) {
         {memory.kind === "contiguous" && (
           <div className="flex gap-0">
             {[10, 20, 30, 40, 50].map((v) => (
-              <div key={v} className="w-14 border border-border bg-[color:var(--brand)]/10 py-2 text-center text-sm font-mono">
+              <div
+                key={v}
+                className="w-14 border border-border bg-[color:var(--brand)]/10 py-2 text-center text-sm font-mono"
+              >
                 {v}
               </div>
             ))}
@@ -129,7 +160,9 @@ export function MemoryDiagram({ m }: { m: RichModule }) {
         <div className="mt-3 text-xs text-muted-foreground">{memory.caption}</div>
       </div>
       <ul className="mt-3 space-y-1 text-xs text-muted-foreground">
-        {memory.notes.map((n, i) => <li key={i}>• {n}</li>)}
+        {memory.notes.map((n, i) => (
+          <li key={i}>• {n}</li>
+        ))}
       </ul>
     </div>
   );
@@ -168,9 +201,13 @@ export function VariantsSection({ variants }: { variants: VariantSpec[] }) {
 
         <div className="mt-4 grid gap-4 md:grid-cols-2">
           <div>
-            <div className="mb-2 text-xs font-semibold uppercase text-muted-foreground">Use cases</div>
+            <div className="mb-2 text-xs font-semibold uppercase text-muted-foreground">
+              Use cases
+            </div>
             <ul className="space-y-1 text-sm">
-              {cur.useCases.map((u) => <li key={u}>• {u}</li>)}
+              {cur.useCases.map((u) => (
+                <li key={u}>• {u}</li>
+              ))}
             </ul>
           </div>
           {(cur.pros || cur.cons) && (
@@ -178,13 +215,21 @@ export function VariantsSection({ variants }: { variants: VariantSpec[] }) {
               {cur.pros && (
                 <div>
                   <div className="mb-2 text-xs font-semibold uppercase text-emerald-500">Pros</div>
-                  <ul className="space-y-1 text-sm">{cur.pros.map((p) => <li key={p}>+ {p}</li>)}</ul>
+                  <ul className="space-y-1 text-sm">
+                    {cur.pros.map((p) => (
+                      <li key={p}>+ {p}</li>
+                    ))}
+                  </ul>
                 </div>
               )}
               {cur.cons && (
                 <div>
                   <div className="mb-2 text-xs font-semibold uppercase text-rose-500">Cons</div>
-                  <ul className="space-y-1 text-sm">{cur.cons.map((p) => <li key={p}>− {p}</li>)}</ul>
+                  <ul className="space-y-1 text-sm">
+                    {cur.cons.map((p) => (
+                      <li key={p}>− {p}</li>
+                    ))}
+                  </ul>
                 </div>
               )}
             </div>
@@ -230,13 +275,18 @@ export function OperationsSection({ ops }: { ops: OperationSpec[] }) {
     <div className="space-y-3">
       {ops.map((op, i) => (
         <div key={op.name} className="card-surface overflow-hidden">
-          <button onClick={() => setOpen(open === i ? -1 : i)} className="flex w-full items-center justify-between p-4 text-left">
+          <button
+            onClick={() => setOpen(open === i ? -1 : i)}
+            className="flex w-full items-center justify-between p-4 text-left"
+          >
             <div>
               <div className="font-semibold">{op.name}</div>
               <div className="text-xs text-muted-foreground">{op.summary}</div>
             </div>
             <div className="flex items-center gap-3">
-              <span className="rounded bg-[color:var(--brand)]/10 px-2 py-0.5 font-mono text-xs text-[color:var(--brand)]">{op.time}</span>
+              <span className="rounded bg-[color:var(--brand)]/10 px-2 py-0.5 font-mono text-xs text-[color:var(--brand)]">
+                {op.time}
+              </span>
               <ChevronRight className={`h-4 w-4 transition ${open === i ? "rotate-90" : ""}`} />
             </div>
           </button>
@@ -244,24 +294,36 @@ export function OperationsSection({ ops }: { ops: OperationSpec[] }) {
             <div className="border-t border-border p-4">
               <div className="grid gap-4 md:grid-cols-2">
                 <div>
-                  <div className="mb-2 text-xs font-semibold uppercase text-muted-foreground">Step-by-step</div>
+                  <div className="mb-2 text-xs font-semibold uppercase text-muted-foreground">
+                    Step-by-step
+                  </div>
                   <ol className="space-y-1.5 text-sm">
                     {op.steps.map((s, k) => (
                       <li key={k} className="flex gap-2">
-                        <span className="grid h-5 w-5 shrink-0 place-items-center rounded-full bg-[color:var(--brand)]/15 text-[10px] font-bold text-[color:var(--brand)]">{k + 1}</span>
+                        <span className="grid h-5 w-5 shrink-0 place-items-center rounded-full bg-[color:var(--brand)]/15 text-[10px] font-bold text-[color:var(--brand)]">
+                          {k + 1}
+                        </span>
                         <span className="text-muted-foreground">{s}</span>
                       </li>
                     ))}
                   </ol>
                   <div className="mt-4 flex gap-3 text-xs">
-                    <span>Time: <code className="text-[color:var(--brand)]">{op.time}</code></span>
-                    <span>Space: <code className="text-[color:var(--brand)]">{op.space}</code></span>
+                    <span>
+                      Time: <code className="text-[color:var(--brand)]">{op.time}</code>
+                    </span>
+                    <span>
+                      Space: <code className="text-[color:var(--brand)]">{op.space}</code>
+                    </span>
                   </div>
                   {op.edgeCases && (
                     <div className="mt-3">
-                      <div className="text-xs font-semibold uppercase text-amber-500">Edge cases</div>
+                      <div className="text-xs font-semibold uppercase text-amber-500">
+                        Edge cases
+                      </div>
                       <ul className="mt-1 space-y-0.5 text-xs text-muted-foreground">
-                        {op.edgeCases.map((e, k) => <li key={k}>• {e}</li>)}
+                        {op.edgeCases.map((e, k) => (
+                          <li key={k}>• {e}</li>
+                        ))}
                       </ul>
                     </div>
                   )}
@@ -286,13 +348,23 @@ export function AlgorithmsSection({ algos }: { algos: AlgorithmSpec[] }) {
             <h3 className="text-lg font-semibold">{a.title}</h3>
             <div className="flex gap-2 text-xs">
               {a.pattern && <span className="rounded bg-muted px-2 py-0.5">{a.pattern}</span>}
-              <span className="rounded bg-[color:var(--brand)]/10 px-2 py-0.5 font-mono text-[color:var(--brand)]">{a.time}</span>
+              <span className="rounded bg-[color:var(--brand)]/10 px-2 py-0.5 font-mono text-[color:var(--brand)]">
+                {a.time}
+              </span>
               <span className="rounded bg-muted px-2 py-0.5 font-mono">{a.space}</span>
             </div>
           </div>
-          <p className="mt-2 text-sm text-muted-foreground"><b className="text-foreground">Problem: </b>{a.problem}</p>
-          <p className="mt-1 text-sm text-muted-foreground"><b className="text-foreground">Approach: </b>{a.approach}</p>
-          <div className="mt-3"><CodeBlock code={a.python.code} /></div>
+          <p className="mt-2 text-sm text-muted-foreground">
+            <b className="text-foreground">Problem: </b>
+            {a.problem}
+          </p>
+          <p className="mt-1 text-sm text-muted-foreground">
+            <b className="text-foreground">Approach: </b>
+            {a.approach}
+          </p>
+          <div className="mt-3">
+            <CodeBlock code={a.python.code} />
+          </div>
         </div>
       ))}
     </div>
@@ -336,7 +408,9 @@ export function ComplexitySection({ m }: { m: RichModule }) {
       </div>
       {m.complexity.notes && (
         <ul className="space-y-1 text-xs text-muted-foreground">
-          {m.complexity.notes.map((n, i) => <li key={i}>• {n}</li>)}
+          {m.complexity.notes.map((n, i) => (
+            <li key={i}>• {n}</li>
+          ))}
         </ul>
       )}
     </div>
@@ -378,7 +452,9 @@ export function InterviewSection({ m }: { m: RichModule }) {
         <div key={c.key} className="card-surface p-5">
           <div className="mb-2 text-sm font-semibold text-[color:var(--brand)]">{c.label}</div>
           <ol className="list-decimal space-y-1 pl-5 text-sm text-muted-foreground">
-            {m.interview[c.key].map((q, i) => <li key={i}>{q}</li>)}
+            {m.interview[c.key].map((q, i) => (
+              <li key={i}>{q}</li>
+            ))}
           </ol>
         </div>
       ))}
@@ -394,15 +470,26 @@ export function FAQSection({ m }: { m: RichModule }) {
       <div className="text-sm text-muted-foreground">{m.faqs.length} curated questions</div>
       {m.faqs.map((f, i) => (
         <div key={i} className="card-surface overflow-hidden">
-          <button onClick={() => setOpen(open === i ? null : i)} className="flex w-full items-center justify-between p-4 text-left">
+          <button
+            onClick={() => setOpen(open === i ? null : i)}
+            className="flex w-full items-center justify-between p-4 text-left"
+          >
             <span className="text-sm font-medium">{f.q}</span>
             <ChevronRight className={`h-4 w-4 transition ${open === i ? "rotate-90" : ""}`} />
           </button>
           {open === i && (
             <div className="border-t border-border p-4 text-sm text-muted-foreground">
               {f.a}
-              {f.code && <div className="mt-3"><CodeBlock code={f.code} /></div>}
-              {f.related && <div className="mt-2 text-xs">Related: <span className="text-[color:var(--brand)]">{f.related}</span></div>}
+              {f.code && (
+                <div className="mt-3">
+                  <CodeBlock code={f.code} />
+                </div>
+              )}
+              {f.related && (
+                <div className="mt-2 text-xs">
+                  Related: <span className="text-[color:var(--brand)]">{f.related}</span>
+                </div>
+              )}
             </div>
           )}
         </div>
@@ -439,40 +526,75 @@ export function QuizSection({ m }: { m: RichModule }) {
         setAnswers(parsed.answers ?? {});
         setSubmitted(parsed.submitted ?? {});
       }
-    } catch { /* ignore */ }
+    } catch {
+      /* ignore */
+    }
   }, [key]);
 
   useEffect(() => {
-    try { localStorage.setItem(key, JSON.stringify({ answers, submitted })); } catch { /* ignore */ }
+    try {
+      localStorage.setItem(key, JSON.stringify({ answers, submitted }));
+    } catch {
+      /* ignore */
+    }
   }, [key, answers, submitted]);
 
-  const score = m.quiz.reduce((acc, q, i) => acc + (submitted[i] && answers[i] === q.answer ? 1 : 0), 0);
+  const score = m.quiz.reduce(
+    (acc, q, i) => acc + (submitted[i] && answers[i] === q.answer ? 1 : 0),
+    0,
+  );
   const attempted = Object.values(submitted).filter(Boolean).length;
 
   return (
     <div className="space-y-4">
       <div className="card-surface flex items-center justify-between p-4">
         <div>
-          <div className="text-sm font-semibold flex items-center gap-2"><Trophy className="h-4 w-4 text-[color:var(--brand)]" /> Your score</div>
-          <div className="text-xs text-muted-foreground">{attempted} of {m.quiz.length} attempted</div>
+          <div className="text-sm font-semibold flex items-center gap-2">
+            <Trophy className="h-4 w-4 text-[color:var(--brand)]" /> Your score
+          </div>
+          <div className="text-xs text-muted-foreground">
+            {attempted} of {m.quiz.length} attempted
+          </div>
         </div>
-        <div className="text-2xl font-bold text-[color:var(--brand)]">{score}/{m.quiz.length}</div>
+        <div className="text-2xl font-bold text-[color:var(--brand)]">
+          {score}/{m.quiz.length}
+        </div>
       </div>
-      {m.quiz.map((q, i) => <QuizCard key={i} idx={i} q={q} chosen={answers[i]} isSubmitted={!!submitted[i]}
-        onChoose={(k) => setAnswers({ ...answers, [i]: k })}
-        onSubmit={() => setSubmitted({ ...submitted, [i]: true })}
-      />)}
+      {m.quiz.map((q, i) => (
+        <QuizCard
+          key={i}
+          idx={i}
+          q={q}
+          chosen={answers[i]}
+          isSubmitted={!!submitted[i]}
+          onChoose={(k) => setAnswers({ ...answers, [i]: k })}
+          onSubmit={() => setSubmitted({ ...submitted, [i]: true })}
+        />
+      ))}
     </div>
   );
 }
 
-function QuizCard({ idx, q, chosen, isSubmitted, onChoose, onSubmit }: {
-  idx: number; q: QuizItem; chosen?: number; isSubmitted: boolean;
-  onChoose: (k: number) => void; onSubmit: () => void;
+function QuizCard({
+  idx,
+  q,
+  chosen,
+  isSubmitted,
+  onChoose,
+  onSubmit,
+}: {
+  idx: number;
+  q: QuizItem;
+  chosen?: number;
+  isSubmitted: boolean;
+  onChoose: (k: number) => void;
+  onSubmit: () => void;
 }) {
   return (
     <div className="card-surface p-4">
-      <div className="mb-2 text-sm font-semibold">Q{idx + 1}. {q.q}</div>
+      <div className="mb-2 text-sm font-semibold">
+        Q{idx + 1}. {q.q}
+      </div>
       <div className="grid gap-2 sm:grid-cols-2">
         {q.choices.map((c, k) => {
           const isChosen = chosen === k;
@@ -500,7 +622,11 @@ function QuizCard({ idx, q, chosen, isSubmitted, onChoose, onSubmit }: {
       </div>
       <div className="mt-3 flex items-center justify-between gap-3">
         {!isSubmitted ? (
-          <button onClick={onSubmit} disabled={chosen === undefined} className="rounded-md gradient-brand px-3 py-1.5 text-xs font-medium text-primary-foreground disabled:opacity-40">
+          <button
+            onClick={onSubmit}
+            disabled={chosen === undefined}
+            className="rounded-md gradient-brand px-3 py-1.5 text-xs font-medium text-primary-foreground disabled:opacity-40"
+          >
             Submit
           </button>
         ) : (
@@ -531,11 +657,18 @@ export function PracticeSection({ m }: { m: RichModule }) {
         return (
           <div key={g.key}>
             <div className="mb-3 flex items-center gap-2 text-sm font-semibold text-[color:var(--brand)]">
-              <ListChecks className="h-4 w-4" /> {g.label} <span className="text-xs text-muted-foreground">({items.length})</span>
+              <ListChecks className="h-4 w-4" /> {g.label}{" "}
+              <span className="text-xs text-muted-foreground">({items.length})</span>
             </div>
             <div className="grid gap-2">
               {items.map((p) => (
-                <a key={p.url} href={p.url} target="_blank" rel="noreferrer" className="card-surface flex items-center justify-between p-3 hover:border-[color:var(--brand)]/60 transition">
+                <a
+                  key={p.url}
+                  href={p.url}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="card-surface flex items-center justify-between p-3 hover:border-[color:var(--brand)]/60 transition"
+                >
                   <div>
                     <div className="text-sm font-medium">{p.title}</div>
                     <div className="mt-0.5 text-xs text-muted-foreground">
@@ -543,11 +676,17 @@ export function PracticeSection({ m }: { m: RichModule }) {
                       {p.estMin && <span>~{p.estMin} min</span>}
                     </div>
                   </div>
-                  <span className={`rounded-md px-2 py-0.5 text-xs ${
-                    p.difficulty === "Easy" ? "bg-emerald-500/15 text-emerald-500" :
-                    p.difficulty === "Medium" ? "bg-amber-500/15 text-amber-500" :
-                    "bg-rose-500/15 text-rose-500"
-                  }`}>{p.difficulty}</span>
+                  <span
+                    className={`rounded-md px-2 py-0.5 text-xs ${
+                      p.difficulty === "Easy"
+                        ? "bg-emerald-500/15 text-emerald-500"
+                        : p.difficulty === "Medium"
+                          ? "bg-amber-500/15 text-amber-500"
+                          : "bg-rose-500/15 text-rose-500"
+                    }`}
+                  >
+                    {p.difficulty}
+                  </span>
                 </a>
               ))}
             </div>
@@ -563,9 +702,17 @@ export function ReferencesSection({ m }: { m: RichModule }) {
   return (
     <div className="grid gap-2 sm:grid-cols-2">
       {m.references.map((r) => (
-        <a key={r.url} href={r.url} target="_blank" rel="noreferrer" className="card-surface flex items-center justify-between p-3 hover:border-[color:var(--brand)]/60 transition">
+        <a
+          key={r.url}
+          href={r.url}
+          target="_blank"
+          rel="noreferrer"
+          className="card-surface flex items-center justify-between p-3 hover:border-[color:var(--brand)]/60 transition"
+        >
           <div className="text-sm font-medium">{r.label}</div>
-          <span className="rounded bg-muted px-2 py-0.5 text-xs uppercase text-muted-foreground">{r.kind}</span>
+          <span className="rounded bg-muted px-2 py-0.5 text-xs uppercase text-muted-foreground">
+            {r.kind}
+          </span>
         </a>
       ))}
     </div>
@@ -579,14 +726,19 @@ export function RevisionSection({ m }: { m: RichModule }) {
       <div className="card-surface p-5">
         <div className="mb-3 font-semibold">Quick Notes</div>
         <ul className="space-y-1.5 text-sm text-muted-foreground">
-          {m.revision.quickNotes.map((n, i) => <li key={i}>• {n}</li>)}
+          {m.revision.quickNotes.map((n, i) => (
+            <li key={i}>• {n}</li>
+          ))}
         </ul>
       </div>
       <div className="card-surface p-5">
         <div className="mb-3 font-semibold">Complexity Cheat Sheet</div>
         <div className="grid grid-cols-2 gap-2 text-sm">
           {m.revision.cheatSheet.map((c) => (
-            <div key={c.label} className="flex items-center justify-between rounded-md border border-border bg-background/40 px-3 py-2">
+            <div
+              key={c.label}
+              className="flex items-center justify-between rounded-md border border-border bg-background/40 px-3 py-2"
+            >
               <span className="text-muted-foreground">{c.label}</span>
               <code className="text-[color:var(--brand)]">{c.value}</code>
             </div>
@@ -594,15 +746,21 @@ export function RevisionSection({ m }: { m: RichModule }) {
         </div>
       </div>
       <div className="card-surface p-5">
-        <div className="mb-3 font-semibold flex items-center gap-2"><Layers className="h-4 w-4 text-[color:var(--brand)]" /> Interview Tips</div>
+        <div className="mb-3 font-semibold flex items-center gap-2">
+          <Layers className="h-4 w-4 text-[color:var(--brand)]" /> Interview Tips
+        </div>
         <ul className="space-y-1.5 text-sm text-muted-foreground">
-          {m.revision.interviewTips.map((n, i) => <li key={i}>• {n}</li>)}
+          {m.revision.interviewTips.map((n, i) => (
+            <li key={i}>• {n}</li>
+          ))}
         </ul>
       </div>
       <div className="card-surface p-5">
         <div className="mb-3 font-semibold">Memory Tricks</div>
         <ul className="space-y-1.5 text-sm text-muted-foreground">
-          {m.revision.memoryTricks.map((n, i) => <li key={i}>• {n}</li>)}
+          {m.revision.memoryTricks.map((n, i) => (
+            <li key={i}>• {n}</li>
+          ))}
         </ul>
       </div>
     </div>

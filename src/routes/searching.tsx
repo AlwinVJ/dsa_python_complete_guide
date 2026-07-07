@@ -11,7 +11,11 @@ export const Route = createFileRoute("/searching")({
   head: () => ({
     meta: [
       { title: "Searching Algorithms — DSA with Python" },
-      { name: "description", content: "Reference guide to 6 classic searching algorithms with Python implementations and complexity analysis." },
+      {
+        name: "description",
+        content:
+          "Reference guide to 6 classic searching algorithms with Python implementations and complexity analysis.",
+      },
     ],
   }),
   component: Page,
@@ -31,8 +35,9 @@ function Page() {
 
       <Callout kind="tip" title="Want to experiment with searching algorithms?">
         <p className="mb-3">
-          The interactive step-by-step visualizer lives in the dedicated Searching Playground — pick an algorithm,
-          tweak the array, set the target value, and watch comparison steps and intervals in real time.
+          The interactive step-by-step visualizer lives in the dedicated Searching Playground — pick
+          an algorithm, tweak the array, set the target value, and watch comparison steps and
+          intervals in real time.
         </p>
         <Link
           to="/playgrounds/searching"
@@ -63,19 +68,27 @@ function Page() {
         <div className="grid gap-3 sm:grid-cols-3">
           <div className="card-surface p-3">
             <div className="text-xs text-muted-foreground">Best Case</div>
-            <div className="mt-1"><ComplexityBadge value={algo.timeBest} /></div>
+            <div className="mt-1">
+              <ComplexityBadge value={algo.timeBest} />
+            </div>
           </div>
           <div className="card-surface p-3">
             <div className="text-xs text-muted-foreground">Average Case</div>
-            <div className="mt-1"><ComplexityBadge value={algo.timeAvg} /></div>
+            <div className="mt-1">
+              <ComplexityBadge value={algo.timeAvg} />
+            </div>
           </div>
           <div className="card-surface p-3">
             <div className="text-xs text-muted-foreground">Worst Case</div>
-            <div className="mt-1"><ComplexityBadge value={algo.timeWorst} /></div>
+            <div className="mt-1">
+              <ComplexityBadge value={algo.timeWorst} />
+            </div>
           </div>
           <div className="card-surface p-3">
             <div className="text-xs text-muted-foreground">Space Complexity</div>
-            <div className="mt-1"><ComplexityBadge value={algo.space} /></div>
+            <div className="mt-1">
+              <ComplexityBadge value={algo.space} />
+            </div>
           </div>
           <div className="card-surface p-3">
             <div className="text-xs text-muted-foreground">Sorted Required</div>
@@ -96,13 +109,17 @@ function Page() {
           <div className="card-surface p-4">
             <div className="mb-2 text-sm font-semibold text-[color:var(--good)]">Advantages</div>
             <ul className="list-disc space-y-1 pl-5 text-sm text-muted-foreground">
-              {algo.advantages.map((x) => <li key={x}>{x}</li>)}
+              {algo.advantages.map((x) => (
+                <li key={x}>{x}</li>
+              ))}
             </ul>
           </div>
           <div className="card-surface p-4">
             <div className="mb-2 text-sm font-semibold text-[color:var(--bad)]">Disadvantages</div>
             <ul className="list-disc space-y-1 pl-5 text-sm text-muted-foreground">
-              {algo.disadvantages.map((x) => <li key={x}>{x}</li>)}
+              {algo.disadvantages.map((x) => (
+                <li key={x}>{x}</li>
+              ))}
             </ul>
           </div>
         </div>
@@ -110,7 +127,9 @@ function Page() {
         <div className="card-surface p-4">
           <div className="mb-2 text-sm font-semibold">Real-world applications</div>
           <ul className="list-disc space-y-1 pl-5 text-sm text-muted-foreground">
-            {algo.applications.map((x) => <li key={x}>{x}</li>)}
+            {algo.applications.map((x) => (
+              <li key={x}>{x}</li>
+            ))}
           </ul>
         </div>
 
@@ -134,15 +153,23 @@ function Page() {
             </thead>
             <tbody>
               {ALGORITHMS.map((a) => (
-                <tr key={a.id} className="border-b border-border last:border-0 hover:bg-muted/20 transition-colors">
+                <tr
+                  key={a.id}
+                  className="border-b border-border last:border-0 hover:bg-muted/20 transition-colors"
+                >
                   <td className="px-4 py-3 font-semibold text-foreground">{a.name}</td>
-                  <td className="px-4 py-3 text-muted-foreground">{a.sortedRequired ? "Yes" : "No"}</td>
+                  <td className="px-4 py-3 text-muted-foreground">
+                    {a.sortedRequired ? "Yes" : "No"}
+                  </td>
                   <td className="px-4 py-3 font-mono text-[color:var(--brand)]">{a.timeBest}</td>
                   <td className="px-4 py-3 font-mono text-[color:var(--brand)]">{a.timeAvg}</td>
                   <td className="px-4 py-3 font-mono text-[color:var(--brand)]">{a.timeWorst}</td>
                   <td className="px-4 py-3 font-mono text-muted-foreground">{a.space}</td>
                   <td className="px-4 py-3 text-muted-foreground">{a.stable ? "Yes" : "No"}</td>
-                  <td className="px-4 py-3 text-xs text-muted-foreground max-w-xs truncate" title={a.typicalUseCase}>
+                  <td
+                    className="px-4 py-3 text-xs text-muted-foreground max-w-xs truncate"
+                    title={a.typicalUseCase}
+                  >
                     {a.typicalUseCase}
                   </td>
                 </tr>

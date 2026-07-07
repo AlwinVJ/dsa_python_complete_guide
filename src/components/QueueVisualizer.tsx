@@ -31,18 +31,18 @@ export function QueueVisualizer({
   headIndex?: number;
 }) {
   const cap = capacity ?? items.length;
-  const cells = variant === "circular"
-    ? Array.from({ length: Math.max(cap, items.length) }, (_, slot) => {
-        const occupiedIndex = (slot - headIndex + cap) % cap;
-        const filled = occupiedIndex < items.length;
-        return { slot, value: filled ? items[occupiedIndex] : null, filled };
-      })
-    : items.map((v, i) => ({ slot: i, value: v, filled: true }));
+  const cells =
+    variant === "circular"
+      ? Array.from({ length: Math.max(cap, items.length) }, (_, slot) => {
+          const occupiedIndex = (slot - headIndex + cap) % cap;
+          const filled = occupiedIndex < items.length;
+          return { slot, value: filled ? items[occupiedIndex] : null, filled };
+        })
+      : items.map((v, i) => ({ slot: i, value: v, filled: true }));
 
   const frontIdx = variant === "circular" ? headIndex : 0;
-  const rearIdx = variant === "circular"
-    ? (headIndex + items.length - 1 + cap) % cap
-    : items.length - 1;
+  const rearIdx =
+    variant === "circular" ? (headIndex + items.length - 1 + cap) % cap : items.length - 1;
 
   return (
     <div className="my-4">
@@ -111,7 +111,9 @@ export function QueueVisualizer({
           </div>
         )}
       </div>
-      {caption && <p className="mt-6 text-center text-xs italic text-muted-foreground">{caption}</p>}
+      {caption && (
+        <p className="mt-6 text-center text-xs italic text-muted-foreground">{caption}</p>
+      )}
     </div>
   );
 }

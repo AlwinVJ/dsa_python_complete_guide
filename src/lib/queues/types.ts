@@ -50,9 +50,20 @@ export type QueueHeading = { type: "heading"; text: string };
 export type QueuePlaygroundSec = { type: "playground"; initial?: Array<string | number> };
 
 export type QueueSection =
-  | QueueViz | QueueTheory | QueueCode | QueueDryRun | QueueComplexity
-  | QueueMistakes | QueueTip | QueueCallout | QueueQuiz | QueuePractice
-  | QueueRefs | QueueInterview | QueueHeading | QueuePlaygroundSec;
+  | QueueViz
+  | QueueTheory
+  | QueueCode
+  | QueueDryRun
+  | QueueComplexity
+  | QueueMistakes
+  | QueueTip
+  | QueueCallout
+  | QueueQuiz
+  | QueuePractice
+  | QueueRefs
+  | QueueInterview
+  | QueueHeading
+  | QueuePlaygroundSec;
 
 export type QueueLesson = {
   slug: string;

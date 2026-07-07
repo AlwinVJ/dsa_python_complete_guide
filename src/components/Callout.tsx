@@ -46,16 +46,20 @@ export function ComplexityBadge({ value }: { value: string }) {
     value === "O(1)"
       ? "var(--good)"
       : value === "O(log n)"
-      ? "var(--good)"
-      : value === "O(n)"
-      ? "var(--warn)"
-      : value === "O(n log n)"
-      ? "var(--warn)"
-      : "var(--bad)";
+        ? "var(--good)"
+        : value === "O(n)"
+          ? "var(--warn)"
+          : value === "O(n log n)"
+            ? "var(--warn)"
+            : "var(--bad)";
   return (
     <span
       className="inline-flex items-center rounded-md border px-2 py-0.5 font-mono text-xs font-medium"
-      style={{ borderColor: color, color, background: `color-mix(in oklab, ${color} 12%, transparent)` }}
+      style={{
+        borderColor: color,
+        color,
+        background: `color-mix(in oklab, ${color} 12%, transparent)`,
+      }}
     >
       {value}
     </span>
@@ -74,7 +78,9 @@ export function PageHeader({
   return (
     <header className="mb-8 border-b border-border pb-6">
       {eyebrow && (
-        <div className="mb-2 text-xs font-semibold uppercase tracking-wider text-[color:var(--brand)]">{eyebrow}</div>
+        <div className="mb-2 text-xs font-semibold uppercase tracking-wider text-[color:var(--brand)]">
+          {eyebrow}
+        </div>
       )}
       <h1 className="text-3xl font-bold sm:text-4xl">{title}</h1>
       {description && <p className="mt-3 max-w-2xl text-muted-foreground">{description}</p>}

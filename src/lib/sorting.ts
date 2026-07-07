@@ -36,11 +36,21 @@ function bubbleSort(input: number[]): SortStep[] {
   for (let i = 0; i < n - 1; i++) {
     let swapped = false;
     for (let j = 0; j < n - i - 1; j++) {
-      steps.push({ array: clone(a), compare: [j, j + 1], sorted: Array.from(sorted), note: `Compare ${a[j]} and ${a[j + 1]}` });
+      steps.push({
+        array: clone(a),
+        compare: [j, j + 1],
+        sorted: Array.from(sorted),
+        note: `Compare ${a[j]} and ${a[j + 1]}`,
+      });
       if (a[j] > a[j + 1]) {
         [a[j], a[j + 1]] = [a[j + 1], a[j]];
         swapped = true;
-        steps.push({ array: clone(a), highlight: [j, j + 1], sorted: Array.from(sorted), note: `Swap` });
+        steps.push({
+          array: clone(a),
+          highlight: [j, j + 1],
+          sorted: Array.from(sorted),
+          note: `Swap`,
+        });
       }
     }
     sorted.add(n - i - 1);
@@ -62,12 +72,23 @@ function selectionSort(input: number[]): SortStep[] {
   for (let i = 0; i < n; i++) {
     let min = i;
     for (let j = i + 1; j < n; j++) {
-      steps.push({ array: clone(a), compare: [min, j], highlight: [i], sorted: Array.from(sorted), note: `Min so far: ${a[min]}` });
+      steps.push({
+        array: clone(a),
+        compare: [min, j],
+        highlight: [i],
+        sorted: Array.from(sorted),
+        note: `Min so far: ${a[min]}`,
+      });
       if (a[j] < a[min]) min = j;
     }
     if (min !== i) {
       [a[i], a[min]] = [a[min], a[i]];
-      steps.push({ array: clone(a), highlight: [i, min], sorted: Array.from(sorted), note: `Swap` });
+      steps.push({
+        array: clone(a),
+        highlight: [i, min],
+        sorted: Array.from(sorted),
+        note: `Swap`,
+      });
     }
     sorted.add(i);
   }
@@ -82,7 +103,12 @@ function insertionSort(input: number[]): SortStep[] {
   const sorted = new Set<number>([0]);
   for (let i = 1; i < n; i++) {
     let j = i;
-    steps.push({ array: clone(a), highlight: [i], sorted: Array.from(sorted), note: `Insert ${a[i]}` });
+    steps.push({
+      array: clone(a),
+      highlight: [i],
+      sorted: Array.from(sorted),
+      note: `Insert ${a[i]}`,
+    });
     while (j > 0 && a[j - 1] > a[j]) {
       [a[j - 1], a[j]] = [a[j], a[j - 1]];
       j--;
@@ -100,15 +126,23 @@ function mergeSort(input: number[]): SortStep[] {
   const merge = (l: number, m: number, r: number) => {
     const left = a.slice(l, m + 1);
     const right = a.slice(m + 1, r + 1);
-    let i = 0, j = 0, k = l;
+    let i = 0,
+      j = 0,
+      k = l;
     while (i < left.length && j < right.length) {
       steps.push({ array: clone(a), compare: [l + i, m + 1 + j], note: `Merge [${l}..${r}]` });
       if (left[i] <= right[j]) a[k++] = left[i++];
       else a[k++] = right[j++];
       steps.push({ array: clone(a), highlight: [k - 1] });
     }
-    while (i < left.length) { a[k++] = left[i++]; steps.push({ array: clone(a), highlight: [k - 1] }); }
-    while (j < right.length) { a[k++] = right[j++]; steps.push({ array: clone(a), highlight: [k - 1] }); }
+    while (i < left.length) {
+      a[k++] = left[i++];
+      steps.push({ array: clone(a), highlight: [k - 1] });
+    }
+    while (j < right.length) {
+      a[k++] = right[j++];
+      steps.push({ array: clone(a), highlight: [k - 1] });
+    }
   };
   const rec = (l: number, r: number) => {
     if (l >= r) return;
@@ -118,7 +152,11 @@ function mergeSort(input: number[]): SortStep[] {
     merge(l, m, r);
   };
   rec(0, a.length - 1);
-  steps.push({ array: clone(a), sorted: Array.from({ length: a.length }, (_, k) => k), note: "Done" });
+  steps.push({
+    array: clone(a),
+    sorted: Array.from({ length: a.length }, (_, k) => k),
+    note: "Done",
+  });
   return steps;
 }
 
@@ -147,7 +185,11 @@ function quickSort(input: number[]): SortStep[] {
     rec(p + 1, r);
   };
   rec(0, a.length - 1);
-  steps.push({ array: clone(a), sorted: Array.from({ length: a.length }, (_, k) => k), note: "Done" });
+  steps.push({
+    array: clone(a),
+    sorted: Array.from({ length: a.length }, (_, k) => k),
+    note: "Done",
+  });
   return steps;
 }
 
@@ -157,7 +199,8 @@ function heapSort(input: number[]): SortStep[] {
   const n = a.length;
   const heapify = (size: number, i: number) => {
     let largest = i;
-    const l = 2 * i + 1, r = 2 * i + 2;
+    const l = 2 * i + 1,
+      r = 2 * i + 2;
     if (l < size && a[l] > a[largest]) largest = l;
     if (r < size && a[r] > a[largest]) largest = r;
     if (largest !== i) {
@@ -196,7 +239,11 @@ function countingSort(input: number[]): SortStep[] {
       k++;
     }
   }
-  steps.push({ array: clone(a), sorted: Array.from({ length: a.length }, (_, k) => k), note: "Done" });
+  steps.push({
+    array: clone(a),
+    sorted: Array.from({ length: a.length }, (_, k) => k),
+    note: "Done",
+  });
   return steps;
 }
 
@@ -212,13 +259,18 @@ function radixSort(input: number[]): SortStep[] {
       steps.push({ array: clone(a), highlight: [i], note: `Digit ${exp}` });
     }
     let k = 0;
-    for (const b of buckets) for (const v of b) {
-      a[k++] = v;
-      steps.push({ array: clone(a), highlight: [k - 1] });
-    }
+    for (const b of buckets)
+      for (const v of b) {
+        a[k++] = v;
+        steps.push({ array: clone(a), highlight: [k - 1] });
+      }
     exp *= 10;
   }
-  steps.push({ array: clone(a), sorted: Array.from({ length: a.length }, (_, k) => k), note: "Done" });
+  steps.push({
+    array: clone(a),
+    sorted: Array.from({ length: a.length }, (_, k) => k),
+    note: "Done",
+  });
   return steps;
 }
 
@@ -286,7 +338,9 @@ function timSort(input: number[]): SortStep[] {
   const merge = (l: number, m: number, r: number) => {
     const left = a.slice(l, m + 1);
     const right = a.slice(m + 1, r + 1);
-    let i = 0, j = 0, k = l;
+    let i = 0,
+      j = 0,
+      k = l;
     while (i < left.length && j < right.length) {
       steps.push({ array: clone(a), compare: [l + i, m + 1 + j], note: `Merge runs` });
       if (left[i] <= right[j]) a[k++] = left[i++];
@@ -317,7 +371,8 @@ export const ALGORITHMS: SortMeta[] = [
     space: "O(1)",
     stable: true,
     inPlace: true,
-    description: "Repeatedly swap adjacent pairs that are out of order. The largest bubbles to the end each pass.",
+    description:
+      "Repeatedly swap adjacent pairs that are out of order. The largest bubbles to the end each pass.",
     advantages: ["Simple to implement", "Detects already-sorted arrays in one pass"],
     disadvantages: ["Very slow on large inputs", "Lots of swaps"],
     applications: ["Teaching sorting concepts", "Tiny datasets where simplicity wins"],
@@ -327,8 +382,12 @@ export const ALGORITHMS: SortMeta[] = [
   {
     id: "selection",
     name: "Selection Sort",
-    timeBest: "O(n²)", timeAvg: "O(n²)", timeWorst: "O(n²)",
-    space: "O(1)", stable: false, inPlace: true,
+    timeBest: "O(n²)",
+    timeAvg: "O(n²)",
+    timeWorst: "O(n²)",
+    space: "O(1)",
+    stable: false,
+    inPlace: true,
     description: "Each pass finds the minimum of the unsorted portion and swaps it to the front.",
     advantages: ["Minimum number of swaps", "Simple and predictable"],
     disadvantages: ["Always O(n²) — even on sorted data", "Not stable"],
@@ -339,9 +398,14 @@ export const ALGORITHMS: SortMeta[] = [
   {
     id: "insertion",
     name: "Insertion Sort",
-    timeBest: "O(n)", timeAvg: "O(n²)", timeWorst: "O(n²)",
-    space: "O(1)", stable: true, inPlace: true,
-    description: "Build the sorted portion one element at a time by inserting each new element into place.",
+    timeBest: "O(n)",
+    timeAvg: "O(n²)",
+    timeWorst: "O(n²)",
+    space: "O(1)",
+    stable: true,
+    inPlace: true,
+    description:
+      "Build the sorted portion one element at a time by inserting each new element into place.",
     advantages: ["Very fast on nearly-sorted data", "Stable and in-place"],
     disadvantages: ["Poor on large random data"],
     applications: ["Small arrays", "Nearly-sorted data", "Sub-routine inside TimSort"],
@@ -351,8 +415,12 @@ export const ALGORITHMS: SortMeta[] = [
   {
     id: "merge",
     name: "Merge Sort",
-    timeBest: "O(n log n)", timeAvg: "O(n log n)", timeWorst: "O(n log n)",
-    space: "O(n)", stable: true, inPlace: false,
+    timeBest: "O(n log n)",
+    timeAvg: "O(n log n)",
+    timeWorst: "O(n log n)",
+    space: "O(n)",
+    stable: true,
+    inPlace: false,
     description: "Recursively split the array in half, sort each half, then merge them in order.",
     advantages: ["Guaranteed O(n log n)", "Stable"],
     disadvantages: ["Requires extra space", "Slower than QuickSort in practice for arrays"],
@@ -363,8 +431,12 @@ export const ALGORITHMS: SortMeta[] = [
   {
     id: "quick",
     name: "Quick Sort",
-    timeBest: "O(n log n)", timeAvg: "O(n log n)", timeWorst: "O(n²)",
-    space: "O(log n)", stable: false, inPlace: true,
+    timeBest: "O(n log n)",
+    timeAvg: "O(n log n)",
+    timeWorst: "O(n²)",
+    space: "O(log n)",
+    stable: false,
+    inPlace: true,
     description: "Pick a pivot, partition the array around it, then recurse on each side.",
     advantages: ["Very fast in practice", "In-place"],
     disadvantages: ["Worst case O(n²)", "Not stable"],
@@ -375,8 +447,12 @@ export const ALGORITHMS: SortMeta[] = [
   {
     id: "heap",
     name: "Heap Sort",
-    timeBest: "O(n log n)", timeAvg: "O(n log n)", timeWorst: "O(n log n)",
-    space: "O(1)", stable: false, inPlace: true,
+    timeBest: "O(n log n)",
+    timeAvg: "O(n log n)",
+    timeWorst: "O(n log n)",
+    space: "O(1)",
+    stable: false,
+    inPlace: true,
     description: "Build a max-heap, then repeatedly extract the max to the end.",
     advantages: ["Guaranteed O(n log n)", "In-place"],
     disadvantages: ["Not stable", "Poor cache locality"],
@@ -387,8 +463,12 @@ export const ALGORITHMS: SortMeta[] = [
   {
     id: "counting",
     name: "Counting Sort",
-    timeBest: "O(n + k)", timeAvg: "O(n + k)", timeWorst: "O(n + k)",
-    space: "O(k)", stable: true, inPlace: false,
+    timeBest: "O(n + k)",
+    timeAvg: "O(n + k)",
+    timeWorst: "O(n + k)",
+    space: "O(k)",
+    stable: true,
+    inPlace: false,
     description: "Count how many times each value occurs, then reconstruct the array in order.",
     advantages: ["Linear when k is small", "Stable"],
     disadvantages: ["Only for integers", "Uses O(k) space"],
@@ -399,9 +479,14 @@ export const ALGORITHMS: SortMeta[] = [
   {
     id: "radix",
     name: "Radix Sort",
-    timeBest: "O(nk)", timeAvg: "O(nk)", timeWorst: "O(nk)",
-    space: "O(n + k)", stable: true, inPlace: false,
-    description: "Sort by each digit from least to most significant, using a stable sub-sort each pass.",
+    timeBest: "O(nk)",
+    timeAvg: "O(nk)",
+    timeWorst: "O(nk)",
+    space: "O(n + k)",
+    stable: true,
+    inPlace: false,
+    description:
+      "Sort by each digit from least to most significant, using a stable sub-sort each pass.",
     advantages: ["Linear time for fixed-width keys"],
     disadvantages: ["Only for integers / fixed-length keys"],
     applications: ["Sorting IDs, dates, phone numbers"],
@@ -411,8 +496,12 @@ export const ALGORITHMS: SortMeta[] = [
   {
     id: "bucket",
     name: "Bucket Sort",
-    timeBest: "O(n + k)", timeAvg: "O(n + k)", timeWorst: "O(n²)",
-    space: "O(n)", stable: true, inPlace: false,
+    timeBest: "O(n + k)",
+    timeAvg: "O(n + k)",
+    timeWorst: "O(n²)",
+    space: "O(n)",
+    stable: true,
+    inPlace: false,
     description: "Distribute values into buckets by range, sort each bucket, then concatenate.",
     advantages: ["Great for uniform distributions"],
     disadvantages: ["Bad on skewed data", "Requires knowing the range"],
@@ -423,8 +512,12 @@ export const ALGORITHMS: SortMeta[] = [
   {
     id: "shell",
     name: "Shell Sort",
-    timeBest: "O(n log n)", timeAvg: "O(n^{1.25})", timeWorst: "O(n²)",
-    space: "O(1)", stable: false, inPlace: true,
+    timeBest: "O(n log n)",
+    timeAvg: "O(n^{1.25})",
+    timeWorst: "O(n²)",
+    space: "O(1)",
+    stable: false,
+    inPlace: true,
     description: "Generalized insertion sort — sort elements far apart, then progressively closer.",
     advantages: ["Faster than insertion for medium arrays", "In-place"],
     disadvantages: ["Complexity depends on gap sequence"],
@@ -435,9 +528,14 @@ export const ALGORITHMS: SortMeta[] = [
   {
     id: "tim",
     name: "TimSort (Python's built-in)",
-    timeBest: "O(n)", timeAvg: "O(n log n)", timeWorst: "O(n log n)",
-    space: "O(n)", stable: true, inPlace: false,
-    description: "Hybrid of merge sort and insertion sort — the algorithm Python uses for list.sort() and sorted().",
+    timeBest: "O(n)",
+    timeAvg: "O(n log n)",
+    timeWorst: "O(n log n)",
+    space: "O(n)",
+    stable: true,
+    inPlace: false,
+    description:
+      "Hybrid of merge sort and insertion sort — the algorithm Python uses for list.sort() and sorted().",
     advantages: ["Extremely fast on real-world data", "Stable", "O(n) on already-sorted input"],
     disadvantages: ["More complex implementation"],
     applications: ["Python's list.sort()", "Java's Arrays.sort() for objects", "Android, V8"],

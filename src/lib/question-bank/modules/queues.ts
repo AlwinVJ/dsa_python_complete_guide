@@ -35,7 +35,8 @@ export const queuesBank: ModuleBank = {
       topic: "Fundamentals",
       description: "Explain why `list.pop(0)` is O(n) and how `collections.deque` fixes it.",
       hints: ["deque is a doubly linked list of fixed-size blocks — O(1) both ends."],
-      pythonSolution: "from collections import deque\nq = deque()\nq.append(1); q.append(2); q.popleft()  # O(1)",
+      pythonSolution:
+        "from collections import deque\nq = deque()\nq.append(1); q.append(2); q.popleft()  # O(1)",
       estimatedMinutes: 5,
       tags: ["theory", "python-internals"],
     },
@@ -46,9 +47,16 @@ export const queuesBank: ModuleBank = {
       category: "advanced",
       difficulty: "Interview",
       topic: "Design",
-      description: "Implement a fixed-capacity circular queue with enqueue, dequeue, front, rear, isFull, isEmpty.",
+      description:
+        "Implement a fixed-capacity circular queue with enqueue, dequeue, front, rear, isFull, isEmpty.",
       hints: ["Track (front, size); rear = (front + size - 1) % capacity."],
-      leetcodeLinks: [{ title: "622. Design Circular Queue", url: "https://leetcode.com/problems/design-circular-queue/", difficulty: "Medium" }],
+      leetcodeLinks: [
+        {
+          title: "622. Design Circular Queue",
+          url: "https://leetcode.com/problems/design-circular-queue/",
+          difficulty: "Medium",
+        },
+      ],
       pythonSolution:
         "class MyCircularQueue:\n    def __init__(self, k):\n        self.buf = [0]*k; self.cap = k; self.front = 0; self.size = 0\n    def enQueue(self, x):\n        if self.size == self.cap: return False\n        self.buf[(self.front + self.size) % self.cap] = x; self.size += 1; return True\n    def deQueue(self):\n        if self.size == 0: return False\n        self.front = (self.front + 1) % self.cap; self.size -= 1; return True",
       estimatedMinutes: 25,
@@ -75,7 +83,13 @@ export const queuesBank: ModuleBank = {
       pattern: "Monotonic Queue",
       relatedAlgorithm: "monotonic-queue",
       interviewFrequency: "Very High",
-      leetcodeLinks: [{ title: "239. Sliding Window Maximum", url: "https://leetcode.com/problems/sliding-window-maximum/", difficulty: "Hard" }],
+      leetcodeLinks: [
+        {
+          title: "239. Sliding Window Maximum",
+          url: "https://leetcode.com/problems/sliding-window-maximum/",
+          difficulty: "Hard",
+        },
+      ],
       estimatedMinutes: 30,
       tags: ["monotonic-queue", "must-do"],
     },

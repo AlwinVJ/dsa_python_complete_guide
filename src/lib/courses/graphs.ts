@@ -10,10 +10,7 @@ import { G_ALGORITHMS } from "@/lib/graphs/algorithms";
 // content pass; the architecture is set up so pushing new groups here
 // picks them up in the sidebar automatically.
 
-const toLessons = (
-  tier: string,
-  xs: { slug: string; title: string; description: string }[],
-) =>
+const toLessons = (tier: string, xs: { slug: string; title: string; description: string }[]) =>
   xs.map((l) => ({
     slug: l.slug,
     title: l.title,

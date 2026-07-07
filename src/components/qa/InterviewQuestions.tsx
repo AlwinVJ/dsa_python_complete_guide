@@ -7,14 +7,21 @@ import type { InterviewCategory, InterviewDifficulty, InterviewQuestion } from "
 
 const DIFF_ORDER: InterviewDifficulty[] = ["Beginner", "Intermediate", "Advanced", "FAANG"];
 const CATEGORIES: (InterviewCategory | "All")[] = [
-  "All", "Theory", "Conceptual", "Coding", "Optimization", "Edge Case", "Company", "Follow-up",
+  "All",
+  "Theory",
+  "Conceptual",
+  "Coding",
+  "Optimization",
+  "Edge Case",
+  "Company",
+  "Follow-up",
 ];
 
 const diffColor: Record<InterviewDifficulty, string> = {
-  Beginner:     "bg-emerald-500/15 text-emerald-500 border-emerald-500/30",
+  Beginner: "bg-emerald-500/15 text-emerald-500 border-emerald-500/30",
   Intermediate: "bg-amber-500/15 text-amber-500 border-amber-500/30",
-  Advanced:     "bg-rose-500/15 text-rose-500 border-rose-500/30",
-  FAANG:        "bg-fuchsia-500/15 text-fuchsia-500 border-fuchsia-500/30",
+  Advanced: "bg-rose-500/15 text-rose-500 border-rose-500/30",
+  FAANG: "bg-fuchsia-500/15 text-fuchsia-500 border-fuchsia-500/30",
 };
 
 export function InterviewQuestions({ questions }: { questions: InterviewQuestion[] }) {
@@ -29,14 +36,23 @@ export function InterviewQuestions({ questions }: { questions: InterviewQuestion
       if (cat !== "All" && it.category !== cat) return false;
       if (diff !== "All" && it.difficulty !== diff) return false;
       if (!q) return true;
-      const hay = (it.title + " " + it.explanation.join(" ") + " " + (it.tags?.join(" ") ?? "")).toLowerCase();
+      const hay = (
+        it.title +
+        " " +
+        it.explanation.join(" ") +
+        " " +
+        (it.tags?.join(" ") ?? "")
+      ).toLowerCase();
       return hay.includes(q);
     });
   }, [questions, query, cat, diff]);
 
   const grouped = useMemo(() => {
     const g: Record<InterviewDifficulty, InterviewQuestion[]> = {
-      Beginner: [], Intermediate: [], Advanced: [], FAANG: [],
+      Beginner: [],
+      Intermediate: [],
+      Advanced: [],
+      FAANG: [],
     };
     filtered.forEach((q) => g[q.difficulty].push(q));
     return g;
@@ -96,8 +112,14 @@ export function InterviewQuestions({ questions }: { questions: InterviewQuestion
         return (
           <section key={d}>
             <div className="mb-3 flex items-center gap-2">
-              <span className={`rounded-md border px-2 py-0.5 text-xs font-semibold ${diffColor[d]}`}>{d}</span>
-              <span className="text-xs text-muted-foreground">{items.length} question{items.length === 1 ? "" : "s"}</span>
+              <span
+                className={`rounded-md border px-2 py-0.5 text-xs font-semibold ${diffColor[d]}`}
+              >
+                {d}
+              </span>
+              <span className="text-xs text-muted-foreground">
+                {items.length} question{items.length === 1 ? "" : "s"}
+              </span>
             </div>
             <ul className="space-y-2">
               {items.map((q) => {
@@ -110,23 +132,35 @@ export function InterviewQuestions({ questions }: { questions: InterviewQuestion
                     >
                       <div className="flex-1">
                         <div className="mb-1 flex flex-wrap items-center gap-2 text-[10px] uppercase tracking-wider text-muted-foreground">
-                          <span className="rounded-md border border-border bg-background px-2 py-0.5">{q.category}</span>
+                          <span className="rounded-md border border-border bg-background px-2 py-0.5">
+                            {q.category}
+                          </span>
                           {q.estMin && (
-                            <span className="inline-flex items-center gap-1"><Clock className="h-3 w-3" />{q.estMin}m</span>
+                            <span className="inline-flex items-center gap-1">
+                              <Clock className="h-3 w-3" />
+                              {q.estMin}m
+                            </span>
                           )}
                           {q.tags?.slice(0, 3).map((t) => (
-                            <span key={t} className="inline-flex items-center gap-1"><Tag className="h-3 w-3" />{t}</span>
+                            <span key={t} className="inline-flex items-center gap-1">
+                              <Tag className="h-3 w-3" />
+                              {t}
+                            </span>
                           ))}
                         </div>
                         <div className="text-sm font-semibold">{q.title}</div>
                       </div>
-                      <ChevronDown className={`mt-1 h-4 w-4 shrink-0 text-muted-foreground transition ${isOpen ? "rotate-180" : ""}`} />
+                      <ChevronDown
+                        className={`mt-1 h-4 w-4 shrink-0 text-muted-foreground transition ${isOpen ? "rotate-180" : ""}`}
+                      />
                     </button>
 
                     {isOpen && (
                       <div className="border-t border-border bg-background/40 px-4 py-4">
                         <div className="space-y-3 text-sm leading-relaxed text-muted-foreground">
-                          {q.explanation.map((p, k) => <p key={k}>{p}</p>)}
+                          {q.explanation.map((p, k) => (
+                            <p key={k}>{p}</p>
+                          ))}
                         </div>
 
                         {q.code && (
@@ -154,7 +188,9 @@ export function InterviewQuestions({ questions }: { questions: InterviewQuestion
 
                         {q.followUp && (
                           <div className="mt-4 rounded-md border border-border bg-background p-3 text-sm">
-                            <div className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Follow-up</div>
+                            <div className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                              Follow-up
+                            </div>
                             <div className="mt-1">{q.followUp}</div>
                           </div>
                         )}
@@ -182,11 +218,17 @@ export function InterviewQuestions({ questions }: { questions: InterviewQuestion
                             >
                               <ExternalLink className="h-3.5 w-3.5" />
                               LeetCode · {q.leetcode.title}
-                              <span className={`rounded px-1.5 py-0.5 text-[10px] ${
-                                q.leetcode.difficulty === "Easy" ? "bg-emerald-500/15 text-emerald-500" :
-                                q.leetcode.difficulty === "Medium" ? "bg-amber-500/15 text-amber-500" :
-                                "bg-rose-500/15 text-rose-500"
-                              }`}>{q.leetcode.difficulty}</span>
+                              <span
+                                className={`rounded px-1.5 py-0.5 text-[10px] ${
+                                  q.leetcode.difficulty === "Easy"
+                                    ? "bg-emerald-500/15 text-emerald-500"
+                                    : q.leetcode.difficulty === "Medium"
+                                      ? "bg-amber-500/15 text-amber-500"
+                                      : "bg-rose-500/15 text-rose-500"
+                                }`}
+                              >
+                                {q.leetcode.difficulty}
+                              </span>
                             </a>
                           </div>
                         )}

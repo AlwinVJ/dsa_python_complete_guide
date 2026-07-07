@@ -44,16 +44,28 @@ function DeletePlayground() {
           placeholder="index"
           className="rounded-md border border-input bg-background px-3 py-1.5 font-mono text-sm"
         />
-        <button onClick={popAt} className="inline-flex items-center gap-1 rounded-md gradient-brand px-3 py-1.5 text-sm text-primary-foreground">
+        <button
+          onClick={popAt}
+          className="inline-flex items-center gap-1 rounded-md gradient-brand px-3 py-1.5 text-sm text-primary-foreground"
+        >
           <Trash2 className="h-4 w-4" /> pop(i)
         </button>
-        <button onClick={popEnd} className="rounded-md border border-border bg-card px-3 py-1.5 text-sm hover:bg-accent">
+        <button
+          onClick={popEnd}
+          className="rounded-md border border-border bg-card px-3 py-1.5 text-sm hover:bg-accent"
+        >
           pop()
         </button>
-        <button onClick={clear} className="rounded-md border border-border bg-card px-3 py-1.5 text-sm hover:bg-accent">
+        <button
+          onClick={clear}
+          className="rounded-md border border-border bg-card px-3 py-1.5 text-sm hover:bg-accent"
+        >
           clear()
         </button>
-        <button onClick={reset} className="rounded-md border border-border bg-card px-3 py-1.5 text-sm hover:bg-accent">
+        <button
+          onClick={reset}
+          className="rounded-md border border-border bg-card px-3 py-1.5 text-sm hover:bg-accent"
+        >
           reset
         </button>
       </div>
@@ -103,7 +115,11 @@ const ops = [
 function Page() {
   return (
     <PageShell>
-      <PageHeader eyebrow="Operations" title="Deletion" description="Removing items — by index, by value, or all at once." />
+      <PageHeader
+        eyebrow="Operations"
+        title="Deletion"
+        description="Removing items — by index, by value, or all at once."
+      />
 
       <Section title="Interactive playground">
         <DeletePlayground />
@@ -123,8 +139,8 @@ function Page() {
       </div>
 
       <Callout kind="warn">
-        Never delete items while iterating forward — you'll skip elements. Iterate over a copy (<code>for x in lst[:]</code>)
-        or build a new list with a comprehension.
+        Never delete items while iterating forward — you'll skip elements. Iterate over a copy (
+        <code>for x in lst[:]</code>) or build a new list with a comprehension.
       </Callout>
 
       <PrevNext current="/deletion" />

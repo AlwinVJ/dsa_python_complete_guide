@@ -9,10 +9,7 @@ import { H_REVISION } from "@/lib/heaps/revision";
 //   Foundations → Min Heap → Max Heap → Heap Algorithms → Review & Practice.
 // Sidebar links go through /heaps/<tier>/<slug>, handled by src/routes/heaps.$.tsx.
 
-const toLessons = (
-  tier: string,
-  xs: { slug: string; title: string; description: string }[],
-) =>
+const toLessons = (tier: string, xs: { slug: string; title: string; description: string }[]) =>
   xs.map((l) => ({
     slug: l.slug,
     title: l.title,
@@ -32,7 +29,8 @@ export const heapsCourse: Course = {
     {
       slug: "foundations",
       title: "Foundations",
-      tagline: "Vocabulary, memory layout, and index arithmetic — before touching min or max heaps.",
+      tagline:
+        "Vocabulary, memory layout, and index arithmetic — before touching min or max heaps.",
       kind: "foundations",
       lessons: toLessons("foundations", H_FOUNDATIONS),
     },

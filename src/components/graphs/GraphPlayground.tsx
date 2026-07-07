@@ -59,7 +59,8 @@ export function GraphPlayground({
     const svg = svgRef.current;
     if (!svg) return { x: 0, y: 0 };
     const pt = svg.createSVGPoint();
-    pt.x = e.clientX; pt.y = e.clientY;
+    pt.x = e.clientX;
+    pt.y = e.clientY;
     const ctm = svg.getScreenCTM();
     if (!ctm) return { x: 0, y: 0 };
     const p = pt.matrixTransform(ctm.inverse());
@@ -82,12 +83,19 @@ export function GraphPlayground({
       return;
     }
     if (mode === "add-edge") {
-      if (!pendingEdgeFrom) { setPendingEdgeFrom(n.id); return; }
-      if (pendingEdgeFrom === n.id) { setPendingEdgeFrom(null); return; }
+      if (!pendingEdgeFrom) {
+        setPendingEdgeFrom(n.id);
+        return;
+      }
+      if (pendingEdgeFrom === n.id) {
+        setPendingEdgeFrom(null);
+        return;
+      }
       setEdges((es) => {
-        const exists = es.some((ed) =>
-          (ed.from === pendingEdgeFrom && ed.to === n.id) ||
-          (!directed && ed.from === n.id && ed.to === pendingEdgeFrom),
+        const exists = es.some(
+          (ed) =>
+            (ed.from === pendingEdgeFrom && ed.to === n.id) ||
+            (!directed && ed.from === n.id && ed.to === pendingEdgeFrom),
         );
         if (exists) return es;
         return [...es, { from: pendingEdgeFrom, to: n.id, weight: weighted ? 1 : undefined }];
@@ -108,7 +116,9 @@ export function GraphPlayground({
     setNodes((ns) => ns.map((n) => (n.id === id ? { ...n, x: x - dx, y: y - dy } : n)));
   };
 
-  const onMouseUp = () => { dragRef.current = null; };
+  const onMouseUp = () => {
+    dragRef.current = null;
+  };
 
   const onEdgeClick = (edge: GEdge) => {
     if (mode === "delete") {
@@ -120,12 +130,16 @@ export function GraphPlayground({
       if (w == null) return;
       const nw = Number(w);
       if (Number.isNaN(nw)) return;
-      setEdges((es) => es.map((ed) => (ed.from === edge.from && ed.to === edge.to ? { ...ed, weight: nw } : ed)));
+      setEdges((es) =>
+        es.map((ed) => (ed.from === edge.from && ed.to === edge.to ? { ...ed, weight: nw } : ed)),
+      );
     }
   };
 
   const reset = () => {
-    setNodes([]); setEdges([]); setPendingEdgeFrom(null);
+    setNodes([]);
+    setEdges([]);
+    setPendingEdgeFrom(null);
   };
 
   // ---------- stats ----------
@@ -133,9 +147,14 @@ export function GraphPlayground({
 
   const modeBtn = (m: Mode, label: string, Icon: React.ComponentType<{ className?: string }>) => (
     <button
-      onClick={() => { setMode(m); setPendingEdgeFrom(null); }}
+      onClick={() => {
+        setMode(m);
+        setPendingEdgeFrom(null);
+      }}
       className={`inline-flex items-center gap-1.5 rounded-md border px-2.5 py-1 text-xs transition ${
-        mode === m ? "border-[color:var(--brand)] bg-[color:var(--brand)]/15 text-[color:var(--brand)]" : "border-border hover:bg-accent"
+        mode === m
+          ? "border-[color:var(--brand)] bg-[color:var(--brand)]/15 text-[color:var(--brand)]"
+          : "border-border hover:bg-accent"
       }`}
     >
       <Icon className="h-3.5 w-3.5" /> {label}
@@ -150,14 +169,25 @@ export function GraphPlayground({
         {modeBtn("add-edge", "Add edge", Link2)}
         {modeBtn("delete", "Delete", Trash2)}
         <label className="ml-1 inline-flex items-center gap-1 text-xs text-muted-foreground">
-          <input type="checkbox" checked={directed} onChange={(e) => setDirected(e.target.checked)} />
+          <input
+            type="checkbox"
+            checked={directed}
+            onChange={(e) => setDirected(e.target.checked)}
+          />
           Directed
         </label>
         <label className="inline-flex items-center gap-1 text-xs text-muted-foreground">
-          <input type="checkbox" checked={weighted} onChange={(e) => setWeighted(e.target.checked)} />
+          <input
+            type="checkbox"
+            checked={weighted}
+            onChange={(e) => setWeighted(e.target.checked)}
+          />
           Weighted
         </label>
-        <button onClick={reset} className="ml-auto inline-flex items-center gap-1 rounded-md border border-border px-2.5 py-1 text-xs hover:bg-accent">
+        <button
+          onClick={reset}
+          className="ml-auto inline-flex items-center gap-1 rounded-md border border-border px-2.5 py-1 text-xs hover:bg-accent"
+        >
           <RefreshCcw className="h-3.5 w-3.5" /> Clear
         </button>
       </div>
@@ -175,7 +205,15 @@ export function GraphPlayground({
           >
             {directed && (
               <defs>
-                <marker id="pg-arrow" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                <marker
+                  id="pg-arrow"
+                  viewBox="0 0 10 10"
+                  refX="10"
+                  refY="5"
+                  markerWidth="7"
+                  markerHeight="7"
+                  orient="auto-start-reverse"
+                >
                   <path d="M0,0 L10,5 L0,10 z" fill="var(--muted-foreground)" />
                 </marker>
               </defs>
@@ -185,23 +223,54 @@ export function GraphPlayground({
               const a = nodes.find((n) => n.id === e.from);
               const b = nodes.find((n) => n.id === e.to);
               if (!a || !b || a.x == null || a.y == null || b.x == null || b.y == null) return null;
-              const dx = b.x - a.x; const dy = b.y - a.y;
+              const dx = b.x - a.x;
+              const dy = b.y - a.y;
               const len = Math.hypot(dx, dy) || 1;
-              const nx = dx / len; const ny = dy / len;
-              const sx = a.x + nx * NODE_R; const sy = a.y + ny * NODE_R;
-              const tx = b.x - nx * NODE_R; const ty = b.y - ny * NODE_R;
+              const nx = dx / len;
+              const ny = dy / len;
+              const sx = a.x + nx * NODE_R;
+              const sy = a.y + ny * NODE_R;
+              const tx = b.x - nx * NODE_R;
+              const ty = b.y - ny * NODE_R;
               return (
-                <g key={i} onClick={(evt) => { evt.stopPropagation(); onEdgeClick(e); }} className="cursor-pointer">
-                  <line x1={sx} y1={sy} x2={tx} y2={ty}
-                    stroke="color-mix(in oklab, var(--foreground) 35%, transparent)" strokeWidth={2}
-                    markerEnd={directed ? "url(#pg-arrow)" : undefined} />
+                <g
+                  key={i}
+                  onClick={(evt) => {
+                    evt.stopPropagation();
+                    onEdgeClick(e);
+                  }}
+                  className="cursor-pointer"
+                >
+                  <line
+                    x1={sx}
+                    y1={sy}
+                    x2={tx}
+                    y2={ty}
+                    stroke="color-mix(in oklab, var(--foreground) 35%, transparent)"
+                    strokeWidth={2}
+                    markerEnd={directed ? "url(#pg-arrow)" : undefined}
+                  />
                   {/* hit target */}
                   <line x1={sx} y1={sy} x2={tx} y2={ty} stroke="transparent" strokeWidth={12} />
                   {weighted && e.weight != null && (
                     <g>
-                      <rect x={(sx + tx) / 2 - 12} y={(sy + ty) / 2 - 9} width={24} height={16} rx={4}
-                        fill="var(--card)" stroke="color-mix(in oklab, var(--foreground) 25%, transparent)" />
-                      <text x={(sx + tx) / 2} y={(sy + ty) / 2 + 3} textAnchor="middle" fontSize={10}>{e.weight}</text>
+                      <rect
+                        x={(sx + tx) / 2 - 12}
+                        y={(sy + ty) / 2 - 9}
+                        width={24}
+                        height={16}
+                        rx={4}
+                        fill="var(--card)"
+                        stroke="color-mix(in oklab, var(--foreground) 25%, transparent)"
+                      />
+                      <text
+                        x={(sx + tx) / 2}
+                        y={(sy + ty) / 2 + 3}
+                        textAnchor="middle"
+                        fontSize={10}
+                      >
+                        {e.weight}
+                      </text>
                     </g>
                   )}
                 </g>
@@ -211,21 +280,52 @@ export function GraphPlayground({
             {nodes.map((n) => {
               const pending = pendingEdgeFrom === n.id;
               return (
-                <g key={n.id} onMouseDown={(e) => onNodeMouseDown(e, n)} className={mode === "select" ? "cursor-grab" : "cursor-pointer"}>
-                  <circle cx={n.x} cy={n.y} r={NODE_R}
-                    fill={pending ? "color-mix(in oklab, var(--warn) 25%, transparent)" : "var(--card)"}
-                    stroke={pending ? "var(--warn)" : "color-mix(in oklab, var(--foreground) 30%, transparent)"}
-                    strokeWidth={2} />
-                  <text x={n.x} y={(n.y ?? 0) + 4} textAnchor="middle" fontSize={12} fontWeight={600}>{n.label ?? n.id}</text>
+                <g
+                  key={n.id}
+                  onMouseDown={(e) => onNodeMouseDown(e, n)}
+                  className={mode === "select" ? "cursor-grab" : "cursor-pointer"}
+                >
+                  <circle
+                    cx={n.x}
+                    cy={n.y}
+                    r={NODE_R}
+                    fill={
+                      pending ? "color-mix(in oklab, var(--warn) 25%, transparent)" : "var(--card)"
+                    }
+                    stroke={
+                      pending
+                        ? "var(--warn)"
+                        : "color-mix(in oklab, var(--foreground) 30%, transparent)"
+                    }
+                    strokeWidth={2}
+                  />
+                  <text
+                    x={n.x}
+                    y={(n.y ?? 0) + 4}
+                    textAnchor="middle"
+                    fontSize={12}
+                    fontWeight={600}
+                  >
+                    {n.label ?? n.id}
+                  </text>
                 </g>
               );
             })}
 
             {mode === "add-edge" && pendingEdgeFrom && (
-              <text x={12} y={20} fontSize={11} fill="var(--warn)">Pick target node for edge from {pendingEdgeFrom}…</text>
+              <text x={12} y={20} fontSize={11} fill="var(--warn)">
+                Pick target node for edge from {pendingEdgeFrom}…
+              </text>
             )}
             {nodes.length === 0 && (
-              <text x={280} y={190} textAnchor="middle" fontSize={13} fill="currentColor" className="text-muted-foreground">
+              <text
+                x={280}
+                y={190}
+                textAnchor="middle"
+                fontSize={13}
+                fill="currentColor"
+                className="text-muted-foreground"
+              >
                 Empty graph — switch to “Add vertex” and click the canvas.
               </text>
             )}
@@ -233,7 +333,9 @@ export function GraphPlayground({
         </div>
 
         <aside className="rounded-md border border-border bg-muted/30 p-3 text-xs">
-          <div className="mb-2 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">Live stats</div>
+          <div className="mb-2 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
+            Live stats
+          </div>
           <Stat label="Vertices (V)" value={String(nodes.length)} />
           <Stat label="Edges (E)" value={String(edges.length)} />
           <Stat label="Components" value={String(stats.components)} />
@@ -268,10 +370,21 @@ function computeStats(nodes: GNode[], edges: GEdge[], directed: boolean) {
   // Undirected components via union-find on all nodes.
   const idx = Object.fromEntries(nodes.map((n, i) => [n.id, i]));
   const parent = nodes.map((_, i) => i);
-  const find = (x: number): number => { while (parent[x] !== x) { parent[x] = parent[parent[x]]; x = parent[x]; } return x; };
-  const union = (a: number, b: number) => { const ra = find(a); const rb = find(b); if (ra !== rb) parent[ra] = rb; };
+  const find = (x: number): number => {
+    while (parent[x] !== x) {
+      parent[x] = parent[parent[x]];
+      x = parent[x];
+    }
+    return x;
+  };
+  const union = (a: number, b: number) => {
+    const ra = find(a);
+    const rb = find(b);
+    if (ra !== rb) parent[ra] = rb;
+  };
   for (const e of edges) {
-    const a = idx[e.from]; const b = idx[e.to];
+    const a = idx[e.from];
+    const b = idx[e.to];
     if (a != null && b != null) union(a, b);
   }
   const components = V === 0 ? 0 : new Set(nodes.map((_, i) => find(i))).size;
@@ -279,7 +392,9 @@ function computeStats(nodes: GNode[], edges: GEdge[], directed: boolean) {
   // Naive cycle detection.
   let hasCycle = false;
   if (directed) {
-    const WHITE = 0, GRAY = 1, BLACK = 2;
+    const WHITE = 0,
+      GRAY = 1,
+      BLACK = 2;
     const color: Record<string, number> = {};
     nodes.forEach((n) => (color[n.id] = WHITE));
     const adj: Record<string, string[]> = {};
@@ -300,7 +415,10 @@ function computeStats(nodes: GNode[], edges: GEdge[], directed: boolean) {
     const seen = new Set<string>();
     for (const e of edges) {
       const k = e.from < e.to ? `${e.from}|${e.to}` : `${e.to}|${e.from}`;
-      if (seen.has(k)) { hasCycle = true; break; }
+      if (seen.has(k)) {
+        hasCycle = true;
+        break;
+      }
       seen.add(k);
     }
     if (!hasCycle && E >= V - components && E > 0) hasCycle = true;

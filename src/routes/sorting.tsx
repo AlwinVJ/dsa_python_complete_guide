@@ -11,7 +11,11 @@ export const Route = createFileRoute("/sorting")({
   head: () => ({
     meta: [
       { title: "Sorting Algorithms — DSA with Python" },
-      { name: "description", content: "Reference guide to 11 sorting algorithms with Python implementations and complexity analysis." },
+      {
+        name: "description",
+        content:
+          "Reference guide to 11 sorting algorithms with Python implementations and complexity analysis.",
+      },
     ],
   }),
   component: Page,
@@ -31,8 +35,8 @@ function Page() {
 
       <Callout kind="tip" title="Want to experiment with sorting algorithms?">
         <p className="mb-3">
-          The interactive step-by-step visualizer now lives in the dedicated Sorting Playground — pick an algorithm,
-          tweak the array, and watch comparisons and swaps in real time.
+          The interactive step-by-step visualizer now lives in the dedicated Sorting Playground —
+          pick an algorithm, tweak the array, and watch comparisons and swaps in real time.
         </p>
         <Link
           to="/playgrounds/sorting"
@@ -63,19 +67,27 @@ function Page() {
         <div className="grid gap-3 sm:grid-cols-3">
           <div className="card-surface p-3">
             <div className="text-xs text-muted-foreground">Best</div>
-            <div className="mt-1"><ComplexityBadge value={algo.timeBest} /></div>
+            <div className="mt-1">
+              <ComplexityBadge value={algo.timeBest} />
+            </div>
           </div>
           <div className="card-surface p-3">
             <div className="text-xs text-muted-foreground">Average</div>
-            <div className="mt-1"><ComplexityBadge value={algo.timeAvg} /></div>
+            <div className="mt-1">
+              <ComplexityBadge value={algo.timeAvg} />
+            </div>
           </div>
           <div className="card-surface p-3">
             <div className="text-xs text-muted-foreground">Worst</div>
-            <div className="mt-1"><ComplexityBadge value={algo.timeWorst} /></div>
+            <div className="mt-1">
+              <ComplexityBadge value={algo.timeWorst} />
+            </div>
           </div>
           <div className="card-surface p-3">
             <div className="text-xs text-muted-foreground">Space</div>
-            <div className="mt-1"><ComplexityBadge value={algo.space} /></div>
+            <div className="mt-1">
+              <ComplexityBadge value={algo.space} />
+            </div>
           </div>
           <div className="card-surface p-3">
             <div className="text-xs text-muted-foreground">Stable</div>
@@ -91,13 +103,17 @@ function Page() {
           <div className="card-surface p-4">
             <div className="mb-2 text-sm font-semibold text-[color:var(--good)]">Advantages</div>
             <ul className="list-disc space-y-1 pl-5 text-sm text-muted-foreground">
-              {algo.advantages.map((x) => <li key={x}>{x}</li>)}
+              {algo.advantages.map((x) => (
+                <li key={x}>{x}</li>
+              ))}
             </ul>
           </div>
           <div className="card-surface p-4">
             <div className="mb-2 text-sm font-semibold text-[color:var(--bad)]">Disadvantages</div>
             <ul className="list-disc space-y-1 pl-5 text-sm text-muted-foreground">
-              {algo.disadvantages.map((x) => <li key={x}>{x}</li>)}
+              {algo.disadvantages.map((x) => (
+                <li key={x}>{x}</li>
+              ))}
             </ul>
           </div>
         </div>
@@ -105,7 +121,9 @@ function Page() {
         <div className="card-surface p-4">
           <div className="mb-2 text-sm font-semibold">Real-world applications</div>
           <ul className="list-disc space-y-1 pl-5 text-sm text-muted-foreground">
-            {algo.applications.map((x) => <li key={x}>{x}</li>)}
+            {algo.applications.map((x) => (
+              <li key={x}>{x}</li>
+            ))}
           </ul>
         </div>
 
@@ -113,10 +131,11 @@ function Page() {
       </Section>
 
       <Callout kind="did" title="Why Python uses TimSort">
-        TimSort was designed by Tim Peters in 2002 specifically for Python. It exploits the "runs" of already-sorted
-        data that appear in real-world inputs — giving <ComplexityBadge value="O(n)" /> on nearly-sorted arrays while
-        keeping <ComplexityBadge value="O(n log n)" /> as the worst case. It's now the default in Python, Java (for
-        objects), Android, V8, and more.
+        TimSort was designed by Tim Peters in 2002 specifically for Python. It exploits the "runs"
+        of already-sorted data that appear in real-world inputs — giving{" "}
+        <ComplexityBadge value="O(n)" /> on nearly-sorted arrays while keeping{" "}
+        <ComplexityBadge value="O(n log n)" /> as the worst case. It's now the default in Python,
+        Java (for objects), Android, V8, and more.
       </Callout>
 
       <PrevNext current="/sorting" />

@@ -13,13 +13,21 @@ export type GraphSpec = {
   directed?: boolean;
   weighted?: boolean;
   /** Optional per-node color for illustrations. */
-  colors?: Record<string, "default" | "brand" | "highlight" | "visited" | "muted" | "warn" | "good">;
+  colors?: Record<
+    string,
+    "default" | "brand" | "highlight" | "visited" | "muted" | "warn" | "good"
+  >;
   /** Highlight edges (e.g. tree edges after DFS). */
   highlightEdges?: string[]; // "u-v"
 };
 
 // ---------- Section variants ----------
-export type GraphVizSec = { type: "graphViz"; spec: GraphSpec; caption?: string; minHeight?: number };
+export type GraphVizSec = {
+  type: "graphViz";
+  spec: GraphSpec;
+  caption?: string;
+  minHeight?: number;
+};
 export type GraphPlaygroundSec = { type: "graphPlayground"; caption?: string; seed?: GraphSpec };
 export type BFSPlayerSec = { type: "bfsPlayer"; spec: GraphSpec; start: string; caption?: string };
 export type DFSPlayerSec = { type: "dfsPlayer"; spec: GraphSpec; start: string; caption?: string };
@@ -27,12 +35,31 @@ export type DFSPlayerSec = { type: "dfsPlayer"; spec: GraphSpec; start: string; 
 export type AdjMatrixVizSec = { type: "adjMatrixViz"; spec: GraphSpec; caption?: string };
 export type AdjListVizSec = { type: "adjListViz"; spec: GraphSpec; caption?: string };
 export type EdgeListVizSec = { type: "edgeListViz"; spec: GraphSpec; caption?: string };
-export type IncidenceMatrixVizSec = { type: "incidenceMatrixViz"; spec: GraphSpec; caption?: string };
+export type IncidenceMatrixVizSec = {
+  type: "incidenceMatrixViz";
+  spec: GraphSpec;
+  caption?: string;
+};
 export type CsrVizSec = { type: "csrViz"; spec: GraphSpec; caption?: string };
 
-export type DijkstraPlayerSec = { type: "dijkstraPlayer"; spec: GraphSpec; start: string; caption?: string };
-export type BellmanFordPlayerSec = { type: "bellmanFordPlayer"; spec: GraphSpec; start: string; caption?: string };
-export type PrimPlayerSec = { type: "primPlayer"; spec: GraphSpec; start: string; caption?: string };
+export type DijkstraPlayerSec = {
+  type: "dijkstraPlayer";
+  spec: GraphSpec;
+  start: string;
+  caption?: string;
+};
+export type BellmanFordPlayerSec = {
+  type: "bellmanFordPlayer";
+  spec: GraphSpec;
+  start: string;
+  caption?: string;
+};
+export type PrimPlayerSec = {
+  type: "primPlayer";
+  spec: GraphSpec;
+  start: string;
+  caption?: string;
+};
 export type KruskalPlayerSec = { type: "kruskalPlayer"; spec: GraphSpec; caption?: string };
 export type TopoSortPlayerSec = { type: "topoSortPlayer"; spec: GraphSpec; caption?: string };
 export type UnionFindPlaygroundSec = { type: "unionFindPlayground"; n?: number; caption?: string };
@@ -78,12 +105,35 @@ export type THeading = { type: "heading"; text: string };
 export type TTable = { type: "table"; headers: string[]; rows: string[][]; caption?: string };
 
 export type GSection =
-  | GraphVizSec | GraphPlaygroundSec | BFSPlayerSec | DFSPlayerSec
-  | AdjMatrixVizSec | AdjListVizSec | EdgeListVizSec | IncidenceMatrixVizSec | CsrVizSec
-  | DijkstraPlayerSec | BellmanFordPlayerSec | PrimPlayerSec | KruskalPlayerSec
-  | TopoSortPlayerSec | UnionFindPlaygroundSec | MemoryDiagramSec
-  | TTheory | TCode | TDryRun | TComplexity | TMistakes | TTip | TCallout
-  | TQuiz | TPractice | TRefs | TInterview | THeading | TTable;
+  | GraphVizSec
+  | GraphPlaygroundSec
+  | BFSPlayerSec
+  | DFSPlayerSec
+  | AdjMatrixVizSec
+  | AdjListVizSec
+  | EdgeListVizSec
+  | IncidenceMatrixVizSec
+  | CsrVizSec
+  | DijkstraPlayerSec
+  | BellmanFordPlayerSec
+  | PrimPlayerSec
+  | KruskalPlayerSec
+  | TopoSortPlayerSec
+  | UnionFindPlaygroundSec
+  | MemoryDiagramSec
+  | TTheory
+  | TCode
+  | TDryRun
+  | TComplexity
+  | TMistakes
+  | TTip
+  | TCallout
+  | TQuiz
+  | TPractice
+  | TRefs
+  | TInterview
+  | THeading
+  | TTable;
 
 export type GLesson = {
   slug: string;

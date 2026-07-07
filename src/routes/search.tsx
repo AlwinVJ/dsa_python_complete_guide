@@ -8,7 +8,11 @@ export const Route = createFileRoute("/search")({
   head: () => ({
     meta: [
       { title: "Search — DSA with Python" },
-      { name: "description", content: "Search across all data structures, algorithms, patterns, questions, and references." },
+      {
+        name: "description",
+        content:
+          "Search across all data structures, algorithms, patterns, questions, and references.",
+      },
       { property: "og:title", content: "Search — DSA with Python" },
       { property: "og:url", content: "/search" },
     ],
@@ -23,7 +27,10 @@ function SearchPage() {
   const [q, setQ] = useState("");
 
   const navIndex: Entry[] = useMemo(
-    () => NAV_SECTIONS.flatMap((s) => s.items.map((i) => ({ label: i.label, to: i.to, group: s.title }))),
+    () =>
+      NAV_SECTIONS.flatMap((s) =>
+        s.items.map((i) => ({ label: i.label, to: i.to, group: s.title })),
+      ),
     [],
   );
 
@@ -41,13 +48,17 @@ function SearchPage() {
     const term = q.trim().toLowerCase();
     const all = [...navIndex, ...questionIndex];
     if (!term) return navIndex;
-    return all.filter((e) => e.label.toLowerCase().includes(term) || e.group.toLowerCase().includes(term)).slice(0, 200);
+    return all
+      .filter((e) => e.label.toLowerCase().includes(term) || e.group.toLowerCase().includes(term))
+      .slice(0, 200);
   }, [q, navIndex, questionIndex]);
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-10 sm:px-6">
       <h1 className="text-3xl font-bold">Search</h1>
-      <p className="mt-2 text-muted-foreground">Find any data structure, algorithm, pattern, question, or reference.</p>
+      <p className="mt-2 text-muted-foreground">
+        Find any data structure, algorithm, pattern, question, or reference.
+      </p>
       <div className="relative mt-6">
         <SearchIcon className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
         <input
@@ -59,11 +70,16 @@ function SearchPage() {
         />
       </div>
 
-      <div className="mt-6 text-xs text-muted-foreground">{results.length} result{results.length === 1 ? "" : "s"}</div>
+      <div className="mt-6 text-xs text-muted-foreground">
+        {results.length} result{results.length === 1 ? "" : "s"}
+      </div>
       <ul className="mt-2 space-y-1">
         {results.map((r, i) => (
           <li key={`${r.to}-${i}`}>
-            <Link to={r.to} className="flex items-center justify-between rounded-md border border-border bg-card px-3 py-2 text-sm hover:border-[color:var(--brand)]/60 transition">
+            <Link
+              to={r.to}
+              className="flex items-center justify-between rounded-md border border-border bg-card px-3 py-2 text-sm hover:border-[color:var(--brand)]/60 transition"
+            >
               <span className="truncate pr-2">{r.label}</span>
               <span className="text-xs text-muted-foreground shrink-0">{r.group}</span>
             </Link>

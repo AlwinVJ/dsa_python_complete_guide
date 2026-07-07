@@ -4,9 +4,9 @@
 
 export type Frame = {
   array: number[];
-  highlight?: number[];    // brand highlight
-  compare?: number[];      // warn highlight
-  sorted?: number[];       // success highlight (locked / done)
+  highlight?: number[]; // brand highlight
+  compare?: number[]; // warn highlight
+  sorted?: number[]; // success highlight (locked / done)
   note: string;
   vars?: Record<string, string | number>;
 };
@@ -43,28 +43,43 @@ export const linearTraversal: Generator = (input) => {
 export const twoPointers: Generator = (input, target = 0) => {
   const nums = cloneArr(input).sort((a, b) => a - b);
   const frames: Frame[] = [];
-  let l = 0, r = nums.length - 1;
+  let l = 0,
+    r = nums.length - 1;
   frames.push({ array: nums, note: `Sorted input. Target = ${target}`, vars: { target } });
   while (l < r) {
     const s = nums[l] + nums[r];
     frames.push({
-      array: nums, highlight: [l, r],
+      array: nums,
+      highlight: [l, r],
       note: `sum = nums[${l}] + nums[${r}] = ${nums[l]} + ${nums[r]} = ${s}`,
       vars: { l, r, sum: s, target },
     });
     if (s === target) {
       frames.push({
-        array: nums, sorted: [l, r],
+        array: nums,
+        sorted: [l, r],
         note: `Found pair at indices [${l}, ${r}]`,
         vars: { l, r, sum: s },
       });
       return frames;
     }
     if (s < target) {
-      frames.push({ array: nums, highlight: [l], compare: [r], note: `sum < target → move l → ${l + 1}`, vars: { l, r } });
+      frames.push({
+        array: nums,
+        highlight: [l],
+        compare: [r],
+        note: `sum < target → move l → ${l + 1}`,
+        vars: { l, r },
+      });
       l++;
     } else {
-      frames.push({ array: nums, highlight: [r], compare: [l], note: `sum > target → move r → ${r - 1}`, vars: { l, r } });
+      frames.push({
+        array: nums,
+        highlight: [r],
+        compare: [l],
+        note: `sum > target → move r → ${r - 1}`,
+        vars: { l, r },
+      });
       r--;
     }
   }
@@ -78,7 +93,8 @@ export const slidingWindow: Generator = (input, k = 3) => {
   const frames: Frame[] = [];
   let window = 0;
   for (let i = 0; i < kk; i++) window += input[i];
-  let best = window, bestL = 0;
+  let best = window,
+    bestL = 0;
   frames.push({
     array: cloneArr(input),
     highlight: Array.from({ length: kk }, (_, i) => i),
@@ -87,7 +103,10 @@ export const slidingWindow: Generator = (input, k = 3) => {
   });
   for (let i = kk; i < input.length; i++) {
     window += input[i] - input[i - kk];
-    if (window > best) { best = window; bestL = i - kk + 1; }
+    if (window > best) {
+      best = window;
+      bestL = i - kk + 1;
+    }
     frames.push({
       array: cloneArr(input),
       highlight: Array.from({ length: kk }, (_, j) => i - kk + 1 + j),
@@ -118,7 +137,11 @@ export const prefixSum: Generator = (input) => {
       vars: { i, added: input[i], last: p[p.length - 1] },
     });
   }
-  frames.push({ array: p.slice(), sorted: p.map((_, k) => k), note: "Prefix array built — every range sum is now O(1)" });
+  frames.push({
+    array: p.slice(),
+    sorted: p.map((_, k) => k),
+    note: "Prefix array built — every range sum is now O(1)",
+  });
   return frames;
 };
 
@@ -126,10 +149,17 @@ export const prefixSum: Generator = (input) => {
 export const hashMap: Generator = (input, target = 0) => {
   const frames: Frame[] = [];
   const seen = new Map<number, number>();
-  frames.push({ array: cloneArr(input), note: `Scan once, remembering values in a hash map. Target = ${target}`, vars: { target, mapSize: 0 } });
+  frames.push({
+    array: cloneArr(input),
+    note: `Scan once, remembering values in a hash map. Target = ${target}`,
+    vars: { target, mapSize: 0 },
+  });
   for (let i = 0; i < input.length; i++) {
     const need = target - input[i];
-    const mapStr = Array.from(seen.entries()).map(([k, v]) => `${k}→${v}`).join(", ") || "∅";
+    const mapStr =
+      Array.from(seen.entries())
+        .map(([k, v]) => `${k}→${v}`)
+        .join(", ") || "∅";
     if (seen.has(need)) {
       const j = seen.get(need)!;
       frames.push({
@@ -155,8 +185,11 @@ export const hashMap: Generator = (input, target = 0) => {
 // ---------------- Binary search ----------------
 export const binarySearch: Generator = (input, target = 0) => {
   const nums = cloneArr(input).sort((a, b) => a - b);
-  const frames: Frame[] = [{ array: nums, note: `Sorted input. Searching for ${target}`, vars: { target } }];
-  let lo = 0, hi = nums.length - 1;
+  const frames: Frame[] = [
+    { array: nums, note: `Sorted input. Searching for ${target}`, vars: { target } },
+  ];
+  let lo = 0,
+    hi = nums.length - 1;
   while (lo <= hi) {
     const mid = (lo + hi) >> 1;
     const range: number[] = [];
@@ -169,7 +202,12 @@ export const binarySearch: Generator = (input, target = 0) => {
       vars: { lo, hi, mid, midVal: nums[mid], target },
     });
     if (nums[mid] === target) {
-      frames.push({ array: nums, sorted: [mid], note: `Found at index ${mid}`, vars: { result: mid } });
+      frames.push({
+        array: nums,
+        sorted: [mid],
+        note: `Found at index ${mid}`,
+        vars: { result: mid },
+      });
       return frames;
     }
     if (nums[mid] < target) lo = mid + 1;
@@ -183,14 +221,29 @@ export const binarySearch: Generator = (input, target = 0) => {
 export const kadane: Generator = (input) => {
   const frames: Frame[] = [];
   if (input.length === 0) return [{ array: [], note: "empty" }];
-  let current = input[0], best = input[0];
-  let s = 0, e = 0, ts = 0;
-  frames.push({ array: cloneArr(input), highlight: [0], note: `Start: current = best = ${input[0]}`, vars: { current, best } });
+  let current = input[0],
+    best = input[0];
+  let s = 0,
+    e = 0,
+    ts = 0;
+  frames.push({
+    array: cloneArr(input),
+    highlight: [0],
+    note: `Start: current = best = ${input[0]}`,
+    vars: { current, best },
+  });
   for (let i = 1; i < input.length; i++) {
-    if (input[i] > current + input[i]) { current = input[i]; ts = i; }
-    else current = current + input[i];
+    if (input[i] > current + input[i]) {
+      current = input[i];
+      ts = i;
+    } else current = current + input[i];
     let reset = false;
-    if (current > best) { best = current; s = ts; e = i; reset = false; }
+    if (current > best) {
+      best = current;
+      s = ts;
+      e = i;
+      reset = false;
+    }
     frames.push({
       array: cloneArr(input),
       highlight: [i],
@@ -213,7 +266,11 @@ export const monotonicStack: Generator = (input) => {
   const frames: Frame[] = [];
   const stack: number[] = [];
   const res = new Array(input.length).fill(-1);
-  frames.push({ array: cloneArr(input), note: "Init decreasing stack. -1 means no greater element yet.", vars: { stack: "[]", result: res.join(",") } });
+  frames.push({
+    array: cloneArr(input),
+    note: "Init decreasing stack. -1 means no greater element yet.",
+    vars: { stack: "[]", result: res.join(",") },
+  });
   for (let i = 0; i < input.length; i++) {
     while (stack.length && input[stack[stack.length - 1]] < input[i]) {
       const top = stack.pop()!;
@@ -251,7 +308,7 @@ export const GENERATORS: Record<string, Generator> = {
   "prefix-sum": prefixSum,
   "hash-map": hashMap,
   "binary-search": binarySearch,
-  "kadane": kadane,
+  kadane: kadane,
   "monotonic-stack": monotonicStack,
 };
 

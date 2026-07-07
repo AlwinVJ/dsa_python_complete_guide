@@ -39,13 +39,14 @@ export function TrieRedirect() {
         </div>
         <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">Trie</h1>
         <p className="mt-4 max-w-lg text-base text-muted-foreground sm:text-lg">
-          A trie is fundamentally a tree data structure — each edge is a character, and each root-to-node
-          path spells a stored prefix. It's commonly discussed alongside string algorithms because of what
-          it's used for, but structurally it belongs with the rest of the tree family.
+          A trie is fundamentally a tree data structure — each edge is a character, and each
+          root-to-node path spells a stored prefix. It's commonly discussed alongside string
+          algorithms because of what it's used for, but structurally it belongs with the rest of the
+          tree family.
         </p>
         <p className="mt-3 max-w-lg text-sm text-muted-foreground">
-          To keep a single source of truth, the platform maintains one complete Trie course — with theory,
-          the interactive visualizer, and Python implementations — under Trees.
+          To keep a single source of truth, the platform maintains one complete Trie course — with
+          theory, the interactive visualizer, and Python implementations — under Trees.
         </p>
 
         <div className="mt-8">

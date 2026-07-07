@@ -46,7 +46,8 @@ export function HashTablePlayground({ capacity: initialCap = 8 }: { capacity?: n
       return [...without, { key, value: value || 1 }];
     });
     setMsg({ text: `Inserted "${key}" → bucket ${b}`, kind: "ok" });
-    setKey(""); setValue("");
+    setKey("");
+    setValue("");
   }
 
   function onSearch() {
@@ -76,7 +77,11 @@ export function HashTablePlayground({ capacity: initialCap = 8 }: { capacity?: n
   }
 
   function reset() {
-    setEntries([]); setKey(""); setValue(""); setMsg(null); setHighlight(null);
+    setEntries([]);
+    setKey("");
+    setValue("");
+    setMsg(null);
+    setHighlight(null);
   }
 
   return (
@@ -123,7 +128,9 @@ export function HashTablePlayground({ capacity: initialCap = 8 }: { capacity?: n
             key={n}
             onClick={() => onResize(n)}
             className={`rounded-md border px-2 py-1 font-mono ${
-              n === cap ? "border-[color:var(--brand)] bg-[color:var(--brand)]/10 text-[color:var(--brand)]" : "border-border hover:border-[color:var(--brand)]/40"
+              n === cap
+                ? "border-[color:var(--brand)] bg-[color:var(--brand)]/10 text-[color:var(--brand)]"
+                : "border-border hover:border-[color:var(--brand)]/40"
             }`}
           >
             {n}

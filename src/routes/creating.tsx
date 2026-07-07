@@ -40,7 +40,9 @@ function Page() {
 
       <Section title="Try it: type values, see the list">
         <div className="card-surface p-4">
-          <label className="mb-2 block text-xs font-medium text-muted-foreground">Comma-separated values</label>
+          <label className="mb-2 block text-xs font-medium text-muted-foreground">
+            Comma-separated values
+          </label>
           <input
             value={input}
             onChange={(e) => setInput(e.target.value)}
@@ -55,7 +57,9 @@ function Page() {
       </Section>
 
       <Section title="2 · The list constructor">
-        <CodeBlock code={`letters = list("abc")   # ['a', 'b', 'c']\nempty2  = list()        # []`} />
+        <CodeBlock
+          code={`letters = list("abc")   # ['a', 'b', 'c']\nempty2  = list()        # []`}
+        />
       </Section>
 
       <Section title="3 · From a range">
@@ -69,8 +73,8 @@ function Page() {
       <Section title="5 · Repetition">
         <CodeBlock code={`zeros = [0] * 5   # [0, 0, 0, 0, 0]`} />
         <Callout kind="warn">
-          <code>[[0]*3]*3</code> creates three references to the <b>same</b> inner list. Mutating one row mutates all.
-          Use a comprehension instead: <code>[[0]*3 for _ in range(3)]</code>.
+          <code>[[0]*3]*3</code> creates three references to the <b>same</b> inner list. Mutating
+          one row mutates all. Use a comprehension instead: <code>[[0]*3 for _ in range(3)]</code>.
         </Callout>
       </Section>
 

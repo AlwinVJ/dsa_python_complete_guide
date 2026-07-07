@@ -17,7 +17,8 @@ export const backtrackingCourse: Course = {
     {
       slug: "introduction",
       title: "Introduction",
-      theory: "Backtracking incrementally builds a candidate, abandons it as soon as it can't lead to a valid solution, and tries the next option.",
+      theory:
+        "Backtracking incrementally builds a candidate, abandons it as soon as it can't lead to a valid solution, and tries the next option.",
     },
     {
       slug: "pattern",
@@ -32,7 +33,8 @@ export const backtrackingCourse: Course = {
     {
       slug: "sudoku",
       title: "Sudoku Solver",
-      theory: "Backtrack cell by cell, trying every digit that doesn't already occur in the row, column, or 3×3 block.",
+      theory:
+        "Backtrack cell by cell, trying every digit that doesn't already occur in the row, column, or 3×3 block.",
     },
     {
       slug: "subsets",
@@ -42,12 +44,14 @@ export const backtrackingCourse: Course = {
     {
       slug: "permutations",
       title: "Permutations",
-      theory: "Pick each remaining element in turn; use an in-place swap trick to avoid extra memory.",
+      theory:
+        "Pick each remaining element in turn; use an in-place swap trick to avoid extra memory.",
     },
     {
       slug: "word-search",
       title: "Word Search",
-      theory: "DFS on the grid with visited-set backtracking. Combine with a trie for the multi-word variant.",
+      theory:
+        "DFS on the grid with visited-set backtracking. Combine with a trie for the multi-word variant.",
     },
     {
       slug: "pruning",
@@ -58,10 +62,26 @@ export const backtrackingCourse: Course = {
       slug: "practice",
       title: "Practice",
       practice: [
-        { title: "LC 46 · Permutations", url: "https://leetcode.com/problems/permutations/", difficulty: "Medium" },
-        { title: "LC 51 · N-Queens", url: "https://leetcode.com/problems/n-queens/", difficulty: "Hard" },
-        { title: "LC 79 · Word Search", url: "https://leetcode.com/problems/word-search/", difficulty: "Medium" },
-        { title: "LC 37 · Sudoku Solver", url: "https://leetcode.com/problems/sudoku-solver/", difficulty: "Hard" },
+        {
+          title: "LC 46 · Permutations",
+          url: "https://leetcode.com/problems/permutations/",
+          difficulty: "Medium",
+        },
+        {
+          title: "LC 51 · N-Queens",
+          url: "https://leetcode.com/problems/n-queens/",
+          difficulty: "Hard",
+        },
+        {
+          title: "LC 79 · Word Search",
+          url: "https://leetcode.com/problems/word-search/",
+          difficulty: "Medium",
+        },
+        {
+          title: "LC 37 · Sudoku Solver",
+          url: "https://leetcode.com/problems/sudoku-solver/",
+          difficulty: "Hard",
+        },
       ],
     },
     {
@@ -73,6 +93,15 @@ export const backtrackingCourse: Course = {
         answer: 2,
       },
     },
-    { slug: "references", title: "References", references: [{ label: "CLRS Chapter 34 — NP-Completeness", url: "https://mitpress.mit.edu/9780262046305/" }] },
+    {
+      slug: "references",
+      title: "References",
+      references: [
+        {
+          label: "CLRS Chapter 34 — NP-Completeness",
+          url: "https://mitpress.mit.edu/9780262046305/",
+        },
+      ],
+    },
   ],
 };

@@ -2,18 +2,34 @@ import { createFileRoute, notFound, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { motion } from "framer-motion";
 import {
-  CheckCircle2, Circle, Sparkles, Clock, BookOpen, ExternalLink,
-  AlertTriangle, Lightbulb, Trophy,
+  CheckCircle2,
+  Circle,
+  Sparkles,
+  Clock,
+  BookOpen,
+  ExternalLink,
+  AlertTriangle,
+  Lightbulb,
+  Trophy,
 } from "lucide-react";
 import { PageShell, PageHeader, Callout, ComplexityBadge } from "@/components/Callout";
 import { CodeBlock } from "@/components/CodeBlock";
 import { TreeVisualizer } from "@/components/TreeVisualizer";
 import { TreePlayground } from "@/components/TreePlayground";
 import {
-  BinaryTreePlayground, CompleteBinaryTreeViz, PerfectBinaryTreeViz,
-  FullBinaryTreeViz, BalancedTreeViz, DegenerateTreeViz,
-  AVLPlayground, RedBlackPlayground, TriePlayground,
-  SegmentTreePlayground, FenwickTreeViz, TraversalPlayer, MemoryDiagram,
+  BinaryTreePlayground,
+  CompleteBinaryTreeViz,
+  PerfectBinaryTreeViz,
+  FullBinaryTreeViz,
+  BalancedTreeViz,
+  DegenerateTreeViz,
+  AVLPlayground,
+  RedBlackPlayground,
+  TriePlayground,
+  SegmentTreePlayground,
+  FenwickTreeViz,
+  TraversalPlayer,
+  MemoryDiagram,
 } from "@/components/trees/Visualizers";
 import { CoursePrevNext } from "@/components/CoursePrevNext";
 import { useLessonProgress } from "@/lib/lesson-progress";
@@ -33,7 +49,12 @@ const TIERS: Record<string, Tier> = {
   foundations: { kind: "foundations", title: "Foundations", lessons: T_FOUNDATIONS },
   algorithms: { kind: "algorithms", title: "Tree Algorithms", lessons: T_ALGORITHMS },
   revision: { kind: "revision", title: "Review & Practice", lessons: T_REVISION },
-  ...Object.fromEntries(TREE_VARIANTS.map((v) => [v.slug, { kind: "variant", title: v.title, lessons: v.lessons } as Tier])),
+  ...Object.fromEntries(
+    TREE_VARIANTS.map((v) => [
+      v.slug,
+      { kind: "variant", title: v.title, lessons: v.lessons } as Tier,
+    ]),
+  ),
 };
 
 type Resolved = { tierKey: string; tierTitle: string; lesson: TLesson };
@@ -57,13 +78,16 @@ export const Route = createFileRoute("/trees/$")({
   head: ({ params }) => {
     const splat = (params as { _splat?: string })._splat ?? "";
     const r = resolvePath(splat);
-    const title = r
-      ? `${r.lesson.title} — Trees — DSA with Python`
-      : "Trees — DSA with Python";
+    const title = r ? `${r.lesson.title} — Trees — DSA with Python` : "Trees — DSA with Python";
     return {
       meta: [
         { title },
-        { name: "description", content: r?.lesson.description ?? "Trees in Python — foundations, variants, algorithms, and review." },
+        {
+          name: "description",
+          content:
+            r?.lesson.description ??
+            "Trees in Python — foundations, variants, algorithms, and review.",
+        },
         { property: "og:title", content: title },
         { property: "og:description", content: r?.lesson.description ?? "" },
       ],
@@ -100,7 +124,9 @@ function TreesLessonPage() {
         <PageHeader eyebrow={eyebrow} title={data.title} description={data.description} />
 
         <div className="-mt-6 mb-8 flex flex-wrap items-center gap-3 text-sm">
-          <span className={`inline-flex items-center gap-1 rounded-md border px-2 py-0.5 text-xs font-medium ${diffColor}`}>
+          <span
+            className={`inline-flex items-center gap-1 rounded-md border px-2 py-0.5 text-xs font-medium ${diffColor}`}
+          >
             {data.difficulty}
           </span>
           <span className="inline-flex items-center gap-1 text-muted-foreground">
@@ -117,15 +143,20 @@ function TreesLessonPage() {
             {done ? <CheckCircle2 className="h-3.5 w-3.5" /> : <Circle className="h-3.5 w-3.5" />}
             {done ? "Completed" : "Mark complete"}
           </button>
-          <Link to="/learn/$course" params={{ course: "trees" }}
-            className="inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground">
+          <Link
+            to="/learn/$course"
+            params={{ course: "trees" }}
+            className="inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground"
+          >
             <BookOpen className="h-3.5 w-3.5" /> Course outline
           </Link>
         </div>
       </motion.div>
 
       <div className="space-y-6">
-        {data.sections.map((s, i) => <SectionRenderer key={i} s={s} />)}
+        {data.sections.map((s, i) => (
+          <SectionRenderer key={i} s={s} />
+        ))}
       </div>
 
       <CoursePrevNext courseSlug="trees" lessonSlug={progressKey} />
@@ -143,40 +174,52 @@ function SectionRenderer({ s }: { s: TSection }) {
           {s.text && <p>{s.text}</p>}
           {s.bullets && (
             <ul className="list-disc space-y-1 pl-6">
-              {s.bullets.map((b, i) => <li key={i}>{b}</li>)}
+              {s.bullets.map((b, i) => (
+                <li key={i}>{b}</li>
+              ))}
             </ul>
           )}
         </div>
       );
     case "tree":
       return (
-        <TreeVisualizer
-          root={s.root}
-          caption={s.caption}
-          path={s.path}
-          minHeight={s.minHeight}
-        />
+        <TreeVisualizer root={s.root} caption={s.caption} path={s.path} minHeight={s.minHeight} />
       );
     case "playground":
       return (
         <div>
-          <h3 className="mb-3 text-sm font-semibold uppercase tracking-wider text-[color:var(--brand)]">Interactive Playground</h3>
+          <h3 className="mb-3 text-sm font-semibold uppercase tracking-wider text-[color:var(--brand)]">
+            Interactive Playground
+          </h3>
           <TreePlayground />
         </div>
       );
-    case "binaryPlayground":     return <BinaryTreePlayground />;
-    case "completeViz":          return <CompleteBinaryTreeViz count={s.count} />;
-    case "perfectViz":           return <PerfectBinaryTreeViz levels={s.levels} />;
-    case "fullViz":              return <FullBinaryTreeViz />;
-    case "balancedViz":          return <BalancedTreeViz />;
-    case "degenerateViz":        return <DegenerateTreeViz />;
-    case "avlPlayground":        return <AVLPlayground />;
-    case "rbPlayground":         return <RedBlackPlayground />;
-    case "triePlayground":       return <TriePlayground seed={s.seed} />;
-    case "segTree":              return <SegmentTreePlayground data={s.data} />;
-    case "fenwick":              return <FenwickTreeViz data={s.data} />;
-    case "traversalPlayer":      return <TraversalPlayer root={s.root} mode={s.mode} />;
-    case "memoryDiagram":        return <MemoryDiagram nodes={s.nodes} caption={s.caption} />;
+    case "binaryPlayground":
+      return <BinaryTreePlayground />;
+    case "completeViz":
+      return <CompleteBinaryTreeViz count={s.count} />;
+    case "perfectViz":
+      return <PerfectBinaryTreeViz levels={s.levels} />;
+    case "fullViz":
+      return <FullBinaryTreeViz />;
+    case "balancedViz":
+      return <BalancedTreeViz />;
+    case "degenerateViz":
+      return <DegenerateTreeViz />;
+    case "avlPlayground":
+      return <AVLPlayground />;
+    case "rbPlayground":
+      return <RedBlackPlayground />;
+    case "triePlayground":
+      return <TriePlayground seed={s.seed} />;
+    case "segTree":
+      return <SegmentTreePlayground data={s.data} />;
+    case "fenwick":
+      return <FenwickTreeViz data={s.data} />;
+    case "traversalPlayer":
+      return <TraversalPlayer root={s.root} mode={s.mode} />;
+    case "memoryDiagram":
+      return <MemoryDiagram nodes={s.nodes} caption={s.caption} />;
     case "code":
       return (
         <div>
@@ -190,13 +233,21 @@ function SectionRenderer({ s }: { s: TSection }) {
           <div className="overflow-hidden rounded-lg border border-border">
             <table className="w-full text-sm">
               <thead className="bg-muted/50">
-                <tr>{s.headers.map((h) => <th key={h} className="px-4 py-2 text-left font-semibold">{h}</th>)}</tr>
+                <tr>
+                  {s.headers.map((h) => (
+                    <th key={h} className="px-4 py-2 text-left font-semibold">
+                      {h}
+                    </th>
+                  ))}
+                </tr>
               </thead>
               <tbody>
                 {s.rows.map((r, i) => (
                   <tr key={i} className="border-t border-border">
                     {r.map((c, j) => (
-                      <td key={j} className="px-4 py-2 font-mono text-xs text-muted-foreground">{c}</td>
+                      <td key={j} className="px-4 py-2 font-mono text-xs text-muted-foreground">
+                        {c}
+                      </td>
                     ))}
                   </tr>
                 ))}
@@ -212,13 +263,21 @@ function SectionRenderer({ s }: { s: TSection }) {
           <div className="overflow-hidden rounded-lg border border-border">
             <table className="w-full text-sm">
               <thead className="bg-muted/50">
-                <tr>{s.headers.map((h) => <th key={h} className="px-4 py-2 text-left font-semibold">{h}</th>)}</tr>
+                <tr>
+                  {s.headers.map((h) => (
+                    <th key={h} className="px-4 py-2 text-left font-semibold">
+                      {h}
+                    </th>
+                  ))}
+                </tr>
               </thead>
               <tbody>
                 {s.rows.map((r, i) => (
                   <tr key={i} className="border-t border-border">
                     {r.map((c, j) => (
-                      <td key={j} className="px-4 py-2 text-sm text-muted-foreground">{c}</td>
+                      <td key={j} className="px-4 py-2 text-sm text-muted-foreground">
+                        {c}
+                      </td>
                     ))}
                   </tr>
                 ))}
@@ -231,7 +290,9 @@ function SectionRenderer({ s }: { s: TSection }) {
     case "complexity":
       return (
         <div>
-          <h3 className="mb-2 text-sm font-semibold uppercase tracking-wider text-[color:var(--brand)]">Complexity</h3>
+          <h3 className="mb-2 text-sm font-semibold uppercase tracking-wider text-[color:var(--brand)]">
+            Complexity
+          </h3>
           <div className="overflow-hidden rounded-lg border border-border">
             <table className="w-full text-sm">
               <thead className="bg-muted/50">
@@ -246,8 +307,12 @@ function SectionRenderer({ s }: { s: TSection }) {
                 {s.rows.map((r, i) => (
                   <tr key={i} className="border-t border-border">
                     <td className="px-4 py-2">{r.op}</td>
-                    <td className="px-4 py-2"><ComplexityText value={r.time} /></td>
-                    <td className="px-4 py-2 font-mono text-xs text-muted-foreground">{r.space ?? "—"}</td>
+                    <td className="px-4 py-2">
+                      <ComplexityText value={r.time} />
+                    </td>
+                    <td className="px-4 py-2 font-mono text-xs text-muted-foreground">
+                      {r.space ?? "—"}
+                    </td>
                     <td className="px-4 py-2 text-xs text-muted-foreground">{r.note ?? ""}</td>
                   </tr>
                 ))}
@@ -264,7 +329,9 @@ function SectionRenderer({ s }: { s: TSection }) {
           </h3>
           <ul className="space-y-2">
             {s.items.map((m, i) => (
-              <li key={i} className="card-surface p-3 text-sm text-muted-foreground">{m}</li>
+              <li key={i} className="card-surface p-3 text-sm text-muted-foreground">
+                {m}
+              </li>
             ))}
           </ul>
         </section>
@@ -280,7 +347,11 @@ function SectionRenderer({ s }: { s: TSection }) {
         </div>
       );
     case "callout":
-      return <Callout kind={s.kind} title={s.title}>{s.text}</Callout>;
+      return (
+        <Callout kind={s.kind} title={s.title}>
+          {s.text}
+        </Callout>
+      );
     case "quiz":
       return (
         <section>
@@ -288,7 +359,9 @@ function SectionRenderer({ s }: { s: TSection }) {
             <Trophy className="h-5 w-5 text-amber-500" /> Quiz
           </h3>
           <div className="space-y-3">
-            {s.items.map((q, i) => <QuizCard key={i} q={q} />)}
+            {s.items.map((q, i) => (
+              <QuizCard key={i} q={q} />
+            ))}
           </div>
         </section>
       );
@@ -299,12 +372,18 @@ function SectionRenderer({ s }: { s: TSection }) {
           <div className="space-y-5">
             {s.groups.map((g) => (
               <div key={g.level}>
-                <div className="mb-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">{g.level}</div>
+                <div className="mb-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                  {g.level}
+                </div>
                 <ul className="space-y-2">
                   {g.items.map((p) => (
                     <li key={p.url}>
-                      <a href={p.url} target="_blank" rel="noreferrer"
-                        className="card-surface flex flex-wrap items-center justify-between gap-2 p-3 hover:border-[color:var(--brand)]/60 transition">
+                      <a
+                        href={p.url}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="card-surface flex flex-wrap items-center justify-between gap-2 p-3 hover:border-[color:var(--brand)]/60 transition"
+                      >
                         <div>
                           <div className="text-sm font-medium">{p.title}</div>
                           <div className="mt-0.5 flex flex-wrap items-center gap-3 text-xs text-muted-foreground">
@@ -312,11 +391,17 @@ function SectionRenderer({ s }: { s: TSection }) {
                             {p.time && <span>~{p.time}</span>}
                           </div>
                         </div>
-                        <span className={`rounded-md px-2 py-0.5 text-xs ${
-                          p.difficulty === "Easy" ? "bg-emerald-500/15 text-emerald-500" :
-                          p.difficulty === "Medium" ? "bg-amber-500/15 text-amber-500" :
-                          "bg-rose-500/15 text-rose-500"
-                        }`}>{p.difficulty}</span>
+                        <span
+                          className={`rounded-md px-2 py-0.5 text-xs ${
+                            p.difficulty === "Easy"
+                              ? "bg-emerald-500/15 text-emerald-500"
+                              : p.difficulty === "Medium"
+                                ? "bg-amber-500/15 text-amber-500"
+                                : "bg-rose-500/15 text-rose-500"
+                          }`}
+                        >
+                          {p.difficulty}
+                        </span>
                       </a>
                     </li>
                   ))}
@@ -333,8 +418,12 @@ function SectionRenderer({ s }: { s: TSection }) {
           <ul className="grid gap-2 sm:grid-cols-2">
             {s.items.map((r) => (
               <li key={r.url}>
-                <a href={r.url} target="_blank" rel="noreferrer"
-                  className="card-surface flex items-center gap-2 p-3 text-sm hover:border-[color:var(--brand)]/60 transition">
+                <a
+                  href={r.url}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="card-surface flex items-center gap-2 p-3 text-sm hover:border-[color:var(--brand)]/60 transition"
+                >
                   <ExternalLink className="h-3.5 w-3.5 text-[color:var(--brand)]" />
                   <span className="truncate">{r.label}</span>
                 </a>
@@ -349,7 +438,9 @@ function SectionRenderer({ s }: { s: TSection }) {
           <h3 className="mb-3 text-xl font-semibold">Interview Questions</h3>
           <ul className="grid gap-2 sm:grid-cols-2">
             {s.items.map((it, i) => (
-              <li key={i} className="card-surface p-3 text-sm">{it}</li>
+              <li key={i} className="card-surface p-3 text-sm">
+                {it}
+              </li>
             ))}
           </ul>
         </section>
@@ -358,7 +449,10 @@ function SectionRenderer({ s }: { s: TSection }) {
 }
 
 function ComplexityText({ value }: { value: string }) {
-  const parts = value.split(/·|\|/).map((p) => p.trim()).filter(Boolean);
+  const parts = value
+    .split(/·|\|/)
+    .map((p) => p.trim())
+    .filter(Boolean);
   if (parts.length === 1 && /^O\(/.test(parts[0])) return <ComplexityBadge value={parts[0]} />;
   if (parts.length > 1) {
     return (
@@ -371,7 +465,9 @@ function ComplexityText({ value }: { value: string }) {
               <ComplexityBadge value={m[0]} />
             </span>
           ) : (
-            <span key={i} className="text-xs">{p}</span>
+            <span key={i} className="text-xs">
+              {p}
+            </span>
           );
         })}
       </div>

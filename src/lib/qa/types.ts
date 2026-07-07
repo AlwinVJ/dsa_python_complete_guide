@@ -20,13 +20,7 @@ export type FaqItem = {
 };
 
 export type InterviewCategory =
-  | "Theory"
-  | "Conceptual"
-  | "Coding"
-  | "Optimization"
-  | "Edge Case"
-  | "Company"
-  | "Follow-up";
+  "Theory" | "Conceptual" | "Coding" | "Optimization" | "Edge Case" | "Company" | "Follow-up";
 
 export type InterviewDifficulty = "Beginner" | "Intermediate" | "Advanced" | "FAANG";
 
@@ -52,7 +46,7 @@ export type InterviewQuestion = {
 export type ModuleQA = {
   moduleSlug: string;
   moduleTitle: string;
-  faqPath: string;      // e.g. "/linked-lists/faq"
+  faqPath: string; // e.g. "/linked-lists/faq"
   interviewPath: string; // e.g. "/linked-lists/interview"
   faqs: FaqItem[];
   interview: InterviewQuestion[];

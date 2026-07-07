@@ -14,7 +14,19 @@ export type ComplexityRow = {
   note?: string;
 };
 
-const ORDER = ["O(1)", "O(log n)", "O(n)", "O(n log n)", "O(n + k)", "O(k)", "O(n²)", "O(n^2)", "O(nk)", "O(2^n)", "O(n!)"] as const;
+const ORDER = [
+  "O(1)",
+  "O(log n)",
+  "O(n)",
+  "O(n log n)",
+  "O(n + k)",
+  "O(k)",
+  "O(n²)",
+  "O(n^2)",
+  "O(nk)",
+  "O(2^n)",
+  "O(n!)",
+] as const;
 
 export function complexityColor(v?: string): string {
   if (!v) return "var(--muted-foreground)";
@@ -35,7 +47,11 @@ export function ComplexityBadgeCell({ value, tip }: { value?: string; tip?: stri
     <span
       title={tip}
       className="inline-flex items-center rounded-md border px-2 py-0.5 font-mono text-xs font-medium whitespace-nowrap"
-      style={{ borderColor: color, color, background: `color-mix(in oklab, ${color} 12%, transparent)` }}
+      style={{
+        borderColor: color,
+        color,
+        background: `color-mix(in oklab, ${color} 12%, transparent)`,
+      }}
     >
       {value}
     </span>
@@ -67,7 +83,11 @@ export function ComplexityTable({
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
-    let list = rows.filter((r) => (cat === "All" || r.category === cat) && (!q || r.name.toLowerCase().includes(q) || r.note?.toLowerCase().includes(q)));
+    let list = rows.filter(
+      (r) =>
+        (cat === "All" || r.category === cat) &&
+        (!q || r.name.toLowerCase().includes(q) || r.note?.toLowerCase().includes(q)),
+    );
     list = [...list].sort((a, b) => {
       let d = 0;
       if (sortKey === "name") d = a.name.localeCompare(b.name);
@@ -79,7 +99,10 @@ export function ComplexityTable({
   }, [rows, query, cat, sortKey, asc]);
 
   const copy = async () => {
-    const header = mode === "time" ? ["Operation", "Best", "Average", "Worst", "Notes"] : ["Operation", "Aux Space", "Notes"];
+    const header =
+      mode === "time"
+        ? ["Operation", "Best", "Average", "Worst", "Notes"]
+        : ["Operation", "Aux Space", "Notes"];
     const lines = [header.join("\t")];
     for (const r of filtered) {
       lines.push(
@@ -171,25 +194,41 @@ export function ComplexityTable({
           <tbody>
             {filtered.map((r) => (
               <tr key={r.name} className="border-t border-border align-top">
-                <td className="p-3 font-mono">{r.name}<div className="text-[11px] font-sans text-muted-foreground">{r.category}</div></td>
+                <td className="p-3 font-mono">
+                  {r.name}
+                  <div className="text-[11px] font-sans text-muted-foreground">{r.category}</div>
+                </td>
                 {mode === "time" ? (
                   <>
-                    <td className="p-3"><ComplexityBadgeCell value={r.best} /></td>
-                    <td className="p-3"><ComplexityBadgeCell value={r.average} /></td>
-                    <td className="p-3"><ComplexityBadgeCell value={r.worst} /></td>
+                    <td className="p-3">
+                      <ComplexityBadgeCell value={r.best} />
+                    </td>
+                    <td className="p-3">
+                      <ComplexityBadgeCell value={r.average} />
+                    </td>
+                    <td className="p-3">
+                      <ComplexityBadgeCell value={r.worst} />
+                    </td>
                     <td className="p-3">{r.stable === undefined ? "—" : r.stable ? "✓" : "✗"}</td>
                     <td className="p-3">{r.inPlace === undefined ? "—" : r.inPlace ? "✓" : "✗"}</td>
-                    <td className="p-3">{r.adaptive === undefined ? "—" : r.adaptive ? "✓" : "✗"}</td>
+                    <td className="p-3">
+                      {r.adaptive === undefined ? "—" : r.adaptive ? "✓" : "✗"}
+                    </td>
                   </>
                 ) : (
-                  <td className="p-3"><ComplexityBadgeCell value={r.aux} /></td>
+                  <td className="p-3">
+                    <ComplexityBadgeCell value={r.aux} />
+                  </td>
                 )}
                 <td className="p-3 text-xs text-muted-foreground max-w-xs">{r.note}</td>
               </tr>
             ))}
             {filtered.length === 0 && (
               <tr>
-                <td colSpan={mode === "time" ? 8 : 3} className="p-6 text-center text-sm text-muted-foreground">
+                <td
+                  colSpan={mode === "time" ? 8 : 3}
+                  className="p-6 text-center text-sm text-muted-foreground"
+                >
                   No results.
                 </td>
               </tr>

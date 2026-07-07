@@ -71,7 +71,13 @@ export const stacksBank: ModuleBank = {
       pattern: "Stack Matching",
       interviewFrequency: "Very High",
       companies: ["Amazon", "Google", "Meta"],
-      leetcodeLinks: [{ title: "20. Valid Parentheses", url: "https://leetcode.com/problems/valid-parentheses/", difficulty: "Easy" }],
+      leetcodeLinks: [
+        {
+          title: "20. Valid Parentheses",
+          url: "https://leetcode.com/problems/valid-parentheses/",
+          difficulty: "Easy",
+        },
+      ],
       tags: ["must-do"],
     },
     {
@@ -94,7 +100,13 @@ export const stacksBank: ModuleBank = {
       estimatedMinutes: 20,
       pattern: "Auxiliary Stack",
       interviewFrequency: "Very High",
-      leetcodeLinks: [{ title: "155. Min Stack", url: "https://leetcode.com/problems/min-stack/", difficulty: "Medium" }],
+      leetcodeLinks: [
+        {
+          title: "155. Min Stack",
+          url: "https://leetcode.com/problems/min-stack/",
+          difficulty: "Medium",
+        },
+      ],
       tags: ["design", "must-do"],
     },
     {
@@ -117,7 +129,13 @@ export const stacksBank: ModuleBank = {
       pattern: "Monotonic Stack",
       relatedAlgorithm: "monotonic-stack",
       interviewFrequency: "Very High",
-      leetcodeLinks: [{ title: "739. Daily Temperatures", url: "https://leetcode.com/problems/daily-temperatures/", difficulty: "Medium" }],
+      leetcodeLinks: [
+        {
+          title: "739. Daily Temperatures",
+          url: "https://leetcode.com/problems/daily-temperatures/",
+          difficulty: "Medium",
+        },
+      ],
       tags: ["monotonic-stack", "must-do"],
     },
     {
@@ -132,7 +150,13 @@ export const stacksBank: ModuleBank = {
         "class Queue:\n    def __init__(self): self.inb, self.outb = [], []\n    def enqueue(self, x): self.inb.append(x)\n    def dequeue(self):\n        if not self.outb:\n            while self.inb: self.outb.append(self.inb.pop())\n        return self.outb.pop()",
       estimatedMinutes: 15,
       pattern: "Two Stacks",
-      leetcodeLinks: [{ title: "232. Implement Queue using Stacks", url: "https://leetcode.com/problems/implement-queue-using-stacks/", difficulty: "Easy" }],
+      leetcodeLinks: [
+        {
+          title: "232. Implement Queue using Stacks",
+          url: "https://leetcode.com/problems/implement-queue-using-stacks/",
+          difficulty: "Easy",
+        },
+      ],
       tags: ["design"],
     },
   ],

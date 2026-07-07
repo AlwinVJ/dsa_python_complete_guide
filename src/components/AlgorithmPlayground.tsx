@@ -53,16 +53,21 @@ export function AlgorithmPlayground({
 
   useEffect(() => {
     if (!playing) return;
-    if (step >= frames.length - 1) { setPlaying(false); return; }
+    if (step >= frames.length - 1) {
+      setPlaying(false);
+      return;
+    }
     timer.current = setTimeout(() => setStep((s) => Math.min(s + 1, frames.length - 1)), speed);
-    return () => { if (timer.current) clearTimeout(timer.current); };
+    return () => {
+      if (timer.current) clearTimeout(timer.current);
+    };
   }, [playing, step, frames.length, speed]);
 
   if (!gen) {
     return (
       <div className="card-surface p-6 text-sm text-muted-foreground">
-        Interactive visualization coming soon for this algorithm — study the code and dry run
-        below in the meantime.
+        Interactive visualization coming soon for this algorithm — study the code and dry run below
+        in the meantime.
       </div>
     );
   }
@@ -80,7 +85,9 @@ export function AlgorithmPlayground({
           className="min-w-[240px] flex-1 rounded-md border border-input bg-background px-3 py-1.5 font-mono text-sm"
         />
         <button
-          onClick={() => setInput(randomArray(Math.max(6, Math.min(14, nums.length || 8))).join(", "))}
+          onClick={() =>
+            setInput(randomArray(Math.max(6, Math.min(14, nums.length || 8))).join(", "))
+          }
           className="inline-flex items-center gap-1 rounded-md border border-border bg-background px-2 py-1.5 text-xs hover:bg-accent"
           title="Random array"
         >
@@ -122,7 +129,10 @@ export function AlgorithmPlayground({
         {frame?.vars && Object.keys(frame.vars).length > 0 && (
           <div className="mt-2 flex flex-wrap gap-2">
             {Object.entries(frame.vars).map(([k, v]) => (
-              <span key={k} className="rounded border border-border bg-background px-2 py-0.5 font-mono text-xs">
+              <span
+                key={k}
+                className="rounded border border-border bg-background px-2 py-0.5 font-mono text-xs"
+              >
                 <span className="text-muted-foreground">{k}=</span>
                 <span>{String(v)}</span>
               </span>

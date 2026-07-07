@@ -8,7 +8,11 @@ export const Route = createFileRoute("/complexity/")({
   head: () => ({
     meta: [
       { title: "Complexity Cheat Sheets — Python Lists" },
-      { name: "description", content: "Time and space complexity reference for Python list operations, sorting, searching, and interview patterns." },
+      {
+        name: "description",
+        content:
+          "Time and space complexity reference for Python list operations, sorting, searching, and interview patterns.",
+      },
     ],
   }),
   component: Page,
@@ -38,7 +42,8 @@ function Page() {
             </div>
           </div>
           <p className="text-sm text-muted-foreground">
-            43 operations across list methods, 11 sorting algorithms, 5 searching algorithms, and interview patterns.
+            43 operations across list methods, 11 sorting algorithms, 5 searching algorithms, and
+            interview patterns.
           </p>
           <div className="mt-auto inline-flex items-center gap-1 text-xs font-medium text-[color:var(--brand)]">
             Open <ArrowRight className="h-3 w-3 transition group-hover:translate-x-0.5" />

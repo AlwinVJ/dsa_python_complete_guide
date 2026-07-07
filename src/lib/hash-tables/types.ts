@@ -70,9 +70,21 @@ export type HTHeading = { type: "heading"; text: string };
 export type HTPlaygroundSec = { type: "playground"; capacity?: number };
 
 export type HTSection =
-  | HTBucketsViz | HTHashFlow | HTTheory | HTCode | HTDryRun | HTComplexity
-  | HTMistakes | HTTip | HTCallout | HTQuiz | HTPractice
-  | HTRefs | HTInterview | HTHeading | HTPlaygroundSec;
+  | HTBucketsViz
+  | HTHashFlow
+  | HTTheory
+  | HTCode
+  | HTDryRun
+  | HTComplexity
+  | HTMistakes
+  | HTTip
+  | HTCallout
+  | HTQuiz
+  | HTPractice
+  | HTRefs
+  | HTInterview
+  | HTHeading
+  | HTPlaygroundSec;
 
 export type HTLesson = {
   slug: string;

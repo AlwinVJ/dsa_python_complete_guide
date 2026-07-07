@@ -10,10 +10,14 @@ export const STACK_IMPLEMENTATIONS: StackLesson[] = [
     difficulty: "Beginner",
     readMinutes: 5,
     sections: [
-      { type: "theory", text:
-        "Python's built-in list already supports append() and pop() — both are O(1) amortised. You get a fully-functional stack with zero extra code, but a thin wrapper class is worth it for clarity and error handling." },
-      { type: "code", title: "python — thin wrapper", code:
-`class Stack:
+      {
+        type: "theory",
+        text: "Python's built-in list already supports append() and pop() — both are O(1) amortised. You get a fully-functional stack with zero extra code, but a thin wrapper class is worth it for clarity and error handling.",
+      },
+      {
+        type: "code",
+        title: "python — thin wrapper",
+        code: `class Stack:
     __slots__ = ("_data",)
 
     def __init__(self, initial=()):
@@ -27,35 +31,52 @@ export const STACK_IMPLEMENTATIONS: StackLesson[] = [
     def peek(self):           return self._data[-1] if self._data else None
     def is_empty(self):       return not self._data
     def __len__(self):        return len(self._data)
-    def __repr__(self):       return f"Stack({self._data!r})"` },
+    def __repr__(self):       return f"Stack({self._data!r})"`,
+      },
       { type: "viz", items: [10, 20, 30], caption: "Stack([10,20,30]) — TOP = 30" },
-      { type: "dryRun", headers: ["step", "call", "internal list", "return"], rows: [
-        ["1", "push(10)", "[10]", "—"],
-        ["2", "push(20)", "[10, 20]", "—"],
-        ["3", "peek()",   "[10, 20]", "20"],
-        ["4", "pop()",    "[10]", "20"],
-      ]},
-      { type: "complexity", rows: [
-        { op: "push", time: "O(1) amortised" },
-        { op: "pop", time: "O(1)" },
-        { op: "peek", time: "O(1)" },
-      ]},
-      { type: "callout", kind: "perf", title: "Why 'amortised'?",
-        text: "list.append doubles the underlying buffer when full. That single doubling costs O(n), but it happens rarely enough that averaged over many pushes each one costs O(1)." },
+      {
+        type: "dryRun",
+        headers: ["step", "call", "internal list", "return"],
+        rows: [
+          ["1", "push(10)", "[10]", "—"],
+          ["2", "push(20)", "[10, 20]", "—"],
+          ["3", "peek()", "[10, 20]", "20"],
+          ["4", "pop()", "[10]", "20"],
+        ],
+      },
+      {
+        type: "complexity",
+        rows: [
+          { op: "push", time: "O(1) amortised" },
+          { op: "pop", time: "O(1)" },
+          { op: "peek", time: "O(1)" },
+        ],
+      },
+      {
+        type: "callout",
+        kind: "perf",
+        title: "Why 'amortised'?",
+        text: "list.append doubles the underlying buffer when full. That single doubling costs O(n), but it happens rarely enough that averaged over many pushes each one costs O(1).",
+      },
     ],
   },
   {
     slug: "array",
     title: "Stack using a Fixed-size Array",
     eyebrow: "Implementations · 2",
-    description: "The classic textbook implementation — pre-allocated buffer plus an explicit stack pointer.",
+    description:
+      "The classic textbook implementation — pre-allocated buffer plus an explicit stack pointer.",
     difficulty: "Beginner",
     readMinutes: 5,
     sections: [
-      { type: "theory", text:
-        "In competitive-programming or embedded contexts you often want a bounded, allocation-free stack. Pre-allocate a fixed buffer and maintain an integer stack pointer yourself." },
-      { type: "code", title: "python — bounded stack", code:
-`class ArrayStack:
+      {
+        type: "theory",
+        text: "In competitive-programming or embedded contexts you often want a bounded, allocation-free stack. Pre-allocate a fixed buffer and maintain an integer stack pointer yourself.",
+      },
+      {
+        type: "code",
+        title: "python — bounded stack",
+        code: `class ArrayStack:
     def __init__(self, capacity):
         self.buf = [None] * capacity
         self.sp = 0
@@ -76,18 +97,30 @@ export const STACK_IMPLEMENTATIONS: StackLesson[] = [
         return x
 
     def peek(self):
-        return self.buf[self.sp - 1] if self.sp else None` },
-      { type: "viz", items: [10, 20, 30], showAddresses: true, base: 0x2000,
-        caption: "Bounded array-backed stack; SP points to the next free slot." },
-      { type: "mistakes", items: [
-        "Forgetting to null out the popped slot — the reference stays alive and blocks GC.",
-        "Off-by-one on `sp` — SP points to the NEXT slot, not the current top.",
-      ]},
-      { type: "complexity", rows: [
-        { op: "push", time: "O(1) worst-case" },
-        { op: "pop", time: "O(1)" },
-        { op: "overflow check", time: "O(1)" },
-      ]},
+        return self.buf[self.sp - 1] if self.sp else None`,
+      },
+      {
+        type: "viz",
+        items: [10, 20, 30],
+        showAddresses: true,
+        base: 0x2000,
+        caption: "Bounded array-backed stack; SP points to the next free slot.",
+      },
+      {
+        type: "mistakes",
+        items: [
+          "Forgetting to null out the popped slot — the reference stays alive and blocks GC.",
+          "Off-by-one on `sp` — SP points to the NEXT slot, not the current top.",
+        ],
+      },
+      {
+        type: "complexity",
+        rows: [
+          { op: "push", time: "O(1) worst-case" },
+          { op: "pop", time: "O(1)" },
+          { op: "overflow check", time: "O(1)" },
+        ],
+      },
     ],
   },
   {
@@ -98,10 +131,14 @@ export const STACK_IMPLEMENTATIONS: StackLesson[] = [
     difficulty: "Intermediate",
     readMinutes: 6,
     sections: [
-      { type: "theory", text:
-        "A singly linked list is a natural stack: pushing means prepending a node at the head; popping means unlinking it. Every operation touches exactly one node — worst-case O(1), no doubling." },
-      { type: "code", title: "python — linked-list stack", code:
-`class Node:
+      {
+        type: "theory",
+        text: "A singly linked list is a natural stack: pushing means prepending a node at the head; popping means unlinking it. Every operation touches exactly one node — worst-case O(1), no doubling.",
+      },
+      {
+        type: "code",
+        title: "python — linked-list stack",
+        code: `class Node:
     __slots__ = ("val", "next")
     def __init__(self, val, nxt=None):
         self.val, self.next = val, nxt
@@ -126,19 +163,31 @@ class LinkedStack:
         return self.top.val if self.top else None
 
     def __len__(self):
-        return self._size` },
-      { type: "dryRun", headers: ["step", "action", "top → …"], rows: [
-        ["1", "push(10)", "10 → None"],
-        ["2", "push(20)", "20 → 10 → None"],
-        ["3", "push(30)", "30 → 20 → 10 → None"],
-        ["4", "pop() → 30", "20 → 10 → None"],
-      ]},
-      { type: "callout", kind: "perf", title: "When to reach for this",
-        text: "Real-time systems that can't tolerate the occasional O(n) resize spike of a dynamic array. Otherwise, the Python list version is almost always faster in practice." },
-      { type: "complexity", rows: [
-        { op: "push / pop / peek", time: "O(1) worst-case" },
-        { op: "extra memory / item", time: "+1 pointer" },
-      ]},
+        return self._size`,
+      },
+      {
+        type: "dryRun",
+        headers: ["step", "action", "top → …"],
+        rows: [
+          ["1", "push(10)", "10 → None"],
+          ["2", "push(20)", "20 → 10 → None"],
+          ["3", "push(30)", "30 → 20 → 10 → None"],
+          ["4", "pop() → 30", "20 → 10 → None"],
+        ],
+      },
+      {
+        type: "callout",
+        kind: "perf",
+        title: "When to reach for this",
+        text: "Real-time systems that can't tolerate the occasional O(n) resize spike of a dynamic array. Otherwise, the Python list version is almost always faster in practice.",
+      },
+      {
+        type: "complexity",
+        rows: [
+          { op: "push / pop / peek", time: "O(1) worst-case" },
+          { op: "extra memory / item", time: "+1 pointer" },
+        ],
+      },
     ],
   },
   {
@@ -149,10 +198,14 @@ class LinkedStack:
     difficulty: "Intermediate",
     readMinutes: 6,
     sections: [
-      { type: "theory", text:
-        "Two approaches: make push costly (rotate every element on push) or make pop costly (rotate on pop). Both give an amortised O(n) op — this is a teaching exercise, not a production choice." },
-      { type: "code", title: "python — expensive push", code:
-`from collections import deque
+      {
+        type: "theory",
+        text: "Two approaches: make push costly (rotate every element on push) or make pop costly (rotate on pop). Both give an amortised O(n) op — this is a teaching exercise, not a production choice.",
+      },
+      {
+        type: "code",
+        title: "python — expensive push",
+        code: `from collections import deque
 
 class StackFromQueues:
     def __init__(self):
@@ -170,13 +223,21 @@ class StackFromQueues:
         return self.q1.popleft()
 
     def peek(self):
-        return self.q1[0] if self.q1 else None` },
-      { type: "callout", kind: "interview", title: "Follow-up question",
-        text: "'Can you do it with a single queue?' Yes — after appending x, rotate the queue length-1 times so x ends up at the front." },
-      { type: "complexity", rows: [
-        { op: "push (expensive-push variant)", time: "O(n)" },
-        { op: "pop / peek", time: "O(1)" },
-      ]},
+        return self.q1[0] if self.q1 else None`,
+      },
+      {
+        type: "callout",
+        kind: "interview",
+        title: "Follow-up question",
+        text: "'Can you do it with a single queue?' Yes — after appending x, rotate the queue length-1 times so x ends up at the front.",
+      },
+      {
+        type: "complexity",
+        rows: [
+          { op: "push (expensive-push variant)", time: "O(n)" },
+          { op: "pop / peek", time: "O(1)" },
+        ],
+      },
     ],
   },
 ];

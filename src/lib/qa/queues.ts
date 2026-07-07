@@ -39,7 +39,8 @@ export const queuesQA: ModuleQA = {
         "Always use `collections.deque` for a real FIFO: `append` at the rear and `popleft` at the front are both O(1).",
       ],
       code: `# BAD  – O(n) per dequeue\nq = []\nq.append(x); q.pop(0)\n\n# GOOD – O(1)\nfrom collections import deque\nq = deque()\nq.append(x); q.popleft()`,
-      mistake: "Reaching for `list` when you needed a queue. This is the single most common Python performance bug in interview code.",
+      mistake:
+        "Reaching for `list` when you needed a queue. This is the single most common Python performance bug in interview code.",
     },
     {
       category: "Concepts",
@@ -95,9 +96,7 @@ export const queuesQA: ModuleQA = {
       ],
       code: `class Queue:\n    def __init__(self): self.i, self.o = [], []\n    def enqueue(self, x): self.i.append(x)\n    def dequeue(self):\n        if not self.o:\n            while self.i: self.o.append(self.i.pop())\n        return self.o.pop()`,
       time: "amortised O(1)",
-      related: [
-        { label: "Interview · Queue using Stacks", to: "/queues/interview" },
-      ],
+      related: [{ label: "Interview · Queue using Stacks", to: "/queues/interview" }],
     },
     {
       category: "Operations",
@@ -107,9 +106,7 @@ export const queuesQA: ModuleQA = {
         "Tracking `size` separately is simpler than the classic 'leave one slot empty' trick — you don't have to reason about wrap-around collisions.",
       ],
       code: `class CircularQueue:\n    def __init__(self, cap):\n        self.buf = [None] * cap\n        self.cap = cap; self.front = 0; self.size = 0\n    def enqueue(self, x):\n        if self.size == self.cap: raise OverflowError\n        self.buf[(self.front + self.size) % self.cap] = x\n        self.size += 1\n    def dequeue(self):\n        if not self.size: raise IndexError\n        x = self.buf[self.front]\n        self.front = (self.front + 1) % self.cap\n        self.size -= 1\n        return x`,
-      related: [
-        { label: "Circular Queue module", to: "/modules/circular-queue" },
-      ],
+      related: [{ label: "Circular Queue module", to: "/modules/circular-queue" }],
     },
     {
       category: "Operations",
@@ -128,9 +125,7 @@ export const queuesQA: ModuleQA = {
         "A deque (double-ended queue) supports O(1) push and pop at both ends. Ideal for sliding-window problems, monotonic-queue algorithms, and undo/redo where new events can arrive at either end.",
       ],
       code: `from collections import deque\ndq = deque([1, 2, 3])\ndq.appendleft(0)    # [0,1,2,3]\ndq.pop()            # 3`,
-      related: [
-        { label: "Deque module", to: "/modules/deque" },
-      ],
+      related: [{ label: "Deque module", to: "/modules/deque" }],
     },
     {
       category: "Design",
@@ -141,9 +136,7 @@ export const queuesQA: ModuleQA = {
       ],
       code: `from collections import deque\ndef sliding_max(nums, k):\n    dq, out = deque(), []\n    for i, x in enumerate(nums):\n        while dq and nums[dq[-1]] < x: dq.pop()\n        dq.append(i)\n        if dq[0] <= i - k: dq.popleft()\n        if i >= k - 1: out.append(nums[dq[0]])\n    return out`,
       time: "O(n)",
-      related: [
-        { label: "Pattern · Monotonic Queue", to: "/algorithms/monotonic-queue" },
-      ],
+      related: [{ label: "Pattern · Monotonic Queue", to: "/algorithms/monotonic-queue" }],
     },
     {
       category: "Design",
@@ -171,9 +164,7 @@ export const queuesQA: ModuleQA = {
       answer: [
         "Dijkstra always relaxes the currently-closest unvisited node. That 'currently closest' is exactly the min-priority element — an O(log n) heap pop.",
       ],
-      related: [
-        { label: "Pattern · Heap", to: "/algorithms/heap" },
-      ],
+      related: [{ label: "Pattern · Heap", to: "/algorithms/heap" }],
     },
   ],
 
@@ -262,7 +253,9 @@ export const queuesQA: ModuleQA = {
       ],
       code: `class Node:\n    def __init__(self, v): self.v, self.next = v, None\nclass Queue:\n    def __init__(self): self.head = self.tail = None\n    def enqueue(self, x):\n        n = Node(x)\n        if not self.tail: self.head = n\n        else: self.tail.next = n\n        self.tail = n\n    def dequeue(self):\n        n = self.head\n        self.head = n.next\n        if not self.head: self.tail = None\n        return n.v`,
       time: "O(1)",
-      relatedLessons: [{ label: "Linked Lists foundations", to: "/linked-lists/foundations/introduction" }],
+      relatedLessons: [
+        { label: "Linked Lists foundations", to: "/linked-lists/foundations/introduction" },
+      ],
     },
     {
       id: "q-i-8",
@@ -276,7 +269,11 @@ export const queuesQA: ModuleQA = {
       ],
       code: `class Queue:\n    def __init__(self): self.i, self.o = [], []\n    def enqueue(self, x): self.i.append(x)\n    def dequeue(self):\n        if not self.o:\n            while self.i: self.o.append(self.i.pop())\n        return self.o.pop()`,
       time: "amortised O(1)",
-      leetcode: { title: "232 · Implement Queue using Stacks", url: "https://leetcode.com/problems/implement-queue-using-stacks/", difficulty: "Easy" },
+      leetcode: {
+        title: "232 · Implement Queue using Stacks",
+        url: "https://leetcode.com/problems/implement-queue-using-stacks/",
+        difficulty: "Easy",
+      },
     },
     {
       id: "q-i-9",
@@ -290,7 +287,11 @@ export const queuesQA: ModuleQA = {
       ],
       code: `class MyCircularQueue:\n    def __init__(self, k):\n        self.buf = [0]*k; self.cap = k; self.front = 0; self.size = 0\n    def enQueue(self, x):\n        if self.size == self.cap: return False\n        self.buf[(self.front + self.size) % self.cap] = x; self.size += 1; return True\n    def deQueue(self):\n        if not self.size: return False\n        self.front = (self.front + 1) % self.cap; self.size -= 1; return True\n    def Front(self): return -1 if not self.size else self.buf[self.front]\n    def Rear(self):  return -1 if not self.size else self.buf[(self.front + self.size - 1) % self.cap]\n    def isEmpty(self): return self.size == 0\n    def isFull(self):  return self.size == self.cap`,
       time: "O(1)",
-      leetcode: { title: "622 · Design Circular Queue", url: "https://leetcode.com/problems/design-circular-queue/", difficulty: "Medium" },
+      leetcode: {
+        title: "622 · Design Circular Queue",
+        url: "https://leetcode.com/problems/design-circular-queue/",
+        difficulty: "Medium",
+      },
     },
     {
       id: "q-i-10",
@@ -347,7 +348,11 @@ export const queuesQA: ModuleQA = {
       code: `from collections import deque\ndef sliding_max(nums, k):\n    dq, out = deque(), []\n    for i, x in enumerate(nums):\n        while dq and nums[dq[-1]] < x: dq.pop()\n        dq.append(i)\n        if dq[0] <= i - k: dq.popleft()\n        if i >= k - 1: out.append(nums[dq[0]])\n    return out`,
       time: "O(n)",
       space: "O(k)",
-      leetcode: { title: "239 · Sliding Window Maximum", url: "https://leetcode.com/problems/sliding-window-maximum/", difficulty: "Hard" },
+      leetcode: {
+        title: "239 · Sliding Window Maximum",
+        url: "https://leetcode.com/problems/sliding-window-maximum/",
+        difficulty: "Hard",
+      },
       relatedAlgorithm: "monotonic-queue",
     },
     {
@@ -360,7 +365,11 @@ export const queuesQA: ModuleQA = {
       explanation: [
         "Scan the grid. On each unvisited '1' cell, run BFS with a queue to flood the connected component and increment the island counter.",
       ],
-      leetcode: { title: "200 · Number of Islands", url: "https://leetcode.com/problems/number-of-islands/", difficulty: "Medium" },
+      leetcode: {
+        title: "200 · Number of Islands",
+        url: "https://leetcode.com/problems/number-of-islands/",
+        difficulty: "Medium",
+      },
     },
     {
       id: "q-i-15",
@@ -372,7 +381,11 @@ export const queuesQA: ModuleQA = {
       explanation: [
         "Max-heap of task counts + a FIFO queue of (count, ready-time). Pop the most frequent task, decrement, and push into the cool-down queue; refill the heap when tasks come off cool-down.",
       ],
-      leetcode: { title: "621 · Task Scheduler", url: "https://leetcode.com/problems/task-scheduler/", difficulty: "Medium" },
+      leetcode: {
+        title: "621 · Task Scheduler",
+        url: "https://leetcode.com/problems/task-scheduler/",
+        difficulty: "Medium",
+      },
       relatedAlgorithm: "heap",
     },
     {
@@ -385,7 +398,11 @@ export const queuesQA: ModuleQA = {
       explanation: [
         "Store timestamps in a deque. On hit, append the timestamp; on getHits(t), popleft everything older than `t - 300`, then return the deque length.",
       ],
-      leetcode: { title: "362 · Design Hit Counter", url: "https://leetcode.com/problems/design-hit-counter/", difficulty: "Medium" },
+      leetcode: {
+        title: "362 · Design Hit Counter",
+        url: "https://leetcode.com/problems/design-hit-counter/",
+        difficulty: "Medium",
+      },
     },
 
     // ── Follow-ups ────────────────────────────────────────────────────────
@@ -401,7 +418,11 @@ export const queuesQA: ModuleQA = {
       ],
       code: `from collections import deque\nclass Stack:\n    def __init__(self): self.q = deque()\n    def push(self, x):\n        self.q.append(x)\n        for _ in range(len(self.q) - 1): self.q.append(self.q.popleft())\n    def pop(self): return self.q.popleft()\n    def top(self): return self.q[0]`,
       time: "push O(n) · pop O(1)",
-      leetcode: { title: "225 · Implement Stack using Queues", url: "https://leetcode.com/problems/implement-stack-using-queues/", difficulty: "Easy" },
+      leetcode: {
+        title: "225 · Implement Stack using Queues",
+        url: "https://leetcode.com/problems/implement-stack-using-queues/",
+        difficulty: "Easy",
+      },
     },
     {
       id: "q-i-18",

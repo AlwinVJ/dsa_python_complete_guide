@@ -3,7 +3,6 @@ import { ChevronRight, ArrowLeft, CheckCircle2, Map } from "lucide-react";
 import { COURSES, coursesByCategory, getCourse } from "@/lib/courses";
 import { lessonHref, type Course, type Lesson, type LessonGroup } from "@/lib/courses/types";
 
-
 /**
  * Reusable sequential navigation for every course.
  *
@@ -47,13 +46,10 @@ export function CoursePrevNext({
   const next = idx < flat.length - 1 ? flat[idx + 1] : null;
   const nextCourse = getNextCourse(course);
 
-  const enteringNewGroup =
-    !!next && !!next.group && next.group.slug !== current.group?.slug;
+  const enteringNewGroup = !!next && !!next.group && next.group.slug !== current.group?.slug;
 
   return (
     <div className="mt-12 space-y-6 border-t border-border pt-6">
-
-
       {enteringNewGroup && next?.group && (
         <SectionTransition
           finishedTitle={current.group?.title ?? "Section"}
@@ -79,7 +75,12 @@ export function CoursePrevNext({
             href={lessonHref(course, prev.lesson)}
           />
         ) : (
-          <PrevCard title="Back to Roadmap" subtitle="Start of course" href="/roadmap" icon="roadmap" />
+          <PrevCard
+            title="Back to Roadmap"
+            subtitle="Start of course"
+            href="/roadmap"
+            icon="roadmap"
+          />
         )}
         {next ? (
           <NextCard
@@ -103,9 +104,11 @@ export function CoursePrevNext({
 
 /* ---------- pieces ---------- */
 
-
 function SectionTransition({
-  finishedTitle, nextGroupTitle, nextHref, courseComplete = false,
+  finishedTitle,
+  nextGroupTitle,
+  nextHref,
+  courseComplete = false,
 }: {
   finishedTitle: string;
   nextGroupTitle: string;
@@ -121,7 +124,8 @@ function SectionTransition({
             {finishedTitle} {courseComplete ? "course completed" : "completed"}
           </div>
           <div className="text-xs text-muted-foreground">
-            {courseComplete ? "Continue with" : "You are now ready to begin"} <span className="font-medium text-foreground">{nextGroupTitle}</span>
+            {courseComplete ? "Continue with" : "You are now ready to begin"}{" "}
+            <span className="font-medium text-foreground">{nextGroupTitle}</span>
           </div>
         </div>
       </div>
@@ -136,12 +140,24 @@ function SectionTransition({
 }
 
 function PrevCard({
-  title, subtitle, href, icon,
-}: { title: string; subtitle?: string; href: string; icon?: "roadmap" }) {
+  title,
+  subtitle,
+  href,
+  icon,
+}: {
+  title: string;
+  subtitle?: string;
+  href: string;
+  icon?: "roadmap";
+}) {
   return (
     <Link to={href} className="card-surface p-4 transition hover:bg-accent">
       <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
-        {icon === "roadmap" ? <Map className="h-3.5 w-3.5" /> : <ArrowLeft className="h-3.5 w-3.5" />}
+        {icon === "roadmap" ? (
+          <Map className="h-3.5 w-3.5" />
+        ) : (
+          <ArrowLeft className="h-3.5 w-3.5" />
+        )}
         {icon === "roadmap" ? "Roadmap" : "Previous"}
       </div>
       <div className="mt-1 font-medium">{title}</div>
@@ -150,9 +166,7 @@ function PrevCard({
   );
 }
 
-function NextCard({
-  title, subtitle, href,
-}: { title: string; subtitle?: string; href: string }) {
+function NextCard({ title, subtitle, href }: { title: string; subtitle?: string; href: string }) {
   return (
     <Link to={href} className="card-surface p-4 transition hover:bg-accent sm:text-right">
       <div className="flex items-center gap-1.5 text-xs text-muted-foreground sm:justify-end">
@@ -176,7 +190,6 @@ function flattenCourse(course: Course): FlatEntry[] {
   for (const l of course.outro ?? []) out.push({ lesson: l });
   return out;
 }
-
 
 /** Next course in the same category by `order`, then across categories. */
 function getNextCourse(course: Course): Course | null {

@@ -6,7 +6,13 @@ import type { TreeNodeViz } from "@/lib/trees/types";
 type Positioned = { node: TreeNodeViz; x: number; y: number; depth: number };
 
 function layout(root: TreeNodeViz | null, gapX = 56, gapY = 68) {
-  if (!root) return { nodes: [] as Positioned[], edges: [] as [Positioned, Positioned][], width: 0, height: 0 };
+  if (!root)
+    return {
+      nodes: [] as Positioned[],
+      edges: [] as [Positioned, Positioned][],
+      width: 0,
+      height: 0,
+    };
   const nodes: Positioned[] = [];
   const edges: [Positioned, Positioned][] = [];
   let x = 0;
@@ -69,7 +75,10 @@ export function TreeVisualizer({
 
   if (!root) {
     return (
-      <div className="card-surface flex flex-col items-center justify-center p-8 text-sm text-muted-foreground" style={{ minHeight: 160 }}>
+      <div
+        className="card-surface flex flex-col items-center justify-center p-8 text-sm text-muted-foreground"
+        style={{ minHeight: 160 }}
+      >
         Empty tree
       </div>
     );
@@ -147,7 +156,9 @@ export function TreeVisualizer({
           );
         })}
       </svg>
-      {caption && <p className="mt-2 text-center text-xs italic text-muted-foreground">{caption}</p>}
+      {caption && (
+        <p className="mt-2 text-center text-xs italic text-muted-foreground">{caption}</p>
+      )}
     </div>
   );
 }

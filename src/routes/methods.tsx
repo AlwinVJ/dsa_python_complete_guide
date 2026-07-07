@@ -8,7 +8,10 @@ export const Route = createFileRoute("/methods")({
   head: () => ({
     meta: [
       { title: "Built-in List Methods — DSA with Python" },
-      { name: "description", content: "Every method on the list class, with syntax, code, and complexity." },
+      {
+        name: "description",
+        content: "Every method on the list class, with syntax, code, and complexity.",
+      },
     ],
   }),
   component: Page,
@@ -16,14 +19,44 @@ export const Route = createFileRoute("/methods")({
 
 const methods = [
   { name: "append(x)", desc: "Add x to the end.", complexity: "O(1)", code: `lst.append(10)` },
-  { name: "extend(it)", desc: "Append every element of iterable.", complexity: "O(k)", code: `lst.extend([1,2,3])` },
-  { name: "insert(i, x)", desc: "Insert x at index i.", complexity: "O(n)", code: `lst.insert(0, "hi")` },
-  { name: "remove(x)", desc: "Remove first occurrence of x.", complexity: "O(n)", code: `lst.remove(3)` },
-  { name: "pop([i])", desc: "Remove and return item at i (default last).", complexity: "O(1) end / O(n) middle", code: `lst.pop()\nlst.pop(0)` },
+  {
+    name: "extend(it)",
+    desc: "Append every element of iterable.",
+    complexity: "O(k)",
+    code: `lst.extend([1,2,3])`,
+  },
+  {
+    name: "insert(i, x)",
+    desc: "Insert x at index i.",
+    complexity: "O(n)",
+    code: `lst.insert(0, "hi")`,
+  },
+  {
+    name: "remove(x)",
+    desc: "Remove first occurrence of x.",
+    complexity: "O(n)",
+    code: `lst.remove(3)`,
+  },
+  {
+    name: "pop([i])",
+    desc: "Remove and return item at i (default last).",
+    complexity: "O(1) end / O(n) middle",
+    code: `lst.pop()\nlst.pop(0)`,
+  },
   { name: "clear()", desc: "Remove everything.", complexity: "O(n)", code: `lst.clear()` },
   { name: "index(x)", desc: "Position of first x.", complexity: "O(n)", code: `lst.index(5)` },
-  { name: "count(x)", desc: "Number of times x appears.", complexity: "O(n)", code: `lst.count(2)` },
-  { name: "sort()", desc: "Sort in place. Uses TimSort.", complexity: "O(n log n)", code: `lst.sort()\nlst.sort(reverse=True)\nlst.sort(key=len)` },
+  {
+    name: "count(x)",
+    desc: "Number of times x appears.",
+    complexity: "O(n)",
+    code: `lst.count(2)`,
+  },
+  {
+    name: "sort()",
+    desc: "Sort in place. Uses TimSort.",
+    complexity: "O(n log n)",
+    code: `lst.sort()\nlst.sort(reverse=True)\nlst.sort(key=len)`,
+  },
   { name: "reverse()", desc: "Reverse in place.", complexity: "O(n)", code: `lst.reverse()` },
   { name: "copy()", desc: "Return a shallow copy.", complexity: "O(n)", code: `new = lst.copy()` },
 ];
@@ -52,7 +85,9 @@ function Page() {
                 <tr key={m.name} className="border-t border-border align-top">
                   <td className="p-3 font-mono">{m.name}</td>
                   <td className="p-3 text-muted-foreground">{m.desc}</td>
-                  <td className="p-3"><ComplexityBadge value={m.complexity.split(" ")[0]} /></td>
+                  <td className="p-3">
+                    <ComplexityBadge value={m.complexity.split(" ")[0]} />
+                  </td>
                 </tr>
               ))}
             </tbody>
@@ -77,8 +112,8 @@ function Page() {
       </Section>
 
       <Callout kind="perf">
-        Use the <code>key=</code> argument to sort by a custom criterion without writing a comparator:{" "}
-        <code>words.sort(key=len)</code>.
+        Use the <code>key=</code> argument to sort by a custom criterion without writing a
+        comparator: <code>words.sort(key=len)</code>.
       </Callout>
 
       <PrevNext current="/methods" />

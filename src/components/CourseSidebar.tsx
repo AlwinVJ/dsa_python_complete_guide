@@ -18,8 +18,10 @@ const ALGO_EXTRA_LINKS = [{ to: "/algorithms", label: "Popular Patterns" }];
 const SPECIALIZED_SLUGS = new Set(["heaps", "tries"]);
 
 const PLAYGROUND_LINKS = [
+  { to: "/playgrounds", label: "All Playgrounds" },
   { to: "/playgrounds/searching", label: "Searching Playground" },
   { to: "/playgrounds/sorting", label: "Sorting Playground" },
+  { to: "/playgrounds/graph", label: "Graph Playground" },
 ];
 
 const REFERENCE_LINKS = [
@@ -51,7 +53,11 @@ export function CourseSidebar({ onNavigate }: { onNavigate?: () => void }) {
 
   const activeCourse = useMemo(() => {
     for (const c of COURSES) {
-      const all = [...c.lessons, ...(c.groups?.flatMap((g) => g.lessons) ?? []), ...(c.outro ?? [])];
+      const all = [
+        ...c.lessons,
+        ...(c.groups?.flatMap((g) => g.lessons) ?? []),
+        ...(c.outro ?? []),
+      ];
       for (const l of all) {
         if (lessonHref(c, l) === pathname || pathname === `/learn/${c.slug}`) {
           return c.slug;
@@ -61,8 +67,7 @@ export function CourseSidebar({ onNavigate }: { onNavigate?: () => void }) {
     return null;
   }, [pathname]);
 
-  const effectiveOpen = (slug: string) =>
-    slug in open ? open[slug] : slug === activeCourse;
+  const effectiveOpen = (slug: string) => (slug in open ? open[slug] : slug === activeCourse);
 
   const toggle = (slug: string) => {
     setOpen((prev) => {
@@ -80,86 +85,148 @@ export function CourseSidebar({ onNavigate }: { onNavigate?: () => void }) {
     <nav className="h-full overflow-y-auto px-4 py-6 text-sm">
       <SidebarSection title="Getting Started">
         {TOP_LINKS.map((l) => (
-          <SidebarLink key={l.to} to={l.to} label={l.label} active={pathname === l.to} onNavigate={onNavigate} />
+          <SidebarLink
+            key={l.to}
+            to={l.to}
+            label={l.label}
+            active={pathname === l.to}
+            onNavigate={onNavigate}
+          />
         ))}
       </SidebarSection>
 
       <SidebarSection title="Data Structures & Algorithms">
-        <SidebarLink to="/learn/introduction-to-dsa" label="Introduction to DSA" active={pathname === "/learn/introduction-to-dsa"} onNavigate={onNavigate} />
-        <SidebarLink to="/complexity" label="Complexity Analysis" active={pathname === "/complexity"} onNavigate={onNavigate} />
-        
+        <SidebarLink
+          to="/learn/introduction-to-dsa"
+          label="Introduction to DSA"
+          active={pathname === "/learn/introduction-to-dsa"}
+          onNavigate={onNavigate}
+        />
+        <SidebarLink
+          to="/complexity"
+          label="Complexity Analysis"
+          active={pathname === "/complexity"}
+          onNavigate={onNavigate}
+        />
+
         <SidebarSubSection title="Linear Data Structures">
-          {groups.linear.filter((c) => !c.hidden).map((c) => (
-            <CourseGroup
-              key={c.slug}
-              course={c}
-              open={effectiveOpen(c.slug)}
-              onToggle={() => toggle(c.slug)}
-              pathname={pathname}
-              onNavigate={onNavigate}
-            />
-          ))}
+          {groups.linear
+            .filter((c) => !c.hidden)
+            .map((c) => (
+              <CourseGroup
+                key={c.slug}
+                course={c}
+                open={effectiveOpen(c.slug)}
+                onToggle={() => toggle(c.slug)}
+                pathname={pathname}
+                onNavigate={onNavigate}
+              />
+            ))}
         </SidebarSubSection>
 
         <SidebarSubSection title="Non-Linear Data Structures">
-          {groups["non-linear"].filter((c) => !c.hidden && !SPECIALIZED_SLUGS.has(c.slug)).map((c) => (
-            <CourseGroup
-              key={c.slug}
-              course={c}
-              open={effectiveOpen(c.slug)}
-              onToggle={() => toggle(c.slug)}
-              pathname={pathname}
-              onNavigate={onNavigate}
-            />
-          ))}
+          {groups["non-linear"]
+            .filter((c) => !c.hidden && !SPECIALIZED_SLUGS.has(c.slug))
+            .map((c) => (
+              <CourseGroup
+                key={c.slug}
+                course={c}
+                open={effectiveOpen(c.slug)}
+                onToggle={() => toggle(c.slug)}
+                pathname={pathname}
+                onNavigate={onNavigate}
+              />
+            ))}
         </SidebarSubSection>
 
         <SidebarSubSection title="Specialized Data Structures">
-          {groups["non-linear"].filter((c) => !c.hidden && SPECIALIZED_SLUGS.has(c.slug)).map((c) => (
-            <CourseGroup
-              key={c.slug}
-              course={c}
-              open={effectiveOpen(c.slug)}
-              onToggle={() => toggle(c.slug)}
-              pathname={pathname}
-              onNavigate={onNavigate}
-            />
-          ))}
+          {groups["non-linear"]
+            .filter((c) => !c.hidden && SPECIALIZED_SLUGS.has(c.slug))
+            .map((c) => (
+              <CourseGroup
+                key={c.slug}
+                course={c}
+                open={effectiveOpen(c.slug)}
+                onToggle={() => toggle(c.slug)}
+                pathname={pathname}
+                onNavigate={onNavigate}
+              />
+            ))}
         </SidebarSubSection>
       </SidebarSection>
 
       <SidebarSection title="Algorithms">
-        <SidebarLink to={SEARCHING_LINK.to} label={SEARCHING_LINK.label} active={pathname === SEARCHING_LINK.to} onNavigate={onNavigate} />
-        <SidebarLink to={SORTING_LINK.to} label={SORTING_LINK.label} active={pathname === SORTING_LINK.to} onNavigate={onNavigate} />
-        {groups.algorithm.filter((c) => !c.hidden).map((c) => (
-          <CourseGroup
-            key={c.slug}
-            course={c}
-            open={effectiveOpen(c.slug)}
-            onToggle={() => toggle(c.slug)}
-            pathname={pathname}
+        <SidebarLink
+          to={SEARCHING_LINK.to}
+          label={SEARCHING_LINK.label}
+          active={pathname === SEARCHING_LINK.to}
+          onNavigate={onNavigate}
+        />
+        <SidebarLink
+          to={SORTING_LINK.to}
+          label={SORTING_LINK.label}
+          active={pathname === SORTING_LINK.to}
+          onNavigate={onNavigate}
+        />
+        {groups.algorithm
+          .filter((c) => !c.hidden)
+          .map((c) => (
+            <CourseGroup
+              key={c.slug}
+              course={c}
+              open={effectiveOpen(c.slug)}
+              onToggle={() => toggle(c.slug)}
+              pathname={pathname}
+              onNavigate={onNavigate}
+            />
+          ))}
+        {ALGO_EXTRA_LINKS.map((l) => (
+          <SidebarLink
+            key={l.to}
+            to={l.to}
+            label={l.label}
+            active={pathname === l.to}
             onNavigate={onNavigate}
           />
-        ))}
-        {ALGO_EXTRA_LINKS.map((l) => (
-          <SidebarLink key={l.to} to={l.to} label={l.label} active={pathname === l.to} onNavigate={onNavigate} />
         ))}
       </SidebarSection>
 
       <SidebarSection title="Interview Prep">
-        <SidebarLink to="/modules/interview" label="Interview Preparation" active={pathname === "/modules/interview"} onNavigate={onNavigate} />
-        <SidebarLink to="/modules/cp" label="Competitive Programming" active={pathname === "/modules/cp"} onNavigate={onNavigate} />
+        <SidebarLink
+          to="/modules/interview"
+          label="Interview Preparation"
+          active={pathname === "/modules/interview"}
+          onNavigate={onNavigate}
+        />
+        <SidebarLink
+          to="/modules/cp"
+          label="Competitive Programming"
+          active={pathname === "/modules/cp"}
+          onNavigate={onNavigate}
+        />
       </SidebarSection>
 
       <SidebarSection title="Playgrounds">
         {PLAYGROUND_LINKS.map((l) => (
-          <SidebarLink key={l.to} to={l.to} label={l.label} active={pathname === l.to} onNavigate={onNavigate} />
+          <SidebarLink
+            key={l.to}
+            to={l.to}
+            label={l.label}
+            active={pathname === l.to}
+            onNavigate={onNavigate}
+          />
         ))}
       </SidebarSection>
 
       <SidebarSection title="Reference">
         {REFERENCE_LINKS.map((l) => (
-          <SidebarLink key={l.to} to={l.to} label={l.label} active={pathname === l.to} onNavigate={onNavigate} />
+          <SidebarLink
+            key={l.to}
+            to={l.to}
+            label={l.label}
+            active={pathname === l.to}
+            onNavigate={onNavigate}
+          />
         ))}
       </SidebarSection>
     </nav>
@@ -178,8 +245,16 @@ function SidebarSection({ title, children }: { title: string; children: React.Re
 }
 
 function SidebarLink({
-  to, label, active, onNavigate,
-}: { to: string; label: string; active: boolean; onNavigate?: () => void }) {
+  to,
+  label,
+  active,
+  onNavigate,
+}: {
+  to: string;
+  label: string;
+  active: boolean;
+  onNavigate?: () => void;
+}) {
   return (
     <li>
       <Link
@@ -198,7 +273,11 @@ function SidebarLink({
 }
 
 function CourseGroup({
-  course, open, onToggle, pathname, onNavigate,
+  course,
+  open,
+  onToggle,
+  pathname,
+  onNavigate,
 }: {
   course: Course;
   open: boolean;
@@ -214,7 +293,12 @@ function CourseGroup({
   if (course.comingSoon || course.duplicateOf) {
     const href = `/learn/${course.slug}`;
     return (
-      <SidebarLink to={href} label={course.title} active={pathname === href} onNavigate={onNavigate} />
+      <SidebarLink
+        to={href}
+        label={course.title}
+        active={pathname === href}
+        onNavigate={onNavigate}
+      />
     );
   }
 
@@ -224,7 +308,11 @@ function CourseGroup({
         onClick={onToggle}
         className="flex w-full items-center gap-1.5 rounded-md px-2 py-1.5 text-left transition hover:bg-accent/60 hover:text-foreground"
       >
-        {open ? <ChevronDown className="h-3.5 w-3.5 shrink-0" /> : <ChevronRight className="h-3.5 w-3.5 shrink-0" />}
+        {open ? (
+          <ChevronDown className="h-3.5 w-3.5 shrink-0" />
+        ) : (
+          <ChevronRight className="h-3.5 w-3.5 shrink-0" />
+        )}
         <span className="flex-1 font-medium">{course.title}</span>
       </button>
       {open && (
@@ -244,7 +332,13 @@ function CourseGroup({
             </Link>
           </li>
           {course.lessons.map((l) => (
-            <LessonLink key={l.slug} course={course} lesson={l} pathname={pathname} onNavigate={onNavigate} />
+            <LessonLink
+              key={l.slug}
+              course={course}
+              lesson={l}
+              pathname={pathname}
+              onNavigate={onNavigate}
+            />
           ))}
           {course.groups?.map((g, idx) => {
             const prev = course.groups?.[idx - 1];
@@ -252,7 +346,8 @@ function CourseGroup({
             const showRevisionDivider = g.kind === "revision";
             const showImplDivider = g.kind === "implementations";
             const showAppsDivider = g.kind === "applications";
-            const showFoundationsDivider = g.kind === "foundations" && (!prev || prev.kind !== "foundations");
+            const showFoundationsDivider =
+              g.kind === "foundations" && (!prev || prev.kind !== "foundations");
             return (
               <div key={g.slug}>
                 {showFoundationsDivider && <TierDivider label="Foundations" />}
@@ -274,7 +369,13 @@ function CourseGroup({
             <li className="mx-2 my-1 border-t border-border/60" />
           )}
           {course.outro?.map((l) => (
-            <LessonLink key={l.slug} course={course} lesson={l} pathname={pathname} onNavigate={onNavigate} />
+            <LessonLink
+              key={l.slug}
+              course={course}
+              lesson={l}
+              pathname={pathname}
+              onNavigate={onNavigate}
+            />
           ))}
         </ul>
       )}
@@ -298,7 +399,11 @@ function SidebarSubSection({
         onClick={() => setOpen((o) => !o)}
         className="flex w-full items-center gap-1 px-2 py-1 text-left text-xs uppercase tracking-wider text-muted-foreground/80 hover:text-foreground transition font-bold"
       >
-        {open ? <ChevronDown className="h-3.5 w-3.5 shrink-0" /> : <ChevronRight className="h-3.5 w-3.5 shrink-0" />}
+        {open ? (
+          <ChevronDown className="h-3.5 w-3.5 shrink-0" />
+        ) : (
+          <ChevronRight className="h-3.5 w-3.5 shrink-0" />
+        )}
         <span className="flex-1">{title}</span>
       </button>
       {open && <ul className="mt-1 ml-2 space-y-0.5 border-l border-border/50 pl-2">{children}</ul>}
@@ -307,7 +412,10 @@ function SidebarSubSection({
 }
 
 function LessonLink({
-  course, lesson: l, pathname, onNavigate,
+  course,
+  lesson: l,
+  pathname,
+  onNavigate,
 }: {
   course: Course;
   lesson: Course["lessons"][number];
@@ -334,7 +442,10 @@ function LessonLink({
 }
 
 function SubGroup({
-  courseSlug, group, pathname, onNavigate,
+  courseSlug,
+  group,
+  pathname,
+  onNavigate,
 }: {
   courseSlug: string;
   group: NonNullable<Course["groups"]>[number];
@@ -372,7 +483,11 @@ function SubGroup({
         onClick={toggle}
         className="mt-1 flex w-full items-center gap-1.5 rounded-md px-2 py-1 text-left text-xs uppercase tracking-wider text-muted-foreground/80 transition hover:text-foreground"
       >
-        {isOpen ? <ChevronDown className="h-3 w-3 shrink-0" /> : <ChevronRight className="h-3 w-3 shrink-0" />}
+        {isOpen ? (
+          <ChevronDown className="h-3 w-3 shrink-0" />
+        ) : (
+          <ChevronRight className="h-3 w-3 shrink-0" />
+        )}
         <span className="flex-1 font-semibold">{group.title}</span>
       </button>
       {isOpen && (
@@ -406,9 +521,10 @@ function TierDivider({ label }: { label: string }) {
   return (
     <li className="my-2 flex items-center gap-2 px-2">
       <span className="h-px flex-1 bg-border/70" />
-      <span className="text-[10px] font-semibold uppercase tracking-[0.14em] text-muted-foreground/70">{label}</span>
+      <span className="text-[10px] font-semibold uppercase tracking-[0.14em] text-muted-foreground/70">
+        {label}
+      </span>
       <span className="h-px flex-1 bg-border/70" />
     </li>
   );
 }
-

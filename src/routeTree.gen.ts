@@ -49,13 +49,13 @@ import { Route as ModulesSlugRouteImport } from './routes/modules.$slug'
 import { Route as LinkedListsInterviewRouteImport } from './routes/linked-lists.interview'
 import { Route as LinkedListsFaqRouteImport } from './routes/linked-lists.faq'
 import { Route as LinkedListsSplatRouteImport } from './routes/linked-lists.$'
-import { Route as LearnCourseRouteImport } from './routes/learn.$course'
 import { Route as HeapsSplatRouteImport } from './routes/heaps.$'
 import { Route as HashTablesSplatRouteImport } from './routes/hash-tables.$'
 import { Route as GraphsSplatRouteImport } from './routes/graphs.$'
 import { Route as ComplexityTimeRouteImport } from './routes/complexity.time'
 import { Route as ComplexitySpaceRouteImport } from './routes/complexity.space'
 import { Route as AlgorithmsSlugRouteImport } from './routes/algorithms.$slug'
+import { Route as LearnCourseIndexRouteImport } from './routes/learn.$course.index'
 import { Route as LearnCourseLessonRouteImport } from './routes/learn.$course.$lesson'
 
 const TraversingRoute = TraversingRouteImport.update({
@@ -258,11 +258,6 @@ const LinkedListsSplatRoute = LinkedListsSplatRouteImport.update({
   path: '/linked-lists/$',
   getParentRoute: () => rootRouteImport,
 } as any)
-const LearnCourseRoute = LearnCourseRouteImport.update({
-  id: '/learn/$course',
-  path: '/learn/$course',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const HeapsSplatRoute = HeapsSplatRouteImport.update({
   id: '/heaps/$',
   path: '/heaps/$',
@@ -293,10 +288,15 @@ const AlgorithmsSlugRoute = AlgorithmsSlugRouteImport.update({
   path: '/algorithms/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const LearnCourseIndexRoute = LearnCourseIndexRouteImport.update({
+  id: '/learn/$course/',
+  path: '/learn/$course/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const LearnCourseLessonRoute = LearnCourseLessonRouteImport.update({
-  id: '/$lesson',
-  path: '/$lesson',
-  getParentRoute: () => LearnCourseRoute,
+  id: '/learn/$course/$lesson',
+  path: '/learn/$course/$lesson',
+  getParentRoute: () => rootRouteImport,
 } as any)
 
 export interface FileRoutesByFullPath {
@@ -327,7 +327,6 @@ export interface FileRoutesByFullPath {
   '/graphs/$': typeof GraphsSplatRoute
   '/hash-tables/$': typeof HashTablesSplatRoute
   '/heaps/$': typeof HeapsSplatRoute
-  '/learn/$course': typeof LearnCourseRouteWithChildren
   '/linked-lists/$': typeof LinkedListsSplatRoute
   '/linked-lists/faq': typeof LinkedListsFaqRoute
   '/linked-lists/interview': typeof LinkedListsInterviewRoute
@@ -348,6 +347,7 @@ export interface FileRoutesByFullPath {
   '/playgrounds/': typeof PlaygroundsIndexRoute
   '/practice/': typeof PracticeIndexRoute
   '/learn/$course/$lesson': typeof LearnCourseLessonRoute
+  '/learn/$course/': typeof LearnCourseIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -377,7 +377,6 @@ export interface FileRoutesByTo {
   '/graphs/$': typeof GraphsSplatRoute
   '/hash-tables/$': typeof HashTablesSplatRoute
   '/heaps/$': typeof HeapsSplatRoute
-  '/learn/$course': typeof LearnCourseRouteWithChildren
   '/linked-lists/$': typeof LinkedListsSplatRoute
   '/linked-lists/faq': typeof LinkedListsFaqRoute
   '/linked-lists/interview': typeof LinkedListsInterviewRoute
@@ -398,6 +397,7 @@ export interface FileRoutesByTo {
   '/playgrounds': typeof PlaygroundsIndexRoute
   '/practice': typeof PracticeIndexRoute
   '/learn/$course/$lesson': typeof LearnCourseLessonRoute
+  '/learn/$course': typeof LearnCourseIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -428,7 +428,6 @@ export interface FileRoutesById {
   '/graphs/$': typeof GraphsSplatRoute
   '/hash-tables/$': typeof HashTablesSplatRoute
   '/heaps/$': typeof HeapsSplatRoute
-  '/learn/$course': typeof LearnCourseRouteWithChildren
   '/linked-lists/$': typeof LinkedListsSplatRoute
   '/linked-lists/faq': typeof LinkedListsFaqRoute
   '/linked-lists/interview': typeof LinkedListsInterviewRoute
@@ -449,6 +448,7 @@ export interface FileRoutesById {
   '/playgrounds/': typeof PlaygroundsIndexRoute
   '/practice/': typeof PracticeIndexRoute
   '/learn/$course/$lesson': typeof LearnCourseLessonRoute
+  '/learn/$course/': typeof LearnCourseIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -480,7 +480,6 @@ export interface FileRouteTypes {
     | '/graphs/$'
     | '/hash-tables/$'
     | '/heaps/$'
-    | '/learn/$course'
     | '/linked-lists/$'
     | '/linked-lists/faq'
     | '/linked-lists/interview'
@@ -501,6 +500,7 @@ export interface FileRouteTypes {
     | '/playgrounds/'
     | '/practice/'
     | '/learn/$course/$lesson'
+    | '/learn/$course/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -530,7 +530,6 @@ export interface FileRouteTypes {
     | '/graphs/$'
     | '/hash-tables/$'
     | '/heaps/$'
-    | '/learn/$course'
     | '/linked-lists/$'
     | '/linked-lists/faq'
     | '/linked-lists/interview'
@@ -551,6 +550,7 @@ export interface FileRouteTypes {
     | '/playgrounds'
     | '/practice'
     | '/learn/$course/$lesson'
+    | '/learn/$course'
   id:
     | '__root__'
     | '/'
@@ -580,7 +580,6 @@ export interface FileRouteTypes {
     | '/graphs/$'
     | '/hash-tables/$'
     | '/heaps/$'
-    | '/learn/$course'
     | '/linked-lists/$'
     | '/linked-lists/faq'
     | '/linked-lists/interview'
@@ -601,6 +600,7 @@ export interface FileRouteTypes {
     | '/playgrounds/'
     | '/practice/'
     | '/learn/$course/$lesson'
+    | '/learn/$course/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -631,7 +631,6 @@ export interface RootRouteChildren {
   GraphsSplatRoute: typeof GraphsSplatRoute
   HashTablesSplatRoute: typeof HashTablesSplatRoute
   HeapsSplatRoute: typeof HeapsSplatRoute
-  LearnCourseRoute: typeof LearnCourseRouteWithChildren
   LinkedListsSplatRoute: typeof LinkedListsSplatRoute
   LinkedListsFaqRoute: typeof LinkedListsFaqRoute
   LinkedListsInterviewRoute: typeof LinkedListsInterviewRoute
@@ -651,6 +650,8 @@ export interface RootRouteChildren {
   GraphsIndexRoute: typeof GraphsIndexRoute
   PlaygroundsIndexRoute: typeof PlaygroundsIndexRoute
   PracticeIndexRoute: typeof PracticeIndexRoute
+  LearnCourseLessonRoute: typeof LearnCourseLessonRoute
+  LearnCourseIndexRoute: typeof LearnCourseIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -935,13 +936,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LinkedListsSplatRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/learn/$course': {
-      id: '/learn/$course'
-      path: '/learn/$course'
-      fullPath: '/learn/$course'
-      preLoaderRoute: typeof LearnCourseRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/heaps/$': {
       id: '/heaps/$'
       path: '/heaps/$'
@@ -984,27 +978,22 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AlgorithmsSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/learn/$course/': {
+      id: '/learn/$course/'
+      path: '/learn/$course'
+      fullPath: '/learn/$course/'
+      preLoaderRoute: typeof LearnCourseIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/learn/$course/$lesson': {
       id: '/learn/$course/$lesson'
-      path: '/$lesson'
+      path: '/learn/$course/$lesson'
       fullPath: '/learn/$course/$lesson'
       preLoaderRoute: typeof LearnCourseLessonRouteImport
-      parentRoute: typeof LearnCourseRoute
+      parentRoute: typeof rootRouteImport
     }
   }
 }
-
-interface LearnCourseRouteChildren {
-  LearnCourseLessonRoute: typeof LearnCourseLessonRoute
-}
-
-const LearnCourseRouteChildren: LearnCourseRouteChildren = {
-  LearnCourseLessonRoute: LearnCourseLessonRoute,
-}
-
-const LearnCourseRouteWithChildren = LearnCourseRoute._addFileChildren(
-  LearnCourseRouteChildren,
-)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
@@ -1034,7 +1023,6 @@ const rootRouteChildren: RootRouteChildren = {
   GraphsSplatRoute: GraphsSplatRoute,
   HashTablesSplatRoute: HashTablesSplatRoute,
   HeapsSplatRoute: HeapsSplatRoute,
-  LearnCourseRoute: LearnCourseRouteWithChildren,
   LinkedListsSplatRoute: LinkedListsSplatRoute,
   LinkedListsFaqRoute: LinkedListsFaqRoute,
   LinkedListsInterviewRoute: LinkedListsInterviewRoute,
@@ -1054,6 +1042,8 @@ const rootRouteChildren: RootRouteChildren = {
   GraphsIndexRoute: GraphsIndexRoute,
   PlaygroundsIndexRoute: PlaygroundsIndexRoute,
   PracticeIndexRoute: PracticeIndexRoute,
+  LearnCourseLessonRoute: LearnCourseLessonRoute,
+  LearnCourseIndexRoute: LearnCourseIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

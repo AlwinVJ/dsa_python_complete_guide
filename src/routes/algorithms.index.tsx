@@ -41,8 +41,8 @@ function AlgorithmsIndex() {
             <h2 className="text-lg font-semibold">Learning roadmap</h2>
           </div>
           <p className="mb-4 text-sm text-muted-foreground">
-            Twenty algorithms grouped from foundational scans to advanced patterns.
-            Follow the order below or jump to any card.
+            Twenty algorithms grouped from foundational scans to advanced patterns. Follow the order
+            below or jump to any card.
           </p>
           <div className="grid gap-3 sm:grid-cols-2">
             {ALGORITHMS.map((a, i) => (
@@ -58,7 +58,9 @@ function AlgorithmsIndex() {
                   className="group card-surface flex h-full flex-col p-4 hover:border-[color:var(--brand)] transition"
                 >
                   <div className="mb-1 flex items-center gap-2 text-xs text-muted-foreground">
-                    <span className="rounded bg-accent px-1.5 py-0.5 font-mono">{a.number.toString().padStart(2, "0")}</span>
+                    <span className="rounded bg-accent px-1.5 py-0.5 font-mono">
+                      {a.number.toString().padStart(2, "0")}
+                    </span>
                     <span>{a.category}</span>
                   </div>
                   <div className="font-semibold">{a.title}</div>

@@ -17,23 +17,27 @@ export const graphAlgorithmsCourse: Course = {
     {
       slug: "introduction",
       title: "Introduction",
-      theory: "Graph algorithms operate on vertices and edges. Most run in O(V + E) or O(E log V) — memorise those two shapes.",
+      theory:
+        "Graph algorithms operate on vertices and edges. Most run in O(V + E) or O(E log V) — memorise those two shapes.",
     },
     {
       slug: "bfs",
       title: "BFS Deep Dive",
-      theory: "Explore layer by layer. Yields shortest paths in unweighted graphs and level orderings in trees.",
+      theory:
+        "Explore layer by layer. Yields shortest paths in unweighted graphs and level orderings in trees.",
       code: `from collections import deque\ndef bfs_shortest(src, dst, G):\n    q, dist = deque([src]), {src: 0}\n    while q:\n        u = q.popleft()\n        if u == dst: return dist[u]\n        for v in G[u]:\n            if v not in dist:\n                dist[v] = dist[u] + 1; q.append(v)\n    return -1`,
     },
     {
       slug: "dfs",
       title: "DFS Deep Dive",
-      theory: "Recurse or use an explicit stack. Powers cycle detection, topological sort, SCC (Tarjan/Kosaraju), and articulation points.",
+      theory:
+        "Recurse or use an explicit stack. Powers cycle detection, topological sort, SCC (Tarjan/Kosaraju), and articulation points.",
     },
     {
       slug: "dijkstra",
       title: "Dijkstra",
-      theory: "Shortest paths in a weighted graph with non-negative edges. Priority queue + relaxation.",
+      theory:
+        "Shortest paths in a weighted graph with non-negative edges. Priority queue + relaxation.",
       complexity: [{ op: "with heap", time: "O((V+E) log V)" }],
     },
     {
@@ -52,35 +56,52 @@ export const graphAlgorithmsCourse: Course = {
     {
       slug: "mst",
       title: "Minimum Spanning Tree",
-      theory: "Kruskal — sort edges, union-find. Prim — grow tree with a min-heap. Both O(E log V).",
+      theory:
+        "Kruskal — sort edges, union-find. Prim — grow tree with a min-heap. Both O(E log V).",
     },
     {
       slug: "topological-sort",
       title: "Topological Sort",
-      theory: "Order a DAG so every edge goes forward. Kahn (BFS on in-degrees) or DFS-based post-order.",
+      theory:
+        "Order a DAG so every edge goes forward. Kahn (BFS on in-degrees) or DFS-based post-order.",
     },
     {
       slug: "scc",
       title: "Strongly Connected Components",
-      theory: "Tarjan's algorithm finds SCCs in a single DFS using low-link numbers. Kosaraju does two DFS passes on G and its transpose. Both O(V + E).",
+      theory:
+        "Tarjan's algorithm finds SCCs in a single DFS using low-link numbers. Kosaraju does two DFS passes on G and its transpose. Both O(V + E).",
     },
     {
       slug: "articulation-points",
       title: "Articulation Points & Bridges",
-      theory: "Vertices/edges whose removal disconnects a component. Found with a DFS discovery/low array in O(V + E).",
+      theory:
+        "Vertices/edges whose removal disconnects a component. Found with a DFS discovery/low array in O(V + E).",
     },
     {
       slug: "network-flow",
       title: "Network Flow",
-      theory: "Max flow between source and sink. Edmonds-Karp = BFS-based Ford-Fulkerson in O(V·E²).",
+      theory:
+        "Max flow between source and sink. Edmonds-Karp = BFS-based Ford-Fulkerson in O(V·E²).",
     },
     {
       slug: "practice",
       title: "Practice",
       practice: [
-        { title: "LC 743 · Network Delay Time", url: "https://leetcode.com/problems/network-delay-time/", difficulty: "Medium" },
-        { title: "LC 787 · Cheapest Flights Within K Stops", url: "https://leetcode.com/problems/cheapest-flights-within-k-stops/", difficulty: "Medium" },
-        { title: "LC 1584 · Min Cost to Connect All Points", url: "https://leetcode.com/problems/min-cost-to-connect-all-points/", difficulty: "Medium" },
+        {
+          title: "LC 743 · Network Delay Time",
+          url: "https://leetcode.com/problems/network-delay-time/",
+          difficulty: "Medium",
+        },
+        {
+          title: "LC 787 · Cheapest Flights Within K Stops",
+          url: "https://leetcode.com/problems/cheapest-flights-within-k-stops/",
+          difficulty: "Medium",
+        },
+        {
+          title: "LC 1584 · Min Cost to Connect All Points",
+          url: "https://leetcode.com/problems/min-cost-to-connect-all-points/",
+          difficulty: "Medium",
+        },
       ],
     },
     {
@@ -92,6 +113,15 @@ export const graphAlgorithmsCourse: Course = {
         answer: 2,
       },
     },
-    { slug: "references", title: "References", references: [{ label: "CLRS Part VI — Graph Algorithms", url: "https://mitpress.mit.edu/9780262046305/" }] },
+    {
+      slug: "references",
+      title: "References",
+      references: [
+        {
+          label: "CLRS Part VI — Graph Algorithms",
+          url: "https://mitpress.mit.edu/9780262046305/",
+        },
+      ],
+    },
   ],
 };

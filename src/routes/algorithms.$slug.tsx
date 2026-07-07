@@ -42,12 +42,30 @@ export const Route = createFileRoute("/algorithms/$slug")({
   component: AlgorithmPage,
 });
 
-const PLAYGROUND_HINTS: Record<string, { input?: string; useParam?: boolean; paramLabel?: string; defaultParam?: number }> = {
-  "two-pointers": { input: "1, 2, 4, 5, 7, 11, 15", useParam: true, paramLabel: "Target", defaultParam: 9 },
-  "sliding-window": { input: "2, 1, 5, 1, 3, 2, 4, 1, 6", useParam: true, paramLabel: "Window k", defaultParam: 3 },
-  "binary-search": { input: "1, 3, 5, 7, 9, 11, 13, 17, 21", useParam: true, paramLabel: "Target", defaultParam: 11 },
+const PLAYGROUND_HINTS: Record<
+  string,
+  { input?: string; useParam?: boolean; paramLabel?: string; defaultParam?: number }
+> = {
+  "two-pointers": {
+    input: "1, 2, 4, 5, 7, 11, 15",
+    useParam: true,
+    paramLabel: "Target",
+    defaultParam: 9,
+  },
+  "sliding-window": {
+    input: "2, 1, 5, 1, 3, 2, 4, 1, 6",
+    useParam: true,
+    paramLabel: "Window k",
+    defaultParam: 3,
+  },
+  "binary-search": {
+    input: "1, 3, 5, 7, 9, 11, 13, 17, 21",
+    useParam: true,
+    paramLabel: "Target",
+    defaultParam: 11,
+  },
   "hash-map": { input: "3, 5, 2, 4, 8, 11", useParam: true, paramLabel: "Target", defaultParam: 7 },
-  "kadane": { input: "-2, 1, -3, 4, -1, 2, 1, -5, 4" },
+  kadane: { input: "-2, 1, -3, 4, -1, 2, 1, -5, 4" },
   "monotonic-stack": { input: "2, 1, 5, 6, 2, 3" },
   "prefix-sum": { input: "3, 1, 4, 1, 5, 9, 2, 6" },
   "linear-traversal": { input: "4, 8, 15, 16, 23, 42" },
@@ -57,15 +75,25 @@ function ProblemRow({ p, storageKey }: { p: LeetProblem; storageKey: string }) {
   const { has, toggle } = useLocalSet(storageKey);
   const done = has(p.id);
   const diffColor =
-    p.difficulty === "Easy" ? "var(--good)" : p.difficulty === "Medium" ? "var(--warn)" : "var(--bad)";
+    p.difficulty === "Easy"
+      ? "var(--good)"
+      : p.difficulty === "Medium"
+        ? "var(--warn)"
+        : "var(--bad)";
   return (
-    <div className={`flex items-start gap-3 rounded-lg border border-border bg-card p-3 transition ${done ? "opacity-70" : ""}`}>
+    <div
+      className={`flex items-start gap-3 rounded-lg border border-border bg-card p-3 transition ${done ? "opacity-70" : ""}`}
+    >
       <button
         onClick={() => toggle(p.id)}
         className="mt-0.5 shrink-0 text-muted-foreground hover:text-[color:var(--good)]"
         aria-label={done ? "Mark as not done" : "Mark as done"}
       >
-        {done ? <CheckCircle2 className="h-5 w-5 text-[color:var(--good)]" /> : <Circle className="h-5 w-5" />}
+        {done ? (
+          <CheckCircle2 className="h-5 w-5 text-[color:var(--good)]" />
+        ) : (
+          <Circle className="h-5 w-5" />
+        )}
       </button>
       <div className="min-w-0 flex-1">
         <div className="flex flex-wrap items-center gap-2">
@@ -79,7 +107,11 @@ function ProblemRow({ p, storageKey }: { p: LeetProblem; storageKey: string }) {
           </a>
           <span
             className="rounded border px-1.5 py-0.5 text-[10px] font-medium"
-            style={{ borderColor: diffColor, color: diffColor, background: `color-mix(in oklab, ${diffColor} 12%, transparent)` }}
+            style={{
+              borderColor: diffColor,
+              color: diffColor,
+              background: `color-mix(in oklab, ${diffColor} 12%, transparent)`,
+            }}
           >
             {p.difficulty}
           </span>
@@ -101,7 +133,10 @@ function ProblemRow({ p, storageKey }: { p: LeetProblem; storageKey: string }) {
         {p.tags && p.tags.length > 0 && (
           <div className="mt-1 flex flex-wrap gap-1">
             {p.tags.map((t) => (
-              <span key={t} className="rounded bg-accent px-1.5 py-0.5 font-mono text-[10px] text-muted-foreground">
+              <span
+                key={t}
+                className="rounded bg-accent px-1.5 py-0.5 font-mono text-[10px] text-muted-foreground"
+              >
                 {t}
               </span>
             ))}
@@ -130,7 +165,9 @@ function AlgorithmPage() {
   return (
     <PageShell>
       <div className="mb-4 text-xs text-muted-foreground">
-        <Link to="/algorithms" className="hover:text-foreground">Popular Algorithms</Link>
+        <Link to="/algorithms" className="hover:text-foreground">
+          Popular Algorithms
+        </Link>
         <span className="mx-1">/</span>
         <span>{algo.title}</span>
       </div>
@@ -143,18 +180,28 @@ function AlgorithmPage() {
 
       {/* Complexity strip */}
       <div className="mb-8 flex flex-wrap items-center gap-3 rounded-lg border border-border bg-card p-4">
-        <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Complexity</span>
+        <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+          Complexity
+        </span>
         {algo.complexity.best && (
-          <span className="flex items-center gap-1 text-xs">Best <ComplexityBadge value={algo.complexity.best} /></span>
+          <span className="flex items-center gap-1 text-xs">
+            Best <ComplexityBadge value={algo.complexity.best} />
+          </span>
         )}
         {algo.complexity.average && (
-          <span className="flex items-center gap-1 text-xs">Avg <ComplexityBadge value={algo.complexity.average} /></span>
+          <span className="flex items-center gap-1 text-xs">
+            Avg <ComplexityBadge value={algo.complexity.average} />
+          </span>
         )}
         {algo.complexity.worst && (
-          <span className="flex items-center gap-1 text-xs">Worst <ComplexityBadge value={algo.complexity.worst} /></span>
+          <span className="flex items-center gap-1 text-xs">
+            Worst <ComplexityBadge value={algo.complexity.worst} />
+          </span>
         )}
         {algo.complexity.space && (
-          <span className="flex items-center gap-1 text-xs">Space <ComplexityBadge value={algo.complexity.space} /></span>
+          <span className="flex items-center gap-1 text-xs">
+            Space <ComplexityBadge value={algo.complexity.space} />
+          </span>
         )}
       </div>
 
@@ -200,7 +247,9 @@ function AlgorithmPage() {
         <h2 className="mb-3 text-xl font-semibold">Python implementation</h2>
         {algo.code.map((c, i) => (
           <div key={i}>
-            <div className="mt-4 mb-1 text-sm font-semibold text-[color:var(--brand)]">{c.label}</div>
+            <div className="mt-4 mb-1 text-sm font-semibold text-[color:var(--brand)]">
+              {c.label}
+            </div>
             {c.note && <p className="mb-2 text-xs text-muted-foreground">{c.note}</p>}
             <CodeBlock code={c.code} title={`${algo.slug}.py`} />
           </div>
@@ -241,35 +290,47 @@ function AlgorithmPage() {
       <section className="mb-10 grid gap-4 md:grid-cols-2">
         <Callout kind="warn" title="Common mistakes">
           <ul className="list-disc pl-5">
-            {algo.commonMistakes.map((m, i) => (<li key={i}>{m}</li>))}
+            {algo.commonMistakes.map((m, i) => (
+              <li key={i}>{m}</li>
+            ))}
           </ul>
         </Callout>
         <Callout kind="info" title="Edge cases">
           <ul className="list-disc pl-5">
-            {algo.edgeCases.map((m, i) => (<li key={i}>{m}</li>))}
+            {algo.edgeCases.map((m, i) => (
+              <li key={i}>{m}</li>
+            ))}
           </ul>
         </Callout>
         <Callout kind="interview" title="Interview tips">
           <ul className="list-disc pl-5">
-            {algo.interviewTips.map((m, i) => (<li key={i}>{m}</li>))}
+            {algo.interviewTips.map((m, i) => (
+              <li key={i}>{m}</li>
+            ))}
           </ul>
         </Callout>
         <Callout kind="did" title="Real-world uses">
           <ul className="list-disc pl-5">
-            {algo.realWorld.map((m, i) => (<li key={i}>{m}</li>))}
+            {algo.realWorld.map((m, i) => (
+              <li key={i}>{m}</li>
+            ))}
           </ul>
         </Callout>
         {algo.pythonTricks && algo.pythonTricks.length > 0 && (
           <Callout kind="tip" title="Python-specific tricks">
             <ul className="list-disc pl-5">
-              {algo.pythonTricks.map((m, i) => (<li key={i}>{m}</li>))}
+              {algo.pythonTricks.map((m, i) => (
+                <li key={i}>{m}</li>
+              ))}
             </ul>
           </Callout>
         )}
         {algo.whenNot && algo.whenNot.length > 0 && (
           <Callout kind="perf" title="When NOT to use">
             <ul className="list-disc pl-5">
-              {algo.whenNot.map((m, i) => (<li key={i}>{m}</li>))}
+              {algo.whenNot.map((m, i) => (
+                <li key={i}>{m}</li>
+              ))}
             </ul>
           </Callout>
         )}
@@ -303,7 +364,9 @@ function AlgorithmPage() {
         <div className="mb-3 flex flex-wrap items-center justify-between gap-3">
           <h2 className="text-xl font-semibold">LeetCode roadmap</h2>
           <div className="flex items-center gap-3 text-xs text-muted-foreground">
-            <span>{doneCount}/{algo.leetcode.length} solved</span>
+            <span>
+              {doneCount}/{algo.leetcode.length} solved
+            </span>
             <div className="h-2 w-32 overflow-hidden rounded-full bg-accent">
               <motion.div
                 className="h-full gradient-brand"
@@ -341,17 +404,24 @@ function AlgorithmPage() {
             params={{ slug: prev.slug }}
             className="group flex flex-col rounded-md border border-border bg-card p-3 text-left hover:border-[color:var(--brand)]"
           >
-            <span className="text-xs text-muted-foreground"><ArrowLeft className="mr-1 inline h-3 w-3" />Previous</span>
+            <span className="text-xs text-muted-foreground">
+              <ArrowLeft className="mr-1 inline h-3 w-3" />
+              Previous
+            </span>
             <span className="text-sm font-semibold">{prev.title}</span>
           </Link>
-        ) : <div />}
+        ) : (
+          <div />
+        )}
         {next ? (
           <Link
             to="/algorithms/$slug"
             params={{ slug: next.slug }}
             className="group flex flex-col rounded-md border border-border bg-card p-3 text-right hover:border-[color:var(--brand)]"
           >
-            <span className="text-xs text-muted-foreground">Next <ArrowRight className="ml-1 inline h-3 w-3" /></span>
+            <span className="text-xs text-muted-foreground">
+              Next <ArrowRight className="ml-1 inline h-3 w-3" />
+            </span>
             <span className="text-sm font-semibold">{next.title}</span>
           </Link>
         ) : (

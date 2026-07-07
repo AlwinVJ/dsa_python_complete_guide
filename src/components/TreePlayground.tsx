@@ -99,8 +99,7 @@ export function TreePlayground({ initial = DEFAULTS }: { initial?: number[] } = 
   const order = useMemo(() => orderTraverse(root, mode), [root, mode]);
   const viz = useMemo(() => toViz(root, hi, path), [root, hi, path]);
 
-  const pushLog = (msg: string) =>
-    setLog((prev) => [msg, ...prev].slice(0, 6));
+  const pushLog = (msg: string) => setLog((prev) => [msg, ...prev].slice(0, 6));
 
   const parse = (): number | null => {
     const v = parseInt(value, 10);
@@ -135,7 +134,9 @@ export function TreePlayground({ initial = DEFAULTS }: { initial?: number[] } = 
     const p = bstFindPath(root, v);
     setPath(new Set(p));
     setHi(new Set(p.length && p[p.length - 1] === v ? [v] : []));
-    pushLog(p.length && p[p.length - 1] === v ? `Found ${v} in ${p.length} step(s)` : `${v} not found`);
+    pushLog(
+      p.length && p[p.length - 1] === v ? `Found ${v} in ${p.length} step(s)` : `${v} not found`,
+    );
     setTimeout(() => {
       setHi(new Set());
       setPath(new Set());
@@ -177,27 +178,51 @@ export function TreePlayground({ initial = DEFAULTS }: { initial?: number[] } = 
           className="w-24 rounded-md border border-border bg-background px-2 py-1 text-sm"
           onKeyDown={(e) => e.key === "Enter" && doInsert()}
         />
-        <button onClick={doInsert} className="inline-flex items-center gap-1 rounded-md bg-[color:var(--brand)] px-2.5 py-1 text-xs font-medium text-primary-foreground hover:opacity-90">
+        <button
+          onClick={doInsert}
+          className="inline-flex items-center gap-1 rounded-md bg-[color:var(--brand)] px-2.5 py-1 text-xs font-medium text-primary-foreground hover:opacity-90"
+        >
           <Plus className="h-3.5 w-3.5" /> Insert
         </button>
-        <button onClick={doSearch} className="inline-flex items-center gap-1 rounded-md border border-border px-2.5 py-1 text-xs hover:bg-accent">
+        <button
+          onClick={doSearch}
+          className="inline-flex items-center gap-1 rounded-md border border-border px-2.5 py-1 text-xs hover:bg-accent"
+        >
           <Search className="h-3.5 w-3.5" /> Search
         </button>
-        <button onClick={doDelete} className="inline-flex items-center gap-1 rounded-md border border-border px-2.5 py-1 text-xs hover:bg-accent">
+        <button
+          onClick={doDelete}
+          className="inline-flex items-center gap-1 rounded-md border border-border px-2.5 py-1 text-xs hover:bg-accent"
+        >
           <Trash2 className="h-3.5 w-3.5" /> Delete
         </button>
-        <button onClick={doRandom} className="rounded-md border border-border px-2.5 py-1 text-xs hover:bg-accent">Random</button>
-        <button onClick={doReset} className="inline-flex items-center gap-1 rounded-md border border-border px-2.5 py-1 text-xs hover:bg-accent">
+        <button
+          onClick={doRandom}
+          className="rounded-md border border-border px-2.5 py-1 text-xs hover:bg-accent"
+        >
+          Random
+        </button>
+        <button
+          onClick={doReset}
+          className="inline-flex items-center gap-1 rounded-md border border-border px-2.5 py-1 text-xs hover:bg-accent"
+        >
           <RefreshCcw className="h-3.5 w-3.5" /> Reset
         </button>
-        <button onClick={doClear} className="rounded-md border border-border px-2.5 py-1 text-xs hover:bg-accent">Clear</button>
+        <button
+          onClick={doClear}
+          className="rounded-md border border-border px-2.5 py-1 text-xs hover:bg-accent"
+        >
+          Clear
+        </button>
       </div>
 
       <TreeVisualizer root={viz} caption={viz ? undefined : "Insert a value to grow the tree"} />
 
       <div className="mt-4 grid gap-3 md:grid-cols-2">
         <div>
-          <div className="mb-1.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground">Metrics</div>
+          <div className="mb-1.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+            Metrics
+          </div>
           <div className="grid grid-cols-4 gap-2 text-center text-xs">
             <Metric label="Nodes" value={meta.size} />
             <Metric label="Leaves" value={meta.leaves} />
@@ -224,7 +249,9 @@ export function TreePlayground({ initial = DEFAULTS }: { initial?: number[] } = 
           </div>
         </div>
         <div>
-          <div className="mb-1.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground">Log</div>
+          <div className="mb-1.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+            Log
+          </div>
           <div className="max-h-40 overflow-y-auto rounded-md border border-border bg-muted/40 p-2">
             <AnimatePresence initial={false}>
               {log.map((l, i) => (

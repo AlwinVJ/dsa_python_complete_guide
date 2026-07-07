@@ -47,9 +47,20 @@ export type StackHeading = { type: "heading"; text: string };
 export type StackPlaygroundSec = { type: "playground"; initial?: Array<string | number> };
 
 export type StackSection =
-  | StackViz | StackTheory | StackCode | StackDryRun | StackComplexity
-  | StackMistakes | StackTip | StackCallout | StackQuiz | StackPractice
-  | StackRefs | StackInterview | StackHeading | StackPlaygroundSec;
+  | StackViz
+  | StackTheory
+  | StackCode
+  | StackDryRun
+  | StackComplexity
+  | StackMistakes
+  | StackTip
+  | StackCallout
+  | StackQuiz
+  | StackPractice
+  | StackRefs
+  | StackInterview
+  | StackHeading
+  | StackPlaygroundSec;
 
 export type StackLesson = {
   slug: string;

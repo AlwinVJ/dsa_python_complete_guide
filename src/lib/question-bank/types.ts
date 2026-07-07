@@ -32,7 +32,8 @@ export type Question = {
   pythonSolution?: string;
   approaches?: Approach[];
   dryRun?: string;
-  visualizationType?: "array" | "linked-list" | "stack" | "queue" | "tree" | "graph" | "hash" | "none";
+  visualizationType?:
+    "array" | "linked-list" | "stack" | "queue" | "tree" | "graph" | "hash" | "none";
   timeComplexity?: string;
   spaceComplexity?: string;
   estimatedMinutes?: number;

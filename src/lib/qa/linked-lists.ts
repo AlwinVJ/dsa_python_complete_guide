@@ -15,9 +15,13 @@ export const linkedListsQA: ModuleQA = {
         "Arrays are laid out contiguously so any index costs O(1), but insertion/deletion in the middle costs O(n) because everything shifts. Linked lists give up random access (O(n) to reach index k) in exchange for O(1) insertion/deletion when you already hold a pointer to the node.",
       ],
       code: `class Node:\n    def __init__(self, value, nxt=None):\n        self.value = value\n        self.next  = nxt\n\nhead = Node(10, Node(20, Node(30)))`,
-      didYouKnow: "Python's built-in `list` is a dynamic array — the language does not ship a linked-list primitive. `collections.deque` is a doubly-linked block list underneath.",
+      didYouKnow:
+        "Python's built-in `list` is a dynamic array — the language does not ship a linked-list primitive. `collections.deque` is a doubly-linked block list underneath.",
       related: [
-        { label: "Foundations · Array vs Linked List", to: "/linked-lists/foundations/array-vs-list" },
+        {
+          label: "Foundations · Array vs Linked List",
+          to: "/linked-lists/foundations/array-vs-list",
+        },
         { label: "Introduction", to: "/linked-lists/foundations/introduction" },
       ],
     },
@@ -29,7 +33,8 @@ export const linkedListsQA: ModuleQA = {
         "Skip a linked list when you need cache-friendly iteration, random indexing, or slicing — a Python list wins on every one of those. Nodes scattered across the heap defeat CPU caching, which is why even algorithms with the same Big-O run slower on linked lists in practice.",
       ],
       time: "insert-at-head O(1) · access index k O(k)",
-      mistake: "Reaching for a linked list because it 'sounds efficient' — most application code is faster on a plain Python list.",
+      mistake:
+        "Reaching for a linked list because it 'sounds efficient' — most application code is faster on a plain Python list.",
       related: [
         { label: "Foundations · When to use", to: "/linked-lists/foundations/when-to-use" },
       ],
@@ -57,7 +62,8 @@ export const linkedListsQA: ModuleQA = {
         "The head is the only reference the caller keeps. Every traversal starts there and walks `head → head.next → …` until reaching `None` (or looping back to head in a circular list).",
         "Losing the head reference is equivalent to leaking the entire list — Python's garbage collector will free every node because nothing is reachable anymore.",
       ],
-      mistake: "Assigning `head = head.next` before checking whether the new head is what you meant — you have effectively deleted the first node.",
+      mistake:
+        "Assigning `head = head.next` before checking whether the new head is what you meant — you have effectively deleted the first node.",
     },
     {
       category: "Concepts",
@@ -66,7 +72,8 @@ export const linkedListsQA: ModuleQA = {
         "In Big-O terms, some operations are asymptotically better on a linked list — head insertion is O(1) vs O(n) for an array's `insert(0, x)`. But in wall-clock time on modern CPUs, arrays usually win because contiguous memory hits the CPU cache and pointer chasing does not.",
         "Rule of thumb: linked lists shine when you truly need O(1) splice/delete at known positions; arrays win almost everywhere else.",
       ],
-      didYouKnow: "A single L1 cache miss can cost 100–300 cycles — more than the entire cost of a small array operation.",
+      didYouKnow:
+        "A single L1 cache miss can cost 100–300 cycles — more than the entire cost of a small array operation.",
     },
 
     // ── Memory ───────────────────────────────────────────────────────────
@@ -78,7 +85,8 @@ export const linkedListsQA: ModuleQA = {
         "For n integers that's roughly 8× the memory of an equivalent NumPy array. Never use a Python-implemented linked list to store millions of numbers — use `numpy` or `array.array` instead.",
       ],
       code: `import sys\nclass N:\n    __slots__ = ('v', 'next')\n    def __init__(self, v): self.v, self.next = v, None\nprint(sys.getsizeof(N(0)))  # ~48 bytes with __slots__`,
-      didYouKnow: "Adding `__slots__` shaves ~40 % off node size by removing the per-instance `__dict__`.",
+      didYouKnow:
+        "Adding `__slots__` shaves ~40 % off node size by removing the per-instance `__dict__`.",
     },
     {
       category: "Memory",
@@ -98,7 +106,8 @@ export const linkedListsQA: ModuleQA = {
         "Deletion in a linked list is really 'unlink': you point the previous node's `next` past the doomed node. Once nothing references the node anymore, CPython's reference-counted GC frees its memory automatically.",
         "You do not need to `del node`. But if the node was part of a cycle (circular list) you must also break the cycle, otherwise reference counting alone cannot reclaim it — Python's cyclic GC will eventually catch it.",
       ],
-      mistake: "Forgetting to clear the deleted node's own `next` — leaves a dangling pointer that can revive freed nodes if you keep an external reference.",
+      mistake:
+        "Forgetting to clear the deleted node's own `next` — leaves a dangling pointer that can revive freed nodes if you keep an external reference.",
     },
 
     // ── Operations ───────────────────────────────────────────────────────
@@ -112,9 +121,7 @@ export const linkedListsQA: ModuleQA = {
       ],
       code: `def push_front(head, v):\n    return Node(v, head)\n\ndef insert_after(node, v):\n    node.next = Node(v, node.next)`,
       time: "head O(1) · tail O(1) with tail cache, O(n) without · after-node O(1)",
-      related: [
-        { label: "Singly · Insertion", to: "/linked-lists/singly/insertion" },
-      ],
+      related: [{ label: "Singly · Insertion", to: "/linked-lists/singly/insertion" }],
     },
     {
       category: "Operations",
@@ -140,9 +147,7 @@ export const linkedListsQA: ModuleQA = {
       code: `def reverse(head):\n    prev, cur = None, head\n    while cur:\n        cur.next, prev, cur = prev, cur, cur.next\n    return prev`,
       time: "O(n)",
       space: "O(1) iterative · O(n) recursive",
-      related: [
-        { label: "Singly · Reverse", to: "/linked-lists/singly/reverse" },
-      ],
+      related: [{ label: "Singly · Reverse", to: "/linked-lists/singly/reverse" }],
     },
     {
       category: "Operations",
@@ -164,9 +169,7 @@ export const linkedListsQA: ModuleQA = {
       code: `def merge(a, b):\n    dummy = tail = Node(0)\n    while a and b:\n        if a.value <= b.value:\n            tail.next, a = a, a.next\n        else:\n            tail.next, b = b, b.next\n        tail = tail.next\n    tail.next = a or b\n    return dummy.next`,
       time: "O(n + m)",
       space: "O(1)",
-      related: [
-        { label: "Singly · Merge two sorted lists", to: "/linked-lists/singly/merge" },
-      ],
+      related: [{ label: "Singly · Merge two sorted lists", to: "/linked-lists/singly/merge" }],
     },
 
     // ── Design ───────────────────────────────────────────────────────────
@@ -185,9 +188,7 @@ export const linkedListsQA: ModuleQA = {
         "Anywhere the data itself is a ring: round-robin CPU scheduling, media playlists on repeat, ring buffers, the Josephus problem. Circular lists remove the special-case for wrapping.",
         "Downside: every traversal now needs a stop condition (`cur is head`) — a plain `while cur` loops forever.",
       ],
-      related: [
-        { label: "Circular Linked List", to: "/linked-lists/circular/introduction" },
-      ],
+      related: [{ label: "Circular Linked List", to: "/linked-lists/circular/introduction" }],
     },
     {
       category: "Design",
@@ -209,9 +210,7 @@ export const linkedListsQA: ModuleQA = {
       code: `def has_cycle(head):\n    slow = fast = head\n    while fast and fast.next:\n        slow, fast = slow.next, fast.next.next\n        if slow is fast:\n            return True\n    return False`,
       time: "O(n)",
       space: "O(1)",
-      related: [
-        { label: "Related interview: Cycle II", to: "/linked-lists/interview" },
-      ],
+      related: [{ label: "Related interview: Cycle II", to: "/linked-lists/interview" }],
     },
     {
       category: "Practical",
@@ -222,9 +221,7 @@ export const linkedListsQA: ModuleQA = {
       code: `def delete_middle(head):\n    if not head or not head.next: return None\n    slow, fast, prev = head, head, None\n    while fast and fast.next:\n        prev, slow = slow, slow.next\n        fast = fast.next.next\n    prev.next = slow.next\n    return head`,
       time: "O(n)",
       space: "O(1)",
-      related: [
-        { label: "Interview · Remove middle", to: "/linked-lists/interview" },
-      ],
+      related: [{ label: "Interview · Remove middle", to: "/linked-lists/interview" }],
     },
     {
       category: "Practical",
@@ -233,7 +230,8 @@ export const linkedListsQA: ModuleQA = {
         "Python's default recursion limit is 1000 frames — a recursive reverse or merge on a 10 000-node list will raise `RecursionError`.",
         "Prefer iterative versions in production. Only use recursion for lists you know are small, or bump the limit explicitly with `sys.setrecursionlimit`.",
       ],
-      mistake: "Submitting a recursive LeetCode solution that passes the sample tests but fails the hidden test with 50 000 nodes.",
+      mistake:
+        "Submitting a recursive LeetCode solution that passes the sample tests but fails the hidden test with 50 000 nodes.",
     },
     {
       category: "Practical",
@@ -275,7 +273,10 @@ export const linkedListsQA: ModuleQA = {
         "Pick a linked list when the workload is push/pop-heavy at the ends, or when you need to splice sub-sequences quickly. Otherwise reach for an array.",
       ],
       relatedLessons: [
-        { label: "Foundations · Array vs Linked List", to: "/linked-lists/foundations/array-vs-list" },
+        {
+          label: "Foundations · Array vs Linked List",
+          to: "/linked-lists/foundations/array-vs-list",
+        },
       ],
     },
     {
@@ -289,9 +290,7 @@ export const linkedListsQA: ModuleQA = {
         "Singly: each node has only `next`. Cheapest per node; backward traversal impossible without reversing.",
         "Doubly: each node has `next` and `prev`. Costs one extra pointer per node but supports O(1) delete-by-node and O(1) backward walking.",
       ],
-      relatedLessons: [
-        { label: "Variant comparison", to: "/linked-lists/foundations/comparison" },
-      ],
+      relatedLessons: [{ label: "Variant comparison", to: "/linked-lists/foundations/comparison" }],
     },
     {
       id: "ll-i-4",
@@ -321,7 +320,11 @@ export const linkedListsQA: ModuleQA = {
       code: `def reverse_iter(head):\n    prev, cur = None, head\n    while cur:\n        cur.next, prev, cur = prev, cur, cur.next\n    return prev\n\ndef reverse_rec(head):\n    if not head or not head.next: return head\n    new_head = reverse_rec(head.next)\n    head.next.next = head\n    head.next = None\n    return new_head`,
       time: "O(n)",
       space: "O(1) iter · O(n) rec",
-      leetcode: { title: "206 · Reverse Linked List", url: "https://leetcode.com/problems/reverse-linked-list/", difficulty: "Easy" },
+      leetcode: {
+        title: "206 · Reverse Linked List",
+        url: "https://leetcode.com/problems/reverse-linked-list/",
+        difficulty: "Easy",
+      },
       relatedLessons: [{ label: "Singly · Reverse", to: "/linked-lists/singly/reverse" }],
     },
     {
@@ -338,7 +341,11 @@ export const linkedListsQA: ModuleQA = {
       code: `def delete_node(node):\n    node.value = node.next.value\n    node.next  = node.next.next`,
       time: "O(1)",
       space: "O(1)",
-      leetcode: { title: "237 · Delete Node in a Linked List", url: "https://leetcode.com/problems/delete-node-in-a-linked-list/", difficulty: "Medium" },
+      leetcode: {
+        title: "237 · Delete Node in a Linked List",
+        url: "https://leetcode.com/problems/delete-node-in-a-linked-list/",
+        difficulty: "Medium",
+      },
       relatedLessons: [{ label: "Singly · Deletion", to: "/linked-lists/singly/deletion" }],
     },
     {
@@ -354,7 +361,11 @@ export const linkedListsQA: ModuleQA = {
       code: `def merge_two(a, b):\n    dummy = tail = Node(0)\n    while a and b:\n        if a.value <= b.value:\n            tail.next, a = a, a.next\n        else:\n            tail.next, b = b, b.next\n        tail = tail.next\n    tail.next = a or b\n    return dummy.next`,
       time: "O(n + m)",
       space: "O(1)",
-      leetcode: { title: "21 · Merge Two Sorted Lists", url: "https://leetcode.com/problems/merge-two-sorted-lists/", difficulty: "Easy" },
+      leetcode: {
+        title: "21 · Merge Two Sorted Lists",
+        url: "https://leetcode.com/problems/merge-two-sorted-lists/",
+        difficulty: "Easy",
+      },
       relatedLessons: [{ label: "Singly · Merge", to: "/linked-lists/singly/merge" }],
     },
     {
@@ -371,7 +382,11 @@ export const linkedListsQA: ModuleQA = {
       code: `def remove_nth_from_end(head, n):\n    dummy = Node(0, head)\n    slow = fast = dummy\n    for _ in range(n): fast = fast.next\n    while fast.next:\n        slow, fast = slow.next, fast.next\n    slow.next = slow.next.next\n    return dummy.next`,
       time: "O(n)",
       space: "O(1)",
-      leetcode: { title: "19 · Remove Nth Node From End", url: "https://leetcode.com/problems/remove-nth-node-from-end-of-list/", difficulty: "Medium" },
+      leetcode: {
+        title: "19 · Remove Nth Node From End",
+        url: "https://leetcode.com/problems/remove-nth-node-from-end-of-list/",
+        difficulty: "Medium",
+      },
       relatedAlgorithm: "two-pointers",
     },
     {
@@ -387,7 +402,11 @@ export const linkedListsQA: ModuleQA = {
       code: `def delete_middle(head):\n    if not head or not head.next: return None\n    slow, fast, prev = head, head, None\n    while fast and fast.next:\n        prev, slow = slow, slow.next\n        fast = fast.next.next\n    prev.next = slow.next\n    return head`,
       time: "O(n)",
       space: "O(1)",
-      leetcode: { title: "2095 · Delete the Middle Node", url: "https://leetcode.com/problems/delete-the-middle-node-of-a-linked-list/", difficulty: "Medium" },
+      leetcode: {
+        title: "2095 · Delete the Middle Node",
+        url: "https://leetcode.com/problems/delete-the-middle-node-of-a-linked-list/",
+        difficulty: "Medium",
+      },
     },
     {
       id: "ll-i-10",
@@ -402,7 +421,11 @@ export const linkedListsQA: ModuleQA = {
       code: `def detect_cycle(head):\n    slow = fast = head\n    while fast and fast.next:\n        slow, fast = slow.next, fast.next.next\n        if slow is fast:\n            slow = head\n            while slow is not fast:\n                slow, fast = slow.next, fast.next\n            return slow\n    return None`,
       time: "O(n)",
       space: "O(1)",
-      leetcode: { title: "142 · Linked List Cycle II", url: "https://leetcode.com/problems/linked-list-cycle-ii/", difficulty: "Medium" },
+      leetcode: {
+        title: "142 · Linked List Cycle II",
+        url: "https://leetcode.com/problems/linked-list-cycle-ii/",
+        difficulty: "Medium",
+      },
     },
     {
       id: "ll-i-11",
@@ -418,7 +441,11 @@ export const linkedListsQA: ModuleQA = {
       code: `def is_palindrome(head):\n    slow = fast = head\n    while fast and fast.next:\n        slow, fast = slow.next, fast.next.next\n    prev, cur = None, slow\n    while cur:\n        cur.next, prev, cur = prev, cur, cur.next\n    left, right = head, prev\n    while right:\n        if left.value != right.value: return False\n        left, right = left.next, right.next\n    return True`,
       time: "O(n)",
       space: "O(1)",
-      leetcode: { title: "234 · Palindrome Linked List", url: "https://leetcode.com/problems/palindrome-linked-list/", difficulty: "Easy" },
+      leetcode: {
+        title: "234 · Palindrome Linked List",
+        url: "https://leetcode.com/problems/palindrome-linked-list/",
+        difficulty: "Easy",
+      },
     },
 
     // ── Advanced · Optimization / Edge cases ─────────────────────────────
@@ -437,7 +464,11 @@ export const linkedListsQA: ModuleQA = {
       code: `import heapq\ndef merge_k(lists):\n    heap = []\n    for i, node in enumerate(lists):\n        if node: heapq.heappush(heap, (node.value, i, node))\n    dummy = tail = Node(0)\n    while heap:\n        _, i, node = heapq.heappop(heap)\n        tail.next = node; tail = node\n        if node.next: heapq.heappush(heap, (node.next.value, i, node.next))\n    return dummy.next`,
       time: "O(n log k)",
       space: "O(k)",
-      leetcode: { title: "23 · Merge k Sorted Lists", url: "https://leetcode.com/problems/merge-k-sorted-lists/", difficulty: "Hard" },
+      leetcode: {
+        title: "23 · Merge k Sorted Lists",
+        url: "https://leetcode.com/problems/merge-k-sorted-lists/",
+        difficulty: "Hard",
+      },
       relatedAlgorithm: "heap",
     },
     {
@@ -453,7 +484,11 @@ export const linkedListsQA: ModuleQA = {
       code: `def reverse_k_group(head, k):\n    dummy = group_prev = Node(0, head)\n    while True:\n        kth = group_prev\n        for _ in range(k):\n            kth = kth.next\n            if not kth: return dummy.next\n        group_next = kth.next\n        prev, cur = group_next, group_prev.next\n        while cur is not group_next:\n            cur.next, prev, cur = prev, cur, cur.next\n        tmp = group_prev.next\n        group_prev.next = kth\n        group_prev = tmp`,
       time: "O(n)",
       space: "O(1)",
-      leetcode: { title: "25 · Reverse Nodes in k-Group", url: "https://leetcode.com/problems/reverse-nodes-in-k-group/", difficulty: "Hard" },
+      leetcode: {
+        title: "25 · Reverse Nodes in k-Group",
+        url: "https://leetcode.com/problems/reverse-nodes-in-k-group/",
+        difficulty: "Hard",
+      },
     },
     {
       id: "ll-i-14",
@@ -468,7 +503,11 @@ export const linkedListsQA: ModuleQA = {
       ],
       time: "O(n)",
       space: "O(1)",
-      leetcode: { title: "138 · Copy List with Random Pointer", url: "https://leetcode.com/problems/copy-list-with-random-pointer/", difficulty: "Medium" },
+      leetcode: {
+        title: "138 · Copy List with Random Pointer",
+        url: "https://leetcode.com/problems/copy-list-with-random-pointer/",
+        difficulty: "Medium",
+      },
     },
 
     // ── FAANG · multi-step ───────────────────────────────────────────────
@@ -486,7 +525,11 @@ export const linkedListsQA: ModuleQA = {
       code: `class Node:\n    def __init__(self, k, v): self.k, self.v, self.prev, self.next = k, v, None, None\nclass LRU:\n    def __init__(self, cap):\n        self.cap = cap; self.m = {}\n        self.head, self.tail = Node(0,0), Node(0,0)\n        self.head.next, self.tail.prev = self.tail, self.head\n    def _add(self, n):\n        n.prev, n.next = self.head, self.head.next\n        self.head.next.prev = n; self.head.next = n\n    def _rm(self, n):\n        n.prev.next, n.next.prev = n.next, n.prev\n    def get(self, k):\n        if k not in self.m: return -1\n        n = self.m[k]; self._rm(n); self._add(n); return n.v\n    def put(self, k, v):\n        if k in self.m: self._rm(self.m[k])\n        n = Node(k, v); self.m[k] = n; self._add(n)\n        if len(self.m) > self.cap:\n            lru = self.tail.prev; self._rm(lru); del self.m[lru.k]`,
       time: "O(1) per op",
       space: "O(capacity)",
-      leetcode: { title: "146 · LRU Cache", url: "https://leetcode.com/problems/lru-cache/", difficulty: "Medium" },
+      leetcode: {
+        title: "146 · LRU Cache",
+        url: "https://leetcode.com/problems/lru-cache/",
+        difficulty: "Medium",
+      },
       followUp: "Extend to LFU (LeetCode 460) — you now need a frequency dimension too.",
     },
     {
@@ -502,7 +545,11 @@ export const linkedListsQA: ModuleQA = {
       code: `def add_two_numbers(a, b):\n    dummy = tail = Node(0); carry = 0\n    while a or b or carry:\n        s = carry + (a.value if a else 0) + (b.value if b else 0)\n        carry, d = divmod(s, 10)\n        tail.next = Node(d); tail = tail.next\n        a = a.next if a else None\n        b = b.next if b else None\n    return dummy.next`,
       time: "O(max(n, m))",
       space: "O(max(n, m))",
-      leetcode: { title: "2 · Add Two Numbers", url: "https://leetcode.com/problems/add-two-numbers/", difficulty: "Medium" },
+      leetcode: {
+        title: "2 · Add Two Numbers",
+        url: "https://leetcode.com/problems/add-two-numbers/",
+        difficulty: "Medium",
+      },
     },
     {
       id: "ll-i-17",
@@ -514,7 +561,11 @@ export const linkedListsQA: ModuleQA = {
       explanation: [
         "Three-step recipe: find middle → reverse second half → interleave the two halves. Every step is a canonical linked-list operation you should have memorised.",
       ],
-      leetcode: { title: "143 · Reorder List", url: "https://leetcode.com/problems/reorder-list/", difficulty: "Medium" },
+      leetcode: {
+        title: "143 · Reorder List",
+        url: "https://leetcode.com/problems/reorder-list/",
+        difficulty: "Medium",
+      },
     },
 
     // ── Follow-ups & Edge cases ──────────────────────────────────────────
@@ -528,7 +579,8 @@ export const linkedListsQA: ModuleQA = {
       explanation: [
         "Iterative reverse already achieves both: single pass over n nodes, O(1) extra space. The interviewer is probably pushing you to state those bounds explicitly and defend them.",
       ],
-      followUp: "Can you reverse only nodes between positions m and n? (LeetCode 92 · Reverse Linked List II)",
+      followUp:
+        "Can you reverse only nodes between positions m and n? (LeetCode 92 · Reverse Linked List II)",
     },
     {
       id: "ll-i-19",
@@ -553,7 +605,11 @@ export const linkedListsQA: ModuleQA = {
         "Two pointers `a` and `b` start at each head. When either reaches the end, restart it at the other list's head. They meet at the intersection node — or both reach None if there is none.",
         "Elegant O(n + m) time, O(1) space — no length calculation needed.",
       ],
-      leetcode: { title: "160 · Intersection of Two Linked Lists", url: "https://leetcode.com/problems/intersection-of-two-linked-lists/", difficulty: "Easy" },
+      leetcode: {
+        title: "160 · Intersection of Two Linked Lists",
+        url: "https://leetcode.com/problems/intersection-of-two-linked-lists/",
+        difficulty: "Easy",
+      },
     },
   ],
 };

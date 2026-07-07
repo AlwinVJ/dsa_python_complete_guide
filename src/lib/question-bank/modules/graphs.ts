@@ -5,10 +5,22 @@ export const graphsBank: ModuleBank = {
   moduleTitle: "Graphs",
   edgeCases: [
     { case: "Cyclic graph", why: "DFS/BFS need a visited set to terminate." },
-    { case: "Disconnected graph", why: "Loop the outer nodes — one traversal only visits one component." },
-    { case: "Self-loop", why: "Node points to itself — visited set handles it, but count edges carefully." },
-    { case: "Weighted graph", why: "BFS gives shortest # edges, not shortest weight — use Dijkstra." },
-    { case: "Directed graph", why: "Cycle detection needs DFS color (white/gray/black), not just visited." },
+    {
+      case: "Disconnected graph",
+      why: "Loop the outer nodes — one traversal only visits one component.",
+    },
+    {
+      case: "Self-loop",
+      why: "Node points to itself — visited set handles it, but count edges carefully.",
+    },
+    {
+      case: "Weighted graph",
+      why: "BFS gives shortest # edges, not shortest weight — use Dijkstra.",
+    },
+    {
+      case: "Directed graph",
+      why: "Cycle detection needs DFS color (white/gray/black), not just visited.",
+    },
   ],
   revisionSheet: {
     timeComplexity: [
@@ -75,7 +87,13 @@ export const graphsBank: ModuleBank = {
           space: "O(R·C)",
         },
       ],
-      leetcodeLinks: [{ title: "200. Number of Islands", url: "https://leetcode.com/problems/number-of-islands/", difficulty: "Medium" }],
+      leetcodeLinks: [
+        {
+          title: "200. Number of Islands",
+          url: "https://leetcode.com/problems/number-of-islands/",
+          difficulty: "Medium",
+        },
+      ],
       interviewFrequency: "Very High",
       companies: ["Amazon", "Meta", "Google"],
       estimatedMinutes: 20,
@@ -98,7 +116,13 @@ export const graphsBank: ModuleBank = {
           space: "O(V)",
         },
       ],
-      leetcodeLinks: [{ title: "133. Clone Graph", url: "https://leetcode.com/problems/clone-graph/", difficulty: "Medium" }],
+      leetcodeLinks: [
+        {
+          title: "133. Clone Graph",
+          url: "https://leetcode.com/problems/clone-graph/",
+          difficulty: "Medium",
+        },
+      ],
       interviewFrequency: "High",
       estimatedMinutes: 25,
       tags: ["must-do"],
@@ -110,7 +134,8 @@ export const graphsBank: ModuleBank = {
       category: "advanced",
       difficulty: "Interview",
       topic: "Topological Sort",
-      description: "Given prerequisites, can you finish all courses? (detect a cycle in a directed graph)",
+      description:
+        "Given prerequisites, can you finish all courses? (detect a cycle in a directed graph)",
       approaches: [
         {
           name: "Optimal",
@@ -119,7 +144,13 @@ export const graphsBank: ModuleBank = {
           space: "O(V + E)",
         },
       ],
-      leetcodeLinks: [{ title: "207. Course Schedule", url: "https://leetcode.com/problems/course-schedule/", difficulty: "Medium" }],
+      leetcodeLinks: [
+        {
+          title: "207. Course Schedule",
+          url: "https://leetcode.com/problems/course-schedule/",
+          difficulty: "Medium",
+        },
+      ],
       interviewFrequency: "Very High",
       companies: ["Amazon", "Google", "Uber"],
       estimatedMinutes: 30,

@@ -7,16 +7,20 @@ import { ArrowRight, Plus, Link2, Unlink, RotateCcw, Trash2 } from "lucide-react
 type Node = {
   id: string;
   value: number;
-  addr: string;             // simulated hex address, stable per node
-  next: string | null;      // id of the node it points to
+  addr: string; // simulated hex address, stable per node
+  next: string | null; // id of the node it points to
 };
 
 const HEX = (n: number) => "0x" + n.toString(16).toUpperCase().padStart(3, "0");
 
 function newNode(index: number, value: number): Node {
   // 0x120, 0x240, 0x360, ... — pretend heap addresses
-  return { id: `n-${Date.now()}-${index}-${Math.random().toString(36).slice(2, 6)}`,
-    value, addr: HEX(0x120 * (index + 1)), next: null };
+  return {
+    id: `n-${Date.now()}-${index}-${Math.random().toString(36).slice(2, 6)}`,
+    value,
+    addr: HEX(0x120 * (index + 1)),
+    next: null,
+  };
 }
 
 // --- component -----------------------------------------------------------
@@ -49,7 +53,7 @@ export function NodePlayground() {
 
   const remove = (id: string) => {
     setNodes((prev) =>
-      prev.filter((n) => n.id !== id).map((n) => (n.next === id ? { ...n, next: null } : n))
+      prev.filter((n) => n.id !== id).map((n) => (n.next === id ? { ...n, next: null } : n)),
     );
     if (head === id) setHead(null);
     if (tail === id) setTail(null);
@@ -63,7 +67,10 @@ export function NodePlayground() {
   };
 
   const connectTo = (target: string) => {
-    if (!pickFrom || pickFrom === target) { setPickFrom(null); return; }
+    if (!pickFrom || pickFrom === target) {
+      setPickFrom(null);
+      return;
+    }
     setNodes((prev) => prev.map((n) => (n.id === pickFrom ? { ...n, next: target } : n)));
     setAction(`Wired ${nodeById[pickFrom]?.addr}.next → ${nodeById[target]?.addr}`);
     setPickFrom(null);
@@ -87,8 +94,8 @@ export function NodePlayground() {
       {/* Info strip */}
       <div className="mb-4 grid grid-cols-2 gap-2 rounded-md border border-border bg-muted/40 p-3 text-xs sm:grid-cols-4">
         <InfoCell label="Nodes" value={String(nodes.length)} />
-        <InfoCell label="HEAD" value={head ? nodeById[head]?.addr ?? "—" : "NULL"} />
-        <InfoCell label="TAIL" value={tail ? nodeById[tail]?.addr ?? "—" : "NULL"} />
+        <InfoCell label="HEAD" value={head ? (nodeById[head]?.addr ?? "—") : "NULL"} />
+        <InfoCell label="TAIL" value={tail ? (nodeById[tail]?.addr ?? "—") : "NULL"} />
         <InfoCell label="Last action" value={pickFrom ? "waiting for target…" : "idle"} />
       </div>
 
@@ -100,8 +107,12 @@ export function NodePlayground() {
           className="w-16 rounded-md border border-border bg-background px-2 py-1.5 text-sm"
           aria-label="new node value"
         />
-        <ToolbarBtn onClick={create} icon={<Plus className="h-3.5 w-3.5" />}>Create Node</ToolbarBtn>
-        <ToolbarBtn onClick={reset} icon={<RotateCcw className="h-3.5 w-3.5" />}>Reset</ToolbarBtn>
+        <ToolbarBtn onClick={create} icon={<Plus className="h-3.5 w-3.5" />}>
+          Create Node
+        </ToolbarBtn>
+        <ToolbarBtn onClick={reset} icon={<RotateCcw className="h-3.5 w-3.5" />}>
+          Reset
+        </ToolbarBtn>
         <span className="ml-auto text-[11px] text-muted-foreground">
           Click <b>connect</b> on a node, then click another to wire <code>next</code>.
         </span>
@@ -134,8 +145,12 @@ export function NodePlayground() {
               >
                 {/* Head/Tail chips */}
                 <div className="mb-2 flex items-center gap-1.5 text-[10px]">
-                  <Chip active={isHead} onClick={() => setHead(isHead ? null : n.id)}>HEAD</Chip>
-                  <Chip active={isTail} onClick={() => setTail(isTail ? null : n.id)}>TAIL</Chip>
+                  <Chip active={isHead} onClick={() => setHead(isHead ? null : n.id)}>
+                    HEAD
+                  </Chip>
+                  <Chip active={isTail} onClick={() => setTail(isTail ? null : n.id)}>
+                    TAIL
+                  </Chip>
                   <button
                     onClick={() => remove(n.id)}
                     className="ml-auto text-muted-foreground hover:text-rose-500"
@@ -150,11 +165,15 @@ export function NodePlayground() {
 
                 {/* Address + next */}
                 <div className="mt-2 space-y-0.5 font-mono text-[11px] text-muted-foreground">
-                  <div>addr: <span className="text-foreground">{n.addr}</span></div>
+                  <div>
+                    addr: <span className="text-foreground">{n.addr}</span>
+                  </div>
                   <div className="flex items-center gap-1">
                     next:{" "}
-                    <span className={n.next ? "text-[color:var(--brand)]" : "text-muted-foreground"}>
-                      {n.next ? nodeById[n.next]?.addr ?? "NULL" : "NULL"}
+                    <span
+                      className={n.next ? "text-[color:var(--brand)]" : "text-muted-foreground"}
+                    >
+                      {n.next ? (nodeById[n.next]?.addr ?? "NULL") : "NULL"}
                     </span>
                     {n.next && <ArrowRight className="h-3 w-3 text-[color:var(--brand)]" />}
                   </div>
@@ -192,18 +211,35 @@ function InfoCell({ label, value }: { label: string; value: string }) {
   );
 }
 
-function ToolbarBtn({ onClick, icon, children }: { onClick: () => void; icon: React.ReactNode; children: React.ReactNode }) {
+function ToolbarBtn({
+  onClick,
+  icon,
+  children,
+}: {
+  onClick: () => void;
+  icon: React.ReactNode;
+  children: React.ReactNode;
+}) {
   return (
     <button
       onClick={onClick}
       className="inline-flex items-center gap-1.5 rounded-md border border-border bg-card px-2.5 py-1.5 text-xs font-medium transition hover:border-[color:var(--brand)]/60 hover:bg-accent"
     >
-      {icon}{children}
+      {icon}
+      {children}
     </button>
   );
 }
 
-function IconBtn({ onClick, title, children }: { onClick: () => void; title: string; children: React.ReactNode }) {
+function IconBtn({
+  onClick,
+  title,
+  children,
+}: {
+  onClick: () => void;
+  title: string;
+  children: React.ReactNode;
+}) {
   return (
     <button
       onClick={onClick}
@@ -215,7 +251,15 @@ function IconBtn({ onClick, title, children }: { onClick: () => void; title: str
   );
 }
 
-function Chip({ active, onClick, children }: { active: boolean; onClick: () => void; children: React.ReactNode }) {
+function Chip({
+  active,
+  onClick,
+  children,
+}: {
+  active: boolean;
+  onClick: () => void;
+  children: React.ReactNode;
+}) {
   return (
     <button
       onClick={onClick}

@@ -5,13 +5,18 @@ export const H_ALGORITHMS: HLesson[] = [
     slug: "heapify",
     title: "Heapify",
     eyebrow: "Algorithms · 1",
-    description: "The one-node fix — sift-down from a single index. Every other heap operation is built on top of it.",
+    description:
+      "The one-node fix — sift-down from a single index. Every other heap operation is built on top of it.",
     difficulty: "Intermediate",
     readMinutes: 4,
     sections: [
-      { type: "theory", text: "'Heapify at i' assumes both subtrees rooted at i are already valid heaps and fixes the single potentially-broken relationship between i and its children. It runs in O(height − depth(i)) — at most O(log n)." },
-      { type: "code", code:
-`def heapify(a, i, n=None):
+      {
+        type: "theory",
+        text: "'Heapify at i' assumes both subtrees rooted at i are already valid heaps and fixes the single potentially-broken relationship between i and its children. It runs in O(height − depth(i)) — at most O(log n).",
+      },
+      {
+        type: "code",
+        code: `def heapify(a, i, n=None):
     """Sift-down at index i, assuming children are already heaps."""
     n = n if n is not None else len(a)
     while True:
@@ -21,9 +26,14 @@ export const H_ALGORITHMS: HLesson[] = [
         if r < n and a[r] < a[s]: s = r
         if s == i: return
         a[i], a[s] = a[s], a[i]
-        i = s` },
-      { type: "callout", kind: "tip", title: "The `n` parameter",
-        text: "The explicit `n` argument lets heap sort reuse this routine while shrinking the active heap in place — see the Heap Sort lesson." },
+        i = s`,
+      },
+      {
+        type: "callout",
+        kind: "tip",
+        title: "The `n` parameter",
+        text: "The explicit `n` argument lets heap sort reuse this routine while shrinking the active heap in place — see the Heap Sort lesson.",
+      },
     ],
   },
   {
@@ -34,13 +44,23 @@ export const H_ALGORITHMS: HLesson[] = [
     difficulty: "Advanced",
     readMinutes: 5,
     sections: [
-      { type: "theory", text: "At height h a node's sift-down does at most h work. In a complete tree with n nodes, roughly n/2^(h+1) nodes sit at height h. Summing h × n/2^(h+1) from h=0 to log n gives a bounded geometric series that collapses to O(n)." },
-      { type: "code", title: "Bottom-up construction", code:
-`def build_heap(a):
+      {
+        type: "theory",
+        text: "At height h a node's sift-down does at most h work. In a complete tree with n nodes, roughly n/2^(h+1) nodes sit at height h. Summing h × n/2^(h+1) from h=0 to log n gives a bounded geometric series that collapses to O(n).",
+      },
+      {
+        type: "code",
+        title: "Bottom-up construction",
+        code: `def build_heap(a):
     for i in range(len(a) // 2 - 1, -1, -1):
-        heapify(a, i)` },
-      { type: "callout", kind: "perf", title: "Contrast: naïve build",
-        text: "Calling push n times does one O(log n) sift-up per element — worst-case Θ(n log n). The bottom-up approach saves the log-factor by processing shallow subtrees before deep ones." },
+        heapify(a, i)`,
+      },
+      {
+        type: "callout",
+        kind: "perf",
+        title: "Contrast: naïve build",
+        text: "Calling push n times does one O(log n) sift-up per element — worst-case Θ(n log n). The bottom-up approach saves the log-factor by processing shallow subtrees before deep ones.",
+      },
     ],
   },
   {
@@ -52,13 +72,15 @@ export const H_ALGORITHMS: HLesson[] = [
     readMinutes: 3,
     sections: [
       { type: "heapPlayground", kind: "min", seed: [2, 5, 3, 8, 6] },
-      { type: "code", code:
-`def push(a, x):
+      {
+        type: "code",
+        code: `def push(a, x):
     a.append(x)
     i = len(a) - 1
     while i > 0 and a[i] < a[(i-1)//2]:
         a[i], a[(i-1)//2] = a[(i-1)//2], a[i]
-        i = (i-1)//2` },
+        i = (i-1)//2`,
+      },
     ],
   },
   {
@@ -70,14 +92,16 @@ export const H_ALGORITHMS: HLesson[] = [
     readMinutes: 3,
     sections: [
       { type: "heapPlayground", kind: "min", seed: [1, 3, 2, 7, 9, 5, 4, 10, 12, 8] },
-      { type: "code", code:
-`def pop(a):
+      {
+        type: "code",
+        code: `def pop(a):
     top = a[0]
     last = a.pop()
     if a:
         a[0] = last
         heapify(a, 0)
-    return top` },
+    return top`,
+      },
     ],
   },
   {
@@ -88,47 +112,62 @@ export const H_ALGORITHMS: HLesson[] = [
     difficulty: "Beginner",
     readMinutes: 2,
     sections: [
-      { type: "code", code:
-`import heapq
+      {
+        type: "code",
+        code: `import heapq
 
 h = [5, 3, 8, 1, 2]
 heapq.heapify(h)                 # O(n)
 
 heapq.heappop(h)                 # 1  — extract min
-heapq.heapreplace(h, 6)          # pop, then push 6 in a single sift` },
-      { type: "callout", kind: "tip", title: "heapreplace vs pop+push",
-        text: "`heapreplace` performs one sift-down instead of a pop followed by a separate sift-up — half the constant factor when you know you're immediately reinserting." },
+heapq.heapreplace(h, 6)          # pop, then push 6 in a single sift`,
+      },
+      {
+        type: "callout",
+        kind: "tip",
+        title: "heapreplace vs pop+push",
+        text: "`heapreplace` performs one sift-down instead of a pop followed by a separate sift-up — half the constant factor when you know you're immediately reinserting.",
+      },
     ],
   },
   {
     slug: "extract-max",
     title: "Extract Max",
     eyebrow: "Algorithms · 6",
-    description: "Same shape as extract-min with a flipped comparator — or a negated heapq wrapper.",
+    description:
+      "Same shape as extract-min with a flipped comparator — or a negated heapq wrapper.",
     difficulty: "Beginner",
     readMinutes: 2,
     sections: [
-      { type: "code", code:
-`import heapq
+      {
+        type: "code",
+        code: `import heapq
 
 h = [-x for x in [5, 3, 8, 1, 2]]
 heapq.heapify(h)
 
 -heapq.heappop(h)   # 8 — extract max
--h[0]               # 5 — peek max` },
+-h[0]               # 5 — peek max`,
+      },
     ],
   },
   {
     slug: "heap-sort",
     title: "Heap Sort",
     eyebrow: "Algorithms · 7",
-    description: "In-place O(n log n) sorting with O(1) extra memory — the algorithm that gives heaps their pedigree.",
+    description:
+      "In-place O(n log n) sorting with O(1) extra memory — the algorithm that gives heaps their pedigree.",
     difficulty: "Intermediate",
     readMinutes: 5,
     sections: [
-      { type: "theory", text: "Build a max-heap over the array, then repeatedly swap the root with the last unsorted position and shrink the heap by one. After n − 1 iterations the array is sorted ascending, entirely in place." },
-      { type: "code", title: "In-place heap sort", code:
-`def heap_sort(a):
+      {
+        type: "theory",
+        text: "Build a max-heap over the array, then repeatedly swap the root with the last unsorted position and shrink the heap by one. After n − 1 iterations the array is sorted ascending, entirely in place.",
+      },
+      {
+        type: "code",
+        title: "In-place heap sort",
+        code: `def heap_sort(a):
     n = len(a)
 
     # 1) Build a max-heap in O(n).
@@ -149,27 +188,41 @@ def _sift_down(a, i, n):
         if r < n and a[r] > a[big]: big = r
         if big == i: return
         a[i], a[big] = a[big], a[i]
-        i = big` },
-      { type: "complexity", rows: [
-        { op: "build (max-heap)", time: "O(n)",       space: "O(1)" },
-        { op: "n × extract-max",  time: "O(n log n)", space: "O(1)" },
-        { op: "total",            time: "O(n log n)", space: "O(1)", note: "In-place, but not stable." },
-      ]},
-      { type: "callout", kind: "warn", title: "Not stable",
-        text: "Heap sort does not preserve the relative order of equal keys. If you need stability, use merge sort or Python's Timsort (`sorted`)." },
+        i = big`,
+      },
+      {
+        type: "complexity",
+        rows: [
+          { op: "build (max-heap)", time: "O(n)", space: "O(1)" },
+          { op: "n × extract-max", time: "O(n log n)", space: "O(1)" },
+          { op: "total", time: "O(n log n)", space: "O(1)", note: "In-place, but not stable." },
+        ],
+      },
+      {
+        type: "callout",
+        kind: "warn",
+        title: "Not stable",
+        text: "Heap sort does not preserve the relative order of equal keys. If you need stability, use merge sort or Python's Timsort (`sorted`).",
+      },
     ],
   },
   {
     slug: "priority-queue",
     title: "Priority Queue",
     eyebrow: "Algorithms · 8",
-    description: "The abstract data type that heaps implement — plus the tuple trick that keeps it usable with real objects.",
+    description:
+      "The abstract data type that heaps implement — plus the tuple trick that keeps it usable with real objects.",
     difficulty: "Intermediate",
     readMinutes: 5,
     sections: [
-      { type: "theory", text: "A priority queue exposes three operations: add-with-priority, peek-highest, and remove-highest. A heap gives you all three at logarithmic cost. When two items share a priority, we push a monotonic counter as a tiebreaker so Python never has to compare the payloads themselves." },
-      { type: "code", title: "Robust priority queue", code:
-`import heapq, itertools
+      {
+        type: "theory",
+        text: "A priority queue exposes three operations: add-with-priority, peek-highest, and remove-highest. A heap gives you all three at logarithmic cost. When two items share a priority, we push a monotonic counter as a tiebreaker so Python never has to compare the payloads themselves.",
+      },
+      {
+        type: "code",
+        title: "Robust priority queue",
+        code: `import heapq, itertools
 
 class PriorityQueue:
     def __init__(self):
@@ -186,12 +239,16 @@ class PriorityQueue:
         return self.pq[0][-1]
 
     def __len__(self):
-        return len(self.pq)` },
-      { type: "mistakes", items: [
-        "Pushing `(priority, dict)` — dicts are unhashable AND unorderable, so ties crash.",
-        "Forgetting a stable tiebreaker — swaps become non-deterministic and tests flake.",
-        "Trying to delete an arbitrary item — mark it invalid and skip on pop instead (lazy deletion).",
-      ]},
+        return len(self.pq)`,
+      },
+      {
+        type: "mistakes",
+        items: [
+          "Pushing `(priority, dict)` — dicts are unhashable AND unorderable, so ties crash.",
+          "Forgetting a stable tiebreaker — swaps become non-deterministic and tests flake.",
+          "Trying to delete an arbitrary item — mark it invalid and skip on pop instead (lazy deletion).",
+        ],
+      },
     ],
   },
   {
@@ -202,9 +259,13 @@ class PriorityQueue:
     difficulty: "Intermediate",
     readMinutes: 4,
     sections: [
-      { type: "theory", text: "For each value, push it; if the heap grows past k, pop the smallest. What remains is the k largest values in O(n log k) time and O(k) space — dramatically better than sorting when k ≪ n." },
-      { type: "code", code:
-`import heapq
+      {
+        type: "theory",
+        text: "For each value, push it; if the heap grows past k, pop the smallest. What remains is the k largest values in O(n log k) time and O(k) space — dramatically better than sorting when k ≪ n.",
+      },
+      {
+        type: "code",
+        code: `import heapq
 
 def top_k_largest(nums, k):
     h = []
@@ -212,11 +273,20 @@ def top_k_largest(nums, k):
         heapq.heappush(h, x)
         if len(h) > k:
             heapq.heappop(h)
-    return h        # size k, in heap order (root = k-th largest)` },
-      { type: "complexity", rows: [
-        { op: "n × push + evict", time: "O(n log k)", space: "O(k)" },
-        { op: "sort-then-slice",  time: "O(n log n)", space: "O(1)–O(n)", note: "Worse when k ≪ n." },
-      ]},
+    return h        # size k, in heap order (root = k-th largest)`,
+      },
+      {
+        type: "complexity",
+        rows: [
+          { op: "n × push + evict", time: "O(n log k)", space: "O(k)" },
+          {
+            op: "sort-then-slice",
+            time: "O(n log n)",
+            space: "O(1)–O(n)",
+            note: "Worse when k ≪ n.",
+          },
+        ],
+      },
     ],
   },
   {
@@ -227,8 +297,9 @@ def top_k_largest(nums, k):
     difficulty: "Intermediate",
     readMinutes: 3,
     sections: [
-      { type: "code", code:
-`import heapq
+      {
+        type: "code",
+        code: `import heapq
 
 def kth_largest(nums, k):
     h = []
@@ -240,7 +311,8 @@ def kth_largest(nums, k):
 
 # Or with the stdlib helper:
 def kth_largest_v2(nums, k):
-    return heapq.nlargest(k, nums)[-1]` },
+    return heapq.nlargest(k, nums)[-1]`,
+      },
     ],
   },
   {
@@ -251,9 +323,13 @@ def kth_largest_v2(nums, k):
     difficulty: "Advanced",
     readMinutes: 5,
     sections: [
-      { type: "theory", text: "Split the stream in half. The lower half sits in a max-heap so its largest value is instantly available; the upper half sits in a min-heap. Rebalance after every insert so the sizes differ by at most one. The median is either the top of the larger heap or the average of the two tops." },
-      { type: "code", code:
-`import heapq
+      {
+        type: "theory",
+        text: "Split the stream in half. The lower half sits in a max-heap so its largest value is instantly available; the upper half sits in a min-heap. Rebalance after every insert so the sizes differ by at most one. The median is either the top of the larger heap or the average of the two tops.",
+      },
+      {
+        type: "code",
+        code: `import heapq
 
 class MedianFinder:
     def __init__(self):
@@ -268,23 +344,29 @@ class MedianFinder:
     def median(self):
         if len(self.lo) > len(self.hi):
             return -self.lo[0]
-        return (-self.lo[0] + self.hi[0]) / 2` },
-      { type: "complexity", rows: [
-        { op: "add",    time: "O(log n)", space: "O(n)" },
-        { op: "median", time: "O(1)",     space: "O(1)" },
-      ]},
+        return (-self.lo[0] + self.hi[0]) / 2`,
+      },
+      {
+        type: "complexity",
+        rows: [
+          { op: "add", time: "O(log n)", space: "O(n)" },
+          { op: "median", time: "O(1)", space: "O(1)" },
+        ],
+      },
     ],
   },
   {
     slug: "merge-k-sorted",
     title: "Merge K Sorted Lists",
     eyebrow: "Algorithms · 12",
-    description: "Heap of size k over the list heads — pop the smallest, advance that list, repeat.",
+    description:
+      "Heap of size k over the list heads — pop the smallest, advance that list, repeat.",
     difficulty: "Advanced",
     readMinutes: 4,
     sections: [
-      { type: "code", code:
-`import heapq
+      {
+        type: "code",
+        code: `import heapq
 
 def merge_k_sorted(lists):
     """lists: list of ascending iterables. Returns a merged ascending list."""
@@ -302,13 +384,21 @@ def merge_k_sorted(lists):
         nxt = next(it, None)
         if nxt is not None:
             heapq.heappush(h, (nxt, i, it))
-    return out` },
-      { type: "complexity", rows: [
-        { op: "each element", time: "O(log k)", space: "O(k)" },
-        { op: "total (N items)", time: "O(N log k)", space: "O(k)" },
-      ]},
-      { type: "callout", kind: "tip", title: "Use heapq.merge",
-        text: "For plain iterables of comparable items you can skip the manual heap: `list(heapq.merge(*lists))` implements this pattern for you." },
+    return out`,
+      },
+      {
+        type: "complexity",
+        rows: [
+          { op: "each element", time: "O(log k)", space: "O(k)" },
+          { op: "total (N items)", time: "O(N log k)", space: "O(k)" },
+        ],
+      },
+      {
+        type: "callout",
+        kind: "tip",
+        title: "Use heapq.merge",
+        text: "For plain iterables of comparable items you can skip the manual heap: `list(heapq.merge(*lists))` implements this pattern for you.",
+      },
     ],
   },
 ];

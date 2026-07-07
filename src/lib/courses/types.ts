@@ -21,12 +21,33 @@ export type LessonPractice = {
 
 export type LessonReference = { label: string; url: string };
 
+export type LessonSection =
+  | { type: "heading"; text: string }
+  | { type: "theory"; text?: string; bullets?: string[] }
+  | { type: "code"; code: string; title?: string; explanation?: string }
+  | { type: "complexity"; rows: { op: string; time: string; space?: string; note?: string }[] }
+  | { type: "mistakes"; items: string[] }
+  | { type: "tip"; text: string; title?: string }
+  | {
+      type: "callout";
+      kind: "info" | "warn" | "perf" | "did" | "tip" | "interview";
+      title?: string;
+      text: string;
+    }
+  | { type: "quiz"; items: { q: string; choices: string[]; answer: number; explain?: string }[] }
+  | {
+      type: "practice";
+      groups: { level: "Beginner" | "Intermediate" | "Advanced"; items: LessonPractice[] }[];
+    }
+  | { type: "references"; items: { label: string; url: string }[] };
+
 export type Lesson = {
   slug: string;
   title: string;
   tagline?: string;
   /** If set, sidebar links to this URL instead of /learn/<course>/<slug>. */
   href?: string;
+  sections?: LessonSection[];
   theory?: string;
   bullets?: string[];
   code?: string;
@@ -55,11 +76,7 @@ export type LessonGroup = {
   lessons: Lesson[];
 };
 
-export type CourseCategory =
-  | "foundation"
-  | "linear"
-  | "non-linear"
-  | "algorithm";
+export type CourseCategory = "foundation" | "linear" | "non-linear" | "algorithm";
 
 export type CourseInfoCard = {
   estimatedTime: string;

@@ -17,24 +17,28 @@ export const recursionCourse: Course = {
     {
       slug: "introduction",
       title: "Introduction",
-      theory: "Recursion solves a problem by reducing it to smaller versions of itself. Every recursive solution needs a base case and a recursive case.",
+      theory:
+        "Recursion solves a problem by reducing it to smaller versions of itself. Every recursive solution needs a base case and a recursive case.",
       code: `def factorial(n):\n    if n <= 1: return 1        # base\n    return n * factorial(n-1)  # recursive`,
     },
     {
       slug: "call-stack",
       title: "Call Stack",
-      theory: "Each recursive call pushes a stack frame with local variables and the return address. Python defaults to a recursion limit of 1000 — deeper recursions raise `RecursionError`.",
+      theory:
+        "Each recursive call pushes a stack frame with local variables and the return address. Python defaults to a recursion limit of 1000 — deeper recursions raise `RecursionError`.",
       tip: "Convert deep recursion to iteration with an explicit stack, or bump the limit with `sys.setrecursionlimit`.",
     },
     {
       slug: "tail-recursion",
       title: "Tail Recursion",
-      theory: "A tail-recursive call is the last action in the function. Some languages optimise it into a loop; CPython does not, so tail recursion in Python still consumes stack.",
+      theory:
+        "A tail-recursive call is the last action in the function. Some languages optimise it into a loop; CPython does not, so tail recursion in Python still consumes stack.",
     },
     {
       slug: "memoization",
       title: "Memoization",
-      theory: "Cache recursive results so overlapping subproblems solve in O(1) — turning exponential recursion into polynomial time. `functools.lru_cache` gives you this for free.",
+      theory:
+        "Cache recursive results so overlapping subproblems solve in O(1) — turning exponential recursion into polynomial time. `functools.lru_cache` gives you this for free.",
       code: `from functools import lru_cache\n@lru_cache(maxsize=None)\ndef fib(n):\n    if n < 2: return n\n    return fib(n-1) + fib(n-2)`,
     },
     {
@@ -60,7 +64,8 @@ export const recursionCourse: Course = {
     {
       slug: "complexity",
       title: "Complexity",
-      theory: "The recursion tree of a divide-and-conquer algorithm satisfies T(n) = a·T(n/b) + f(n). Solve via the Master Theorem.",
+      theory:
+        "The recursion tree of a divide-and-conquer algorithm satisfies T(n) = a·T(n/b) + f(n). Solve via the Master Theorem.",
       complexity: [
         { op: "linear recursion (factorial)", time: "O(n)", space: "O(n) stack" },
         { op: "branching recursion (naive fib)", time: "O(2^n)", space: "O(n) stack" },
@@ -70,9 +75,21 @@ export const recursionCourse: Course = {
       slug: "practice",
       title: "Practice",
       practice: [
-        { title: "LC 509 · Fibonacci Number", url: "https://leetcode.com/problems/fibonacci-number/", difficulty: "Easy" },
-        { title: "LC 46 · Permutations", url: "https://leetcode.com/problems/permutations/", difficulty: "Medium" },
-        { title: "LC 78 · Subsets", url: "https://leetcode.com/problems/subsets/", difficulty: "Medium" },
+        {
+          title: "LC 509 · Fibonacci Number",
+          url: "https://leetcode.com/problems/fibonacci-number/",
+          difficulty: "Easy",
+        },
+        {
+          title: "LC 46 · Permutations",
+          url: "https://leetcode.com/problems/permutations/",
+          difficulty: "Medium",
+        },
+        {
+          title: "LC 78 · Subsets",
+          url: "https://leetcode.com/problems/subsets/",
+          difficulty: "Medium",
+        },
       ],
     },
     {
@@ -88,7 +105,12 @@ export const recursionCourse: Course = {
     {
       slug: "references",
       title: "References",
-      references: [{ label: "functools.lru_cache", url: "https://docs.python.org/3/library/functools.html#functools.lru_cache" }],
+      references: [
+        {
+          label: "functools.lru_cache",
+          url: "https://docs.python.org/3/library/functools.html#functools.lru_cache",
+        },
+      ],
     },
   ],
 };

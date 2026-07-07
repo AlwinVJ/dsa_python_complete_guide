@@ -17,7 +17,8 @@ export const bitManipulationCourse: Course = {
     {
       slug: "introduction",
       title: "Introduction",
-      theory: "Bitwise operations act on the binary representation of integers. They're fast, memory-efficient, and unlock elegant solutions to many interview problems.",
+      theory:
+        "Bitwise operations act on the binary representation of integers. They're fast, memory-efficient, and unlock elegant solutions to many interview problems.",
     },
     {
       slug: "operators",
@@ -40,7 +41,8 @@ export const bitManipulationCourse: Course = {
     {
       slug: "xor-patterns",
       title: "XOR Patterns",
-      theory: "XOR is its own inverse: a ^ a = 0 and a ^ 0 = a. Powers 'find the unique element' and 'swap without temp'.",
+      theory:
+        "XOR is its own inverse: a ^ a = 0 and a ^ 0 = a. Powers 'find the unique element' and 'swap without temp'.",
       code: `def single_number(nums):\n    x = 0\n    for n in nums: x ^= n\n    return x`,
     },
     {
@@ -51,7 +53,8 @@ export const bitManipulationCourse: Course = {
     {
       slug: "bitmask-dp",
       title: "Bitmask DP",
-      theory: "Encode subsets as integers to represent state compactly — enables O(2ⁿ · n) DPs for TSP, assignment, and set cover.",
+      theory:
+        "Encode subsets as integers to represent state compactly — enables O(2ⁿ · n) DPs for TSP, assignment, and set cover.",
     },
     {
       slug: "applications",
@@ -68,10 +71,26 @@ export const bitManipulationCourse: Course = {
       slug: "practice",
       title: "Practice",
       practice: [
-        { title: "LC 136 · Single Number", url: "https://leetcode.com/problems/single-number/", difficulty: "Easy" },
-        { title: "LC 191 · Number of 1 Bits", url: "https://leetcode.com/problems/number-of-1-bits/", difficulty: "Easy" },
-        { title: "LC 78 · Subsets (bitmask)", url: "https://leetcode.com/problems/subsets/", difficulty: "Medium" },
-        { title: "LC 268 · Missing Number", url: "https://leetcode.com/problems/missing-number/", difficulty: "Easy" },
+        {
+          title: "LC 136 · Single Number",
+          url: "https://leetcode.com/problems/single-number/",
+          difficulty: "Easy",
+        },
+        {
+          title: "LC 191 · Number of 1 Bits",
+          url: "https://leetcode.com/problems/number-of-1-bits/",
+          difficulty: "Easy",
+        },
+        {
+          title: "LC 78 · Subsets (bitmask)",
+          url: "https://leetcode.com/problems/subsets/",
+          difficulty: "Medium",
+        },
+        {
+          title: "LC 268 · Missing Number",
+          url: "https://leetcode.com/problems/missing-number/",
+          difficulty: "Easy",
+        },
       ],
     },
     {
@@ -79,11 +98,25 @@ export const bitManipulationCourse: Course = {
       title: "Quiz",
       quiz: {
         q: "What does `n & (n - 1)` do?",
-        choices: ["Sets the lowest bit", "Turns off the lowest set bit", "Reverses bits", "Doubles n"],
+        choices: [
+          "Sets the lowest bit",
+          "Turns off the lowest set bit",
+          "Reverses bits",
+          "Doubles n",
+        ],
         answer: 1,
         explain: "Great for popcount and testing powers of two.",
       },
     },
-    { slug: "references", title: "References", references: [{ label: "Bit Twiddling Hacks", url: "https://graphics.stanford.edu/~seander/bithacks.html" }] },
+    {
+      slug: "references",
+      title: "References",
+      references: [
+        {
+          label: "Bit Twiddling Hacks",
+          url: "https://graphics.stanford.edu/~seander/bithacks.html",
+        },
+      ],
+    },
   ],
 };

@@ -6,9 +6,16 @@ export const Route = createFileRoute("/playgrounds/graph")({
   head: () => ({
     meta: [
       { title: "Graph Playground — DSA with Python" },
-      { name: "description", content: "Build any graph interactively — add vertices, connect edges, toggle direction and weights, and watch live graph statistics update." },
+      {
+        name: "description",
+        content:
+          "Build any graph interactively — add vertices, connect edges, toggle direction and weights, and watch live graph statistics update.",
+      },
       { property: "og:title", content: "Graph Playground — DSA with Python" },
-      { property: "og:description", content: "An interactive canvas for constructing and exploring graphs." },
+      {
+        property: "og:description",
+        content: "An interactive canvas for constructing and exploring graphs.",
+      },
     ],
   }),
   component: Page,

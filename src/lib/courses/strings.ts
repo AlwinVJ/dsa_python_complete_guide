@@ -50,13 +50,15 @@ export const stringsCourse: Course = {
     {
       slug: "creation",
       title: "Creation",
-      theory: "Strings can be built with literals, constructors, format specifiers, or joined from iterables.",
+      theory:
+        "Strings can be built with literals, constructors, format specifiers, or joined from iterables.",
       code: `a = "hi"\nb = 'hi'\nc = str(42)               # "42"\nd = f"{a} {c}"            # "hi 42"\ne = "-".join(["a","b"])   # "a-b"`,
     },
     {
       slug: "indexing",
       title: "Indexing",
-      theory: "Access individual characters with 0-based positive indices or negative indices from the end.",
+      theory:
+        "Access individual characters with 0-based positive indices or negative indices from the end.",
       code: `s = "python"\nprint(s[0], s[-1])   # p n\n# s[10] -> IndexError`,
       complexity: [{ op: "index access", time: "O(1)" }],
     },
@@ -70,7 +72,8 @@ export const stringsCourse: Course = {
     {
       slug: "operations",
       title: "String Operations",
-      theory: "Common operations include concatenation, repetition, slicing, and membership testing.",
+      theory:
+        "Common operations include concatenation, repetition, slicing, and membership testing.",
       code: `"ab" + "cd"     # "abcd"\n"ab" * 3        # "ababab"\n"hello"[1:4]    # "ell"\n"py" in "python"  # True`,
       complexity: [
         { op: "concat s + t", time: "O(n + m)" },
@@ -81,17 +84,22 @@ export const stringsCourse: Course = {
     {
       slug: "searching",
       title: "Searching",
-      theory: "Use `in` for existence, `find`/`index` for the first position, and `count` for occurrences.",
+      theory:
+        "Use `in` for existence, `find`/`index` for the first position, and `count` for occurrences.",
       code: `s = "banana"\ns.find("na")   # 2\ns.rfind("na")  # 4\ns.count("a")   # 3\ns.index("z")   # ValueError`,
       tip: "`find` returns -1 on miss; `index` raises. Pick the one that matches your error-handling style.",
     },
     {
       slug: "pattern-matching",
       title: "Pattern Matching",
-      theory: "For fixed patterns Python's built-ins are enough; for structured patterns reach for `re`. Classic algorithms — KMP, Rabin-Karp, Z-algorithm — power the ecosystem underneath.",
+      theory:
+        "For fixed patterns Python's built-ins are enough; for structured patterns reach for `re`. Classic algorithms — KMP, Rabin-Karp, Z-algorithm — power the ecosystem underneath.",
       code: `import re\nre.findall(r"\\d+", "a12 b34")   # ['12', '34']\nbool(re.match(r"^py", "python")) # True`,
       references: [
-        { label: "re — Regular expressions (Python docs)", url: "https://docs.python.org/3/library/re.html" },
+        {
+          label: "re — Regular expressions (Python docs)",
+          url: "https://docs.python.org/3/library/re.html",
+        },
       ],
     },
     {
@@ -103,7 +111,8 @@ export const stringsCourse: Course = {
     {
       slug: "mutable-vs-immutable",
       title: "Mutable vs Immutable",
-      theory: "Immutability makes strings safe to hash and share, but it means every edit copies memory. This is why building a string with `+=` inside a loop is quadratic.",
+      theory:
+        "Immutability makes strings safe to hash and share, but it means every edit copies memory. This is why building a string with `+=` inside a loop is quadratic.",
       code: `# BAD  O(n²)\nout = ""\nfor w in words:\n    out += w\n\n# GOOD O(n)\nout = "".join(words)`,
       mistakes: ["Assuming `s[0] = 'x'` will work — strings do not support item assignment."],
     },
@@ -131,10 +140,26 @@ export const stringsCourse: Course = {
       slug: "practice",
       title: "Practice",
       practice: [
-        { title: "LC 344 · Reverse String", url: "https://leetcode.com/problems/reverse-string/", difficulty: "Easy" },
-        { title: "LC 242 · Valid Anagram", url: "https://leetcode.com/problems/valid-anagram/", difficulty: "Easy" },
-        { title: "LC 3 · Longest Substring Without Repeat", url: "https://leetcode.com/problems/longest-substring-without-repeating-characters/", difficulty: "Medium" },
-        { title: "LC 5 · Longest Palindromic Substring", url: "https://leetcode.com/problems/longest-palindromic-substring/", difficulty: "Medium" },
+        {
+          title: "LC 344 · Reverse String",
+          url: "https://leetcode.com/problems/reverse-string/",
+          difficulty: "Easy",
+        },
+        {
+          title: "LC 242 · Valid Anagram",
+          url: "https://leetcode.com/problems/valid-anagram/",
+          difficulty: "Easy",
+        },
+        {
+          title: "LC 3 · Longest Substring Without Repeat",
+          url: "https://leetcode.com/problems/longest-substring-without-repeating-characters/",
+          difficulty: "Medium",
+        },
+        {
+          title: "LC 5 · Longest Palindromic Substring",
+          url: "https://leetcode.com/problems/longest-palindromic-substring/",
+          difficulty: "Medium",
+        },
       ],
     },
     {
@@ -151,8 +176,14 @@ export const stringsCourse: Course = {
       slug: "references",
       title: "References",
       references: [
-        { label: "Text sequence type — str", url: "https://docs.python.org/3/library/stdtypes.html#text-sequence-type-str" },
-        { label: "PEP 393 — Flexible String Representation", url: "https://peps.python.org/pep-0393/" },
+        {
+          label: "Text sequence type — str",
+          url: "https://docs.python.org/3/library/stdtypes.html#text-sequence-type-str",
+        },
+        {
+          label: "PEP 393 — Flexible String Representation",
+          url: "https://peps.python.org/pep-0393/",
+        },
       ],
     },
   ],
