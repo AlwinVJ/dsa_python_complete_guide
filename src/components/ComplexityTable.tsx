@@ -163,64 +163,64 @@ export function ComplexityTable({
         </button>
       </div>
 
-      <div className="overflow-x-auto rounded-lg border border-border">
-        <table className="min-w-full text-sm">
+      <div className="overflow-x-auto rounded-lg border border-border lg:overflow-visible">
+        <table className="w-full text-sm">
           <thead className="sticky top-0 z-10 bg-muted/80 text-left text-xs uppercase tracking-wider text-muted-foreground backdrop-blur">
             <tr>
-              <th className="p-3 cursor-pointer" onClick={() => toggleSort("name")}>
+              <th className="px-2 py-2 cursor-pointer" onClick={() => toggleSort("name")}>
                 Operation {sortKey === "name" ? (asc ? "↑" : "↓") : ""}
               </th>
               {mode === "time" ? (
                 <>
-                  <th className="p-3">Best</th>
-                  <th className="p-3">Average</th>
-                  <th className="p-3 cursor-pointer" onClick={() => toggleSort("worst")}>
+                  <th className="px-2 py-2">Best</th>
+                  <th className="px-2 py-2">Average</th>
+                  <th className="px-2 py-2 cursor-pointer" onClick={() => toggleSort("worst")}>
                     Worst {sortKey === "worst" ? (asc ? "↑" : "↓") : ""}
                   </th>
-                  <th className="p-3">Stable</th>
-                  <th className="p-3">In-place</th>
-                  <th className="p-3">Adaptive</th>
+                  <th className="px-2 py-2">Stable</th>
+                  <th className="px-2 py-2">In-place</th>
+                  <th className="px-2 py-2">Adaptive</th>
                 </>
               ) : (
                 <>
-                  <th className="p-3 cursor-pointer" onClick={() => toggleSort("aux")}>
+                  <th className="px-2 py-2 cursor-pointer" onClick={() => toggleSort("aux")}>
                     Aux space {sortKey === "aux" ? (asc ? "↑" : "↓") : ""}
                   </th>
                 </>
               )}
-              <th className="p-3">Notes</th>
+              <th className="px-2 py-2">Notes</th>
             </tr>
           </thead>
           <tbody>
             {filtered.map((r) => (
               <tr key={r.name} className="border-t border-border align-top">
-                <td className="p-3 font-mono">
+                <td className="px-2 py-2 font-mono break-words">
                   {r.name}
                   <div className="text-[11px] font-sans text-muted-foreground">{r.category}</div>
                 </td>
                 {mode === "time" ? (
                   <>
-                    <td className="p-3">
+                    <td className="px-2 py-2">
                       <ComplexityBadgeCell value={r.best} />
                     </td>
-                    <td className="p-3">
+                    <td className="px-2 py-2">
                       <ComplexityBadgeCell value={r.average} />
                     </td>
-                    <td className="p-3">
+                    <td className="px-2 py-2">
                       <ComplexityBadgeCell value={r.worst} />
                     </td>
-                    <td className="p-3">{r.stable === undefined ? "—" : r.stable ? "✓" : "✗"}</td>
-                    <td className="p-3">{r.inPlace === undefined ? "—" : r.inPlace ? "✓" : "✗"}</td>
-                    <td className="p-3">
+                    <td className="px-2 py-2 text-center">{r.stable === undefined ? "—" : r.stable ? "✓" : "✗"}</td>
+                    <td className="px-2 py-2 text-center">{r.inPlace === undefined ? "—" : r.inPlace ? "✓" : "✗"}</td>
+                    <td className="px-2 py-2 text-center">
                       {r.adaptive === undefined ? "—" : r.adaptive ? "✓" : "✗"}
                     </td>
                   </>
                 ) : (
-                  <td className="p-3">
+                  <td className="px-2 py-2">
                     <ComplexityBadgeCell value={r.aux} />
                   </td>
                 )}
-                <td className="p-3 text-xs text-muted-foreground max-w-xs">{r.note}</td>
+                <td className="px-2 py-2 text-xs text-muted-foreground break-words">{r.note}</td>
               </tr>
             ))}
             {filtered.length === 0 && (

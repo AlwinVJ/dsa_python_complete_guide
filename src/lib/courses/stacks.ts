@@ -22,7 +22,7 @@ export const stacksCourse: Course = {
   title: "Stacks",
   tagline: "LIFO containers — foundations, implementations, algorithms, and revision.",
   category: "linear",
-  order: 4,
+  order: 3,
   icon: "Layers",
   lessons: [],
   groups: [

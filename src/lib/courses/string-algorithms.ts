@@ -5,7 +5,7 @@ export const stringAlgorithmsCourse: Course = {
   title: "String Algorithms",
   tagline: "Pattern matching from naïve to Manacher.",
   category: "algorithm",
-  order: 18,
+  order: 8,
   icon: "TextSearch",
   // Lesson content below is complete, but the platform is intentionally
   // presenting this module as under development for now (per current

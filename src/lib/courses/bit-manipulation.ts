@@ -5,7 +5,7 @@ export const bitManipulationCourse: Course = {
   title: "Bit Manipulation",
   tagline: "Tricks with AND, OR, XOR, and shifts.",
   category: "algorithm",
-  order: 20,
+  order: 10,
   icon: "Binary",
   // Lesson content below is complete, but the platform is intentionally
   // presenting this module as under development for now (per current

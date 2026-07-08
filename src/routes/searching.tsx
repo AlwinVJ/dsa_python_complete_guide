@@ -137,39 +137,36 @@ function Page() {
       </Section>
 
       <Section title="Comparison Table">
-        <div className="overflow-x-auto rounded-lg border border-border">
+        <div className="overflow-x-auto rounded-lg border border-border lg:overflow-visible">
           <table className="w-full text-sm">
             <thead className="bg-muted/50">
               <tr className="border-b border-border">
-                <th className="px-4 py-3 text-left font-medium">Algorithm</th>
-                <th className="px-4 py-3 text-left font-medium">Sorted Required</th>
-                <th className="px-4 py-3 text-left font-medium">Best Case</th>
-                <th className="px-4 py-3 text-left font-medium">Average Case</th>
-                <th className="px-4 py-3 text-left font-medium">Worst Case</th>
-                <th className="px-4 py-3 text-left font-medium">Space</th>
-                <th className="px-4 py-3 text-left font-medium">Stable</th>
-                <th className="px-4 py-3 text-left font-medium">Typical Use Case</th>
+                <th className="px-2 py-2 text-left font-medium">Algorithm</th>
+                <th className="px-2 py-2 text-left font-medium">Sorted?</th>
+                <th className="px-2 py-2 text-left font-medium">Best</th>
+                <th className="px-2 py-2 text-left font-medium">Average</th>
+                <th className="px-2 py-2 text-left font-medium">Worst</th>
+                <th className="px-2 py-2 text-left font-medium">Space</th>
+                <th className="px-2 py-2 text-left font-medium">Stable</th>
+                <th className="px-2 py-2 text-left font-medium">Typical Use Case</th>
               </tr>
             </thead>
             <tbody>
               {ALGORITHMS.map((a) => (
                 <tr
                   key={a.id}
-                  className="border-b border-border last:border-0 hover:bg-muted/20 transition-colors"
+                  className="border-b border-border last:border-0 align-top hover:bg-muted/20 transition-colors"
                 >
-                  <td className="px-4 py-3 font-semibold text-foreground">{a.name}</td>
-                  <td className="px-4 py-3 text-muted-foreground">
+                  <td className="px-2 py-2 font-semibold text-foreground break-words">{a.name}</td>
+                  <td className="px-2 py-2 text-muted-foreground">
                     {a.sortedRequired ? "Yes" : "No"}
                   </td>
-                  <td className="px-4 py-3 font-mono text-[color:var(--brand)]">{a.timeBest}</td>
-                  <td className="px-4 py-3 font-mono text-[color:var(--brand)]">{a.timeAvg}</td>
-                  <td className="px-4 py-3 font-mono text-[color:var(--brand)]">{a.timeWorst}</td>
-                  <td className="px-4 py-3 font-mono text-muted-foreground">{a.space}</td>
-                  <td className="px-4 py-3 text-muted-foreground">{a.stable ? "Yes" : "No"}</td>
-                  <td
-                    className="px-4 py-3 text-xs text-muted-foreground max-w-xs truncate"
-                    title={a.typicalUseCase}
-                  >
+                  <td className="px-2 py-2 font-mono text-[color:var(--brand)]">{a.timeBest}</td>
+                  <td className="px-2 py-2 font-mono text-[color:var(--brand)]">{a.timeAvg}</td>
+                  <td className="px-2 py-2 font-mono text-[color:var(--brand)]">{a.timeWorst}</td>
+                  <td className="px-2 py-2 font-mono text-muted-foreground">{a.space}</td>
+                  <td className="px-2 py-2 text-muted-foreground">{a.stable ? "Yes" : "No"}</td>
+                  <td className="px-2 py-2 text-xs text-muted-foreground break-words">
                     {a.typicalUseCase}
                   </td>
                 </tr>

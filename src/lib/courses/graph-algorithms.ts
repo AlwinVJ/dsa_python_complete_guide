@@ -5,7 +5,7 @@ export const graphAlgorithmsCourse: Course = {
   title: "Graph Algorithms",
   tagline: "Traversals, shortest paths, spanning trees, and connectivity.",
   category: "algorithm",
-  order: 17,
+  order: 7,
   icon: "Waypoints",
   // Lesson content below is complete, but the platform is intentionally
   // presenting this module as under development for now (per current

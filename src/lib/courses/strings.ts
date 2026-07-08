@@ -5,7 +5,7 @@ export const stringsCourse: Course = {
   title: "Strings",
   tagline: "Immutable sequences of Unicode characters in Python.",
   category: "linear",
-  order: 2,
+  order: 6,
   icon: "Type",
   lessons: [
     {

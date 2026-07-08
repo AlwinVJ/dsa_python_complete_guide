@@ -23,7 +23,7 @@ export const graphsCourse: Course = {
   title: "Graphs",
   tagline: "Foundations, types, representations, traversals, and every core algorithm.",
   category: "non-linear",
-  order: 10,
+  order: 2,
   icon: "Network",
   lessons: [],
   groups: [

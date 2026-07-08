@@ -71,7 +71,7 @@ function Page() {
       />
 
       <Section title="Method reference">
-        <div className="overflow-x-auto rounded-lg border border-border">
+        <div className="overflow-x-auto rounded-lg border border-border lg:overflow-visible">
           <table className="min-w-full text-sm">
             <thead className="bg-muted/60 text-left text-xs uppercase tracking-wider text-muted-foreground">
               <tr>

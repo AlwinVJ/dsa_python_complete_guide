@@ -5,7 +5,7 @@ export const recursionCourse: Course = {
   title: "Recursion",
   tagline: "Functions that call themselves — the base of divide-and-conquer and DP.",
   category: "algorithm",
-  order: 13,
+  order: 3,
   icon: "RotateCcw",
   // Lesson content below is complete, but the platform is intentionally
   // presenting this module as under development for now (per current

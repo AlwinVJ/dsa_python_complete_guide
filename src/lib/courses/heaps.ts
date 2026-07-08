@@ -22,7 +22,7 @@ export const heapsCourse: Course = {
   title: "Heaps",
   tagline: "Priority queues in disguise — the tree behind heapq and Dijkstra.",
   category: "non-linear",
-  order: 8,
+  order: 3,
   icon: "TrendingUp",
   lessons: [],
   groups: [

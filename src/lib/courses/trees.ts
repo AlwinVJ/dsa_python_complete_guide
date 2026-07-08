@@ -21,7 +21,7 @@ export const treesCourse: Course = {
   title: "Trees",
   tagline: "Hierarchical data — foundations, ten variants, tree algorithms, and revision.",
   category: "non-linear",
-  order: 7,
+  order: 1,
   icon: "GitBranch",
   lessons: [],
   groups: [

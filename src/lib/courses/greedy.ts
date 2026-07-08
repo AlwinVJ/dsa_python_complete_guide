@@ -5,7 +5,7 @@ export const greedyCourse: Course = {
   title: "Greedy Algorithms",
   tagline: "Make the locally optimal choice and hope it stays optimal globally.",
   category: "algorithm",
-  order: 15,
+  order: 5,
   icon: "Zap",
   // Lesson content below is complete, but the platform is intentionally
   // presenting this module as under development for now (per current

@@ -5,7 +5,7 @@ export const triesCourse: Course = {
   title: "Tries",
   tagline: "Prefix trees for fast autocomplete and dictionary lookups.",
   category: "non-linear",
-  order: 9,
+  order: 4,
   icon: "TypeOutline",
   // The canonical, complete Trie implementation lives under Trees → Variants
   // → Trie (/trees/trie/*), with its own visualizer and Python code. This

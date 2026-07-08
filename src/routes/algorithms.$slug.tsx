@@ -263,7 +263,7 @@ function AlgorithmPage() {
           <p className="mb-3 text-xs text-muted-foreground">
             Input: <span className="font-mono">[{algo.dryRun.array.join(", ")}]</span>
           </p>
-          <div className="overflow-x-auto rounded-lg border border-border">
+          <div className="overflow-x-auto rounded-lg border border-border lg:overflow-visible">
             <table className="w-full text-sm">
               <thead className="bg-accent/50 text-xs uppercase text-muted-foreground">
                 <tr>

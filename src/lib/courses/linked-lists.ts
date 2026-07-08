@@ -39,7 +39,7 @@ export const linkedListsCourse: Course = {
   title: "Linked Lists",
   tagline: "Nodes connected by pointers — foundations, four variants, and revision.",
   category: "linear",
-  order: 3,
+  order: 2,
   icon: "Link",
   // No top-level lessons — everything lives inside a tier group.
   lessons: [],

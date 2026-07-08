@@ -48,6 +48,18 @@ export function CoursePrevNext({
 
   const enteringNewGroup = !!next && !!next.group && next.group.slug !== current.group?.slug;
 
+  // Some modules bridge to routes that are not defined as `Course`s (e.g. the
+  // Complexity Analysis section lives under /complexity). This lets those hops
+  // participate in the same guided flow as course-to-course transitions.
+  const externalNext = EXTERNAL_NEXT[course.slug];
+  const nextDestination = next
+    ? null
+    : externalNext
+      ? { title: externalNext.title, href: externalNext.href }
+      : nextCourse
+        ? { title: nextCourse.title, href: `/learn/${nextCourse.slug}` }
+        : null;
+
   return (
     <div className="mt-12 space-y-6 border-t border-border pt-6">
       {enteringNewGroup && next?.group && (
@@ -58,20 +70,30 @@ export function CoursePrevNext({
         />
       )}
 
-      {!next && nextCourse && (
+      {!next && nextDestination && (
         <SectionTransition
           finishedTitle={course.title}
-          nextGroupTitle={nextCourse.title}
-          nextHref={`/learn/${nextCourse.slug}`}
+          nextGroupTitle={nextDestination.title}
+          nextHref={nextDestination.href}
           courseComplete
         />
       )}
+
+      <div className="text-center text-xs text-muted-foreground">
+        <span className="uppercase tracking-wide">Current Module</span>
+        <span className="mx-2">·</span>
+        <span className="font-medium text-foreground">{course.title}</span>
+        <span className="mx-2">·</span>
+        <span>
+          Lesson {idx + 1} of {flat.length}
+        </span>
+      </div>
 
       <div className="grid gap-3 sm:grid-cols-2">
         {prev ? (
           <PrevCard
             title={prev.lesson.title}
-            subtitle={prev.group?.title}
+            subtitle={prev.group?.title ?? "Previous Lesson"}
             href={lessonHref(course, prev.lesson)}
           />
         ) : (
@@ -85,14 +107,14 @@ export function CoursePrevNext({
         {next ? (
           <NextCard
             title={next.lesson.title}
-            subtitle={next.group?.title}
+            subtitle={next.group?.title ?? "Next Lesson"}
             href={lessonHref(course, next.lesson)}
           />
-        ) : nextCourse ? (
+        ) : nextDestination ? (
           <NextCard
-            title={nextCourse.title}
+            title={nextDestination.title}
             subtitle="Continue Learning"
-            href={`/learn/${nextCourse.slug}`}
+            href={nextDestination.href}
           />
         ) : (
           <NextCard title="Back to Roadmap" subtitle="Course complete" href="/roadmap" />
@@ -101,6 +123,11 @@ export function CoursePrevNext({
     </div>
   );
 }
+
+/** Cross-module hops to destinations that aren't defined as `Course`s. */
+const EXTERNAL_NEXT: Record<string, { title: string; href: string }> = {
+  "introduction-to-dsa": { title: "Complexity Analysis", href: "/complexity" },
+};
 
 /* ---------- pieces ---------- */
 

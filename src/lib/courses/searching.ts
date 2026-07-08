@@ -5,7 +5,7 @@ export const searchingCourse: Course = {
   title: "Searching",
   tagline: "Finding an element inside a collection — from linear scan to interpolation.",
   category: "algorithm",
-  order: 11,
+  order: 2,
   icon: "Search",
   hidden: true,
   comingSoon: false,

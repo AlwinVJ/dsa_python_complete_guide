@@ -5,7 +5,7 @@ export const divideConquerCourse: Course = {
   title: "Divide & Conquer",
   tagline: "Split, solve, combine — the pattern behind merge sort and FFT.",
   category: "algorithm",
-  order: 14,
+  order: 4,
   icon: "Split",
   // Lesson content below is complete, but the platform is intentionally
   // presenting this module as under development for now (per current

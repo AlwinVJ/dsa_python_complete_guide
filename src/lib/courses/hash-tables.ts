@@ -23,7 +23,7 @@ export const hashTablesCourse: Course = {
   tagline:
     "Master hashing first, then wire it into Python's dict and set — with interactive bucket visualizations.",
   category: "linear",
-  order: 6,
+  order: 5,
   icon: "Hash",
   lessons: [],
   groups: [

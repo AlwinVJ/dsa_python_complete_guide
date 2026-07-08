@@ -5,7 +5,7 @@ export const sortingCourse: Course = {
   title: "Sorting",
   tagline: "Ordering data — comparison-based and non-comparison-based.",
   category: "algorithm",
-  order: 12,
+  order: 1,
   icon: "ArrowUpDown",
   hidden: true,
   lessons: [

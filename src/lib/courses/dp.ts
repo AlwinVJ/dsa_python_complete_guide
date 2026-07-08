@@ -5,7 +5,7 @@ export const dpCourse: Course = {
   title: "Dynamic Programming",
   tagline: "Solve overlapping subproblems once and reuse the answer.",
   category: "algorithm",
-  order: 16,
+  order: 6,
   icon: "Grid3x3",
   // Lesson content below is complete, but the platform is intentionally
   // presenting this module as under development for now (per current

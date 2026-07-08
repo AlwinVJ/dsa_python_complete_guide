@@ -55,13 +55,20 @@ const ROWS: { axis: string; values: [string, string, string, string] }[] = [
 
 export function VariantComparisonTable() {
   return (
-    <div className="mb-6 overflow-x-auto rounded-lg border border-border">
-      <table className="w-full min-w-[720px] text-sm">
+    <div className="mb-6 overflow-x-auto rounded-lg border border-border lg:overflow-visible">
+      <table className="w-full table-fixed text-sm">
+        <colgroup>
+          <col className="w-[22%]" />
+          <col className="w-[19.5%]" />
+          <col className="w-[19.5%]" />
+          <col className="w-[19.5%]" />
+          <col className="w-[19.5%]" />
+        </colgroup>
         <thead className="bg-muted/50">
           <tr>
-            <th className="px-3 py-2 text-left font-semibold">Axis</th>
+            <th className="px-3 py-2 text-left font-semibold align-top">Axis</th>
             {VARIANTS.map((v) => (
-              <th key={v} className="px-3 py-2 text-left font-semibold">
+              <th key={v} className="px-3 py-2 text-left font-semibold align-top break-words">
                 {v}
               </th>
             ))}
@@ -69,10 +76,10 @@ export function VariantComparisonTable() {
         </thead>
         <tbody>
           {ROWS.map((r) => (
-            <tr key={r.axis} className="border-t border-border">
-              <td className="px-3 py-2 font-medium">{r.axis}</td>
+            <tr key={r.axis} className="border-t border-border align-top">
+              <td className="px-3 py-2 font-medium break-words">{r.axis}</td>
               {r.values.map((c, i) => (
-                <td key={i} className="px-3 py-2 text-muted-foreground">
+                <td key={i} className="px-3 py-2 text-muted-foreground break-words">
                   {c}
                 </td>
               ))}

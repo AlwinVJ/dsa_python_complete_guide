@@ -22,7 +22,7 @@ export const queuesCourse: Course = {
   title: "Queues",
   tagline: "First-in first-out containers — foundations, variants, algorithms, and revision.",
   category: "linear",
-  order: 5,
+  order: 4,
   icon: "ArrowRightLeft",
   lessons: [],
   groups: [

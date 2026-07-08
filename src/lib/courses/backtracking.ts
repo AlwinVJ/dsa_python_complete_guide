@@ -5,7 +5,7 @@ export const backtrackingCourse: Course = {
   title: "Backtracking",
   tagline: "Explore, undo, retry — the DFS of the algorithm world.",
   category: "algorithm",
-  order: 19,
+  order: 9,
   icon: "CornerDownLeft",
   // Lesson content below is complete, but the platform is intentionally
   // presenting this module as under development for now (per current
