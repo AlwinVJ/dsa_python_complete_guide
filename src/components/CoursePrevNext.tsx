@@ -127,6 +127,10 @@ export function CoursePrevNext({
 /** Cross-module hops to destinations that aren't defined as `Course`s. */
 const EXTERNAL_NEXT: Record<string, { title: string; href: string }> = {
   "introduction-to-dsa": { title: "Complexity Analysis", href: "/complexity" },
+  // Skip the "Strings" course so the curriculum flows into Trees after Hash Tables.
+  "hash-tables": { title: "Trees", href: "/learn/trees" },
+  // Strings sits at the end of the linear category; continue into Trees next.
+  strings: { title: "Trees", href: "/learn/trees" },
 };
 
 /* ---------- pieces ---------- */

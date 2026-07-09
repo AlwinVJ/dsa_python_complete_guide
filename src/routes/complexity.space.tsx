@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { PageShell, PageHeader, Callout } from "@/components/Callout";
 import { ComplexityTable, type ComplexityRow } from "@/components/ComplexityTable";
 import { PrevNext } from "@/components/PrevNext";
@@ -161,6 +161,15 @@ function Page() {
           could blow the stack.
         </p>
       </Callout>
+
+      <div className="mt-8 flex justify-center">
+        <Link
+          to="/introduction"
+          className="inline-flex items-center gap-1.5 rounded-md gradient-brand px-6 py-3 text-sm font-semibold text-primary-foreground shadow-lg hover:opacity-90 transition"
+        >
+          Start Learning Arrays →
+        </Link>
+      </div>
 
       <PrevNext current="/complexity/space" />
     </PageShell>

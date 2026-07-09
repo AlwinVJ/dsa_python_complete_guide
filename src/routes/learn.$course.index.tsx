@@ -285,7 +285,7 @@ function CoursePage() {
         {course.ctaText && (
           <div className="mt-8 flex justify-center">
             <Link
-              to={arraysRoute}
+              to={course.ctaRoute ?? arraysRoute}
               className="inline-flex items-center gap-1.5 rounded-md gradient-brand px-6 py-3 text-sm font-semibold text-primary-foreground shadow-lg hover:opacity-90 transition"
             >
               {course.ctaText}
@@ -393,8 +393,13 @@ function LessonGrid({ course, lessons }: { course: Course; lessons: Lesson[] }) 
                     {l.tagline}
                   </div>
                 )}
-                <div className="mt-1.5 inline-flex items-center gap-1 text-[11px] text-muted-foreground">
-                  <Clock className="h-3 w-3" /> {MINUTES_PER_LESSON} min read
+                <div className="mt-2 flex items-center justify-between gap-3">
+                  <div className="inline-flex items-center gap-1 text-[11px] text-muted-foreground">
+                    <Clock className="h-3 w-3" /> {MINUTES_PER_LESSON} min read
+                  </div>
+                  <span className="inline-flex items-center gap-1 rounded-md gradient-brand px-2.5 py-1 text-[11px] font-semibold text-primary-foreground shadow-sm transition group-hover:opacity-90">
+                    Open Lesson →
+                  </span>
                 </div>
               </div>
             </Link>

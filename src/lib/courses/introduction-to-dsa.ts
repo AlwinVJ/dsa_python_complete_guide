@@ -10,8 +10,8 @@ export const introductionToDsaCourse: Course = {
   icon: "BookOpen",
   hidden: false,
   comingSoon: false,
-  ctaText: "Start Learning Arrays →",
-  ctaRoute: "/introduction",
+  ctaText: "Continue to Complexity Analysis →",
+  ctaRoute: "/complexity",
   lessons: [
     {
       slug: "welcome",

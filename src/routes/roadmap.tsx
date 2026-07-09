@@ -147,10 +147,10 @@ function RoadmapPage() {
           list operations.
         </p>
         <Link
-          to={arraysRoute}
+          to="/learn/introduction-to-dsa"
           className="inline-flex items-center gap-1.5 rounded-md gradient-brand px-6 py-2.5 text-sm font-semibold text-primary-foreground shadow-md hover:opacity-90 transition"
         >
-          Start Learning Arrays →
+          Begin Your DSA Journey →
         </Link>
       </div>
     </div>
