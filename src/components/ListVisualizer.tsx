@@ -36,7 +36,7 @@ export function ListVisualizer({
 }) {
   const sizeMap = {
     sm: "h-10 min-w-10 text-sm px-2",
-    md: "h-14 min-w-14 text-base px-3",
+    md: "h-14 min-w-14 text-base px-2",
     lg: "h-16 min-w-16 text-lg px-4",
   }[size];
 
@@ -44,7 +44,7 @@ export function ListVisualizer({
     <div className="w-full overflow-x-auto py-2">
       <div className="inline-flex flex-col gap-1 min-w-full">
         {showIndices && (
-          <div className="flex gap-2">
+          <div className="flex gap-1.5">
             {items.map((_, i) => (
               <div
                 key={i}
@@ -55,7 +55,7 @@ export function ListVisualizer({
             ))}
           </div>
         )}
-        <div className="flex gap-2">
+        <div className="flex gap-1.5">
           <AnimatePresence initial={false}>
             {items.map((item, i) => {
               const isHi = highlight?.includes(i);
@@ -83,7 +83,7 @@ export function ListVisualizer({
           </AnimatePresence>
         </div>
         {showNegative && (
-          <div className="flex gap-2">
+          <div className="flex gap-1.5">
             {items.map((_, i) => (
               <div
                 key={i}
