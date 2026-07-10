@@ -431,6 +431,26 @@ function Page() {
         </p>
       </Callout>
 
+      <Callout kind="info" title="Advanced: The Master Theorem for Recurrences">
+        <p className="mb-2">
+          For divide-and-conquer recurrences of the form <b>T(n) = a·T(n/b) + f(n)</b>, we can analyze the runtime by comparing <b>f(n)</b> to <b>n<sup>log<sub>b</sub>a</sup></b>:
+        </p>
+        <ul className="list-disc space-y-1 pl-5 text-sm">
+          <li>
+            <b>Case 1:</b> If <i>f(n) = O(n<sup>log<sub>b</sub>a - ε</sup>)</i> for some ε &gt; 0, then <b>T(n) = Θ(n<sup>log<sub>b</sub>a</sup>)</b>. The recursive splitting dominates (e.g. Strassen's matrix multiplication).
+          </li>
+          <li>
+            <b>Case 2:</b> If <i>f(n) = Θ(n<sup>log<sub>b</sub>a</sup>)</i>, then <b>T(n) = Θ(n<sup>log<sub>b</sub>a</sup> log n)</b>. The work is evenly distributed across all levels (e.g. Merge Sort).
+          </li>
+          <li>
+            <b>Case 3:</b> If <i>f(n) = Ω(n<sup>log<sub>b</sub>a + ε</sup>)</i> for some ε &gt; 0, and the regularity condition holds, then <b>T(n) = Θ(f(n))</b>. The combining work dominates.
+          </li>
+        </ul>
+        <p className="mt-2 text-xs text-muted-foreground">
+          Note: This covers standard balanced splits. Advanced recurrence equations can also be solved visually using recursion trees.
+        </p>
+      </Callout>
+
       <PrevNext current="/complexity/time" />
     </PageShell>
   );

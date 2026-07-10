@@ -20,6 +20,7 @@ import {
   Text,
   Sparkles,
   RotateCcw,
+  Split,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 
@@ -136,6 +137,14 @@ const AVAILABLE: Playground[] = [
     meta: "Call stack · step-through",
     description:
       "Step through factorial, Fibonacci, sum, power, and GCD — watch stack frames push and pop live.",
+  },
+  {
+    title: "Divide & Conquer Playground",
+    href: "/playgrounds/divide-conquer",
+    icon: Split,
+    meta: "Recursion trees · splits & merges",
+    description:
+      "Visualize recursive splitting, merging, and complete recursion trees for Binary Search, Merge Sort, and Quick Sort.",
   },
 ];
 
