@@ -4,11 +4,10 @@ import { LessonView } from "@/components/course/LessonView";
 
 export const Route = createFileRoute("/learn/$course/$lesson")({
   beforeLoad: ({ params }) => {
-    if (params.course === "sorting-algorithms") {
-      throw redirect({ to: "/sorting" });
-    }
-    if (params.course === "searching") {
-      throw redirect({ to: "/searching" });
+    const course = getCourse(params.course);
+    if (!course) throw notFound();
+    if (course.redirectRoute) {
+      throw redirect({ to: course.redirectRoute });
     }
     if (!getLesson(params.course, params.lesson)) throw notFound();
   },

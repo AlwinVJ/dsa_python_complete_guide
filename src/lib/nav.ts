@@ -17,7 +17,6 @@ export const NAV_SECTIONS: NavSection[] = [
     items: [
       { to: "/modules/python-basics", label: "Prerequisites" },
       { to: "/complexity", label: "Big-O Complexity" },
-      { to: "/learn/recursion", label: "Recursion" },
     ],
   },
 
@@ -129,6 +128,8 @@ export const NAV_SECTIONS: NavSection[] = [
     title: "Algorithms",
     items: [
       { to: "/sorting", label: "Sorting Algorithms" },
+      { to: "/searching", label: "Searching Algorithms" },
+      { to: "/learn/recursion", label: "Recursion" },
       { to: "/learn/graph-algorithms", label: "Graph Algorithms" },
       { to: "/learn/dp", label: "Dynamic Programming" },
       { to: "/modules/advanced-graphs", label: "Advanced Graphs" },

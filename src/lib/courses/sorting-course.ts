@@ -8,6 +8,7 @@ export const sortingCourse: Course = {
   order: 1,
   icon: "ArrowUpDown",
   hidden: true,
+  redirectRoute: "/sorting",
   lessons: [
     {
       slug: "introduction",

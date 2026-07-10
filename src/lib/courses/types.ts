@@ -85,6 +85,18 @@ export type CourseInfoCard = {
   language: string;
 };
 
+export type CourseOverview = {
+  introduction?: string;
+  whyLearn?: string;
+  learningObjectives?: string[];
+  realWorldApplications?: string[];
+  advantages?: string[];
+  limitations?: string[];
+  prerequisites?: string[];
+  estimatedTime?: string;
+  difficulty?: number;
+};
+
 export type Course = {
   slug: string;
   title: string;
@@ -123,6 +135,9 @@ export type Course = {
   showRoadmap?: boolean;
   ctaText?: string;
   ctaRoute?: string;
+  courseLayout?: "overview" | "hierarchy";
+  redirectRoute?: string;
+  overview?: CourseOverview;
 };
 
 export function lessonHref(course: Course, lesson: Lesson) {

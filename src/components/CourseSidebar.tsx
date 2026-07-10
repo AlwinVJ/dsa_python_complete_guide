@@ -287,15 +287,17 @@ function CourseGroup({
 }) {
   // Modules that aren't ready for their full lesson tree yet (still under
   // development, or a thin duplicate pointing at canonical content
-  // elsewhere) collapse to a single, ordinary navigation link — same look
+  // elsewhere, or configured with an overview-based layout style)
+  // collapse to a single, ordinary navigation link — same look
   // as any other sidebar item, just no expand arrow. The module explains
   // its own status once opened; the sidebar doesn't editorialize.
-  if (course.comingSoon || course.duplicateOf) {
+  if (course.comingSoon || course.duplicateOf || course.courseLayout === "overview") {
     const href = `/learn/${course.slug}`;
+    const label = course.comingSoon ? `${course.title} (Coming Soon)` : course.title;
     return (
       <SidebarLink
         to={href}
-        label={course.title}
+        label={label}
         active={pathname === href}
         onNavigate={onNavigate}
       />

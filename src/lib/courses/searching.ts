@@ -9,6 +9,7 @@ export const searchingCourse: Course = {
   icon: "Search",
   hidden: true,
   comingSoon: false,
+  redirectRoute: "/searching",
   lessons: [
     {
       slug: "introduction",

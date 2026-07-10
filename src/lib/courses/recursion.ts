@@ -12,6 +12,41 @@ export const recursionCourse: Course = {
   category: "algorithm",
   order: 3,
   icon: "RotateCcw",
+  courseLayout: "overview",
+  overview: {
+    introduction: "Recursion is a problem-solving technique where a function calls itself on a smaller version of the same problem until it reaches a case simple enough to answer directly.",
+    whyLearn: "Almost every advanced algorithmic pattern — including Divide and Conquer, Dynamic Programming, Backtracking, and Tree/Graph Traversals — relies fundamentally on recursive thinking. Mastering recursion transitions your problem-solving mindset from imperative loops to declarative subproblem reduction.",
+    learningObjectives: [
+      "Understand the mechanics of the Python call stack and stack frames.",
+      "Correctly identify and implement base cases and recursive cases.",
+      "Analyze time and space complexity of recursive functions.",
+      "Optimize naive recursive algorithms using memoization and caching.",
+      "Understand the connection between recursion and dynamic programming.",
+      "Formulate recursive relationships for backtracking.",
+    ],
+    realWorldApplications: [
+      "Parsing nested formats like JSON, XML, and HTML.",
+      "Navigating file directories and tree-like data structures.",
+      "Backtracking searches in game AI (e.g. Sudoku, Chess solvers).",
+      "Compiler parsing and Abstract Syntax Tree (AST) generation.",
+    ],
+    advantages: [
+      "Produces clean, readable, and elegant code for hierarchical problems.",
+      "Reduces explicit state-tracking boilerplate by utilizing the system call stack.",
+      "Provides a direct translation from mathematical inductive definitions to code.",
+    ],
+    limitations: [
+      "Consumes additional O(depth) memory via the call stack.",
+      "Risks stack overflow errors (RecursionError) on deep inputs.",
+      "Can be highly inefficient (exponential complexity) if subproblems overlap and are not memoized.",
+    ],
+    prerequisites: [
+      "Basic control flow (variables, conditions, functions, and loops).",
+      "Familiarity with fundamental Python data structures (Lists, Dicts).",
+    ],
+    estimatedTime: "4–6 Hours",
+    difficulty: 3,
+  },
   infoCard: {
     estimatedTime: "4–6 Hours",
     difficulty: 3,
