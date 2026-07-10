@@ -1,7 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { PageShell, PageHeader, Callout, ComplexityBadge } from "@/components/Callout";
-import { CodeBlock } from "@/components/CodeBlock";
 import {
   Play,
   Pause,
@@ -12,8 +11,6 @@ import {
   BookOpen,
   ArrowRight,
   Split,
-  Search,
-  ArrowUpDown,
   Sparkles,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -41,8 +38,8 @@ export const Route = createFileRoute("/playgrounds/divide-conquer")({
 /* ---------- Trace types ---------- */
 type TreeNodeViz = {
   id: string;
-  label: string; // e.g. "binary_search(0, 11)" or "merge_sort([38, 27...])"
-  array?: number[]; // slice elements at this subproblem
+  label: string; // e.g. "bs(0, 11)" or "sort([38, 27])"
+  array?: number[]; // slice elements
   status: "pending" | "active" | "base" | "done";
   badge?: string; // return value e.g. "ret: 4" or "sorted: [3, 9]"
   children: TreeNodeViz[];
@@ -53,9 +50,13 @@ type TraceStep = {
   array: number[]; // main array elements
   highlightIndices: number[]; // e.g. pivot, found index
   compareIndices: number[]; // indices being compared
-  sortedIndices: number[]; // elements that are fully sorted at this step
-  note: string; // textual explanation of the step
+  sortedIndices: number[]; // elements that are fully sorted
+  note: string; // textual explanation
   lineNo?: number; // code highlight line
+  phase: "Initial" | "Divide" | "Conquer" | "Combine" | "Base Case";
+  currentCall: string;
+  depth: number;
+  subproblem: string;
 };
 
 /* ---------- SVG Layout logic ---------- */
@@ -73,13 +74,14 @@ type PositionedEdge = {
   toY: number;
 };
 
-function layoutTree(root: TreeNodeViz, gapX = 64, gapY = 72) {
+function layoutTree(root: TreeNodeViz, gapX = 72, gapY = 64) {
   const nodes: PositionedNode[] = [];
   const edges: PositionedEdge[] = [];
   let nextX = 0;
 
   function walk(node: TreeNodeViz, depth: number): PositionedNode {
-    const children = node.children ?? [];
+    // Only walk visible / non-pending nodes to grow naturally
+    const children = (node.children ?? []).filter((c) => c.status !== "pending");
     if (children.length === 0) {
       const p: PositionedNode = { node, x: nextX++ * gapX, y: depth * gapY, depth };
       nodes.push(p);
@@ -101,7 +103,7 @@ function layoutTree(root: TreeNodeViz, gapX = 64, gapY = 72) {
   const maxX = Math.max(...nodes.map((n) => n.x));
   const maxY = Math.max(...nodes.map((n) => n.y));
 
-  // Shift nodes so minX is 0
+  // Shift nodes to center aligned at 0
   for (const n of nodes) {
     n.x = n.x - minX;
   }
@@ -164,7 +166,7 @@ def partition(arr, lo, hi):
     return i + 1`,
 };
 
-/* ---------- Trace generators ---------- */
+/* ---------- Trace helpers ---------- */
 function copyTree(node: TreeNodeViz): TreeNodeViz {
   return {
     ...node,
@@ -172,7 +174,6 @@ function copyTree(node: TreeNodeViz): TreeNodeViz {
   };
 }
 
-// Find a node by ID and update it
 function updateNodeInTree(root: TreeNodeViz, id: string, updater: (node: TreeNodeViz) => void): TreeNodeViz {
   const nextRoot = copyTree(root);
   function findAndApply(node: TreeNodeViz): boolean {
@@ -194,7 +195,6 @@ function generateBinarySearchTrace(arr: number[], target: number): TraceStep[] {
   const steps: TraceStep[] = [];
   const mainArr = [...arr].sort((a, b) => a - b); // Ensure sorted
 
-  // Pre-build full recursion tree structure
   const rootId = "bs-0";
   const rootNode: TreeNodeViz = {
     id: rootId,
@@ -207,7 +207,7 @@ function generateBinarySearchTrace(arr: number[], target: number): TraceStep[] {
   let currentTree = rootNode;
 
   function run(lo: number, hi: number, parentId: string, nodeNum: number): number {
-    const nodeId = `${parentId}-${nodeNum}`;
+    const nodeId = parentId === "" ? rootId : `${parentId}-${nodeNum}`;
     const label = `bs(${lo}, ${hi})`;
     const subArr = mainArr.slice(lo, hi + 1);
 
@@ -219,17 +219,17 @@ function generateBinarySearchTrace(arr: number[], target: number): TraceStep[] {
       children: [],
     };
 
-    if (parentId === rootId) {
-      currentTree = updateNodeInTree(currentTree, parentId, (n) => {
-        n.children.push(newNode);
-      });
-    } else if (parentId !== "") {
+    if (parentId !== "") {
       currentTree = updateNodeInTree(currentTree, parentId, (n) => {
         n.children.push(newNode);
       });
     } else {
       currentTree = newNode; // root
     }
+
+    const subproblem = `[${subArr.join(", ")}]`;
+    const depth = parentId === "" ? 0 : parentId.split("-").length;
+    const currentCall = `binary_search(arr, target=${target}, lo=${lo}, hi=${hi})`;
 
     // Step: Enter function
     currentTree = updateNodeInTree(currentTree, nodeId, (n) => {
@@ -241,8 +241,12 @@ function generateBinarySearchTrace(arr: number[], target: number): TraceStep[] {
       highlightIndices: lo <= hi ? [Math.floor((lo + hi) / 2)] : [],
       compareIndices: [],
       sortedIndices: [],
-      note: `Entering binary_search with range [${lo}..${hi}]. Size is ${hi - lo + 1}.`,
+      note: `Entering binary_search with range [${lo}..${hi}]. Subproblem size is ${hi - lo + 1}.`,
       lineNo: 1,
+      phase: "Conquer",
+      currentCall,
+      depth,
+      subproblem,
     });
 
     if (lo > hi) {
@@ -257,8 +261,12 @@ function generateBinarySearchTrace(arr: number[], target: number): TraceStep[] {
         highlightIndices: [],
         compareIndices: [],
         sortedIndices: [],
-        note: `Base Case: lo (${lo}) > hi (${hi}). Target ${target} not found in this range. Returning -1.`,
+        note: `Base Case: lo (${lo}) > hi (${hi}). Target ${target} not found. Returning -1.`,
         lineNo: 2,
+        phase: "Base Case",
+        currentCall,
+        depth,
+        subproblem,
       });
       return -1;
     }
@@ -272,8 +280,12 @@ function generateBinarySearchTrace(arr: number[], target: number): TraceStep[] {
       highlightIndices: [mid],
       compareIndices: [],
       sortedIndices: [],
-      note: `Calculate midpoint: mid = (${lo} + ${hi}) // 2 = ${mid}. Inspecting arr[${mid}] = ${mainArr[mid]}.`,
+      note: `Calculate midpoint: mid = (${lo} + ${hi}) // 2 = ${mid}. Inspecting value ${mainArr[mid]}.`,
       lineNo: 4,
+      phase: "Divide",
+      currentCall,
+      depth,
+      subproblem,
     });
 
     // Step: Comparison
@@ -285,12 +297,16 @@ function generateBinarySearchTrace(arr: number[], target: number): TraceStep[] {
       sortedIndices: [],
       note: `Comparing arr[mid] (${mainArr[mid]}) with target (${target}).`,
       lineNo: 5,
+      phase: "Conquer",
+      currentCall,
+      depth,
+      subproblem,
     });
 
     if (mainArr[mid] === target) {
       currentTree = updateNodeInTree(currentTree, nodeId, (n) => {
         n.status = "done";
-        n.badge = `found at: ${mid}`;
+        n.badge = `found: ${mid}`;
       });
       steps.push({
         tree: copyTree(currentTree),
@@ -298,8 +314,12 @@ function generateBinarySearchTrace(arr: number[], target: number): TraceStep[] {
         highlightIndices: [mid],
         compareIndices: [],
         sortedIndices: [mid],
-        note: `Found target ${target} at index ${mid}! Returning ${mid}.`,
+        note: `Found target ${target} at index ${mid}! Returning index ${mid}.`,
         lineNo: 6,
+        phase: "Combine",
+        currentCall,
+        depth,
+        subproblem,
       });
       return mid;
     }
@@ -315,8 +335,12 @@ function generateBinarySearchTrace(arr: number[], target: number): TraceStep[] {
         highlightIndices: [mid],
         compareIndices: [],
         sortedIndices: [],
-        note: `Target ${target} is smaller than arr[mid] (${mainArr[mid]}). Recursing left: [${lo}..${mid - 1}].`,
+        note: `Target ${target} < arr[mid] (${mainArr[mid]}). Recursing into left half [${lo}..${mid - 1}].`,
         lineNo: 8,
+        phase: "Divide",
+        currentCall,
+        depth,
+        subproblem,
       });
       const ret = run(lo, mid - 1, nodeId, 1);
       currentTree = updateNodeInTree(currentTree, nodeId, (n) => {
@@ -328,8 +352,12 @@ function generateBinarySearchTrace(arr: number[], target: number): TraceStep[] {
         highlightIndices: [],
         compareIndices: [],
         sortedIndices: ret !== -1 ? [ret] : [],
-        note: `Returned value ${ret} back to parent call ${label}.`,
+        note: `Left recursive call returned ${ret} to parent ${label}.`,
         lineNo: 8,
+        phase: "Combine",
+        currentCall,
+        depth,
+        subproblem,
       });
       return ret;
     } else {
@@ -343,8 +371,12 @@ function generateBinarySearchTrace(arr: number[], target: number): TraceStep[] {
         highlightIndices: [mid],
         compareIndices: [],
         sortedIndices: [],
-        note: `Target ${target} is larger than arr[mid] (${mainArr[mid]}). Recursing right: [${mid + 1}..${hi}].`,
+        note: `Target ${target} > arr[mid] (${mainArr[mid]}). Recursing into right half [${mid + 1}..${hi}].`,
         lineNo: 10,
+        phase: "Divide",
+        currentCall,
+        depth,
+        subproblem,
       });
       const ret = run(mid + 1, hi, nodeId, 2);
       currentTree = updateNodeInTree(currentTree, nodeId, (n) => {
@@ -356,8 +388,12 @@ function generateBinarySearchTrace(arr: number[], target: number): TraceStep[] {
         highlightIndices: [],
         compareIndices: [],
         sortedIndices: ret !== -1 ? [ret] : [],
-        note: `Returned value ${ret} back to parent call ${label}.`,
+        note: `Right recursive call returned ${ret} to parent ${label}.`,
         lineNo: 10,
+        phase: "Combine",
+        currentCall,
+        depth,
+        subproblem,
       });
       return ret;
     }
@@ -372,11 +408,10 @@ function generateMergeSortTrace(arr: number[]): TraceStep[] {
   const steps: TraceStep[] = [];
   let activeArr = [...arr];
 
-  // Pre-build root
   const rootId = "ms-0";
   const rootNode: TreeNodeViz = {
     id: rootId,
-    label: `merge_sort(${activeArr.join(",")})`,
+    label: `sort([${activeArr.join(",")}])`,
     array: [...activeArr],
     status: "pending",
     children: [],
@@ -406,6 +441,10 @@ function generateMergeSortTrace(arr: number[]): TraceStep[] {
       currentTree = newNode; // root
     }
 
+    const subproblem = `[${sub.join(", ")}]`;
+    const depth = parentId === "" ? 0 : parentId.split("-").length;
+    const currentCall = `merge_sort(arr[${lo}..${hi}])`;
+
     // Step: Enter call
     currentTree = updateNodeInTree(currentTree, nodeId, (n) => {
       n.status = "active";
@@ -418,6 +457,10 @@ function generateMergeSortTrace(arr: number[]): TraceStep[] {
       sortedIndices: [],
       note: `Entering merge_sort on range [${lo}..${hi}] with subarray [${sub.join(", ")}].`,
       lineNo: 1,
+      phase: "Conquer",
+      currentCall,
+      depth,
+      subproblem,
     });
 
     if (len <= 1) {
@@ -434,6 +477,10 @@ function generateMergeSortTrace(arr: number[]): TraceStep[] {
         sortedIndices: [lo],
         note: `Base Case: Subarray size <= 1. Already sorted! Returning [${sub[0]}].`,
         lineNo: 2,
+        phase: "Base Case",
+        currentCall,
+        depth,
+        subproblem,
       });
       return [...sub];
     }
@@ -452,6 +499,10 @@ function generateMergeSortTrace(arr: number[]): TraceStep[] {
       sortedIndices: [],
       note: `Divide: Split array of size ${len} at mid index ${mid}. Left: [${lo}..${mid}], Right: [${mid + 1}..${hi}].`,
       lineNo: 4,
+      phase: "Divide",
+      currentCall,
+      depth,
+      subproblem,
     });
 
     const leftSorted = run(lo, mid, nodeId, 1);
@@ -469,6 +520,10 @@ function generateMergeSortTrace(arr: number[]): TraceStep[] {
       sortedIndices: [],
       note: `Combine: Start merging sorted left [${leftSorted.join(", ")}] and right [${rightSorted.join(", ")}].`,
       lineNo: 6,
+      phase: "Combine",
+      currentCall: `merge([${leftSorted.join(", ")}], [${rightSorted.join(", ")}])`,
+      depth,
+      subproblem,
     });
 
     // Merge simulation
@@ -489,6 +544,10 @@ function generateMergeSortTrace(arr: number[]): TraceStep[] {
         sortedIndices: [],
         note: `Comparing left element ${leftSorted[i]} at index ${idxLeft} and right element ${rightSorted[j]} at index ${idxRight}.`,
         lineNo: 11,
+        phase: "Combine",
+        currentCall: `merge_step(${leftSorted[i]} vs ${rightSorted[j]})`,
+        depth,
+        subproblem,
       });
 
       if (leftSorted[i] <= rightSorted[j]) {
@@ -509,7 +568,6 @@ function generateMergeSortTrace(arr: number[]): TraceStep[] {
       j++;
     }
 
-    // Write merged values back into activeArr
     for (let k = 0; k < merged.length; k++) {
       activeArr[lo + k] = merged[k];
     }
@@ -517,7 +575,7 @@ function generateMergeSortTrace(arr: number[]): TraceStep[] {
     // Step: Merge done
     currentTree = updateNodeInTree(currentTree, nodeId, (n) => {
       n.status = "done";
-      n.badge = `sorted: [${merged.join(",")}]`;
+      n.badge = `[${merged.join(",")}]`;
       n.array = [...merged];
     });
     steps.push({
@@ -526,8 +584,12 @@ function generateMergeSortTrace(arr: number[]): TraceStep[] {
       highlightIndices: Array.from({ length: merged.length }, (_, k) => lo + k),
       compareIndices: [],
       sortedIndices: Array.from({ length: merged.length }, (_, k) => lo + k),
-      note: `Merged sorted run successfully. Active subarray is now [${merged.join(", ")}].`,
+      note: `Merged sorted subproblems successfully. Subarray is now [${merged.join(", ")}].`,
       lineNo: 15,
+      phase: "Combine",
+      currentCall,
+      depth,
+      subproblem: `[${merged.join(", ")}]`,
     });
 
     return merged;
@@ -542,11 +604,10 @@ function generateQuickSortTrace(arr: number[]): TraceStep[] {
   const steps: TraceStep[] = [];
   let activeArr = [...arr];
 
-  // Pre-build root
   const rootId = "qs-0";
   const rootNode: TreeNodeViz = {
     id: rootId,
-    label: `quicksort(${activeArr.join(",")})`,
+    label: `qs(0, ${activeArr.length - 1})`,
     array: [...activeArr],
     status: "pending",
     children: [],
@@ -557,7 +618,7 @@ function generateQuickSortTrace(arr: number[]): TraceStep[] {
   function run(lo: number, hi: number, parentId: string, nodeNum: number) {
     const nodeId = parentId === "" ? rootId : `${parentId}-${nodeNum}`;
     const sub = activeArr.slice(lo, hi + 1);
-    const label = `qs([${sub.join(",")}])`;
+    const label = `qs(${lo}, ${hi})`;
 
     const newNode: TreeNodeViz = {
       id: nodeId,
@@ -575,6 +636,10 @@ function generateQuickSortTrace(arr: number[]): TraceStep[] {
       currentTree = newNode; // root
     }
 
+    const subproblem = `[${sub.join(", ")}]`;
+    const depth = parentId === "" ? 0 : parentId.split("-").length;
+    const currentCall = `quicksort(arr, lo=${lo}, hi=${hi})`;
+
     // Step: Enter call
     currentTree = updateNodeInTree(currentTree, nodeId, (n) => {
       n.status = "active";
@@ -587,6 +652,10 @@ function generateQuickSortTrace(arr: number[]): TraceStep[] {
       sortedIndices: [],
       note: `Entering quicksort on range [${lo}..${hi}] with subarray [${sub.join(", ")}].`,
       lineNo: 1,
+      phase: "Conquer",
+      currentCall,
+      depth,
+      subproblem,
     });
 
     if (lo >= hi) {
@@ -602,11 +671,14 @@ function generateQuickSortTrace(arr: number[]): TraceStep[] {
         sortedIndices: lo === hi ? [lo] : [],
         note: `Base Case: Range contains ${hi - lo + 1} elements. Already sorted.`,
         lineNo: 2,
+        phase: "Base Case",
+        currentCall,
+        depth,
+        subproblem,
       });
       return;
     }
 
-    // Partition step simulation
     const pivot = activeArr[hi];
     steps.push({
       tree: copyTree(currentTree),
@@ -614,8 +686,12 @@ function generateQuickSortTrace(arr: number[]): TraceStep[] {
       highlightIndices: [hi],
       compareIndices: [],
       sortedIndices: [],
-      note: `Partitioning: Selected pivot element ${pivot} at index ${hi}.`,
+      note: `Partitioning: Selected pivot value ${pivot} at index ${hi}.`,
       lineNo: 7,
+      phase: "Divide",
+      currentCall: `partition(arr, lo=${lo}, hi=${hi}, pivot=${pivot})`,
+      depth,
+      subproblem,
     });
 
     let i = lo - 1;
@@ -628,6 +704,10 @@ function generateQuickSortTrace(arr: number[]): TraceStep[] {
         sortedIndices: [],
         note: `Comparing arr[${j}] (${activeArr[j]}) with pivot (${pivot}).`,
         lineNo: 10,
+        phase: "Divide",
+        currentCall: `partition_compare(${activeArr[j]} <= ${pivot}?)`,
+        depth,
+        subproblem,
       });
 
       if (activeArr[j] <= pivot) {
@@ -642,8 +722,12 @@ function generateQuickSortTrace(arr: number[]): TraceStep[] {
             highlightIndices: [i, j],
             compareIndices: [],
             sortedIndices: [],
-            note: `arr[${j}] <= pivot. Increment pointer i to ${i} and swap arr[${i}] and arr[${j}].`,
+            note: `arr[${j}] <= pivot. Increment i to ${i} and swap elements at index ${i} and ${j}.`,
             lineNo: 12,
+            phase: "Divide",
+            currentCall: `partition_swap(i=${i}, j=${j})`,
+            depth,
+            subproblem,
           });
         }
       }
@@ -660,8 +744,12 @@ function generateQuickSortTrace(arr: number[]): TraceStep[] {
         highlightIndices: [pIndex, hi],
         compareIndices: [],
         sortedIndices: [],
-        note: `Place pivot in its correct position by swapping arr[${pIndex}] and arr[${hi}].`,
+        note: `Place pivot in its correct sorted position by swapping indices ${pIndex} and ${hi}.`,
         lineNo: 13,
+        phase: "Divide",
+        currentCall: `partition_pivot_place(idx=${pIndex})`,
+        depth,
+        subproblem,
       });
     }
 
@@ -675,11 +763,14 @@ function generateQuickSortTrace(arr: number[]): TraceStep[] {
       highlightIndices: [pIndex],
       compareIndices: [],
       sortedIndices: [pIndex],
-      note: `Partitioning complete. Pivot ${pivot} is now in its final sorted position at index ${pIndex}.`,
+      note: `Partitioning complete. Pivot ${pivot} is now fixed at sorted index ${pIndex}.`,
       lineNo: 14,
+      phase: "Divide",
+      currentCall,
+      depth,
+      subproblem,
     });
 
-    // Recurse left and right
     run(lo, pIndex - 1, nodeId, 1);
     run(pIndex + 1, hi, nodeId, 2);
 
@@ -693,8 +784,12 @@ function generateQuickSortTrace(arr: number[]): TraceStep[] {
       highlightIndices: [],
       compareIndices: [],
       sortedIndices: Array.from({ length: hi - lo + 1 }, (_, idx) => lo + idx),
-      note: `Quick Sort completed for range [${lo}..${hi}].`,
+      note: `Combine: Quick Sort completed for range [${lo}..${hi}] in-place. No merge needed.`,
       lineNo: 4,
+      phase: "Combine",
+      currentCall,
+      depth,
+      subproblem,
     });
   }
 
@@ -844,6 +939,10 @@ function Page() {
     sortedIndices: [],
     note: "Initial state",
     lineNo: 0,
+    phase: "Initial" as const,
+    currentCall: "No active call",
+    depth: 0,
+    subproblem: "[]",
   };
 
   const layout = useMemo(() => {
@@ -864,6 +963,8 @@ function Page() {
     }
     return { comparisons, calls };
   }, [step, steps]);
+
+  const done = step >= steps.length - 1;
 
   return (
     <PageShell>
@@ -924,227 +1025,236 @@ function Page() {
       ) : (
         <>
           {/* Controls & Inputs */}
-          <div className="card-surface mb-6 p-4 space-y-4">
-            {/* Playback buttons */}
-            <div className="flex flex-wrap items-center gap-2">
-              <button
-                onClick={() => setRunning((r) => !r)}
-                className="inline-flex items-center gap-1.5 rounded-md gradient-brand px-3 py-1.5 text-sm font-semibold text-primary-foreground hover:opacity-90 transition"
-              >
-                {running ? <Pause className="h-4 w-4" /> : <Play className="h-4 w-4" />}
-                {running ? "Pause" : step === 0 ? "Start" : "Resume"}
-              </button>
-              <button
-                onClick={() => setStep((s) => Math.max(0, s - 1))}
-                className="rounded-md border border-border bg-card p-1.5 hover:bg-accent"
-                disabled={step === 0}
-                aria-label="Step back"
-              >
-                <StepBack className="h-4 w-4" />
-              </button>
-              <button
-                onClick={() => setStep((s) => Math.min(steps.length - 1, s + 1))}
-                className="rounded-md border border-border bg-card p-1.5 hover:bg-accent"
-                disabled={step >= steps.length - 1}
-                aria-label="Step forward"
-              >
-                <StepForward className="h-4 w-4" />
-              </button>
-              <button
-                onClick={() => {
-                  setStep(0);
-                  setRunning(false);
-                }}
-                className="inline-flex items-center gap-1 rounded-md border border-border bg-card px-3 py-1.5 text-sm hover:bg-accent font-semibold"
-                disabled={step === 0}
-              >
-                <RotateCcw className="h-4 w-4" /> Reset
-              </button>
-              <button
-                onClick={() => {
-                  setSeed((n) => n + 1);
-                  setRunning(false);
-                }}
-                className="inline-flex items-center gap-1 rounded-md border border-border bg-card px-3 py-1.5 text-sm hover:bg-accent font-semibold"
-                disabled={arrayInputMode === "custom"}
-              >
-                <Shuffle className="h-4 w-4" /> Randomize
-              </button>
-
-              <label className="flex items-center gap-2 text-xs text-muted-foreground ml-2">
-                Input Mode
-                <select
-                  value={arrayInputMode}
-                  onChange={(e) => setArrayInputMode(e.target.value as any)}
-                  className="rounded border border-border bg-card px-2 py-1 text-xs"
+          <div className="card-surface mb-6 p-4">
+            <div className="flex flex-wrap items-center gap-4">
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() => setRunning((r) => !r)}
+                  disabled={done && !running}
+                  className="inline-flex items-center gap-1.5 rounded-md gradient-brand px-3 py-1.5 text-xs font-semibold text-primary-foreground disabled:opacity-60 hover:opacity-95"
                 >
-                  <option value="random">Random Generator</option>
-                  <option value="custom">Custom Values</option>
-                </select>
-              </label>
+                  {running ? <Pause className="h-4 w-4" /> : <Play className="h-4 w-4" />}
+                  {running ? "Pause" : done ? "Done" : step === 0 ? "Start" : "Resume"}
+                </button>
+                <button
+                  onClick={() => setStep((s) => Math.max(0, s - 1))}
+                  className="rounded-md border border-border bg-card p-1.5 hover:bg-accent disabled:opacity-40"
+                  disabled={step === 0}
+                  aria-label="Step back"
+                >
+                  <StepBack className="h-4 w-4" />
+                </button>
+                <button
+                  onClick={() => setStep((s) => Math.min(steps.length - 1, s + 1))}
+                  className="rounded-md border border-border bg-card p-1.5 hover:bg-accent disabled:opacity-40"
+                  disabled={done}
+                  aria-label="Step forward"
+                >
+                  <StepForward className="h-4 w-4" />
+                </button>
+                <button
+                  onClick={() => {
+                    setStep(0);
+                    setRunning(false);
+                  }}
+                  className="inline-flex items-center gap-1 rounded-md border border-border bg-card px-2.5 py-1.5 text-xs hover:bg-accent font-semibold disabled:opacity-40"
+                  disabled={step === 0}
+                >
+                  <RotateCcw className="h-3.5 w-3.5" /> Reset
+                </button>
+                <button
+                  onClick={() => {
+                    setSeed((n) => n + 1);
+                    setRunning(false);
+                  }}
+                  className="inline-flex items-center gap-1 rounded-md border border-border bg-card px-2.5 py-1.5 text-xs hover:bg-accent font-semibold disabled:opacity-40"
+                  disabled={arrayInputMode === "custom"}
+                >
+                  <Shuffle className="h-3.5 w-3.5" /> Randomize
+                </button>
+              </div>
 
-              {arrayInputMode === "random" ? (
-                <label className="flex items-center gap-2 text-xs text-muted-foreground ml-2">
-                  Size
+              <div className="h-4 w-px bg-border hidden sm:block" />
+
+              <div className="flex flex-wrap items-center gap-3 text-xs text-muted-foreground">
+                <label className="flex items-center gap-1.5">
+                  Input Mode
+                  <select
+                    value={arrayInputMode}
+                    onChange={(e) => setArrayInputMode(e.target.value as any)}
+                    className="rounded border border-border bg-card px-1.5 py-0.5 text-xs text-foreground"
+                  >
+                    <option value="random">Random Arrays</option>
+                    <option value="custom">Custom Values</option>
+                  </select>
+                </label>
+
+                {arrayInputMode === "random" ? (
+                  <label className="flex items-center gap-1.5">
+                    Size
+                    <input
+                      type="range"
+                      min={4}
+                      max={12}
+                      value={size}
+                      onChange={(e) => setSize(Number(e.target.value))}
+                      className="w-20"
+                    />
+                    <span className="font-mono text-foreground">{size}</span>
+                  </label>
+                ) : (
+                  <label className="flex items-center gap-1.5">
+                    Array
+                    <input
+                      type="text"
+                      value={customArrayStr}
+                      onChange={(e) => setCustomArrayStr(e.target.value)}
+                      placeholder="e.g. 5, 2, 8, 12, 1"
+                      className="w-32 rounded border border-border bg-card px-1.5 py-0.5 font-mono text-foreground"
+                    />
+                  </label>
+                )}
+
+                {algoId === "binary-search" && (
+                  <label className="flex items-center gap-1.5">
+                    Target
+                    <input
+                      type="number"
+                      value={targetVal}
+                      onChange={(e) => setTargetVal(e.target.value)}
+                      className="w-12 rounded border border-border bg-card px-1.5 py-0.5 font-mono text-foreground"
+                    />
+                  </label>
+                )}
+
+                <label className="flex items-center gap-1.5 ml-auto">
+                  Speed
                   <input
                     type="range"
-                    min={4}
-                    max={12}
-                    value={size}
-                    onChange={(e) => setSize(Number(e.target.value))}
-                    className="w-24"
+                    min={50}
+                    max={1200}
+                    step={50}
+                    value={1250 - speed}
+                    onChange={(e) => setSpeed(1250 - Number(e.target.value))}
+                    className="w-20"
                   />
-                  <span className="font-mono">{size}</span>
                 </label>
-              ) : (
-                <div className="flex items-center gap-2 text-xs text-muted-foreground ml-2">
-                  Array
-                  <input
-                    type="text"
-                    value={customArrayStr}
-                    onChange={(e) => setCustomArrayStr(e.target.value)}
-                    placeholder="e.g. 5, 2, 8, 12, 1"
-                    className="w-36 rounded border border-border bg-card px-2 py-1 text-xs text-foreground font-mono"
-                  />
-                </div>
-              )}
-
-              {algoId === "binary-search" && (
-                <div className="flex items-center gap-2 text-xs text-muted-foreground ml-2">
-                  Target
-                  <input
-                    type="number"
-                    value={targetVal}
-                    onChange={(e) => setTargetVal(e.target.value)}
-                    className="w-14 rounded border border-border bg-card px-2 py-1 text-xs text-foreground font-mono"
-                  />
-                </div>
-              )}
-
-              <label className="flex items-center gap-2 text-xs text-muted-foreground ml-auto">
-                Speed
-                <input
-                  type="range"
-                  min={50}
-                  max={1000}
-                  step={50}
-                  value={1050 - speed}
-                  onChange={(e) => setSpeed(1050 - Number(e.target.value))}
-                  className="w-24"
-                />
-              </label>
+              </div>
             </div>
           </div>
 
-          {/* Main Visualizer Panel */}
-          <div className="grid gap-6 lg:grid-cols-5">
-            {/* Left: Recursion Tree Visualizer (3/5 cols) */}
-            <div className="lg:col-span-3 flex flex-col gap-4">
-              <div className="card-surface p-4 flex-1 flex flex-col min-h-[380px]">
-                <div className="flex items-center justify-between mb-2">
-                  <h3 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground flex items-center gap-1.5">
+          {/* Main Visualization Grid */}
+          <div className="grid gap-6 lg:grid-cols-12">
+            {/* Left Column (8 cols): Tree + Array */}
+            <div className="lg:col-span-8 flex flex-col gap-6">
+              {/* Recursion Tree Panel */}
+              <div className="card-surface p-4 flex flex-col min-h-[300px]">
+                <div className="flex items-center justify-between mb-3">
+                  <div className="text-sm font-semibold flex items-center gap-1.5">
                     <Split className="h-4 w-4 text-[color:var(--brand)]" /> Recursion Tree
-                  </h3>
-                  <span className="text-xs text-muted-foreground font-mono">
+                  </div>
+                  <div className="text-xs text-muted-foreground font-mono">
                     Step {step + 1} / {steps.length}
-                  </span>
+                  </div>
                 </div>
 
-                <div className="flex-1 overflow-auto border border-border/40 rounded bg-muted/20 relative p-4 flex items-center justify-center">
+                <div className="flex-1 overflow-auto border border-border/40 rounded bg-muted/10 relative p-3 flex items-center justify-center min-h-[220px]">
                   {layout ? (
                     <svg
-                      viewBox={`0 0 ${Math.max(layout.width, 300)} ${Math.max(layout.height, 300)}`}
-                      className="block max-h-[450px] w-full"
-                      style={{ minWidth: layout.width, maxWidth: layout.width }}
+                      viewBox={`0 0 ${layout.width + 48} ${layout.height + 40}`}
+                      className="block w-full"
+                      style={{
+                        maxWidth: Math.max(layout.width + 48, 220),
+                        maxHeight: 220,
+                      }}
                     >
-                      {/* Edges */}
-                      {layout.edges.map((e, idx) => (
-                        <motion.path
-                          key={`edge-${idx}`}
-                          initial={{ pathLength: 0 }}
-                          animate={{ pathLength: 1 }}
-                          d={`M ${e.fromX + 32} ${e.fromY + 24} C ${e.fromX + 32} ${(e.fromY + e.toY) / 2 + 12}, ${e.toX + 32} ${(e.fromY + e.toY) / 2 + 12}, ${e.toX + 32} ${e.toY + 12}`}
-                          fill="none"
-                          className="stroke-border/70"
-                          strokeWidth={1.5}
-                        />
-                      ))}
+                      <g transform="translate(24, 16)">
+                        {/* Edges */}
+                        {layout.edges.map((e, idx) => (
+                          <motion.line
+                            key={`edge-${idx}`}
+                            initial={{ pathLength: 0 }}
+                            animate={{ pathLength: 1 }}
+                            x1={e.fromX + 32}
+                            y1={e.fromY + 32}
+                            x2={e.toX + 32}
+                            y2={e.toY}
+                            className="stroke-border/70"
+                            strokeWidth={1.5}
+                          />
+                        ))}
 
-                      {/* Nodes */}
-                      {layout.nodes.map((n) => {
-                        const statusColors: Record<string, string> = {
-                          pending: "fill-muted stroke-border/40 text-muted-foreground",
-                          active: "fill-amber-500/15 stroke-amber-500 text-amber-500 font-semibold",
-                          base: "fill-emerald-500/15 stroke-emerald-500 text-emerald-500",
-                          done: "fill-[color:var(--brand)]/10 stroke-[color:var(--brand)]/60 text-foreground",
-                        };
-                        const colorClass = statusColors[n.node.status] || statusColors.pending;
+                        {/* Nodes */}
+                        {layout.nodes.map((n) => {
+                          const statusColors: Record<string, string> = {
+                            pending: "fill-muted stroke-border/40 text-muted-foreground",
+                            active: "fill-amber-500/15 stroke-amber-500 text-amber-500 font-semibold",
+                            base: "fill-emerald-500/15 stroke-emerald-500 text-emerald-500",
+                            done: "fill-[color:var(--brand)]/10 stroke-[color:var(--brand)]/60 text-foreground",
+                          };
+                          const colorClass = statusColors[n.node.status] || statusColors.pending;
 
-                        return (
-                          <g key={n.node.id}>
-                            <rect
-                              x={n.x}
-                              y={n.y}
-                              width={64}
-                              height={32}
-                              rx={4}
-                              className={`transition-colors ${colorClass}`}
-                              strokeWidth={1.5}
-                            />
-                            <text
-                              x={n.x + 32}
-                              y={n.y + 16}
-                              textAnchor="middle"
-                              alignmentBaseline="middle"
-                              className="text-[9px] font-mono select-none pointer-events-none fill-current"
-                            >
-                              {n.node.label.length > 12 ? n.node.label.slice(0, 10) + ".." : n.node.label}
-                            </text>
-                            {n.node.badge && (
+                          return (
+                            <g key={n.node.id}>
+                              <rect
+                                x={n.x}
+                                y={n.y}
+                                width={64}
+                                height={32}
+                                rx={4}
+                                className={`transition-colors ${colorClass}`}
+                                strokeWidth={1.5}
+                              />
                               <text
                                 x={n.x + 32}
-                                y={n.y + 26}
+                                y={n.y + 16}
                                 textAnchor="middle"
-                                className="text-[7px] font-mono fill-muted-foreground pointer-events-none"
+                                alignmentBaseline="middle"
+                                className="text-[9px] font-mono select-none pointer-events-none fill-current"
                               >
-                                {n.node.badge}
+                                {n.node.label.length > 12 ? n.node.label.slice(0, 10) + ".." : n.node.label}
                               </text>
-                            )}
-                          </g>
-                        );
-                      })}
+                              {n.node.badge && (
+                                <text
+                                  x={n.x + 32}
+                                  y={n.y + 26}
+                                  textAnchor="middle"
+                                  className="text-[7px] font-mono fill-muted-foreground pointer-events-none"
+                                >
+                                  {n.node.badge}
+                                </text>
+                              )}
+                            </g>
+                          );
+                        })}
+                      </g>
                     </svg>
                   ) : (
                     <div className="text-xs text-muted-foreground">Generating visual layout...</div>
                   )}
                 </div>
 
-                <div className="mt-3 flex gap-4 text-xs">
+                {/* Legend */}
+                <div className="mt-3 flex flex-wrap gap-4 text-[11px] border-t border-border/40 pt-2.5">
                   <div className="flex items-center gap-1.5">
-                    <span className="h-3 w-3 rounded border border-border bg-muted" />
-                    <span className="text-muted-foreground">Pending</span>
+                    <span className="h-2.5 w-2.5 rounded border border-amber-500 bg-amber-500/15" />
+                    <span className="text-amber-500">Active Call</span>
                   </div>
                   <div className="flex items-center gap-1.5">
-                    <span className="h-3 w-3 rounded border border-amber-500 bg-amber-500/15" />
-                    <span className="text-amber-500 font-medium">Active Call</span>
-                  </div>
-                  <div className="flex items-center gap-1.5">
-                    <span className="h-3 w-3 rounded border border-emerald-500 bg-emerald-500/15" />
+                    <span className="h-2.5 w-2.5 rounded border border-emerald-500 bg-emerald-500/15" />
                     <span className="text-emerald-500">Base Case</span>
                   </div>
                   <div className="flex items-center gap-1.5">
-                    <span className="h-3 w-3 rounded border border-[color:var(--brand)]/60 bg-[color:var(--brand)]/10" />
+                    <span className="h-2.5 w-2.5 rounded border border-[color:var(--brand)]/60 bg-[color:var(--brand)]/10" />
                     <span className="text-foreground">Done / Split</span>
                   </div>
                 </div>
               </div>
 
-              {/* Array visualizer panel */}
+              {/* Array State Panel */}
               <div className="card-surface p-4">
-                <h3 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground mb-3">
-                  Array State
-                </h3>
-                <div className="flex flex-wrap gap-2 justify-center py-2">
+                <div className="text-sm font-semibold mb-3">Array State</div>
+                <div className="flex flex-wrap gap-1.5 justify-center py-2">
                   {currentStep.array.map((val, idx) => {
                     const isHighlight = currentStep.highlightIndices.includes(idx);
                     const isCompare = currentStep.compareIndices.includes(idx);
@@ -1162,79 +1272,128 @@ function Page() {
                     return (
                       <div
                         key={idx}
-                        className={`w-10 h-10 rounded border flex flex-col items-center justify-center text-xs font-mono transition-all ${bg}`}
+                        className={`w-9 h-9 rounded border flex flex-col items-center justify-center text-xs font-mono transition-all ${bg}`}
                       >
                         <div>{val}</div>
-                        <div className="text-[8px] text-muted-foreground select-none mt-0.5">#{idx}</div>
+                        <div className="text-[7px] text-muted-foreground select-none">#{idx}</div>
                       </div>
                     );
                   })}
                 </div>
-                <div className="text-xs text-muted-foreground text-center mt-2 italic">
-                  {currentStep.note}
-                </div>
               </div>
             </div>
 
-            {/* Right: Code Block & Step Description (2/5 cols) */}
-            <div className="lg:col-span-2 flex flex-col gap-4">
-              <div className="card-surface p-4 flex-1 flex flex-col">
-                <h3 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground mb-3">
-                  Python Implementation
-                </h3>
-                <div className="flex-1 overflow-auto rounded border border-border/40 font-mono text-[11px] bg-code-bg p-3 relative">
+            {/* Right Column (4 cols): State details + Code */}
+            <div className="lg:col-span-4 flex flex-col gap-6">
+              {/* Information Hierarchy / State Details */}
+              <div className="card-surface p-4 flex flex-col gap-3">
+                <div className="text-sm font-semibold">Subproblem Status</div>
+                
+                <div className="space-y-2 border border-border/40 bg-muted/10 rounded p-3">
+                  <div className="flex items-center justify-between text-xs">
+                    <span className="text-muted-foreground">Phase:</span>
+                    <span
+                      className={`px-2 py-0.5 rounded-full text-[10px] font-semibold uppercase tracking-wider ${
+                        currentStep.phase === "Divide"
+                          ? "bg-amber-500/10 text-amber-500 border border-amber-500/20"
+                          : currentStep.phase === "Combine"
+                            ? "bg-purple-500/10 text-purple-500 border border-purple-500/20"
+                            : currentStep.phase === "Base Case"
+                              ? "bg-emerald-500/10 text-emerald-500 border border-emerald-500/20"
+                              : "bg-blue-500/10 text-blue-500 border border-blue-500/20"
+                      }`}
+                    >
+                      {currentStep.phase}
+                    </span>
+                  </div>
+
+                  <div className="flex flex-col gap-0.5 text-xs">
+                    <span className="text-muted-foreground">Active Call:</span>
+                    <span className="font-mono text-foreground font-medium truncate">{currentStep.currentCall}</span>
+                  </div>
+
+                  <div className="flex items-center justify-between text-xs pt-1 border-t border-border/20">
+                    <span className="text-muted-foreground">Recursion Depth:</span>
+                    <span className="font-mono font-medium text-foreground">{currentStep.depth}</span>
+                  </div>
+
+                  <div className="flex items-center justify-between text-xs">
+                    <span className="text-muted-foreground">Active Subproblem:</span>
+                    <span className="font-mono font-medium text-foreground truncate max-w-[150px]">{currentStep.subproblem}</span>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-2 gap-2 text-xs font-mono">
+                  <div className="border border-border/30 bg-card p-2 rounded text-center">
+                    <div className="text-muted-foreground text-[9px] uppercase">Recurse Calls</div>
+                    <div className="text-sm font-bold text-foreground mt-0.5">{stats.calls}</div>
+                  </div>
+                  <div className="border border-border/30 bg-card p-2 rounded text-center">
+                    <div className="text-muted-foreground text-[9px] uppercase">Comparisons</div>
+                    <div className="text-sm font-bold text-foreground mt-0.5">{stats.comparisons}</div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Code viewer */}
+              <div className="card-surface p-4 flex-1 flex flex-col min-h-[220px]">
+                <div className="text-sm font-semibold mb-2">Python Implementation</div>
+                <div className="flex-1 overflow-auto rounded border border-border/40 font-mono text-[10px] bg-code-bg p-3 relative max-h-[260px]">
                   {CODE_SNIPPETS[algoId].split("\n").map((line, idx) => {
                     const isActive = currentStep.lineNo === idx + 1;
                     return (
                       <div
                         key={idx}
-                        className={`py-0.5 px-2 flex gap-4 ${
+                        className={`py-0.5 px-1.5 flex gap-3 ${
                           isActive
                             ? "bg-amber-500/15 border-l-2 border-amber-500 text-amber-200 font-medium"
                             : "text-muted-foreground"
                         }`}
                       >
-                        <span className="w-5 text-right select-none text-muted-foreground/40 font-mono">{idx + 1}</span>
-                        <pre className="flex-1 whitespace-pre-wrap">{line}</pre>
+                        <span className="w-4 text-right select-none text-muted-foreground/35 font-mono">{idx + 1}</span>
+                        <pre className="flex-1 whitespace-pre">{line}</pre>
                       </div>
                     );
                   })}
                 </div>
               </div>
+            </div>
+          </div>
 
-              {/* Statistics & Related Info */}
-              <div className="card-surface p-4 space-y-3">
-                <h3 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">
-                  Trace Details
-                </h3>
-                <div className="grid grid-cols-2 gap-2 text-xs font-mono">
-                  <div className="border border-border/40 bg-muted/10 rounded p-2 text-center">
-                    <div className="text-muted-foreground text-[10px]">RECURSIVE CALLS</div>
-                    <div className="text-sm font-semibold mt-1">{stats.calls}</div>
-                  </div>
-                  <div className="border border-border/40 bg-muted/10 rounded p-2 text-center">
-                    <div className="text-muted-foreground text-[10px]">COMPARISONS</div>
-                    <div className="text-sm font-semibold mt-1">{stats.comparisons}</div>
-                  </div>
+          {/* Explanation panel */}
+          <div className="mt-6 card-surface p-4">
+            <div className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-1.5">
+              Step Explanation
+            </div>
+            <p className="text-sm text-muted-foreground leading-relaxed">
+              {currentStep.note}
+            </p>
+          </div>
+
+          {/* About & Stats Panel */}
+          <div className="mt-6 grid gap-6 md:grid-cols-2">
+            <div className="card-surface p-4">
+              <div className="text-sm font-semibold mb-2">About {activeAlgo.name}</div>
+              <p className="text-sm text-muted-foreground">{activeAlgo.description}</p>
+            </div>
+            <div className="card-surface p-4">
+              <div className="text-sm font-semibold mb-3">Complexity Summary</div>
+              <div className="space-y-2 text-xs">
+                <div className="flex justify-between items-center border-b border-border/40 pb-1.5">
+                  <span className="text-muted-foreground">Best Time:</span>
+                  <span><ComplexityBadge value={activeAlgo.best ?? "N/A"} /></span>
                 </div>
-
-                <div className="border-t border-border/40 pt-3">
-                  <div className="text-xs text-muted-foreground flex justify-between mb-1.5">
-                    <span>Algorithm:</span>
-                    <span className="font-semibold text-foreground">{activeAlgo.name}</span>
-                  </div>
-                  <div className="text-xs text-muted-foreground flex justify-between mb-1.5">
-                    <span>Best Time:</span>
-                    <span><ComplexityBadge value={activeAlgo.best} /></span>
-                  </div>
-                  <div className="text-xs text-muted-foreground flex justify-between mb-1.5">
-                    <span>Average Time:</span>
-                    <span><ComplexityBadge value={activeAlgo.avg} /></span>
-                  </div>
-                  <div className="text-xs text-muted-foreground flex justify-between mb-1.5">
-                    <span>Space Cost:</span>
-                    <span><ComplexityBadge value={activeAlgo.space} /></span>
-                  </div>
+                <div className="flex justify-between items-center border-b border-border/40 pb-1.5">
+                  <span className="text-muted-foreground">Average Time:</span>
+                  <span><ComplexityBadge value={activeAlgo.avg ?? "N/A"} /></span>
+                </div>
+                <div className="flex justify-between items-center border-b border-border/40 pb-1.5">
+                  <span className="text-muted-foreground">Worst Time:</span>
+                  <span><ComplexityBadge value={activeAlgo.worst ?? "N/A"} /></span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-muted-foreground">Space Complexity:</span>
+                  <span><ComplexityBadge value={activeAlgo.space ?? "N/A"} /></span>
                 </div>
               </div>
             </div>
@@ -1242,9 +1401,9 @@ function Page() {
 
           {/* Related Lessons */}
           <div className="mt-8 card-surface p-4">
-            <h3 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground mb-3">
+            <div className="text-sm font-semibold uppercase tracking-wider text-muted-foreground mb-3">
               Related Lessons
-            </h3>
+            </div>
             <div className="flex flex-wrap gap-2">
               <Link
                 to="/learn/$course"
@@ -1255,13 +1414,13 @@ function Page() {
               </Link>
               <Link
                 to="/learn/divide-and-conquer/recurrence-relations"
-                className="inline-flex items-center gap-1.5 rounded-md border border-border bg-card px-3 py-1.5 text-sm hover:bg-accent text-muted-foreground hover:text-foreground transition"
+                className="inline-flex items-center gap-1.5 rounded-md border border-border bg-card px-3 py-1.5 text-sm hover:bg-accent text-muted-foreground hover:text-foreground transition font-medium"
               >
                 <BookOpen className="h-4 w-4 text-[color:var(--brand)]" /> Recurrence Relations Lesson
               </Link>
               <Link
                 to="/complexity/time"
-                className="inline-flex items-center gap-1.5 rounded-md border border-border bg-card px-3 py-1.5 text-sm hover:bg-accent text-muted-foreground hover:text-foreground transition"
+                className="inline-flex items-center gap-1.5 rounded-md border border-border bg-card px-3 py-1.5 text-sm hover:bg-accent text-muted-foreground hover:text-foreground transition font-medium"
               >
                 <BookOpen className="h-4 w-4 text-[color:var(--brand)]" /> Time Complexity Cheat Sheet (Master Theorem)
               </Link>
