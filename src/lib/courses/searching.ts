@@ -2,7 +2,7 @@ import type { Course } from "./types";
 
 export const searchingCourse: Course = {
   slug: "searching",
-  title: "Searching",
+  title: "Searching Algorithms",
   tagline: "Finding an element inside a collection — from linear scan to interpolation.",
   category: "algorithm",
   order: 2,
@@ -10,6 +10,44 @@ export const searchingCourse: Course = {
   hidden: true,
   comingSoon: false,
   redirectRoute: "/searching",
+  courseLayout: "overview",
+  ctaText: "Open Searching Playground →",
+  ctaRoute: "/playgrounds/searching",
+  overview: {
+    introduction:
+      "Searching algorithms are designed to retrieve information stored within some data structure, or defined in the search space of a problem domain. They range from simple sequential scans to binary subdivisions and interpolation-based estimates.",
+    whyLearn:
+      "Searching is one of the most fundamental operations in software systems, from database lookups and file indexing to key-value stores. Optimizing search speeds from linear O(n) to logarithmic O(log n) makes the difference between a sluggish application and a high-performance system.",
+    learningObjectives: [
+      "Understand the mechanics of linear search and sequential scanning.",
+      "Master Binary Search boundaries and pointer arithmetic.",
+      "Explore advanced searching: Jump Search, Interpolation Search, and Exponential Search.",
+      "Evaluate time and space complexities across searching algorithms.",
+      "Determine the optimal search algorithm based on data distribution and sorting state.",
+    ],
+    realWorldApplications: [
+      "Database indices for instant row lookup.",
+      "Symbol tables inside compilers and interpreters.",
+      "Autocompletion features in search boxes.",
+      "IP address routing tables in networking.",
+    ],
+    advantages: [
+      "Drastically reduces lookup times from O(n) to O(log n) or O(log log n).",
+      "Enables efficient query resolution on sorted datasets.",
+      "Extends to search space optimization (binary search on the answer).",
+    ],
+    limitations: [
+      "Fast searches (like binary search) require data to be pre-sorted.",
+      "Sorting has an O(n log n) overhead, which might not be worth it for a single lookup.",
+      "Linear searches are slow on large datasets.",
+    ],
+    prerequisites: [
+      "Basic understanding of array structures and indices.",
+      "Familiarity with loops and conditions in Python.",
+    ],
+    estimatedTime: "3–4 Hours",
+    difficulty: 2,
+  },
   lessons: [
     {
       slug: "introduction",

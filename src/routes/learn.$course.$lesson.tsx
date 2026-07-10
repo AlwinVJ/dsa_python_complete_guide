@@ -6,9 +6,6 @@ export const Route = createFileRoute("/learn/$course/$lesson")({
   beforeLoad: ({ params }) => {
     const course = getCourse(params.course);
     if (!course) throw notFound();
-    if (course.redirectRoute) {
-      throw redirect({ to: course.redirectRoute });
-    }
     if (!getLesson(params.course, params.lesson)) throw notFound();
   },
   loader: ({ params }) => params,

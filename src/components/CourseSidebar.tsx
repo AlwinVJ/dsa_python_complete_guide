@@ -325,7 +325,7 @@ function CourseGroup({
               params={{ course: course.slug }}
               onClick={onNavigate}
               className={`block rounded-md px-2 py-1 text-xs transition ${
-                pathname === `/learn/${course.slug}`
+                pathname === `/learn/${course.slug}` || (course.redirectRoute && pathname === course.redirectRoute)
                   ? "bg-accent text-accent-foreground font-medium"
                   : "text-muted-foreground hover:bg-accent/60 hover:text-foreground"
               }`}

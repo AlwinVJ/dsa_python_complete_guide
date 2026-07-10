@@ -2,13 +2,52 @@ import type { Course } from "./types";
 
 export const sortingCourse: Course = {
   slug: "sorting-algorithms",
-  title: "Sorting",
+  title: "Sorting Algorithms",
   tagline: "Ordering data — comparison-based and non-comparison-based.",
   category: "algorithm",
   order: 1,
   icon: "ArrowUpDown",
   hidden: true,
+  comingSoon: false,
   redirectRoute: "/sorting",
+  courseLayout: "overview",
+  ctaText: "Open Sorting Playground →",
+  ctaRoute: "/playgrounds/sorting",
+  overview: {
+    introduction:
+      "Sorting algorithms are designed to rearrange a collection of items (such as an array or list) into a specific order (typically ascending or descending). They are classified into comparison-based and non-comparison-based methods.",
+    whyLearn:
+      "Sorting is a fundamental operation that optimizes other tasks (like searching, merging, and deduplication). In interviews, sorting is the ultimate playground for exploring algorithm design, invariants, stability, in-place behavior, and performance trade-offs.",
+    learningObjectives: [
+      "Master simple sorting algorithms: Bubble, Selection, and Insertion Sort.",
+      "Understand efficient comparison-based sorts: Merge, Quick, and Heap Sort.",
+      "Explore non-comparison linear sorts: Counting, Radix, and Bucket Sort.",
+      "Differentiate between stable and unstable sorting algorithms.",
+      "Understand in-place versus out-of-place memory management.",
+    ],
+    realWorldApplications: [
+      "Database systems sorting queries using external merge sort.",
+      "E-commerce platforms ranking products by price, rating, or relevance.",
+      "File explorers sorting files by name, size, or date modified.",
+      "Scheduling tasks in operating systems based on priority.",
+    ],
+    advantages: [
+      "Enables fast logarithmic searching (Binary Search).",
+      "Assists in identifying duplicates and grouping identical elements.",
+      "Implements predictability in data layouts for serialization.",
+    ],
+    limitations: [
+      "Comparison-based sorting has a mathematical lower bound of O(n log n).",
+      "Linear-time non-comparison sorts require specific keys and ranges.",
+      "Certain sorts (like Merge Sort) require O(n) auxiliary space.",
+    ],
+    prerequisites: [
+      "Familiarity with arrays/lists indexing.",
+      "Basic recursive reasoning (for Merge and Quick Sort).",
+    ],
+    estimatedTime: "4–5 Hours",
+    difficulty: 3,
+  },
   lessons: [
     {
       slug: "introduction",
