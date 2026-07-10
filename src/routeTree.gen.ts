@@ -44,6 +44,7 @@ import { Route as QueuesFaqRouteImport } from './routes/queues.faq'
 import { Route as QueuesSplatRouteImport } from './routes/queues.$'
 import { Route as PlaygroundsSortingRouteImport } from './routes/playgrounds.sorting'
 import { Route as PlaygroundsSearchingRouteImport } from './routes/playgrounds.searching'
+import { Route as PlaygroundsRecursionRouteImport } from './routes/playgrounds.recursion'
 import { Route as PlaygroundsGraphRouteImport } from './routes/playgrounds.graph'
 import { Route as ModulesSlugRouteImport } from './routes/modules.$slug'
 import { Route as LinkedListsInterviewRouteImport } from './routes/linked-lists.interview'
@@ -233,6 +234,11 @@ const PlaygroundsSearchingRoute = PlaygroundsSearchingRouteImport.update({
   path: '/playgrounds/searching',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PlaygroundsRecursionRoute = PlaygroundsRecursionRouteImport.update({
+  id: '/playgrounds/recursion',
+  path: '/playgrounds/recursion',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PlaygroundsGraphRoute = PlaygroundsGraphRouteImport.update({
   id: '/playgrounds/graph',
   path: '/playgrounds/graph',
@@ -332,6 +338,7 @@ export interface FileRoutesByFullPath {
   '/linked-lists/interview': typeof LinkedListsInterviewRoute
   '/modules/$slug': typeof ModulesSlugRoute
   '/playgrounds/graph': typeof PlaygroundsGraphRoute
+  '/playgrounds/recursion': typeof PlaygroundsRecursionRoute
   '/playgrounds/searching': typeof PlaygroundsSearchingRoute
   '/playgrounds/sorting': typeof PlaygroundsSortingRoute
   '/queues/$': typeof QueuesSplatRoute
@@ -382,6 +389,7 @@ export interface FileRoutesByTo {
   '/linked-lists/interview': typeof LinkedListsInterviewRoute
   '/modules/$slug': typeof ModulesSlugRoute
   '/playgrounds/graph': typeof PlaygroundsGraphRoute
+  '/playgrounds/recursion': typeof PlaygroundsRecursionRoute
   '/playgrounds/searching': typeof PlaygroundsSearchingRoute
   '/playgrounds/sorting': typeof PlaygroundsSortingRoute
   '/queues/$': typeof QueuesSplatRoute
@@ -433,6 +441,7 @@ export interface FileRoutesById {
   '/linked-lists/interview': typeof LinkedListsInterviewRoute
   '/modules/$slug': typeof ModulesSlugRoute
   '/playgrounds/graph': typeof PlaygroundsGraphRoute
+  '/playgrounds/recursion': typeof PlaygroundsRecursionRoute
   '/playgrounds/searching': typeof PlaygroundsSearchingRoute
   '/playgrounds/sorting': typeof PlaygroundsSortingRoute
   '/queues/$': typeof QueuesSplatRoute
@@ -485,6 +494,7 @@ export interface FileRouteTypes {
     | '/linked-lists/interview'
     | '/modules/$slug'
     | '/playgrounds/graph'
+    | '/playgrounds/recursion'
     | '/playgrounds/searching'
     | '/playgrounds/sorting'
     | '/queues/$'
@@ -535,6 +545,7 @@ export interface FileRouteTypes {
     | '/linked-lists/interview'
     | '/modules/$slug'
     | '/playgrounds/graph'
+    | '/playgrounds/recursion'
     | '/playgrounds/searching'
     | '/playgrounds/sorting'
     | '/queues/$'
@@ -585,6 +596,7 @@ export interface FileRouteTypes {
     | '/linked-lists/interview'
     | '/modules/$slug'
     | '/playgrounds/graph'
+    | '/playgrounds/recursion'
     | '/playgrounds/searching'
     | '/playgrounds/sorting'
     | '/queues/$'
@@ -636,6 +648,7 @@ export interface RootRouteChildren {
   LinkedListsInterviewRoute: typeof LinkedListsInterviewRoute
   ModulesSlugRoute: typeof ModulesSlugRoute
   PlaygroundsGraphRoute: typeof PlaygroundsGraphRoute
+  PlaygroundsRecursionRoute: typeof PlaygroundsRecursionRoute
   PlaygroundsSearchingRoute: typeof PlaygroundsSearchingRoute
   PlaygroundsSortingRoute: typeof PlaygroundsSortingRoute
   QueuesSplatRoute: typeof QueuesSplatRoute
@@ -901,6 +914,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PlaygroundsSearchingRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/playgrounds/recursion': {
+      id: '/playgrounds/recursion'
+      path: '/playgrounds/recursion'
+      fullPath: '/playgrounds/recursion'
+      preLoaderRoute: typeof PlaygroundsRecursionRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/playgrounds/graph': {
       id: '/playgrounds/graph'
       path: '/playgrounds/graph'
@@ -1028,6 +1048,7 @@ const rootRouteChildren: RootRouteChildren = {
   LinkedListsInterviewRoute: LinkedListsInterviewRoute,
   ModulesSlugRoute: ModulesSlugRoute,
   PlaygroundsGraphRoute: PlaygroundsGraphRoute,
+  PlaygroundsRecursionRoute: PlaygroundsRecursionRoute,
   PlaygroundsSearchingRoute: PlaygroundsSearchingRoute,
   PlaygroundsSortingRoute: PlaygroundsSortingRoute,
   QueuesSplatRoute: QueuesSplatRoute,

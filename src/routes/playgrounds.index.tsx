@@ -19,6 +19,7 @@ import {
   Route as RouteIcon,
   Text,
   Sparkles,
+  RotateCcw,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 
@@ -127,6 +128,14 @@ const AVAILABLE: Playground[] = [
     meta: "6 algorithms · animations",
     description:
       "Linear, Binary, Jump, Interpolation, Exponential, and Ternary Search — visualize intervals and comparisons.",
+  },
+  {
+    title: "Recursion Playground",
+    href: "/playgrounds/recursion",
+    icon: RotateCcw,
+    meta: "Call stack · step-through",
+    description:
+      "Step through factorial, Fibonacci, sum, power, and GCD — watch stack frames push and pop live.",
   },
 ];
 
