@@ -178,15 +178,7 @@ export const NAV_SECTIONS: NavSection[] = [
     ],
   },
   {
-    title: "Playgrounds",
-    items: [
-      { to: "/playgrounds", label: "All Playgrounds" },
-      { to: "/playgrounds/searching", label: "Searching Playground" },
-      { to: "/playgrounds/sorting", label: "Sorting Playground" },
-      { to: "/playgrounds/graph", label: "Graph Playground" },
-    ],
-  },
-  {
+
     title: "Reference",
     items: [
       { to: "/cheatsheet", label: "Quick Revision" },

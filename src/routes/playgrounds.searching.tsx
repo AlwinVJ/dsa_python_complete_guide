@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { PageShell, PageHeader, ComplexityBadge } from "@/components/Callout";
 import { Legend } from "@/components/ListVisualizer";
-import { CodeBlock } from "@/components/CodeBlock";
+import { CodeViewer } from "@/components/CodeViewer";
 import { ALGORITHMS } from "@/lib/searching";
 import {
   Play,
@@ -432,7 +432,7 @@ function Page() {
         <h3 className="mb-3 text-sm font-semibold uppercase tracking-wider text-muted-foreground">
           Python Code
         </h3>
-        <CodeBlock code={algo.code} title={`${algo.id}_search.py`} />
+        <CodeViewer code={algo.code} title={`${algo.id}_search.py`} />
       </div>
 
       {/* Algorithm description card */}

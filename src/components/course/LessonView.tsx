@@ -15,10 +15,12 @@ import {
 import { CodeBlock } from "@/components/CodeBlock";
 import { Callout } from "@/components/Callout";
 import type { Course, Lesson, LessonSection } from "@/lib/courses/types";
-import { lessonHref } from "@/lib/courses/types";
+import { lessonHref, allCourseLessons } from "@/lib/courses/types";
 import { ComingSoon } from "@/components/ComingSoon";
-import { SortingRedirect } from "@/components/SortingRedirect";
+
 import { TrieRedirect } from "@/components/TrieRedirect";
+import { CoursePrevNext } from "@/components/CoursePrevNext";
+
 
 function isLessonEmpty(l: Lesson): boolean {
   if (l.sections && l.sections.length > 0) return false;
@@ -128,9 +130,6 @@ export function LessonView({
   // of a second copy of the lessons.
   if (course.duplicateOf) return <TrieRedirect />;
 
-  // Sorting algorithms are best experienced in the interactive Sorting
-  // Playground. Redirect instead of duplicating static educational content.
-  if (course.slug === "sorting-algorithms") return <SortingRedirect />;
 
   // Entire course is under development — every lesson renders the shared
   // ComingSoon page while preserving its slot in the sidebar and prev/next.
@@ -151,13 +150,17 @@ export function LessonView({
   }
 
   const sections = normalizeLesson(lesson);
+  const flatLessons = allCourseLessons(course);
+  const flatIndex = flatLessons.findIndex((l) => l.slug === lesson.slug);
+  const total = flatLessons.length;
+  const displayIndex = flatIndex >= 0 ? flatIndex : index;
 
   return (
     <div className="mx-auto max-w-4xl px-4 py-10 sm:px-6">
       <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}>
         <div className="mb-2 inline-flex items-center gap-2 rounded-full border border-border bg-card px-3 py-1 text-xs text-muted-foreground">
           <Sparkles className="h-3.5 w-3.5 text-[color:var(--brand)]" />
-          {course.title} · Lesson {index + 1} of {course.lessons.length}
+          {course.title} · Lesson {displayIndex + 1} of {total}
         </div>
         <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">{lesson.title}</h1>
         {lesson.tagline && (
@@ -181,35 +184,11 @@ export function LessonView({
         ))}
       </div>
 
-      <div className="mt-12 grid gap-3 border-t border-border pt-6 sm:grid-cols-2">
-        {prev ? (
-          <Link
-            to={lessonHref(course, prev)}
-            className="card-surface p-4 hover:bg-accent transition"
-          >
-            <div className="text-xs text-muted-foreground">← Previous</div>
-            <div className="mt-1 font-medium">{prev.title}</div>
-          </Link>
-        ) : (
-          <div />
-        )}
-        {next ? (
-          <Link
-            to={lessonHref(course, next)}
-            className="card-surface p-4 hover:bg-accent transition sm:text-right"
-          >
-            <div className="text-xs text-muted-foreground">Next →</div>
-            <div className="mt-1 font-medium inline-flex items-center gap-1 sm:justify-end">
-              {next.title} <ChevronRight className="h-4 w-4" />
-            </div>
-          </Link>
-        ) : (
-          <div />
-        )}
-      </div>
+      <CoursePrevNext courseSlug={course.slug} lessonSlug={lesson.slug} />
     </div>
   );
 }
+
 
 function SectionRenderer({ s }: { s: LessonSection }) {
   switch (s.type) {

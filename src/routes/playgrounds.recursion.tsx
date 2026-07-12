@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { PageShell, PageHeader, Callout } from "@/components/Callout";
-import { CodeBlock } from "@/components/CodeBlock";
+import { CodeViewer } from "@/components/CodeViewer";
 import { Play, Pause, RotateCcw, StepForward, StepBack, ArrowRight } from "lucide-react";
 
 export const Route = createFileRoute("/playgrounds/recursion")({
@@ -498,7 +498,7 @@ function Page() {
             Total recursive calls for this input: <span className="font-mono">{events.length / 2}</span>.
           </p>
         </div>
-        <CodeBlock code={problem.code} title={`${problem.id}.py`} />
+        <CodeViewer code={problem.code} title={`${problem.id}.py`} />
       </div>
 
       <div className="mt-8 flex justify-center">

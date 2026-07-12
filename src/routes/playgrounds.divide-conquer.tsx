@@ -14,6 +14,7 @@ import {
   Sparkles,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { CodeViewer } from "@/components/CodeViewer";
 
 export const Route = createFileRoute("/playgrounds/divide-conquer")({
   head: () => ({
@@ -1335,30 +1336,23 @@ function Page() {
                 </div>
               </div>
 
-              {/* Code viewer */}
-              <div className="card-surface p-4 flex-1 flex flex-col min-h-[220px]">
-                <div className="text-sm font-semibold mb-2">Python Implementation</div>
-                <div className="flex-1 overflow-auto rounded border border-border/40 font-mono text-[10px] bg-code-bg p-3 relative max-h-[260px]">
-                  {CODE_SNIPPETS[algoId].split("\n").map((line, idx) => {
-                    const isActive = currentStep.lineNo === idx + 1;
-                    return (
-                      <div
-                        key={idx}
-                        className={`py-0.5 px-1.5 flex gap-3 ${
-                          isActive
-                            ? "bg-amber-500/15 border-l-2 border-amber-500 text-amber-200 font-medium"
-                            : "text-muted-foreground"
-                        }`}
-                      >
-                        <span className="w-4 text-right select-none text-muted-foreground/35 font-mono">{idx + 1}</span>
-                        <pre className="flex-1 whitespace-pre">{line}</pre>
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
             </div>
           </div>
+
+          {/* Python Implementation — full-width standardized CodeViewer,
+              synced with the active recursion step via activeLine. */}
+          <div className="mt-6">
+            <h3 className="mb-3 text-sm font-semibold uppercase tracking-wider text-muted-foreground">
+              Python Implementation
+            </h3>
+            <CodeViewer
+              code={CODE_SNIPPETS[algoId]}
+              title={`${algoId}.py`}
+              activeLine={currentStep.lineNo && currentStep.lineNo > 0 ? currentStep.lineNo : undefined}
+              defaultExpanded
+            />
+          </div>
+
 
           {/* Explanation panel */}
           <div className="mt-6 card-surface p-4">

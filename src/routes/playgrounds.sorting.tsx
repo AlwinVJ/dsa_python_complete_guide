@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { PageShell, PageHeader, ComplexityBadge } from "@/components/Callout";
 import { BarVisualizer, Legend } from "@/components/ListVisualizer";
-import { CodeBlock } from "@/components/CodeBlock";
+import { CodeViewer } from "@/components/CodeViewer";
 import { ALGORITHMS } from "@/lib/sorting";
 import { Play, Pause, RotateCcw, Shuffle, StepForward, StepBack, BookOpen } from "lucide-react";
 
@@ -270,7 +270,7 @@ function Page() {
         <h3 className="mb-3 text-sm font-semibold uppercase tracking-wider text-muted-foreground">
           Python Code
         </h3>
-        <CodeBlock code={algo.code} title={`${algo.id}.py`} />
+        <CodeViewer code={algo.code} title={`${algo.id}.py`} />
       </div>
 
       {/* Explanation */}

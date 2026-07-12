@@ -52,6 +52,8 @@ export const sortingCourse: Course = {
     {
       slug: "introduction",
       title: "Introduction",
+      tagline:
+        "Overview of sorting: comparison vs non-comparison sorts, stability, and how to pick the right algorithm.",
       theory:
         "Sorting is a warm-up for almost every algorithm interview. Learn the shape of each algorithm and when to reach for it.",
       tip: "For visual step-by-step animation, open the Sorting Playground at /playgrounds/sorting.",
@@ -59,6 +61,8 @@ export const sortingCourse: Course = {
     {
       slug: "bubble-sort",
       title: "Bubble Sort",
+      tagline:
+        "Repeatedly swap adjacent out-of-order pairs — the simplest stable O(n²) sort, great for teaching.",
       theory:
         "Repeatedly swap adjacent out-of-order pairs. O(n²) time, O(1) space, stable. Rarely used except for teaching.",
       code: `def bubble(a):\n    n = len(a)\n    for i in range(n):\n        swapped = False\n        for j in range(n - i - 1):\n            if a[j] > a[j+1]:\n                a[j], a[j+1] = a[j+1], a[j]; swapped = True\n        if not swapped: break`,
@@ -67,12 +71,16 @@ export const sortingCourse: Course = {
     {
       slug: "selection-sort",
       title: "Selection Sort",
+      tagline:
+        "Repeatedly pick the smallest remaining element and place it at the current position.",
       theory: "Pick the smallest remaining element and place it at position i. O(n²), not stable.",
       code: `def selection(a):\n    n = len(a)\n    for i in range(n):\n        m = min(range(i, n), key=lambda k: a[k])\n        a[i], a[m] = a[m], a[i]`,
     },
     {
       slug: "insertion-sort",
       title: "Insertion Sort",
+      tagline:
+        "Grow a sorted prefix one element at a time — excellent on tiny or nearly-sorted arrays.",
       theory:
         "Grow a sorted prefix by inserting each new element into place. O(n²) worst, O(n) best. Excellent for tiny or almost-sorted arrays; used inside TimSort.",
       code: `def insertion(a):\n    for i in range(1, len(a)):\n        v, j = a[i], i - 1\n        while j >= 0 and a[j] > v:\n            a[j+1] = a[j]; j -= 1\n        a[j+1] = v`,
@@ -80,6 +88,8 @@ export const sortingCourse: Course = {
     {
       slug: "merge-sort",
       title: "Merge Sort",
+      tagline:
+        "Divide-and-conquer sort with guaranteed O(n log n) performance and stable ordering.",
       theory:
         "Split, sort each half, merge. O(n log n) worst case, O(n) extra space, stable. Great when stability or predictable performance matters.",
       code: `def merge_sort(a):\n    if len(a) <= 1: return a\n    m = len(a) // 2\n    L, R = merge_sort(a[:m]), merge_sort(a[m:])\n    out, i, j = [], 0, 0\n    while i < len(L) and j < len(R):\n        if L[i] <= R[j]: out.append(L[i]); i += 1\n        else: out.append(R[j]); j += 1\n    return out + L[i:] + R[j:]`,
@@ -88,6 +98,8 @@ export const sortingCourse: Course = {
     {
       slug: "quick-sort",
       title: "Quick Sort",
+      tagline:
+        "In-place partition sort — O(n log n) average with tiny constants, the industry workhorse.",
       theory:
         "Partition around a pivot, recurse on each side. O(n log n) average, O(n²) worst (pathological pivots). In-place with O(log n) stack.",
       code: `def quicksort(a, lo=0, hi=None):\n    if hi is None: hi = len(a) - 1\n    if lo >= hi: return\n    p = a[(lo + hi) // 2]\n    i, j = lo, hi\n    while i <= j:\n        while a[i] < p: i += 1\n        while a[j] > p: j -= 1\n        if i <= j:\n            a[i], a[j] = a[j], a[i]; i += 1; j -= 1\n    quicksort(a, lo, j); quicksort(a, i, hi)`,
@@ -98,12 +110,16 @@ export const sortingCourse: Course = {
     {
       slug: "heap-sort",
       title: "Heap Sort",
+      tagline:
+        "Heapify then repeatedly extract-max — O(n log n) guaranteed with O(1) extra memory.",
       theory:
         "Heapify then repeatedly extract-min. O(n log n) worst, O(1) extra memory, not stable.",
     },
     {
       slug: "counting-sort",
       title: "Counting Sort",
+      tagline:
+        "Linear-time sort for integers in a small range — non-comparison based.",
       theory:
         "For integers in a small range k: count occurrences, then reconstruct. O(n + k), not comparison-based.",
       code: `def counting(a):\n    lo, hi = min(a), max(a)\n    cnt = [0] * (hi - lo + 1)\n    for x in a: cnt[x - lo] += 1\n    out = []\n    for i, c in enumerate(cnt): out.extend([i + lo] * c)\n    return out`,
@@ -111,12 +127,16 @@ export const sortingCourse: Course = {
     {
       slug: "radix-sort",
       title: "Radix Sort",
+      tagline:
+        "Digit-by-digit sort using a stable inner sort — beats O(n log n) for fixed-width keys.",
       theory:
         "Sort by digit, least-significant first, using a stable inner sort (usually counting sort). O(d · (n + k)) where d is digit count.",
     },
     {
       slug: "tim-sort",
       title: "TimSort",
+      tagline:
+        "Python's built-in hybrid of merge + insertion sort — stable, adaptive, O(n log n).",
       theory:
         "Python's built-in `sorted` and `list.sort` use TimSort — a hybrid of insertion sort on small runs and merge sort on top. O(n log n) worst, O(n) best on nearly-sorted data, and stable.",
       code: `sorted([3, 1, 4, 1, 5])            # ascending\nsorted(items, key=lambda x: x.name)\nlst.sort(reverse=True)`,
@@ -124,6 +144,8 @@ export const sortingCourse: Course = {
     {
       slug: "comparison",
       title: "Comparison Table",
+      tagline:
+        "Side-by-side time and space complexity for every sorting algorithm covered.",
       complexity: [
         { op: "Bubble / Selection / Insertion", time: "O(n²)", space: "O(1)" },
         { op: "Merge", time: "O(n log n)", space: "O(n)" },
@@ -136,12 +158,15 @@ export const sortingCourse: Course = {
     {
       slug: "stability",
       title: "Stability & In-Place",
+      tagline:
+        "When ordering equal keys matters, and which sorts preserve it without extra memory.",
       theory:
         "A sort is *stable* if equal keys keep their input order — matters when sorting by multiple keys. Merge/Insertion/TimSort are stable; Quick/Heap/Selection are not.",
     },
     {
       slug: "practice",
       title: "Practice",
+      tagline: "Hand-picked LeetCode problems to cement sorting patterns.",
       practice: [
         {
           title: "LC 912 · Sort an Array",
@@ -163,6 +188,7 @@ export const sortingCourse: Course = {
     {
       slug: "quiz",
       title: "Quiz",
+      tagline: "Quick self-check on sorting algorithms and their trade-offs.",
       quiz: {
         q: "Which sort does Python's `list.sort` use?",
         choices: ["Quick Sort", "Merge Sort", "TimSort", "Heap Sort"],
@@ -173,6 +199,7 @@ export const sortingCourse: Course = {
     {
       slug: "references",
       title: "References",
+      tagline: "Further reading on sorting internals and Python's TimSort.",
       references: [
         {
           label: "TimSort description",
