@@ -47,6 +47,7 @@ import { Route as PlaygroundsSearchingRouteImport } from './routes/playgrounds.s
 import { Route as PlaygroundsRecursionRouteImport } from './routes/playgrounds.recursion'
 import { Route as PlaygroundsGraphRouteImport } from './routes/playgrounds.graph'
 import { Route as PlaygroundsDivideConquerRouteImport } from './routes/playgrounds.divide-conquer'
+import { Route as PlaygroundsBacktrackingRouteImport } from './routes/playgrounds.backtracking'
 import { Route as ModulesSlugRouteImport } from './routes/modules.$slug'
 import { Route as LinkedListsInterviewRouteImport } from './routes/linked-lists.interview'
 import { Route as LinkedListsFaqRouteImport } from './routes/linked-lists.faq'
@@ -251,6 +252,11 @@ const PlaygroundsDivideConquerRoute =
     path: '/playgrounds/divide-conquer',
     getParentRoute: () => rootRouteImport,
   } as any)
+const PlaygroundsBacktrackingRoute = PlaygroundsBacktrackingRouteImport.update({
+  id: '/playgrounds/backtracking',
+  path: '/playgrounds/backtracking',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ModulesSlugRoute = ModulesSlugRouteImport.update({
   id: '/modules/$slug',
   path: '/modules/$slug',
@@ -344,6 +350,7 @@ export interface FileRoutesByFullPath {
   '/linked-lists/faq': typeof LinkedListsFaqRoute
   '/linked-lists/interview': typeof LinkedListsInterviewRoute
   '/modules/$slug': typeof ModulesSlugRoute
+  '/playgrounds/backtracking': typeof PlaygroundsBacktrackingRoute
   '/playgrounds/divide-conquer': typeof PlaygroundsDivideConquerRoute
   '/playgrounds/graph': typeof PlaygroundsGraphRoute
   '/playgrounds/recursion': typeof PlaygroundsRecursionRoute
@@ -396,6 +403,7 @@ export interface FileRoutesByTo {
   '/linked-lists/faq': typeof LinkedListsFaqRoute
   '/linked-lists/interview': typeof LinkedListsInterviewRoute
   '/modules/$slug': typeof ModulesSlugRoute
+  '/playgrounds/backtracking': typeof PlaygroundsBacktrackingRoute
   '/playgrounds/divide-conquer': typeof PlaygroundsDivideConquerRoute
   '/playgrounds/graph': typeof PlaygroundsGraphRoute
   '/playgrounds/recursion': typeof PlaygroundsRecursionRoute
@@ -449,6 +457,7 @@ export interface FileRoutesById {
   '/linked-lists/faq': typeof LinkedListsFaqRoute
   '/linked-lists/interview': typeof LinkedListsInterviewRoute
   '/modules/$slug': typeof ModulesSlugRoute
+  '/playgrounds/backtracking': typeof PlaygroundsBacktrackingRoute
   '/playgrounds/divide-conquer': typeof PlaygroundsDivideConquerRoute
   '/playgrounds/graph': typeof PlaygroundsGraphRoute
   '/playgrounds/recursion': typeof PlaygroundsRecursionRoute
@@ -503,6 +512,7 @@ export interface FileRouteTypes {
     | '/linked-lists/faq'
     | '/linked-lists/interview'
     | '/modules/$slug'
+    | '/playgrounds/backtracking'
     | '/playgrounds/divide-conquer'
     | '/playgrounds/graph'
     | '/playgrounds/recursion'
@@ -555,6 +565,7 @@ export interface FileRouteTypes {
     | '/linked-lists/faq'
     | '/linked-lists/interview'
     | '/modules/$slug'
+    | '/playgrounds/backtracking'
     | '/playgrounds/divide-conquer'
     | '/playgrounds/graph'
     | '/playgrounds/recursion'
@@ -607,6 +618,7 @@ export interface FileRouteTypes {
     | '/linked-lists/faq'
     | '/linked-lists/interview'
     | '/modules/$slug'
+    | '/playgrounds/backtracking'
     | '/playgrounds/divide-conquer'
     | '/playgrounds/graph'
     | '/playgrounds/recursion'
@@ -660,6 +672,7 @@ export interface RootRouteChildren {
   LinkedListsFaqRoute: typeof LinkedListsFaqRoute
   LinkedListsInterviewRoute: typeof LinkedListsInterviewRoute
   ModulesSlugRoute: typeof ModulesSlugRoute
+  PlaygroundsBacktrackingRoute: typeof PlaygroundsBacktrackingRoute
   PlaygroundsDivideConquerRoute: typeof PlaygroundsDivideConquerRoute
   PlaygroundsGraphRoute: typeof PlaygroundsGraphRoute
   PlaygroundsRecursionRoute: typeof PlaygroundsRecursionRoute
@@ -949,6 +962,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PlaygroundsDivideConquerRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/playgrounds/backtracking': {
+      id: '/playgrounds/backtracking'
+      path: '/playgrounds/backtracking'
+      fullPath: '/playgrounds/backtracking'
+      preLoaderRoute: typeof PlaygroundsBacktrackingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/modules/$slug': {
       id: '/modules/$slug'
       path: '/modules/$slug'
@@ -1068,6 +1088,7 @@ const rootRouteChildren: RootRouteChildren = {
   LinkedListsFaqRoute: LinkedListsFaqRoute,
   LinkedListsInterviewRoute: LinkedListsInterviewRoute,
   ModulesSlugRoute: ModulesSlugRoute,
+  PlaygroundsBacktrackingRoute: PlaygroundsBacktrackingRoute,
   PlaygroundsDivideConquerRoute: PlaygroundsDivideConquerRoute,
   PlaygroundsGraphRoute: PlaygroundsGraphRoute,
   PlaygroundsRecursionRoute: PlaygroundsRecursionRoute,

@@ -146,6 +146,14 @@ const AVAILABLE: Playground[] = [
     description:
       "Visualize recursive splitting, merging, and complete recursion trees for Binary Search, Merge Sort, and Quick Sort.",
   },
+  {
+    title: "Backtracking Playground",
+    href: "/playgrounds/backtracking",
+    icon: Undo2,
+    meta: "N-Queens · Rat in a Maze · Permutations",
+    description:
+      "Step through N-Queens, Rat in a Maze, and Permutations frame by frame — watch choose, explore, and undo in action.",
+  },
 ];
 
 const COMING_SOON: ComingSoon[] = [
@@ -168,11 +176,6 @@ const COMING_SOON: ComingSoon[] = [
     title: "Greedy Algorithms Playground",
     icon: Coins,
     description: "Coin change, interval scheduling, and activity selection walkthroughs.",
-  },
-  {
-    title: "Backtracking Playground",
-    icon: Undo2,
-    description: "N-Queens and Sudoku solver with recursive branch visualization.",
   },
   {
     title: "Graph Algorithms Playground",

@@ -17,12 +17,6 @@ const ALGO_EXTRA_LINKS = [{ to: "/algorithms", label: "Popular Patterns" }];
 
 const SPECIALIZED_SLUGS = new Set(["heaps", "tries"]);
 
-const PLAYGROUND_LINKS = [
-  { to: "/playgrounds", label: "All Playgrounds" },
-  { to: "/playgrounds/searching", label: "Searching Playground" },
-  { to: "/playgrounds/sorting", label: "Sorting Playground" },
-  { to: "/playgrounds/graph", label: "Graph Playground" },
-];
 
 const REFERENCE_LINKS = [
   { to: "/complexity", label: "Complexity Cheat Sheet" },
@@ -206,17 +200,6 @@ export function CourseSidebar({ onNavigate }: { onNavigate?: () => void }) {
         />
       </SidebarSection>
 
-      <SidebarSection title="Playgrounds">
-        {PLAYGROUND_LINKS.map((l) => (
-          <SidebarLink
-            key={l.to}
-            to={l.to}
-            label={l.label}
-            active={pathname === l.to}
-            onNavigate={onNavigate}
-          />
-        ))}
-      </SidebarSection>
 
       <SidebarSection title="Reference">
         {REFERENCE_LINKS.map((l) => (
