@@ -154,6 +154,14 @@ const AVAILABLE: Playground[] = [
     description:
       "Step through N-Queens, Rat in a Maze, and Permutations frame by frame — watch choose, explore, and undo in action.",
   },
+  {
+    title: "Dynamic Programming Playground",
+    href: "/playgrounds/dp",
+    icon: Grid3x3,
+    meta: "Fibonacci · Climbing Stairs · Coin Change",
+    description:
+      "Compare memoization vs tabulation on Fibonacci, then fill DP tables for Climbing Stairs and Coin Change step by step.",
+  },
 ];
 
 const COMING_SOON: ComingSoon[] = [
@@ -166,11 +174,6 @@ const COMING_SOON: ComingSoon[] = [
     title: "Trie Playground",
     icon: Type,
     description: "Insert words, autocomplete prefixes, and inspect shared branches.",
-  },
-  {
-    title: "Dynamic Programming Playground",
-    icon: Grid3x3,
-    description: "Fill DP tables step by step and trace the optimal substructure.",
   },
   {
     title: "Greedy Algorithms Playground",

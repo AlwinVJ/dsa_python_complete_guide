@@ -3,6 +3,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { PageShell, PageHeader, ComplexityBadge } from "@/components/Callout";
 import { BarVisualizer, Legend } from "@/components/ListVisualizer";
 import { CodeViewer } from "@/components/CodeViewer";
+import { PlaygroundBackButton, PlaygroundFooterNav } from "@/components/PlaygroundNav";
 import { ALGORITHMS } from "@/lib/sorting";
 import { Play, Pause, RotateCcw, Shuffle, StepForward, StepBack, BookOpen } from "lucide-react";
 
@@ -102,6 +103,7 @@ function Page() {
 
   return (
     <PageShell>
+      <PlaygroundBackButton playground="sorting" />
       <PageHeader
         eyebrow="Playground"
         title="Sorting Playground"
@@ -326,6 +328,7 @@ function Page() {
           </Link>
         </div>
       </div>
+      <PlaygroundFooterNav playground="sorting" />
     </PageShell>
   );
 }

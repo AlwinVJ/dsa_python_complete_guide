@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { PageShell, PageHeader } from "@/components/Callout";
 import { GraphPlayground } from "@/components/graphs/GraphPlayground";
+import { PlaygroundBackButton, PlaygroundFooterNav } from "@/components/PlaygroundNav";
 
 export const Route = createFileRoute("/playgrounds/graph")({
   head: () => ({
@@ -24,12 +25,14 @@ export const Route = createFileRoute("/playgrounds/graph")({
 function Page() {
   return (
     <PageShell>
+      <PlaygroundBackButton playground="graph" />
       <PageHeader
         eyebrow="Playground"
         title="Graph Playground"
         description="Add vertices with the ‘Add vertex’ tool, connect them with ‘Add edge’, drag them around in ‘Select’ mode, and toggle directed / weighted mode to change graph semantics. Live stats update automatically."
       />
       <GraphPlayground />
+      <PlaygroundFooterNav playground="graph" />
     </PageShell>
   );
 }

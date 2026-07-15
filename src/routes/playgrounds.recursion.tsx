@@ -1,9 +1,10 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { PageShell, PageHeader, Callout } from "@/components/Callout";
 import { CodeViewer } from "@/components/CodeViewer";
-import { Play, Pause, RotateCcw, StepForward, StepBack, ArrowRight } from "lucide-react";
+import { PlaygroundBackButton, PlaygroundFooterNav } from "@/components/PlaygroundNav";
+import { Play, Pause, RotateCcw, StepForward, StepBack } from "lucide-react";
 
 export const Route = createFileRoute("/playgrounds/recursion")({
   head: () => ({
@@ -304,6 +305,7 @@ function Page() {
 
   return (
     <PageShell>
+      <PlaygroundBackButton playground="recursion" />
       <PageHeader
         eyebrow="Recursion Playground"
         title="Watch the call stack come alive"
@@ -501,15 +503,7 @@ function Page() {
         <CodeViewer code={problem.code} title={`${problem.id}.py`} />
       </div>
 
-      <div className="mt-8 flex justify-center">
-        <Link
-          to="/learn/$course"
-          params={{ course: "recursion" }}
-          className="inline-flex items-center gap-1.5 rounded-md gradient-brand px-5 py-2.5 text-sm font-semibold text-primary-foreground shadow-lg hover:opacity-90 transition"
-        >
-          Back to Recursion module <ArrowRight className="h-4 w-4" />
-        </Link>
-      </div>
+      <PlaygroundFooterNav playground="recursion" />
     </PageShell>
   );
 }

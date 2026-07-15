@@ -46,6 +46,7 @@ import { Route as PlaygroundsSortingRouteImport } from './routes/playgrounds.sor
 import { Route as PlaygroundsSearchingRouteImport } from './routes/playgrounds.searching'
 import { Route as PlaygroundsRecursionRouteImport } from './routes/playgrounds.recursion'
 import { Route as PlaygroundsGraphRouteImport } from './routes/playgrounds.graph'
+import { Route as PlaygroundsDpRouteImport } from './routes/playgrounds.dp'
 import { Route as PlaygroundsDivideConquerRouteImport } from './routes/playgrounds.divide-conquer'
 import { Route as PlaygroundsBacktrackingRouteImport } from './routes/playgrounds.backtracking'
 import { Route as ModulesSlugRouteImport } from './routes/modules.$slug'
@@ -246,6 +247,11 @@ const PlaygroundsGraphRoute = PlaygroundsGraphRouteImport.update({
   path: '/playgrounds/graph',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PlaygroundsDpRoute = PlaygroundsDpRouteImport.update({
+  id: '/playgrounds/dp',
+  path: '/playgrounds/dp',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PlaygroundsDivideConquerRoute =
   PlaygroundsDivideConquerRouteImport.update({
     id: '/playgrounds/divide-conquer',
@@ -352,6 +358,7 @@ export interface FileRoutesByFullPath {
   '/modules/$slug': typeof ModulesSlugRoute
   '/playgrounds/backtracking': typeof PlaygroundsBacktrackingRoute
   '/playgrounds/divide-conquer': typeof PlaygroundsDivideConquerRoute
+  '/playgrounds/dp': typeof PlaygroundsDpRoute
   '/playgrounds/graph': typeof PlaygroundsGraphRoute
   '/playgrounds/recursion': typeof PlaygroundsRecursionRoute
   '/playgrounds/searching': typeof PlaygroundsSearchingRoute
@@ -405,6 +412,7 @@ export interface FileRoutesByTo {
   '/modules/$slug': typeof ModulesSlugRoute
   '/playgrounds/backtracking': typeof PlaygroundsBacktrackingRoute
   '/playgrounds/divide-conquer': typeof PlaygroundsDivideConquerRoute
+  '/playgrounds/dp': typeof PlaygroundsDpRoute
   '/playgrounds/graph': typeof PlaygroundsGraphRoute
   '/playgrounds/recursion': typeof PlaygroundsRecursionRoute
   '/playgrounds/searching': typeof PlaygroundsSearchingRoute
@@ -459,6 +467,7 @@ export interface FileRoutesById {
   '/modules/$slug': typeof ModulesSlugRoute
   '/playgrounds/backtracking': typeof PlaygroundsBacktrackingRoute
   '/playgrounds/divide-conquer': typeof PlaygroundsDivideConquerRoute
+  '/playgrounds/dp': typeof PlaygroundsDpRoute
   '/playgrounds/graph': typeof PlaygroundsGraphRoute
   '/playgrounds/recursion': typeof PlaygroundsRecursionRoute
   '/playgrounds/searching': typeof PlaygroundsSearchingRoute
@@ -514,6 +523,7 @@ export interface FileRouteTypes {
     | '/modules/$slug'
     | '/playgrounds/backtracking'
     | '/playgrounds/divide-conquer'
+    | '/playgrounds/dp'
     | '/playgrounds/graph'
     | '/playgrounds/recursion'
     | '/playgrounds/searching'
@@ -567,6 +577,7 @@ export interface FileRouteTypes {
     | '/modules/$slug'
     | '/playgrounds/backtracking'
     | '/playgrounds/divide-conquer'
+    | '/playgrounds/dp'
     | '/playgrounds/graph'
     | '/playgrounds/recursion'
     | '/playgrounds/searching'
@@ -620,6 +631,7 @@ export interface FileRouteTypes {
     | '/modules/$slug'
     | '/playgrounds/backtracking'
     | '/playgrounds/divide-conquer'
+    | '/playgrounds/dp'
     | '/playgrounds/graph'
     | '/playgrounds/recursion'
     | '/playgrounds/searching'
@@ -674,6 +686,7 @@ export interface RootRouteChildren {
   ModulesSlugRoute: typeof ModulesSlugRoute
   PlaygroundsBacktrackingRoute: typeof PlaygroundsBacktrackingRoute
   PlaygroundsDivideConquerRoute: typeof PlaygroundsDivideConquerRoute
+  PlaygroundsDpRoute: typeof PlaygroundsDpRoute
   PlaygroundsGraphRoute: typeof PlaygroundsGraphRoute
   PlaygroundsRecursionRoute: typeof PlaygroundsRecursionRoute
   PlaygroundsSearchingRoute: typeof PlaygroundsSearchingRoute
@@ -955,6 +968,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PlaygroundsGraphRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/playgrounds/dp': {
+      id: '/playgrounds/dp'
+      path: '/playgrounds/dp'
+      fullPath: '/playgrounds/dp'
+      preLoaderRoute: typeof PlaygroundsDpRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/playgrounds/divide-conquer': {
       id: '/playgrounds/divide-conquer'
       path: '/playgrounds/divide-conquer'
@@ -1090,6 +1110,7 @@ const rootRouteChildren: RootRouteChildren = {
   ModulesSlugRoute: ModulesSlugRoute,
   PlaygroundsBacktrackingRoute: PlaygroundsBacktrackingRoute,
   PlaygroundsDivideConquerRoute: PlaygroundsDivideConquerRoute,
+  PlaygroundsDpRoute: PlaygroundsDpRoute,
   PlaygroundsGraphRoute: PlaygroundsGraphRoute,
   PlaygroundsRecursionRoute: PlaygroundsRecursionRoute,
   PlaygroundsSearchingRoute: PlaygroundsSearchingRoute,

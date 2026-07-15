@@ -1,17 +1,13 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { PageShell, PageHeader, Callout } from "@/components/Callout";
 import { CodeViewer } from "@/components/CodeViewer";
 import {
-  Play,
-  Pause,
-  RotateCcw,
-  StepForward,
-  StepBack,
-  ArrowRight,
-  Sparkles,
-} from "lucide-react";
+  PlaygroundBackButton,
+  PlaygroundFooterNav,
+} from "@/components/PlaygroundNav";
+import { Play, Pause, RotateCcw, StepForward, StepBack } from "lucide-react";
 
 export const Route = createFileRoute("/playgrounds/backtracking")({
   head: () => ({
@@ -20,13 +16,13 @@ export const Route = createFileRoute("/playgrounds/backtracking")({
       {
         name: "description",
         content:
-          "Step through N-Queens, Rat in a Maze, and Permutations frame by frame — watch choices, exploration, and backtracking come alive.",
+          "Step through N-Queens, Rat in a Maze, Permutations, Sudoku, Combination Sum, and Word Search — watch choose, explore, and undo come alive.",
       },
       { property: "og:title", content: "Backtracking Playground — DSA with Python" },
       {
         property: "og:description",
         content:
-          "Interactive backtracking visualizer — choose, explore, undo. See the decision tree unfold in real time.",
+          "Interactive backtracking visualizer — six classic problems, step by step.",
       },
     ],
   }),
@@ -35,21 +31,16 @@ export const Route = createFileRoute("/playgrounds/backtracking")({
 
 /* ---------- Shared frame model ---------- */
 type Frame = {
-  /** 1-indexed line to highlight in the code viewer. */
   line: number;
-  /** Human readable description of the current step. */
   note: string;
-  /** True when this frame is a base-case / solution record. */
   solution?: boolean;
-  /** True when this frame is the undo/backtrack step. */
   backtrack?: boolean;
-  /** Depth of the current recursive call. */
   depth: number;
 };
 
 type NQueensFrame = Frame & {
   kind: "nqueens";
-  board: number[]; // board[row] = col, or -1 if empty
+  board: number[];
   row: number;
   trying?: { row: number; col: number };
   n: number;
@@ -59,7 +50,7 @@ type NQueensFrame = Frame & {
 
 type MazeFrame = Frame & {
   kind: "maze";
-  grid: number[][]; // 1=open, 0=wall, 2=on-path, 3=dead
+  grid: number[][];
   cur: [number, number];
   path: [number, number][];
   found: boolean;
@@ -75,7 +66,49 @@ type PermFrame = Frame & {
   calls: number;
 };
 
-type AnyFrame = NQueensFrame | MazeFrame | PermFrame;
+type SudokuFrame = Frame & {
+  kind: "sudoku";
+  grid: number[][]; // 0 = empty
+  fixed: boolean[][]; // pre-filled givens
+  cur?: [number, number];
+  tryingVal?: number;
+  invalid?: boolean;
+  solved: boolean;
+  size: number; // 4 for 4x4, 9 for 9x9
+  block: number; // sqrt(size)
+  calls: number;
+};
+
+type CombSumFrame = Frame & {
+  kind: "combsum";
+  candidates: number[];
+  target: number;
+  index: number;
+  path: number[];
+  sum: number;
+  results: number[][];
+  calls: number;
+};
+
+type WordSearchFrame = Frame & {
+  kind: "wordsearch";
+  grid: string[][];
+  word: string;
+  cur?: [number, number];
+  path: [number, number][];
+  matchedIndex: number;
+  visited: boolean[][];
+  found: boolean;
+  calls: number;
+};
+
+type AnyFrame =
+  | NQueensFrame
+  | MazeFrame
+  | PermFrame
+  | SudokuFrame
+  | CombSumFrame
+  | WordSearchFrame;
 
 /* ---------- N-Queens tracer ---------- */
 const NQUEENS_CODE = `def solve_n_queens(n):
@@ -106,7 +139,6 @@ function traceNQueens(n: number): NQueensFrame[] {
   const d2 = new Set<number>();
   let solutions = 0;
   let calls = 0;
-
   const snap = (
     line: number,
     note: string,
@@ -127,7 +159,6 @@ function traceNQueens(n: number): NQueensFrame[] {
       ...extras,
     });
   };
-
   function backtrack(row: number, depth: number) {
     calls++;
     snap(5, `backtrack(row=${row}) — entered`, row, depth);
@@ -139,13 +170,9 @@ function traceNQueens(n: number): NQueensFrame[] {
       return;
     }
     for (let col = 0; col < n; col++) {
-      snap(9, `Try (row=${row}, col=${col})`, row, depth, {
-        trying: { row, col },
-      });
+      snap(9, `Try (row=${row}, col=${col})`, row, depth, { trying: { row, col } });
       if (cols.has(col) || d1.has(row - col) || d2.has(row + col)) {
-        snap(10, `col=${col} attacked — prune`, row, depth, {
-          trying: { row, col },
-        });
+        snap(10, `col=${col} attacked — prune`, row, depth, { trying: { row, col } });
         continue;
       }
       board[row] = col;
@@ -167,7 +194,6 @@ function traceNQueens(n: number): NQueensFrame[] {
     }
     snap(18, `backtrack(row=${row}) — return`, row, depth);
   }
-
   backtrack(0, 0);
   return frames;
 }
@@ -207,7 +233,6 @@ function traceMaze(initial: number[][]): MazeFrame[] {
   const path: [number, number][] = [];
   let calls = 0;
   let found = false;
-
   const snap = (
     line: number,
     note: string,
@@ -228,7 +253,6 @@ function traceMaze(initial: number[][]): MazeFrame[] {
       ...extras,
     });
   };
-
   function bt(r: number, c: number, depth: number): boolean {
     calls++;
     snap(5, `backtrack(${r}, ${c}) — entered`, [r, c], depth);
@@ -256,23 +280,15 @@ function traceMaze(initial: number[][]): MazeFrame[] {
       [0, -1],
     ];
     for (const [dr, dc] of dirs) {
-      snap(
-        11,
-        `Try direction (Δr=${dr}, Δc=${dc}) → (${r + dr}, ${c + dc})`,
-        [r, c],
-        depth,
-      );
+      snap(11, `Try direction (Δr=${dr}, Δc=${dc}) → (${r + dr}, ${c + dc})`, [r, c], depth);
       if (bt(r + dr, c + dc, depth + 1)) return true;
     }
     grid[r][c] = 3;
-    snap(13, `Undo mark at (${r}, ${c}) — backtrack`, [r, c], depth, {
-      backtrack: true,
-    });
+    snap(13, `Undo mark at (${r}, ${c}) — backtrack`, [r, c], depth, { backtrack: true });
     path.pop();
     snap(14, `Pop (${r}, ${c}) from path`, [r, c], depth, { backtrack: true });
     return false;
   }
-
   bt(0, 0, 0);
   return frames;
 }
@@ -304,7 +320,6 @@ function tracePerm(nums: number[]): PermFrame[] {
   const used = new Array(nums.length).fill(false);
   const results: number[][] = [];
   let calls = 0;
-
   const snap = (
     line: number,
     note: string,
@@ -324,7 +339,6 @@ function tracePerm(nums: number[]): PermFrame[] {
       ...extras,
     });
   };
-
   function bt(depth: number) {
     calls++;
     snap(5, `backtrack() — entered, path=[${path.join(", ")}]`, depth);
@@ -348,13 +362,345 @@ function tracePerm(nums: number[]): PermFrame[] {
       snap(15, `Undo ${nums[i]} — backtrack`, depth, { backtrack: true });
     }
   }
+  bt(0);
+  return frames;
+}
+
+/* ---------- Sudoku tracer ---------- */
+const SUDOKU_CODE = `def solve_sudoku(grid, n=4):
+    block = int(n ** 0.5)
+
+    def is_valid(r, c, v):
+        for i in range(n):
+            if grid[r][i] == v or grid[i][c] == v:
+                return False
+        br, bc = (r // block) * block, (c // block) * block
+        for i in range(block):
+            for j in range(block):
+                if grid[br + i][bc + j] == v:
+                    return False
+        return True
+
+    def backtrack():
+        for r in range(n):
+            for c in range(n):
+                if grid[r][c] == 0:
+                    for v in range(1, n + 1):
+                        if is_valid(r, c, v):
+                            grid[r][c] = v
+                            if backtrack(): return True
+                            grid[r][c] = 0
+                    return False
+        return True
+
+    return backtrack()`;
+
+// A 4x4 sudoku puzzle. 0 = empty. Solution is unique.
+const DEFAULT_SUDOKU: number[][] = [
+  [1, 0, 0, 4],
+  [0, 0, 2, 0],
+  [0, 3, 0, 0],
+  [4, 0, 0, 2],
+];
+
+function traceSudoku(initial: number[][]): SudokuFrame[] {
+  const frames: SudokuFrame[] = [];
+  const n = initial.length;
+  const block = Math.round(Math.sqrt(n));
+  const grid = initial.map((r) => [...r]);
+  const fixed = initial.map((r) => r.map((v) => v !== 0));
+  let calls = 0;
+  let solved = false;
+
+  const snap = (
+    line: number,
+    note: string,
+    depth: number,
+    extras: Partial<SudokuFrame> = {},
+  ) => {
+    frames.push({
+      kind: "sudoku",
+      line,
+      note,
+      depth,
+      grid: grid.map((r) => [...r]),
+      fixed,
+      size: n,
+      block,
+      solved,
+      calls,
+      ...extras,
+    });
+  };
+
+  function isValid(r: number, c: number, v: number): boolean {
+    for (let i = 0; i < n; i++) {
+      if (grid[r][i] === v || grid[i][c] === v) return false;
+    }
+    const br = Math.floor(r / block) * block;
+    const bc = Math.floor(c / block) * block;
+    for (let i = 0; i < block; i++)
+      for (let j = 0; j < block; j++)
+        if (grid[br + i][bc + j] === v) return false;
+    return true;
+  }
+
+  function bt(depth: number): boolean {
+    calls++;
+    snap(15, `backtrack() — scanning for empty cell`, depth);
+    for (let r = 0; r < n; r++) {
+      for (let c = 0; c < n; c++) {
+        if (grid[r][c] === 0) {
+          for (let v = 1; v <= n; v++) {
+            snap(19, `Try value ${v} at (${r}, ${c})`, depth, {
+              cur: [r, c],
+              tryingVal: v,
+            });
+            if (isValid(r, c, v)) {
+              grid[r][c] = v;
+              snap(21, `Place ${v} at (${r}, ${c})`, depth, {
+                cur: [r, c],
+                tryingVal: v,
+              });
+              if (bt(depth + 1)) return true;
+              grid[r][c] = 0;
+              snap(23, `Undo ${v} at (${r}, ${c}) — backtrack`, depth, {
+                cur: [r, c],
+                tryingVal: v,
+                backtrack: true,
+              });
+            } else {
+              snap(20, `Value ${v} invalid at (${r}, ${c}) — prune`, depth, {
+                cur: [r, c],
+                tryingVal: v,
+                invalid: true,
+              });
+            }
+          }
+          snap(24, `No value fits at (${r}, ${c}) — return False`, depth, {
+            cur: [r, c],
+            backtrack: true,
+          });
+          return false;
+        }
+      }
+    }
+    solved = true;
+    snap(25, `Grid complete — puzzle solved`, depth, { solution: true });
+    return true;
+  }
 
   bt(0);
   return frames;
 }
 
+/* ---------- Combination Sum tracer ---------- */
+const COMBSUM_CODE = `def combination_sum(candidates, target):
+    candidates.sort()
+    result, path = [], []
+
+    def backtrack(start, remaining):
+        if remaining == 0:
+            result.append(path[:])
+            return
+        for i in range(start, len(candidates)):
+            c = candidates[i]
+            if c > remaining:          # sorted → prune
+                break
+            path.append(c)
+            backtrack(i, remaining - c)  # reuse allowed → i, not i+1
+            path.pop()
+
+    backtrack(0, target)
+    return result`;
+
+function traceCombSum(candidatesIn: number[], target: number): CombSumFrame[] {
+  const frames: CombSumFrame[] = [];
+  const candidates = [...candidatesIn].sort((a, b) => a - b);
+  const path: number[] = [];
+  const results: number[][] = [];
+  let calls = 0;
+
+  const snap = (
+    line: number,
+    note: string,
+    depth: number,
+    index: number,
+    sum: number,
+    extras: Partial<CombSumFrame> = {},
+  ) => {
+    frames.push({
+      kind: "combsum",
+      line,
+      note,
+      depth,
+      candidates: [...candidates],
+      target,
+      index,
+      sum,
+      path: [...path],
+      results: results.map((r) => [...r]),
+      calls,
+      ...extras,
+    });
+  };
+
+  function bt(start: number, remaining: number, depth: number) {
+    calls++;
+    const sum = target - remaining;
+    snap(5, `backtrack(start=${start}, remaining=${remaining})`, depth, start, sum);
+    if (remaining === 0) {
+      results.push([...path]);
+      snap(7, `remaining == 0 → record [${path.join(", ")}]`, depth, start, sum, {
+        solution: true,
+      });
+      return;
+    }
+    for (let i = start; i < candidates.length; i++) {
+      const c = candidates[i];
+      snap(10, `Consider index ${i} (candidate ${c})`, depth, i, sum);
+      if (c > remaining) {
+        snap(12, `${c} > ${remaining} — prune remaining candidates`, depth, i, sum, {
+          backtrack: true,
+        });
+        break;
+      }
+      path.push(c);
+      snap(13, `Push ${c} — path=[${path.join(", ")}], sum=${sum + c}`, depth, i, sum + c);
+      bt(i, remaining - c, depth + 1);
+      path.pop();
+      snap(15, `Pop ${c} — backtrack`, depth, i, sum, { backtrack: true });
+    }
+  }
+
+  bt(0, target, 0);
+  return frames;
+}
+
+/* ---------- Word Search tracer ---------- */
+const WORDSEARCH_CODE = `def exist(board, word):
+    n, m = len(board), len(board[0])
+    visited = [[False] * m for _ in range(n)]
+
+    def dfs(r, c, i):
+        if i == len(word):
+            return True
+        if r < 0 or c < 0 or r >= n or c >= m:
+            return False
+        if visited[r][c] or board[r][c] != word[i]:
+            return False
+        visited[r][c] = True
+        for dr, dc in [(1, 0), (-1, 0), (0, 1), (0, -1)]:
+            if dfs(r + dr, c + dc, i + 1): return True
+        visited[r][c] = False   # backtrack
+        return False
+
+    for r in range(n):
+        for c in range(m):
+            if dfs(r, c, 0): return True
+    return False`;
+
+const DEFAULT_WORDGRID: string[][] = [
+  ["A", "B", "C", "E"],
+  ["S", "F", "C", "S"],
+  ["A", "D", "E", "E"],
+];
+
+function traceWordSearch(board: string[][], word: string): WordSearchFrame[] {
+  const frames: WordSearchFrame[] = [];
+  const n = board.length;
+  const m = board[0].length;
+  const visited = Array.from({ length: n }, () => new Array(m).fill(false)) as boolean[][];
+  const path: [number, number][] = [];
+  let calls = 0;
+  let found = false;
+
+  const snap = (
+    line: number,
+    note: string,
+    depth: number,
+    matchedIndex: number,
+    extras: Partial<WordSearchFrame> = {},
+  ) => {
+    frames.push({
+      kind: "wordsearch",
+      line,
+      note,
+      depth,
+      grid: board.map((r) => [...r]),
+      word,
+      matchedIndex,
+      visited: visited.map((r) => [...r]),
+      path: path.map((p) => [...p] as [number, number]),
+      found,
+      calls,
+      ...extras,
+    });
+  };
+
+  function dfs(r: number, c: number, i: number, depth: number): boolean {
+    calls++;
+    snap(5, `dfs(${r}, ${c}, i=${i}) — target '${word[i] ?? "$"}'`, depth, i, {
+      cur: [r, c],
+    });
+    if (i === word.length) {
+      found = true;
+      snap(6, `Matched entire word — return True`, depth, i, {
+        cur: [r, c],
+        solution: true,
+      });
+      return true;
+    }
+    if (r < 0 || c < 0 || r >= n || c >= m) {
+      snap(8, `Out of bounds — return False`, depth, i, { cur: [r, c] });
+      return false;
+    }
+    if (visited[r][c] || board[r][c] !== word[i]) {
+      snap(10, `Visited or mismatch (${board[r][c]} vs ${word[i]}) — prune`, depth, i, {
+        cur: [r, c],
+      });
+      return false;
+    }
+    visited[r][c] = true;
+    path.push([r, c]);
+    snap(11, `Mark (${r}, ${c}) visited — matched ${word.slice(0, i + 1)}`, depth, i + 1, {
+      cur: [r, c],
+    });
+    const dirs: [number, number][] = [
+      [1, 0],
+      [-1, 0],
+      [0, 1],
+      [0, -1],
+    ];
+    for (const [dr, dc] of dirs) {
+      if (dfs(r + dr, c + dc, i + 1, depth + 1)) return true;
+    }
+    visited[r][c] = false;
+    path.pop();
+    snap(15, `Unmark (${r}, ${c}) — backtrack`, depth, i, {
+      cur: [r, c],
+      backtrack: true,
+    });
+    return false;
+  }
+
+  outer: for (let r = 0; r < n; r++) {
+    for (let c = 0; c < m; c++) {
+      if (dfs(r, c, 0, 0)) break outer;
+    }
+  }
+  if (!frames.length) snap(0, "No starting cell found", 0, 0);
+  return frames;
+}
+
 /* ---------- Problem registry ---------- */
-type ProblemKey = "nqueens" | "maze" | "perm";
+type ProblemKey =
+  | "nqueens"
+  | "maze"
+  | "perm"
+  | "sudoku"
+  | "combsum"
+  | "wordsearch";
 
 type ProblemDef = {
   id: ProblemKey;
@@ -389,15 +735,30 @@ const PROBLEMS: ProblemDef[] = [
     code: PERM_CODE,
     fileName: "permutations.py",
   },
-];
-
-const COMING_SOON = [
-  { name: "Sudoku Solver", note: "Cell-by-cell backtracking on a 9 × 9 grid." },
   {
-    name: "Combination Sum",
-    note: "Backtracking with a running total and sorted pruning.",
+    id: "sudoku",
+    name: "Sudoku Solver",
+    description:
+      "Cell-by-cell backtracking on a 4 × 4 Sudoku grid. For each empty cell, every value 1–4 is tried, validated against row/column/block constraints, and undone if the recursive call cannot complete the board.",
+    code: SUDOKU_CODE,
+    fileName: "sudoku.py",
   },
-  { name: "Word Search", note: "DFS on a grid with visited-set backtracking." },
+  {
+    id: "combsum",
+    name: "Combination Sum",
+    description:
+      "Given sorted candidates and a target, build every multiset summing to the target. Each recursive call carries a running sum; the sorted order lets us prune the entire tail as soon as a candidate exceeds the remaining target.",
+    code: COMBSUM_CODE,
+    fileName: "combination_sum.py",
+  },
+  {
+    id: "wordsearch",
+    name: "Word Search",
+    description:
+      "DFS on a grid with a visited set. Start from every cell, walk the four neighbours if the next letter matches, and unmark the cell before returning so parallel branches can reuse it.",
+    code: WORDSEARCH_CODE,
+    fileName: "word_search.py",
+  },
 ];
 
 /* ---------- Page ---------- */
@@ -405,23 +766,36 @@ function Page() {
   const [problemId, setProblemId] = useState<ProblemKey>("nqueens");
   const problem = PROBLEMS.find((p) => p.id === problemId)!;
 
-  // Problem-specific inputs
   const [nQueensN, setNQueensN] = useState(4);
   const [permInput, setPermInput] = useState("1,2,3");
+  const [combInput, setCombInput] = useState("2,3,6,7");
+  const [combTarget, setCombTarget] = useState(7);
+  const [wordInput, setWordInput] = useState("ABCCED");
 
   const frames: AnyFrame[] = useMemo(() => {
     if (problem.id === "nqueens") return traceNQueens(nQueensN);
     if (problem.id === "maze") return traceMaze(DEFAULT_MAZE);
-    // perm
+    if (problem.id === "sudoku") return traceSudoku(DEFAULT_SUDOKU);
+    if (problem.id === "combsum") {
+      const cands = combInput
+        .split(/[,\s]+/)
+        .map((s) => Number(s.trim()))
+        .filter((n) => Number.isFinite(n) && n > 0)
+        .slice(0, 6);
+      const t = Math.max(1, Math.min(15, combTarget || 7));
+      return traceCombSum(cands.length ? cands : [2, 3, 6, 7], t);
+    }
+    if (problem.id === "wordsearch") {
+      const w = (wordInput || "ABCCED").toUpperCase().slice(0, 8);
+      return traceWordSearch(DEFAULT_WORDGRID, w);
+    }
     const parsed = permInput
       .split(/[,\s]+/)
-      .map((s) => s.trim())
-      .filter(Boolean)
-      .map(Number)
+      .map((s) => Number(s.trim()))
       .filter((n) => Number.isFinite(n))
       .slice(0, 4);
     return tracePerm(parsed.length ? parsed : [1, 2, 3]);
-  }, [problem.id, nQueensN, permInput]);
+  }, [problem.id, nQueensN, permInput, combInput, combTarget, wordInput]);
 
   const [step, setStep] = useState(0);
   const [running, setRunning] = useState(false);
@@ -431,7 +805,7 @@ function Page() {
   useEffect(() => {
     setStep(0);
     setRunning(false);
-  }, [problem.id, nQueensN, permInput]);
+  }, [problem.id, nQueensN, permInput, combInput, combTarget, wordInput]);
 
   useEffect(() => {
     if (!running) return;
@@ -454,6 +828,7 @@ function Page() {
 
   return (
     <PageShell>
+      <PlaygroundBackButton playground="backtracking" />
       <PageHeader
         eyebrow="Backtracking Playground"
         title="Choose, explore, undo — live"
@@ -477,7 +852,6 @@ function Page() {
         </ul>
       </Callout>
 
-      {/* Controls */}
       <div className="card-surface mt-6 p-4">
         <div className="flex flex-wrap items-center gap-4">
           <div className="flex-1 min-w-[240px]">
@@ -517,14 +891,49 @@ function Page() {
 
           {problem.id === "perm" && (
             <div>
-              <div className="mb-1 text-xs text-muted-foreground">
-                Input (≤ 4 numbers)
-              </div>
+              <div className="mb-1 text-xs text-muted-foreground">Input (≤ 4 numbers)</div>
               <input
                 type="text"
                 value={permInput}
                 onChange={(e) => setPermInput(e.target.value)}
                 className="w-40 rounded-md border border-input bg-background px-2 py-1 font-mono text-xs"
+              />
+            </div>
+          )}
+
+          {problem.id === "combsum" && (
+            <>
+              <div>
+                <div className="mb-1 text-xs text-muted-foreground">Candidates (≤ 6)</div>
+                <input
+                  type="text"
+                  value={combInput}
+                  onChange={(e) => setCombInput(e.target.value)}
+                  className="w-40 rounded-md border border-input bg-background px-2 py-1 font-mono text-xs"
+                />
+              </div>
+              <div>
+                <div className="mb-1 text-xs text-muted-foreground">Target</div>
+                <input
+                  type="number"
+                  value={combTarget}
+                  min={1}
+                  max={15}
+                  onChange={(e) => setCombTarget(parseInt(e.target.value || "0", 10))}
+                  className="w-20 rounded-md border border-input bg-background px-2 py-1 font-mono text-xs"
+                />
+              </div>
+            </>
+          )}
+
+          {problem.id === "wordsearch" && (
+            <div>
+              <div className="mb-1 text-xs text-muted-foreground">Word</div>
+              <input
+                type="text"
+                value={wordInput}
+                onChange={(e) => setWordInput(e.target.value.toUpperCase())}
+                className="w-40 rounded-md border border-input bg-background px-2 py-1 font-mono text-xs uppercase"
               />
             </div>
           )}
@@ -567,9 +976,7 @@ function Page() {
             )}
           </button>
           <button
-            onClick={() =>
-              setStep((s) => Math.min(frames.length - 1, s + 1))
-            }
+            onClick={() => setStep((s) => Math.min(frames.length - 1, s + 1))}
             className="inline-flex items-center gap-1 rounded-md border border-border bg-card px-3 py-1.5 text-xs hover:bg-accent"
           >
             <StepForward className="h-3.5 w-3.5" /> Next
@@ -589,13 +996,13 @@ function Page() {
         </div>
       </div>
 
-      {/* Visualization */}
       <div className="mt-6 grid gap-4 lg:grid-cols-[minmax(0,1fr)_minmax(0,320px)]">
         <div className="card-surface p-4">
           <div className="mb-3 flex items-center justify-between">
             <div className="text-sm font-semibold">Visualization</div>
             <div className="text-xs text-muted-foreground">
-              depth {frame?.depth ?? 0} · calls {("calls" in (frame ?? {}) ? (frame as { calls: number }).calls : 0)}
+              depth {frame?.depth ?? 0} · calls{" "}
+              {"calls" in (frame ?? {}) ? (frame as { calls: number }).calls : 0}
             </div>
           </div>
           <FrameVisualizer frame={frame} />
@@ -618,7 +1025,6 @@ function Page() {
         </div>
       </div>
 
-      {/* Code viewer */}
       <div className="mt-6">
         <CodeViewer
           code={problem.code}
@@ -628,44 +1034,12 @@ function Page() {
         />
       </div>
 
-      {/* About */}
       <div className="mt-6 card-surface p-4">
         <div className="mb-2 text-sm font-semibold">About this problem</div>
         <p className="text-sm text-muted-foreground">{problem.description}</p>
       </div>
 
-      {/* Coming soon */}
-      <section className="mt-8">
-        <h2 className="mb-3 inline-flex items-center gap-2 text-lg font-semibold">
-          <Sparkles className="h-4 w-4 text-[color:var(--brand)]" /> Coming soon
-        </h2>
-        <div className="grid gap-3 sm:grid-cols-3">
-          {COMING_SOON.map((c) => (
-            <div
-              key={c.name}
-              className="card-surface flex flex-col gap-1 p-4 opacity-70"
-            >
-              <div className="flex items-center justify-between">
-                <div className="text-sm font-semibold">{c.name}</div>
-                <span className="rounded-full border border-amber-500/40 bg-amber-500/10 px-2 py-0.5 text-[10px] font-medium uppercase tracking-wider text-amber-500">
-                  Soon
-                </span>
-              </div>
-              <p className="text-xs text-muted-foreground">{c.note}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      <div className="mt-8 flex justify-center">
-        <Link
-          to="/learn/$course"
-          params={{ course: "backtracking" }}
-          className="inline-flex items-center gap-1.5 rounded-md gradient-brand px-5 py-2.5 text-sm font-semibold text-primary-foreground shadow-lg hover:opacity-90 transition"
-        >
-          Back to Backtracking module <ArrowRight className="h-4 w-4" />
-        </Link>
-      </div>
+      <PlaygroundFooterNav playground="backtracking" />
     </PageShell>
   );
 }
@@ -676,7 +1050,10 @@ function FrameVisualizer({ frame }: { frame: AnyFrame | undefined }) {
   if (!frame) return <div className="h-40" />;
   if (frame.kind === "nqueens") return <NQueensViz f={frame} />;
   if (frame.kind === "maze") return <MazeViz f={frame} />;
-  return <PermViz f={frame} />;
+  if (frame.kind === "perm") return <PermViz f={frame} />;
+  if (frame.kind === "sudoku") return <SudokuViz f={frame} />;
+  if (frame.kind === "combsum") return <CombSumViz f={frame} />;
+  return <WordSearchViz f={frame} />;
 }
 
 function NQueensViz({ f }: { f: NQueensFrame }) {
@@ -695,8 +1072,7 @@ function NQueensViz({ f }: { f: NQueensFrame }) {
           const r = Math.floor(i / size);
           const c = i % size;
           const hasQueen = f.board[r] === c;
-          const trying =
-            f.trying && f.trying.row === r && f.trying.col === c;
+          const trying = f.trying && f.trying.row === r && f.trying.col === c;
           const isDark = (r + c) % 2 === 1;
           return (
             <div
@@ -773,9 +1149,7 @@ function PermViz({ f }: { f: PermFrame }) {
   return (
     <div className="space-y-4">
       <div>
-        <div className="mb-1 text-xs text-muted-foreground">
-          Input pool ({f.nums.length})
-        </div>
+        <div className="mb-1 text-xs text-muted-foreground">Input pool ({f.nums.length})</div>
         <div className="flex flex-wrap gap-2">
           {f.nums.map((n, i) => (
             <span
@@ -791,7 +1165,6 @@ function PermViz({ f }: { f: PermFrame }) {
           ))}
         </div>
       </div>
-
       <div>
         <div className="mb-1 text-xs text-muted-foreground">
           Current path ({f.path.length}/{f.nums.length})
@@ -810,20 +1183,15 @@ function PermViz({ f }: { f: PermFrame }) {
               </motion.span>
             ))}
           </AnimatePresence>
-          {f.path.length === 0 && (
-            <span className="text-xs text-muted-foreground">empty</span>
-          )}
+          {f.path.length === 0 && <span className="text-xs text-muted-foreground">empty</span>}
         </div>
       </div>
-
       <div>
         <div className="mb-1 text-xs text-muted-foreground">
           Solutions collected ({f.results.length})
         </div>
         <div className="max-h-32 space-y-1 overflow-y-auto rounded-md border border-border bg-background p-2 font-mono text-xs">
-          {f.results.length === 0 && (
-            <div className="text-muted-foreground">none yet</div>
-          )}
+          {f.results.length === 0 && <div className="text-muted-foreground">none yet</div>}
           {f.results.map((r, i) => (
             <div key={i} className="text-[color:var(--brand)]">
               [{r.join(", ")}]
@@ -835,11 +1203,186 @@ function PermViz({ f }: { f: PermFrame }) {
   );
 }
 
+function SudokuViz({ f }: { f: SudokuFrame }) {
+  const cellPx = 44;
+  return (
+    <div className="flex justify-center overflow-auto">
+      <div
+        className="grid rounded-md border-2 border-border"
+        style={{
+          gridTemplateColumns: `repeat(${f.size}, ${cellPx}px)`,
+          gridTemplateRows: `repeat(${f.size}, ${cellPx}px)`,
+        }}
+      >
+        {f.grid.flatMap((row, r) =>
+          row.map((v, c) => {
+            const isCur = f.cur && f.cur[0] === r && f.cur[1] === c;
+            const givenCell = f.fixed[r][c];
+            const rightBorder = (c + 1) % f.block === 0 && c !== f.size - 1;
+            const bottomBorder = (r + 1) % f.block === 0 && r !== f.size - 1;
+            const bg = givenCell
+              ? "bg-muted/50"
+              : v !== 0
+                ? "bg-[color:var(--brand)]/10"
+                : "bg-background";
+            return (
+              <div
+                key={`${r}-${c}`}
+                className={`flex items-center justify-center border border-border/40 font-mono text-lg font-semibold ${bg} ${
+                  isCur
+                    ? f.invalid
+                      ? "ring-2 ring-rose-500 ring-inset"
+                      : "ring-2 ring-amber-400 ring-inset"
+                    : ""
+                } ${rightBorder ? "border-r-2 border-r-foreground/50" : ""} ${
+                  bottomBorder ? "border-b-2 border-b-foreground/50" : ""
+                }`}
+                style={{ width: cellPx, height: cellPx }}
+              >
+                {v !== 0 ? (
+                  <span
+                    className={
+                      givenCell
+                        ? "text-foreground"
+                        : f.solved
+                          ? "text-emerald-500"
+                          : "text-[color:var(--brand)]"
+                    }
+                  >
+                    {v}
+                  </span>
+                ) : isCur && f.tryingVal ? (
+                  <span className="text-xs text-amber-500">?{f.tryingVal}</span>
+                ) : (
+                  <span className="text-muted-foreground/30">·</span>
+                )}
+              </div>
+            );
+          }),
+        )}
+      </div>
+    </div>
+  );
+}
+
+function CombSumViz({ f }: { f: CombSumFrame }) {
+  return (
+    <div className="space-y-4">
+      <div>
+        <div className="mb-1 text-xs text-muted-foreground">
+          Candidates (sorted) — target {f.target}, current sum {f.sum}
+        </div>
+        <div className="flex flex-wrap gap-2">
+          {f.candidates.map((c, i) => (
+            <span
+              key={i}
+              className={`rounded-md border px-3 py-1.5 font-mono text-sm transition ${
+                i === f.index
+                  ? "border-amber-400 bg-amber-400/10 text-amber-600"
+                  : i < f.index
+                    ? "border-border bg-muted/30 text-muted-foreground"
+                    : "border-border bg-background text-foreground"
+              }`}
+            >
+              {c}
+            </span>
+          ))}
+        </div>
+      </div>
+      <div>
+        <div className="mb-1 text-xs text-muted-foreground">
+          Current path ({f.path.length}) — sum {f.sum} / {f.target}
+        </div>
+        <div className="flex min-h-[38px] flex-wrap items-center gap-2 rounded-md border border-border bg-background p-2">
+          <AnimatePresence initial={false}>
+            {f.path.map((v, i) => (
+              <motion.span
+                key={`${i}-${v}`}
+                initial={{ opacity: 0, scale: 0.85 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.85 }}
+                className="rounded-md bg-[color:var(--brand)]/15 px-2.5 py-1 font-mono text-sm text-[color:var(--brand)]"
+              >
+                {v}
+              </motion.span>
+            ))}
+          </AnimatePresence>
+          {f.path.length === 0 && <span className="text-xs text-muted-foreground">empty</span>}
+        </div>
+      </div>
+      <div>
+        <div className="mb-1 text-xs text-muted-foreground">
+          Solutions collected ({f.results.length})
+        </div>
+        <div className="max-h-32 space-y-1 overflow-y-auto rounded-md border border-border bg-background p-2 font-mono text-xs">
+          {f.results.length === 0 && <div className="text-muted-foreground">none yet</div>}
+          {f.results.map((r, i) => (
+            <div key={i} className="text-[color:var(--brand)]">
+              [{r.join(", ")}]
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function WordSearchViz({ f }: { f: WordSearchFrame }) {
+  const rows = f.grid.length;
+  const cols = f.grid[0].length;
+  const cellPx = 44;
+  return (
+    <div className="space-y-3">
+      <div>
+        <div className="mb-1 text-xs text-muted-foreground">
+          Word: <span className="font-mono">{f.word}</span> — matched{" "}
+          <span className="font-mono text-[color:var(--brand)]">
+            {f.word.slice(0, f.matchedIndex)}
+          </span>
+          <span className="font-mono text-muted-foreground">
+            {f.word.slice(f.matchedIndex)}
+          </span>
+        </div>
+      </div>
+      <div className="flex justify-center overflow-auto">
+        <div
+          className="grid rounded-md border border-border"
+          style={{
+            gridTemplateColumns: `repeat(${cols}, ${cellPx}px)`,
+            gridTemplateRows: `repeat(${rows}, ${cellPx}px)`,
+          }}
+        >
+          {f.grid.flatMap((row, r) =>
+            row.map((ch, c) => {
+              const isCur = f.cur && f.cur[0] === r && f.cur[1] === c;
+              const isVisited = f.visited[r][c];
+              const bg = isVisited
+                ? f.found
+                  ? "bg-emerald-500/20"
+                  : "bg-[color:var(--brand)]/20"
+                : "bg-background";
+              return (
+                <div
+                  key={`${r}-${c}`}
+                  className={`flex items-center justify-center border border-border/40 font-mono text-sm font-semibold ${bg} ${
+                    isCur ? "ring-2 ring-amber-400 ring-inset" : ""
+                  }`}
+                  style={{ width: cellPx, height: cellPx }}
+                >
+                  {ch}
+                </div>
+              );
+            }),
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function FrameStats({ frame }: { frame: AnyFrame | undefined }) {
   if (!frame) {
-    return (
-      <div className="text-xs text-muted-foreground">Press Play to begin.</div>
-    );
+    return <div className="text-xs text-muted-foreground">Press Play to begin.</div>;
   }
   const rows: { label: string; value: string | number }[] = [
     { label: "Depth", value: frame.depth },
@@ -853,9 +1396,22 @@ function FrameStats({ frame }: { frame: AnyFrame | undefined }) {
     rows.push({ label: "Cursor", value: `(${frame.cur[0]}, ${frame.cur[1]})` });
     rows.push({ label: "Path length", value: frame.path.length });
     rows.push({ label: "Found", value: frame.found ? "yes" : "no" });
-  } else {
+  } else if (frame.kind === "perm") {
     rows.push({ label: "Path length", value: frame.path.length });
     rows.push({ label: "Results", value: frame.results.length });
+  } else if (frame.kind === "sudoku") {
+    if (frame.cur) rows.push({ label: "Cursor", value: `(${frame.cur[0]}, ${frame.cur[1]})` });
+    if (frame.tryingVal !== undefined) rows.push({ label: "Trying", value: frame.tryingVal });
+    rows.push({ label: "Solved", value: frame.solved ? "yes" : "no" });
+  } else if (frame.kind === "combsum") {
+    rows.push({ label: "Target", value: frame.target });
+    rows.push({ label: "Current sum", value: frame.sum });
+    rows.push({ label: "Path length", value: frame.path.length });
+    rows.push({ label: "Results", value: frame.results.length });
+  } else {
+    rows.push({ label: "Word", value: frame.word });
+    rows.push({ label: "Matched", value: `${frame.matchedIndex}/${frame.word.length}` });
+    rows.push({ label: "Found", value: frame.found ? "yes" : "no" });
   }
   return (
     <dl className="grid grid-cols-2 gap-y-2 text-xs">
