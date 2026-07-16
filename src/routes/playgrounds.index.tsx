@@ -155,6 +155,14 @@ const AVAILABLE: Playground[] = [
       "Step through N-Queens, Rat in a Maze, and Permutations frame by frame — watch choose, explore, and undo in action.",
   },
   {
+    title: "Greedy Algorithms Playground",
+    href: "/playgrounds/greedy",
+    icon: Coins,
+    meta: "Activity Selection · Fractional Knapsack · Huffman",
+    description:
+      "Step through activity selection, fractional knapsack, and Huffman coding — watch each greedy pick, rejection, and running objective update live.",
+  },
+  {
     title: "Dynamic Programming Playground",
     href: "/playgrounds/dp",
     icon: Grid3x3,
@@ -176,11 +184,6 @@ const COMING_SOON: ComingSoon[] = [
     description: "Insert words, autocomplete prefixes, and inspect shared branches.",
   },
   {
-    title: "Greedy Algorithms Playground",
-    icon: Coins,
-    description: "Coin change, interval scheduling, and activity selection walkthroughs.",
-  },
-  {
     title: "Graph Algorithms Playground",
     icon: RouteIcon,
     description: "BFS, DFS, Dijkstra, and A* animated over your custom graph.",
@@ -191,6 +194,7 @@ const COMING_SOON: ComingSoon[] = [
     description: "KMP, Rabin-Karp, and Z-algorithm pattern matching visualized.",
   },
 ];
+
 
 function Page() {
   return (

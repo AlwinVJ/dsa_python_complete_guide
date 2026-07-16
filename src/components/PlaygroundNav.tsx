@@ -32,7 +32,9 @@ export type PlaygroundNavKey =
   | "recursion"
   | "divide-conquer"
   | "backtracking"
+  | "greedy"
   | "dp";
+
 
 type Entry = {
   key: PlaygroundNavKey;
@@ -88,6 +90,13 @@ export const PLAYGROUND_ORDER: Entry[] = [
     playgroundHref: "/playgrounds/backtracking",
   },
   {
+    key: "greedy",
+    label: "Greedy Playground",
+    moduleLabel: "Greedy Algorithms",
+    moduleHref: "/learn/greedy",
+    playgroundHref: "/playgrounds/greedy",
+  },
+  {
     key: "dp",
     label: "Dynamic Programming Playground",
     moduleLabel: "Dynamic Programming",
@@ -95,6 +104,7 @@ export const PLAYGROUND_ORDER: Entry[] = [
     playgroundHref: "/playgrounds/dp",
   },
 ];
+
 
 // The DP module doesn't have a learn/* course route, so fall back to the hub.
 const DP_MODULE_HREF = "/playgrounds";
