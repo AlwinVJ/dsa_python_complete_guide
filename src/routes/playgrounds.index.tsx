@@ -170,6 +170,14 @@ const AVAILABLE: Playground[] = [
     description:
       "Compare memoization vs tabulation on Fibonacci, then fill DP tables for Climbing Stairs and Coin Change step by step.",
   },
+  {
+    title: "Graph Algorithms Playground",
+    href: "/playgrounds/graph-algorithms",
+    icon: RouteIcon,
+    meta: "BFS · DFS · Dijkstra",
+    description:
+      "Step through BFS, DFS, and Dijkstra on an interactive graph — watch the queue, stack, priority queue, and distance table update live.",
+  },
 ];
 
 const COMING_SOON: ComingSoon[] = [
@@ -182,11 +190,6 @@ const COMING_SOON: ComingSoon[] = [
     title: "Trie Playground",
     icon: Type,
     description: "Insert words, autocomplete prefixes, and inspect shared branches.",
-  },
-  {
-    title: "Graph Algorithms Playground",
-    icon: RouteIcon,
-    description: "BFS, DFS, Dijkstra, and A* animated over your custom graph.",
   },
   {
     title: "String Algorithms Playground",

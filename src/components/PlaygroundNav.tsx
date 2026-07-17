@@ -33,7 +33,8 @@ export type PlaygroundNavKey =
   | "divide-conquer"
   | "backtracking"
   | "greedy"
-  | "dp";
+  | "dp"
+  | "graph-algorithms";
 
 
 type Entry = {
@@ -102,6 +103,13 @@ export const PLAYGROUND_ORDER: Entry[] = [
     moduleLabel: "Dynamic Programming",
     moduleHref: "/playgrounds/dp",
     playgroundHref: "/playgrounds/dp",
+  },
+  {
+    key: "graph-algorithms",
+    label: "Graph Algorithms Playground",
+    moduleLabel: "Graph Algorithms",
+    moduleHref: "/learn/graph-algorithms",
+    playgroundHref: "/playgrounds/graph-algorithms",
   },
 ];
 

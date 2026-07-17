@@ -46,6 +46,7 @@ import { Route as PlaygroundsSortingRouteImport } from './routes/playgrounds.sor
 import { Route as PlaygroundsSearchingRouteImport } from './routes/playgrounds.searching'
 import { Route as PlaygroundsRecursionRouteImport } from './routes/playgrounds.recursion'
 import { Route as PlaygroundsGreedyRouteImport } from './routes/playgrounds.greedy'
+import { Route as PlaygroundsGraphAlgorithmsRouteImport } from './routes/playgrounds.graph-algorithms'
 import { Route as PlaygroundsGraphRouteImport } from './routes/playgrounds.graph'
 import { Route as PlaygroundsDpRouteImport } from './routes/playgrounds.dp'
 import { Route as PlaygroundsDivideConquerRouteImport } from './routes/playgrounds.divide-conquer'
@@ -248,6 +249,12 @@ const PlaygroundsGreedyRoute = PlaygroundsGreedyRouteImport.update({
   path: '/playgrounds/greedy',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PlaygroundsGraphAlgorithmsRoute =
+  PlaygroundsGraphAlgorithmsRouteImport.update({
+    id: '/playgrounds/graph-algorithms',
+    path: '/playgrounds/graph-algorithms',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const PlaygroundsGraphRoute = PlaygroundsGraphRouteImport.update({
   id: '/playgrounds/graph',
   path: '/playgrounds/graph',
@@ -366,6 +373,7 @@ export interface FileRoutesByFullPath {
   '/playgrounds/divide-conquer': typeof PlaygroundsDivideConquerRoute
   '/playgrounds/dp': typeof PlaygroundsDpRoute
   '/playgrounds/graph': typeof PlaygroundsGraphRoute
+  '/playgrounds/graph-algorithms': typeof PlaygroundsGraphAlgorithmsRoute
   '/playgrounds/greedy': typeof PlaygroundsGreedyRoute
   '/playgrounds/recursion': typeof PlaygroundsRecursionRoute
   '/playgrounds/searching': typeof PlaygroundsSearchingRoute
@@ -421,6 +429,7 @@ export interface FileRoutesByTo {
   '/playgrounds/divide-conquer': typeof PlaygroundsDivideConquerRoute
   '/playgrounds/dp': typeof PlaygroundsDpRoute
   '/playgrounds/graph': typeof PlaygroundsGraphRoute
+  '/playgrounds/graph-algorithms': typeof PlaygroundsGraphAlgorithmsRoute
   '/playgrounds/greedy': typeof PlaygroundsGreedyRoute
   '/playgrounds/recursion': typeof PlaygroundsRecursionRoute
   '/playgrounds/searching': typeof PlaygroundsSearchingRoute
@@ -477,6 +486,7 @@ export interface FileRoutesById {
   '/playgrounds/divide-conquer': typeof PlaygroundsDivideConquerRoute
   '/playgrounds/dp': typeof PlaygroundsDpRoute
   '/playgrounds/graph': typeof PlaygroundsGraphRoute
+  '/playgrounds/graph-algorithms': typeof PlaygroundsGraphAlgorithmsRoute
   '/playgrounds/greedy': typeof PlaygroundsGreedyRoute
   '/playgrounds/recursion': typeof PlaygroundsRecursionRoute
   '/playgrounds/searching': typeof PlaygroundsSearchingRoute
@@ -534,6 +544,7 @@ export interface FileRouteTypes {
     | '/playgrounds/divide-conquer'
     | '/playgrounds/dp'
     | '/playgrounds/graph'
+    | '/playgrounds/graph-algorithms'
     | '/playgrounds/greedy'
     | '/playgrounds/recursion'
     | '/playgrounds/searching'
@@ -589,6 +600,7 @@ export interface FileRouteTypes {
     | '/playgrounds/divide-conquer'
     | '/playgrounds/dp'
     | '/playgrounds/graph'
+    | '/playgrounds/graph-algorithms'
     | '/playgrounds/greedy'
     | '/playgrounds/recursion'
     | '/playgrounds/searching'
@@ -644,6 +656,7 @@ export interface FileRouteTypes {
     | '/playgrounds/divide-conquer'
     | '/playgrounds/dp'
     | '/playgrounds/graph'
+    | '/playgrounds/graph-algorithms'
     | '/playgrounds/greedy'
     | '/playgrounds/recursion'
     | '/playgrounds/searching'
@@ -700,6 +713,7 @@ export interface RootRouteChildren {
   PlaygroundsDivideConquerRoute: typeof PlaygroundsDivideConquerRoute
   PlaygroundsDpRoute: typeof PlaygroundsDpRoute
   PlaygroundsGraphRoute: typeof PlaygroundsGraphRoute
+  PlaygroundsGraphAlgorithmsRoute: typeof PlaygroundsGraphAlgorithmsRoute
   PlaygroundsGreedyRoute: typeof PlaygroundsGreedyRoute
   PlaygroundsRecursionRoute: typeof PlaygroundsRecursionRoute
   PlaygroundsSearchingRoute: typeof PlaygroundsSearchingRoute
@@ -981,6 +995,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PlaygroundsGreedyRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/playgrounds/graph-algorithms': {
+      id: '/playgrounds/graph-algorithms'
+      path: '/playgrounds/graph-algorithms'
+      fullPath: '/playgrounds/graph-algorithms'
+      preLoaderRoute: typeof PlaygroundsGraphAlgorithmsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/playgrounds/graph': {
       id: '/playgrounds/graph'
       path: '/playgrounds/graph'
@@ -1132,6 +1153,7 @@ const rootRouteChildren: RootRouteChildren = {
   PlaygroundsDivideConquerRoute: PlaygroundsDivideConquerRoute,
   PlaygroundsDpRoute: PlaygroundsDpRoute,
   PlaygroundsGraphRoute: PlaygroundsGraphRoute,
+  PlaygroundsGraphAlgorithmsRoute: PlaygroundsGraphAlgorithmsRoute,
   PlaygroundsGreedyRoute: PlaygroundsGreedyRoute,
   PlaygroundsRecursionRoute: PlaygroundsRecursionRoute,
   PlaygroundsSearchingRoute: PlaygroundsSearchingRoute,
