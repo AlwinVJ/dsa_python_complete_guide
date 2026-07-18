@@ -4,6 +4,7 @@ import { ChevronDown, Search, Clock, Tag, ExternalLink, BookOpen } from "lucide-
 import { CodeBlock } from "@/components/CodeBlock";
 import { ComplexityBadge } from "@/components/Callout";
 import type { InterviewCategory, InterviewDifficulty, InterviewQuestion } from "@/lib/qa/types";
+import { parseInlineMarkdown } from "@/components/course/LessonView";
 
 const DIFF_ORDER: InterviewDifficulty[] = ["Beginner", "Intermediate", "Advanced", "FAANG"];
 const CATEGORIES: (InterviewCategory | "All")[] = [
@@ -159,7 +160,7 @@ export function InterviewQuestions({ questions }: { questions: InterviewQuestion
                       <div className="border-t border-border bg-background/40 px-4 py-4">
                         <div className="space-y-3 text-sm leading-relaxed text-muted-foreground">
                           {q.explanation.map((p, k) => (
-                            <p key={k}>{p}</p>
+                            <p key={k}>{parseInlineMarkdown(p)}</p>
                           ))}
                         </div>
 
@@ -191,7 +192,7 @@ export function InterviewQuestions({ questions }: { questions: InterviewQuestion
                             <div className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
                               Follow-up
                             </div>
-                            <div className="mt-1">{q.followUp}</div>
+                            <div className="mt-1">{parseInlineMarkdown(q.followUp)}</div>
                           </div>
                         )}
 

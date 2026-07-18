@@ -190,18 +190,211 @@ export function LessonView({
 }
 
 
+function parseSuperscripts(text: string): React.ReactNode[] {
+  const parts = text.split(/\^([a-zA-Z0-9\-+]+)/g);
+  return parts.map((part, idx) => {
+    if (idx % 2 === 1) {
+      return <sup key={idx} className="text-[10px]">{part}</sup>;
+    }
+    return part;
+  });
+}
+
+export function parseInlineMarkdown(text: string): React.ReactNode {
+  if (!text) return "";
+  const parts = text.split(/(\*\*[^*]+\*\*|`[^`]+`|\*[^*]+\*|_[^_]+_)/g);
+  return parts.map((part, idx) => {
+    if (part.startsWith("**") && part.endsWith("**")) {
+      return (
+        <strong key={idx} className="font-semibold text-foreground">
+          {parseInlineMarkdown(part.slice(2, -2))}
+        </strong>
+      );
+    }
+    if (part.startsWith("`") && part.endsWith("`")) {
+      return (
+        <code
+          key={idx}
+          className="rounded bg-muted border border-border/60 px-1.5 py-0.5 font-mono text-[11px] text-foreground font-semibold"
+        >
+          {part.slice(1, -1)}
+        </code>
+      );
+    }
+    if (part.startsWith("*") && part.endsWith("*")) {
+      return (
+        <em key={idx} className="italic text-foreground">
+          {parseInlineMarkdown(part.slice(1, -1))}
+        </em>
+      );
+    }
+    if (part.startsWith("_") && part.endsWith("_")) {
+      return (
+        <em key={idx} className="italic text-foreground">
+          {parseInlineMarkdown(part.slice(1, -1))}
+        </em>
+      );
+    }
+    return <span key={idx}>{parseSuperscripts(part)}</span>;
+  });
+}
+
+function parseBlocks(text: string) {
+  const lines = text.split("\n");
+  const blocks: { type: string; lines: string[] }[] = [];
+  let currentBlock: { type: string; lines: string[] } | null = null;
+
+  for (const rawLine of lines) {
+    const line = rawLine.trim();
+    if (!line) {
+      if (currentBlock) {
+        blocks.push(currentBlock);
+        currentBlock = null;
+      }
+      continue;
+    }
+
+    let lineType = "p";
+    if (line.startsWith("### ")) lineType = "h3";
+    else if (line.startsWith("#### ")) lineType = "h4";
+    else if (line.startsWith("|")) lineType = "table";
+    else if (line.startsWith("* ") || line.startsWith("- ")) lineType = "ul";
+    else if (/^\d+\.\s+/.test(line)) lineType = "ol";
+
+    if (lineType === "h3" || lineType === "h4") {
+      if (currentBlock) {
+        blocks.push(currentBlock);
+      }
+      blocks.push({ type: lineType, lines: [line] });
+      currentBlock = null;
+    } else {
+      if (currentBlock && currentBlock.type === lineType) {
+        currentBlock.lines.push(rawLine);
+      } else {
+        if (currentBlock) {
+          blocks.push(currentBlock);
+        }
+        currentBlock = { type: lineType, lines: [rawLine] };
+      }
+    }
+  }
+
+  if (currentBlock) {
+    blocks.push(currentBlock);
+  }
+
+  return blocks;
+}
+
+function renderBlock(block: { type: string; lines: string[] }, key: number) {
+  if (block.type === "h3") {
+    return (
+      <h3 key={key} className="mt-6 text-lg font-semibold text-foreground animate-fade-in">
+        {parseInlineMarkdown(block.lines[0].trim().slice(4))}
+      </h3>
+    );
+  }
+  if (block.type === "h4") {
+    return (
+      <h4 key={key} className="mt-4 text-base font-semibold text-foreground animate-fade-in">
+        {parseInlineMarkdown(block.lines[0].trim().slice(5))}
+      </h4>
+    );
+  }
+
+  if (block.type === "table") {
+    const parseRow = (line: string) => {
+      return line
+        .split("|")
+        .map((cell) => cell.trim())
+        .filter((_, idx, arr) => idx > 0 && idx < arr.length - 1);
+    };
+
+    const headers = parseRow(block.lines[0]);
+    const dataRows = block.lines.slice(2).map(parseRow);
+
+    return (
+      <div key={key} className="overflow-x-auto my-4 rounded-lg border border-border">
+        <table className="w-full text-sm border-collapse">
+          <thead className="bg-muted/50 border-b border-border">
+            <tr>
+              {headers.map((h, idx) => (
+                <th key={idx} className="px-4 py-2 text-left font-semibold text-foreground whitespace-nowrap">
+                  {parseInlineMarkdown(h)}
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {dataRows.map((row, rowIdx) => (
+              <tr key={rowIdx} className="border-t border-border first:border-none hover:bg-muted/10">
+                {row.map((cell, cellIdx) => (
+                  <td key={cellIdx} className="px-4 py-2 text-muted-foreground font-mono text-xs">
+                    {parseInlineMarkdown(cell)}
+                  </td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    );
+  }
+
+  if (block.type === "ul") {
+    return (
+      <ul key={key} className="list-disc space-y-1.5 pl-6 my-2">
+        {block.lines.map((line, idx) => {
+          const itemText = line.trim().replace(/^[\*\-]\s+/, "");
+          return (
+            <li key={idx} className="text-muted-foreground">
+              {parseInlineMarkdown(itemText)}
+            </li>
+          );
+        })}
+      </ul>
+    );
+  }
+
+  if (block.type === "ol") {
+    return (
+      <ol key={key} className="list-decimal space-y-1.5 pl-6 my-2">
+        {block.lines.map((line, idx) => {
+          const itemText = line.trim().replace(/^\d+\.\s+/, "");
+          return (
+            <li key={idx} className="text-muted-foreground font-sans">
+              {parseInlineMarkdown(itemText)}
+            </li>
+          );
+        })}
+      </ol>
+    );
+  }
+
+  return (
+    <p key={key} className="leading-relaxed text-muted-foreground">
+      {block.lines.map((line, idx) => (
+        <span key={idx}>
+          {parseInlineMarkdown(line)}
+          {idx < block.lines.length - 1 && <br />}
+        </span>
+      ))}
+    </p>
+  );
+}
+
 function SectionRenderer({ s }: { s: LessonSection }) {
   switch (s.type) {
     case "heading":
-      return <h2 className="mt-8 text-2xl font-semibold">{s.text}</h2>;
+      return <h2 className="mt-8 text-2xl font-semibold">{parseInlineMarkdown(s.text)}</h2>;
     case "theory":
       return (
-        <div className="space-y-4 leading-relaxed text-muted-foreground">
-          {s.text && s.text.split("\n\n").map((para, i) => <p key={i}>{para}</p>)}
+        <div className="space-y-4 leading-relaxed">
+          {s.text && parseBlocks(s.text).map((block, i) => renderBlock(block, i))}
           {s.bullets && (
             <ul className="list-disc space-y-1.5 pl-6">
               {s.bullets.map((b, i) => (
-                <li key={i}>{b}</li>
+                <li key={i} className="text-muted-foreground">{parseInlineMarkdown(b)}</li>
               ))}
             </ul>
           )}
@@ -211,7 +404,7 @@ function SectionRenderer({ s }: { s: LessonSection }) {
       return (
         <div>
           <CodeBlock code={s.code} title={s.title ?? "python"} />
-          {s.explanation && <p className="mt-2 text-sm text-muted-foreground">{s.explanation}</p>}
+          {s.explanation && <p className="mt-2 text-sm text-muted-foreground">{parseInlineMarkdown(s.explanation)}</p>}
         </div>
       );
     case "complexity":
@@ -233,10 +426,10 @@ function SectionRenderer({ s }: { s: LessonSection }) {
               <tbody>
                 {s.rows.map((r, i) => (
                   <tr key={i} className="border-t border-border">
-                    <td className="px-4 py-2">{r.op}</td>
-                    <td className="px-4 py-2 font-mono text-[color:var(--brand)]">{r.time}</td>
-                    <td className="px-4 py-2 font-mono text-muted-foreground">{r.space ?? "—"}</td>
-                    <td className="px-4 py-2 text-xs text-muted-foreground">{r.note ?? ""}</td>
+                    <td className="px-4 py-2">{parseInlineMarkdown(r.op)}</td>
+                    <td className="px-4 py-2 font-mono text-[color:var(--brand)]">{parseInlineMarkdown(r.time)}</td>
+                    <td className="px-4 py-2 font-mono text-muted-foreground">{r.space ? parseInlineMarkdown(r.space) : "—"}</td>
+                    <td className="px-4 py-2 text-xs text-muted-foreground">{r.note ? parseInlineMarkdown(r.note) : ""}</td>
                   </tr>
                 ))}
               </tbody>
@@ -249,7 +442,7 @@ function SectionRenderer({ s }: { s: LessonSection }) {
         <Callout kind="warn" title="Common Mistakes">
           <ul className="list-disc space-y-1.5 pl-5">
             {s.items.map((m, i) => (
-              <li key={i}>{m}</li>
+              <li key={i}>{parseInlineMarkdown(m)}</li>
             ))}
           </ul>
         </Callout>
@@ -260,14 +453,14 @@ function SectionRenderer({ s }: { s: LessonSection }) {
           <Lightbulb className="mt-0.5 h-5 w-5 shrink-0 text-[color:var(--brand)]" />
           <div>
             <div className="text-sm font-semibold">{s.title ?? "Interview Tip"}</div>
-            <div className="mt-1 text-sm text-muted-foreground">{s.text}</div>
+            <div className="mt-1 text-sm text-muted-foreground">{parseInlineMarkdown(s.text)}</div>
           </div>
         </div>
       );
     case "callout":
       return (
         <Callout kind={s.kind} title={s.title}>
-          {s.text}
+          {parseInlineMarkdown(s.text)}
         </Callout>
       );
     case "quiz":
@@ -303,7 +496,7 @@ function SectionRenderer({ s }: { s: LessonSection }) {
                         className="card-surface flex flex-wrap items-center justify-between gap-2 p-3 hover:border-[color:var(--brand)]/60 transition"
                       >
                         <div>
-                          <div className="text-sm font-medium">{p.title}</div>
+                          <div className="text-sm font-medium">{parseInlineMarkdown(p.title)}</div>
                         </div>
                         <span
                           className={`rounded-md px-2 py-0.5 text-xs ${
@@ -338,7 +531,7 @@ function SectionRenderer({ s }: { s: LessonSection }) {
                   rel="noreferrer"
                   className="inline-flex items-center gap-1.5 text-sm text-[color:var(--brand)] hover:underline"
                 >
-                  <ExternalLink className="h-3.5 w-3.5" /> {r.label}
+                  <ExternalLink className="h-3.5 w-3.5" /> {parseInlineMarkdown(r.label)}
                 </a>
               </li>
             ))}
@@ -359,7 +552,7 @@ function QuizCard({
   const correct = pick === q.answer;
   return (
     <div className="card-surface p-4">
-      <p className="font-medium">{q.q}</p>
+      <p className="font-medium">{parseInlineMarkdown(q.q)}</p>
       <div className="mt-3 grid gap-2">
         {q.choices.map((c, i) => {
           const chosen = pick === i;
@@ -378,14 +571,14 @@ function QuizCard({
                       : "border-border opacity-70"
               }`}
             >
-              {c}
+              {parseInlineMarkdown(c)}
             </button>
           );
         })}
       </div>
       {pick != null && (
         <div className={`mt-3 text-sm ${correct ? "text-emerald-500" : "text-rose-500"}`}>
-          {correct ? "Correct!" : "Not quite."} {q.explain}
+          {correct ? "Correct!" : "Not quite."} {q.explain && parseInlineMarkdown(q.explain)}
         </div>
       )}
     </div>

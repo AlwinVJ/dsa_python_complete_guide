@@ -17,6 +17,7 @@ import { ComingSoon } from "@/components/ComingSoon";
 import { TrieRedirect } from "@/components/TrieRedirect";
 import { getModuleRoute } from "@/lib/curriculum";
 import { Callout } from "@/components/Callout";
+import { parseInlineMarkdown } from "./LessonView";
 
 const MINUTES_PER_LESSON = 2;
 
@@ -171,7 +172,7 @@ export function CourseOverviewPage({ slug }: { slug: string }) {
               Introduction
             </h3>
             <p className="text-sm text-muted-foreground leading-relaxed">
-              {course.overview.introduction}
+              {parseInlineMarkdown(course.overview.introduction)}
             </p>
           </div>
         )}
@@ -182,7 +183,7 @@ export function CourseOverviewPage({ slug }: { slug: string }) {
               Why Learn {course.title}?
             </h3>
             <p className="text-sm text-muted-foreground leading-relaxed">
-              {course.overview.whyLearn}
+              {parseInlineMarkdown(course.overview.whyLearn)}
             </p>
           </div>
         )}
@@ -196,7 +197,7 @@ export function CourseOverviewPage({ slug }: { slug: string }) {
               {course.overview.learningObjectives.map((obj, i) => (
                 <li key={i} className="flex items-start gap-2">
                   <span className="text-[color:var(--brand)] font-bold mt-0.5">•</span>
-                  <span>{obj}</span>
+                  <span>{parseInlineMarkdown(obj)}</span>
                 </li>
               ))}
             </ul>
@@ -210,7 +211,7 @@ export function CourseOverviewPage({ slug }: { slug: string }) {
             </h3>
             <ul className="list-disc pl-5 text-sm text-muted-foreground space-y-1">
               {course.overview.prerequisites.map((req, i) => (
-                <li key={i}>{req}</li>
+                <li key={i}>{parseInlineMarkdown(req)}</li>
               ))}
             </ul>
           </div>
@@ -223,7 +224,7 @@ export function CourseOverviewPage({ slug }: { slug: string }) {
             </h3>
             <ul className="list-disc pl-5 text-sm text-muted-foreground space-y-1">
               {course.overview.realWorldApplications.map((app, i) => (
-                <li key={i}>{app}</li>
+                <li key={i}>{parseInlineMarkdown(app)}</li>
               ))}
             </ul>
           </div>
@@ -238,7 +239,7 @@ export function CourseOverviewPage({ slug }: { slug: string }) {
                 </h3>
                 <ul className="list-disc pl-5 text-sm text-muted-foreground space-y-1">
                   {course.overview.advantages.map((adv, i) => (
-                    <li key={i}>{adv}</li>
+                    <li key={i}>{parseInlineMarkdown(adv)}</li>
                   ))}
                 </ul>
               </div>
@@ -250,7 +251,7 @@ export function CourseOverviewPage({ slug }: { slug: string }) {
                 </h3>
                 <ul className="list-disc pl-5 text-sm text-muted-foreground space-y-1">
                   {course.overview.limitations.map((lim, i) => (
-                    <li key={i}>{lim}</li>
+                    <li key={i}>{parseInlineMarkdown(lim)}</li>
                   ))}
                 </ul>
               </div>
@@ -266,7 +267,7 @@ export function CourseOverviewPage({ slug }: { slug: string }) {
             <ul className="grid gap-2 sm:grid-cols-2 text-sm text-muted-foreground">
               {course.whoIsThisFor.map((item, i) => (
                 <li key={i} className="flex items-center gap-2">
-                  <span className="text-emerald-500 font-bold">✓</span> {item}
+                  <span className="text-emerald-500 font-bold">✓</span> {parseInlineMarkdown(item)}
                 </li>
               ))}
             </ul>

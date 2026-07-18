@@ -4,6 +4,7 @@ import { ChevronDown, Search, Sparkles, Lightbulb, AlertTriangle } from "lucide-
 import { CodeBlock } from "@/components/CodeBlock";
 import { ComplexityBadge } from "@/components/Callout";
 import type { FaqCategory, FaqItem } from "@/lib/qa/types";
+import { parseInlineMarkdown } from "@/components/course/LessonView";
 
 const CATEGORIES: (FaqCategory | "All")[] = [
   "All",
@@ -85,7 +86,7 @@ export function FaqAccordion({ faqs }: { faqs: FaqItem[] }) {
                 <div className="border-t border-border bg-background/40 px-4 py-4">
                   <div className="space-y-3 text-sm leading-relaxed text-muted-foreground">
                     {f.answer.map((p, k) => (
-                      <p key={k}>{p}</p>
+                      <p key={k}>{parseInlineMarkdown(p)}</p>
                     ))}
                   </div>
 
@@ -119,7 +120,7 @@ export function FaqAccordion({ faqs }: { faqs: FaqItem[] }) {
                         <div className="text-xs font-semibold uppercase tracking-wider text-[color:var(--brand)]">
                           Did you know?
                         </div>
-                        <div className="mt-1 text-muted-foreground">{f.didYouKnow}</div>
+                        <div className="mt-1 text-muted-foreground">{parseInlineMarkdown(f.didYouKnow)}</div>
                       </div>
                     </div>
                   )}
@@ -131,7 +132,7 @@ export function FaqAccordion({ faqs }: { faqs: FaqItem[] }) {
                         <div className="text-xs font-semibold uppercase tracking-wider text-amber-500">
                           Common mistake
                         </div>
-                        <div className="mt-1 text-muted-foreground">{f.mistake}</div>
+                        <div className="mt-1 text-muted-foreground">{parseInlineMarkdown(f.mistake)}</div>
                       </div>
                     </div>
                   )}
