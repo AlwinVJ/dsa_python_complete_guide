@@ -34,7 +34,9 @@ export type PlaygroundNavKey =
   | "backtracking"
   | "greedy"
   | "dp"
-  | "graph-algorithms";
+  | "graph-algorithms"
+  | "string-algorithms"
+  | "bit-manipulation";
 
 
 type Entry = {
@@ -110,6 +112,20 @@ export const PLAYGROUND_ORDER: Entry[] = [
     moduleLabel: "Graph Algorithms",
     moduleHref: "/learn/graph-algorithms",
     playgroundHref: "/playgrounds/graph-algorithms",
+  },
+  {
+    key: "string-algorithms",
+    label: "String Algorithms Playground",
+    moduleLabel: "String Algorithms",
+    moduleHref: "/learn/string-algorithms",
+    playgroundHref: "/playgrounds/string-algorithms",
+  },
+  {
+    key: "bit-manipulation",
+    label: "Bit Manipulation Playground",
+    moduleLabel: "Bit Manipulation",
+    moduleHref: "/learn/bit-manipulation",
+    playgroundHref: "/playgrounds/bit-manipulation",
   },
 ];
 

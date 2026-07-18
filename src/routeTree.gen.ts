@@ -42,6 +42,7 @@ import { Route as StacksSplatRouteImport } from './routes/stacks.$'
 import { Route as QueuesInterviewRouteImport } from './routes/queues.interview'
 import { Route as QueuesFaqRouteImport } from './routes/queues.faq'
 import { Route as QueuesSplatRouteImport } from './routes/queues.$'
+import { Route as PlaygroundsStringAlgorithmsRouteImport } from './routes/playgrounds.string-algorithms'
 import { Route as PlaygroundsSortingRouteImport } from './routes/playgrounds.sorting'
 import { Route as PlaygroundsSearchingRouteImport } from './routes/playgrounds.searching'
 import { Route as PlaygroundsRecursionRouteImport } from './routes/playgrounds.recursion'
@@ -50,6 +51,7 @@ import { Route as PlaygroundsGraphAlgorithmsRouteImport } from './routes/playgro
 import { Route as PlaygroundsGraphRouteImport } from './routes/playgrounds.graph'
 import { Route as PlaygroundsDpRouteImport } from './routes/playgrounds.dp'
 import { Route as PlaygroundsDivideConquerRouteImport } from './routes/playgrounds.divide-conquer'
+import { Route as PlaygroundsBitManipulationRouteImport } from './routes/playgrounds.bit-manipulation'
 import { Route as PlaygroundsBacktrackingRouteImport } from './routes/playgrounds.backtracking'
 import { Route as ModulesSlugRouteImport } from './routes/modules.$slug'
 import { Route as LinkedListsInterviewRouteImport } from './routes/linked-lists.interview'
@@ -229,6 +231,12 @@ const QueuesSplatRoute = QueuesSplatRouteImport.update({
   path: '/queues/$',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PlaygroundsStringAlgorithmsRoute =
+  PlaygroundsStringAlgorithmsRouteImport.update({
+    id: '/playgrounds/string-algorithms',
+    path: '/playgrounds/string-algorithms',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const PlaygroundsSortingRoute = PlaygroundsSortingRouteImport.update({
   id: '/playgrounds/sorting',
   path: '/playgrounds/sorting',
@@ -269,6 +277,12 @@ const PlaygroundsDivideConquerRoute =
   PlaygroundsDivideConquerRouteImport.update({
     id: '/playgrounds/divide-conquer',
     path: '/playgrounds/divide-conquer',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const PlaygroundsBitManipulationRoute =
+  PlaygroundsBitManipulationRouteImport.update({
+    id: '/playgrounds/bit-manipulation',
+    path: '/playgrounds/bit-manipulation',
     getParentRoute: () => rootRouteImport,
   } as any)
 const PlaygroundsBacktrackingRoute = PlaygroundsBacktrackingRouteImport.update({
@@ -370,6 +384,7 @@ export interface FileRoutesByFullPath {
   '/linked-lists/interview': typeof LinkedListsInterviewRoute
   '/modules/$slug': typeof ModulesSlugRoute
   '/playgrounds/backtracking': typeof PlaygroundsBacktrackingRoute
+  '/playgrounds/bit-manipulation': typeof PlaygroundsBitManipulationRoute
   '/playgrounds/divide-conquer': typeof PlaygroundsDivideConquerRoute
   '/playgrounds/dp': typeof PlaygroundsDpRoute
   '/playgrounds/graph': typeof PlaygroundsGraphRoute
@@ -378,6 +393,7 @@ export interface FileRoutesByFullPath {
   '/playgrounds/recursion': typeof PlaygroundsRecursionRoute
   '/playgrounds/searching': typeof PlaygroundsSearchingRoute
   '/playgrounds/sorting': typeof PlaygroundsSortingRoute
+  '/playgrounds/string-algorithms': typeof PlaygroundsStringAlgorithmsRoute
   '/queues/$': typeof QueuesSplatRoute
   '/queues/faq': typeof QueuesFaqRoute
   '/queues/interview': typeof QueuesInterviewRoute
@@ -426,6 +442,7 @@ export interface FileRoutesByTo {
   '/linked-lists/interview': typeof LinkedListsInterviewRoute
   '/modules/$slug': typeof ModulesSlugRoute
   '/playgrounds/backtracking': typeof PlaygroundsBacktrackingRoute
+  '/playgrounds/bit-manipulation': typeof PlaygroundsBitManipulationRoute
   '/playgrounds/divide-conquer': typeof PlaygroundsDivideConquerRoute
   '/playgrounds/dp': typeof PlaygroundsDpRoute
   '/playgrounds/graph': typeof PlaygroundsGraphRoute
@@ -434,6 +451,7 @@ export interface FileRoutesByTo {
   '/playgrounds/recursion': typeof PlaygroundsRecursionRoute
   '/playgrounds/searching': typeof PlaygroundsSearchingRoute
   '/playgrounds/sorting': typeof PlaygroundsSortingRoute
+  '/playgrounds/string-algorithms': typeof PlaygroundsStringAlgorithmsRoute
   '/queues/$': typeof QueuesSplatRoute
   '/queues/faq': typeof QueuesFaqRoute
   '/queues/interview': typeof QueuesInterviewRoute
@@ -483,6 +501,7 @@ export interface FileRoutesById {
   '/linked-lists/interview': typeof LinkedListsInterviewRoute
   '/modules/$slug': typeof ModulesSlugRoute
   '/playgrounds/backtracking': typeof PlaygroundsBacktrackingRoute
+  '/playgrounds/bit-manipulation': typeof PlaygroundsBitManipulationRoute
   '/playgrounds/divide-conquer': typeof PlaygroundsDivideConquerRoute
   '/playgrounds/dp': typeof PlaygroundsDpRoute
   '/playgrounds/graph': typeof PlaygroundsGraphRoute
@@ -491,6 +510,7 @@ export interface FileRoutesById {
   '/playgrounds/recursion': typeof PlaygroundsRecursionRoute
   '/playgrounds/searching': typeof PlaygroundsSearchingRoute
   '/playgrounds/sorting': typeof PlaygroundsSortingRoute
+  '/playgrounds/string-algorithms': typeof PlaygroundsStringAlgorithmsRoute
   '/queues/$': typeof QueuesSplatRoute
   '/queues/faq': typeof QueuesFaqRoute
   '/queues/interview': typeof QueuesInterviewRoute
@@ -541,6 +561,7 @@ export interface FileRouteTypes {
     | '/linked-lists/interview'
     | '/modules/$slug'
     | '/playgrounds/backtracking'
+    | '/playgrounds/bit-manipulation'
     | '/playgrounds/divide-conquer'
     | '/playgrounds/dp'
     | '/playgrounds/graph'
@@ -549,6 +570,7 @@ export interface FileRouteTypes {
     | '/playgrounds/recursion'
     | '/playgrounds/searching'
     | '/playgrounds/sorting'
+    | '/playgrounds/string-algorithms'
     | '/queues/$'
     | '/queues/faq'
     | '/queues/interview'
@@ -597,6 +619,7 @@ export interface FileRouteTypes {
     | '/linked-lists/interview'
     | '/modules/$slug'
     | '/playgrounds/backtracking'
+    | '/playgrounds/bit-manipulation'
     | '/playgrounds/divide-conquer'
     | '/playgrounds/dp'
     | '/playgrounds/graph'
@@ -605,6 +628,7 @@ export interface FileRouteTypes {
     | '/playgrounds/recursion'
     | '/playgrounds/searching'
     | '/playgrounds/sorting'
+    | '/playgrounds/string-algorithms'
     | '/queues/$'
     | '/queues/faq'
     | '/queues/interview'
@@ -653,6 +677,7 @@ export interface FileRouteTypes {
     | '/linked-lists/interview'
     | '/modules/$slug'
     | '/playgrounds/backtracking'
+    | '/playgrounds/bit-manipulation'
     | '/playgrounds/divide-conquer'
     | '/playgrounds/dp'
     | '/playgrounds/graph'
@@ -661,6 +686,7 @@ export interface FileRouteTypes {
     | '/playgrounds/recursion'
     | '/playgrounds/searching'
     | '/playgrounds/sorting'
+    | '/playgrounds/string-algorithms'
     | '/queues/$'
     | '/queues/faq'
     | '/queues/interview'
@@ -710,6 +736,7 @@ export interface RootRouteChildren {
   LinkedListsInterviewRoute: typeof LinkedListsInterviewRoute
   ModulesSlugRoute: typeof ModulesSlugRoute
   PlaygroundsBacktrackingRoute: typeof PlaygroundsBacktrackingRoute
+  PlaygroundsBitManipulationRoute: typeof PlaygroundsBitManipulationRoute
   PlaygroundsDivideConquerRoute: typeof PlaygroundsDivideConquerRoute
   PlaygroundsDpRoute: typeof PlaygroundsDpRoute
   PlaygroundsGraphRoute: typeof PlaygroundsGraphRoute
@@ -718,6 +745,7 @@ export interface RootRouteChildren {
   PlaygroundsRecursionRoute: typeof PlaygroundsRecursionRoute
   PlaygroundsSearchingRoute: typeof PlaygroundsSearchingRoute
   PlaygroundsSortingRoute: typeof PlaygroundsSortingRoute
+  PlaygroundsStringAlgorithmsRoute: typeof PlaygroundsStringAlgorithmsRoute
   QueuesSplatRoute: typeof QueuesSplatRoute
   QueuesFaqRoute: typeof QueuesFaqRoute
   QueuesInterviewRoute: typeof QueuesInterviewRoute
@@ -967,6 +995,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof QueuesSplatRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/playgrounds/string-algorithms': {
+      id: '/playgrounds/string-algorithms'
+      path: '/playgrounds/string-algorithms'
+      fullPath: '/playgrounds/string-algorithms'
+      preLoaderRoute: typeof PlaygroundsStringAlgorithmsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/playgrounds/sorting': {
       id: '/playgrounds/sorting'
       path: '/playgrounds/sorting'
@@ -1021,6 +1056,13 @@ declare module '@tanstack/react-router' {
       path: '/playgrounds/divide-conquer'
       fullPath: '/playgrounds/divide-conquer'
       preLoaderRoute: typeof PlaygroundsDivideConquerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/playgrounds/bit-manipulation': {
+      id: '/playgrounds/bit-manipulation'
+      path: '/playgrounds/bit-manipulation'
+      fullPath: '/playgrounds/bit-manipulation'
+      preLoaderRoute: typeof PlaygroundsBitManipulationRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/playgrounds/backtracking': {
@@ -1150,6 +1192,7 @@ const rootRouteChildren: RootRouteChildren = {
   LinkedListsInterviewRoute: LinkedListsInterviewRoute,
   ModulesSlugRoute: ModulesSlugRoute,
   PlaygroundsBacktrackingRoute: PlaygroundsBacktrackingRoute,
+  PlaygroundsBitManipulationRoute: PlaygroundsBitManipulationRoute,
   PlaygroundsDivideConquerRoute: PlaygroundsDivideConquerRoute,
   PlaygroundsDpRoute: PlaygroundsDpRoute,
   PlaygroundsGraphRoute: PlaygroundsGraphRoute,
@@ -1158,6 +1201,7 @@ const rootRouteChildren: RootRouteChildren = {
   PlaygroundsRecursionRoute: PlaygroundsRecursionRoute,
   PlaygroundsSearchingRoute: PlaygroundsSearchingRoute,
   PlaygroundsSortingRoute: PlaygroundsSortingRoute,
+  PlaygroundsStringAlgorithmsRoute: PlaygroundsStringAlgorithmsRoute,
   QueuesSplatRoute: QueuesSplatRoute,
   QueuesFaqRoute: QueuesFaqRoute,
   QueuesInterviewRoute: QueuesInterviewRoute,

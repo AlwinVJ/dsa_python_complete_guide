@@ -21,6 +21,7 @@ import {
   Sparkles,
   RotateCcw,
   Split,
+  Binary,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 
@@ -178,6 +179,22 @@ const AVAILABLE: Playground[] = [
     description:
       "Step through BFS, DFS, and Dijkstra on an interactive graph — watch the queue, stack, priority queue, and distance table update live.",
   },
+  {
+    title: "String Algorithms Playground",
+    href: "/playgrounds/string-algorithms",
+    icon: Text,
+    meta: "Naive · KMP · Rabin-Karp · Z-algorithm",
+    description:
+      "Step through Naive Search, Knuth-Morris-Pratt, Rabin-Karp, and Z-algorithm pattern matching — watch characters align, compare, and hash computations live.",
+  },
+  {
+    title: "Bit Manipulation Playground",
+    href: "/playgrounds/bit-manipulation",
+    icon: Binary,
+    meta: "Logical operators · masks · subsets",
+    description:
+      "Visualize bitwise logical operations, shifts, masks, power of two checks, popcount, and subset generation with bit-by-bit transitions.",
+  },
 ];
 
 const COMING_SOON: ComingSoon[] = [
@@ -190,11 +207,6 @@ const COMING_SOON: ComingSoon[] = [
     title: "Trie Playground",
     icon: Type,
     description: "Insert words, autocomplete prefixes, and inspect shared branches.",
-  },
-  {
-    title: "String Algorithms Playground",
-    icon: Text,
-    description: "KMP, Rabin-Karp, and Z-algorithm pattern matching visualized.",
   },
 ];
 
