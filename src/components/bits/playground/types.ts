@@ -1,33 +1,60 @@
 export interface BitFrame {
-  line: number;           // Line to highlight in CodeViewer
-  note: string;           // Brief step summary
-  explanation: string;    // Rich detailed explanation of this step
-  currentGoal: string;    // Active goal (e.g. "Create bitmask", "Turn off lowest bit")
-  currentFocus: string;   // Focused bit index, values, or indices
-  done?: boolean;         // Execution finished flag
-  kind: string;           // "converter" | "bitwise" | "shift" | "modify" | "popcount" | "power2" | "mask" | "subsets"
+  line: number;
+  note: string;
+  explanation: string;
+  currentGoal: string;
+  currentFocus: string;
+  done?: boolean;
+  kind: string;
 
   // Primary integer states
-  valA: number;           // Primary value A (input or intermediate state)
-  valB?: number;          // Secondary value B (for binary operations / shift counts)
-  resultVal: number;      // Current resulting value
+  valA: number;
+  valB?: number;
+  resultVal: number;
 
-  // Bit representation arrays (length 8 or 16 for clean rendering)
-  bitsA: number[];        // Binary array of A
-  bitsB?: number[];       // Binary array of B
-  bitsResult: number[];   // Binary array of output result
-  bitsMask?: number[];    // Binary array of bit mask
+  // Bit representation arrays
+  bitsA: number[];
+  bitsB?: number[];
+  bitsResult: number[];
+  bitsMask?: number[];
 
   // Visual highlights
-  activeBitIdx: number;   // Index of the bit currently being evaluated (0-indexed from right)
-  highlightIndices: number[]; // Indices to highlight (e.g. in result or mask)
+  activeBitIdx: number;
+  highlightIndices: number[];
 
-  // Algorithm specific counters/states
-  setBitsCount?: number;  // For Brian Kernighan popcount
-  subsetMask?: number;    // For subset generation mask loop
-  subsetsFound?: string[]; // Accumulated subset string list
-  isPower2?: boolean;     // Power of two check result
-  operationName?: string;  // "AND" | "OR" | "XOR" | "NOT" | "LSHIFT" | "RSHIFT" etc.
+  // Algorithm specific
+  setBitsCount?: number;
+  subsetMask?: number;
+  subsetsFound?: string[];
+  isPower2?: boolean;
+  operationName?: string;
+
+  // Gray code
+  grayPrev?: number[];
+  grayIndex?: number;
+  grayTotal?: number;
+  changedBit?: number;
+  graySequence?: { i: number; gray: number; bits: number[] }[];
+
+  // Hamming
+  hammingCount?: number;
+
+  // Bloom filter
+  bloomBits?: number[]; // e.g. length 16
+  bloomTouched?: number[]; // positions being written/checked
+  bloomHashes?: { name: string; value: number; index: number }[];
+  bloomMode?: "insert" | "lookup";
+  bloomStored?: string[];
+  bloomQueryItem?: string;
+  bloomResult?: "positive" | "negative" | "false-positive" | null;
+
+  // Fast exponentiation
+  fexpBase?: number;
+  fexpExp?: number;
+  fexpResult?: number;
+  fexpBitPos?: number;
+  fexpExpBits?: number[];
+  fexpAction?: "multiply" | "square" | "skip" | "init" | "done";
 
   // Metrics
   stepCount: number;

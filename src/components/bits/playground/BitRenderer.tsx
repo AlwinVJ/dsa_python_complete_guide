@@ -24,6 +24,11 @@ export function BitRenderer({ frame }: BitRendererProps) {
   const isPower2 = frame.kind === "power2";
   const isMask = frame.kind === "mask";
   const isSubsets = frame.kind === "subsets";
+  const isGray = frame.kind === "graycode";
+  const isHamming = frame.kind === "hamming";
+  const isBloom = frame.kind === "bloom";
+  const isFastExp = frame.kind === "fastexp";
+
 
   const boxSize = 30;
   const startX = 140;
@@ -438,6 +443,199 @@ export function BitRenderer({ frame }: BitRendererProps) {
           )}
         </g>
       )}
+
+      {/* RENDER FOR TYPE 7: Gray Code Generator */}
+      {isGray && (
+        <g>
+          {renderBitRegister(
+            "Prev Gray",
+            frame.grayPrev ?? Array(8).fill(0),
+            35,
+            frame.grayIndex && frame.grayIndex > 0 ? String((frame.graySequence ?? [])[Math.max(0, (frame.grayIndex ?? 1) - 2)]?.gray ?? 0) : "-",
+            -1,
+            []
+          )}
+          {renderBitRegister(
+            "Current Gray",
+            frame.bitsResult,
+            95,
+            String(frame.resultVal),
+            frame.activeBitIdx,
+            frame.highlightIndices
+          )}
+          <g transform={`translate(${startX}, 165)`}>
+            <rect width={width - startX - 20} height={100} rx={6} fill="hsl(var(--card))" className="stroke-border" strokeWidth={1} />
+            <text x={15} y={18} fontSize={9} fontWeight={700} className="fill-muted-foreground uppercase tracking-wider">
+              Sequence ({frame.graySequence?.length ?? 0} / {frame.grayTotal ?? 0})
+            </text>
+            <foreignObject x={15} y={25} width={width - startX - 50} height={70}>
+              <div className="flex flex-wrap gap-1 font-mono text-[10px] text-foreground max-h-[70px] overflow-y-auto pr-1">
+                {frame.graySequence?.map((entry, idx) => (
+                  <span
+                    key={idx}
+                    className={`rounded border px-1.5 py-0.5 font-semibold ${
+                      idx === (frame.graySequence?.length ?? 0) - 1
+                        ? "border-primary bg-primary/10 text-primary"
+                        : "border-border bg-background text-muted-foreground"
+                    }`}
+                  >
+                    {entry.i}:{entry.bits.slice(8 - Math.max(1, frame.valA)).join("")}
+                  </span>
+                ))}
+              </div>
+            </foreignObject>
+          </g>
+        </g>
+      )}
+
+      {/* RENDER FOR TYPE 8: Hamming Distance */}
+      {isHamming && frame.bitsB && (
+        <g>
+          {renderBitRegister("Value A", frame.bitsA, 30, String(frame.valA), frame.activeBitIdx, [])}
+          {renderBitRegister("Value B", frame.bitsB, 85, String(frame.valB ?? 0), frame.activeBitIdx, [])}
+          {renderBitRegister(
+            "A XOR B",
+            frame.bitsMask ?? Array(8).fill(0),
+            140,
+            undefined,
+            frame.activeBitIdx,
+            frame.highlightIndices
+          )}
+          <g transform={`translate(${startX}, 205)`}>
+            <rect width={width - startX - 20} height={55} rx={6} fill="hsl(var(--card))" className="stroke-border" strokeWidth={1} />
+            <text x={15} y={20} fontSize={10} fontWeight={700} className="fill-muted-foreground uppercase tracking-wider">
+              Hamming Distance
+            </text>
+            <text x={15} y={44} fontSize={18} fontWeight={800} className="fill-foreground font-mono">
+              {frame.hammingCount ?? 0}
+            </text>
+          </g>
+        </g>
+      )}
+
+      {/* RENDER FOR TYPE 9: Bloom Filter */}
+      {isBloom && frame.bloomBits && (
+        <g>
+          <g transform={`translate(${startX}, 25)`}>
+            <text x={0} y={12} fontSize={10} fontWeight={700} className="fill-muted-foreground uppercase tracking-wider">
+              Bit Array (m = {frame.bloomBits.length})
+            </text>
+            {(() => {
+              const m = frame.bloomBits!.length;
+              const cellW = Math.max(10, Math.min(20, (width - startX - 30) / m));
+              const touched = frame.bloomTouched ?? [];
+              const mode = frame.bloomMode;
+              return frame.bloomBits!.map((b, idx) => {
+                const isTouched = touched.includes(idx);
+                const fill = b === 1
+                  ? "hsl(var(--primary))"
+                  : "hsl(var(--muted))";
+                const stroke = isTouched
+                  ? (mode === "lookup" && b === 0 ? "hsl(0 84% 60%)" : "hsl(var(--brand))")
+                  : "hsl(var(--border))";
+                return (
+                  <g key={idx} transform={`translate(${idx * (cellW + 2)}, 18)`}>
+                    <rect width={cellW} height={cellW} rx={3} fill={fill} stroke={stroke} strokeWidth={isTouched ? 2 : 1} />
+                    <text x={cellW / 2} y={cellW / 2 + 3.5} textAnchor="middle" fontSize={9} fontWeight={700} className="fill-foreground font-mono">
+                      {b}
+                    </text>
+                    <text x={cellW / 2} y={cellW + 9} textAnchor="middle" fontSize={6.5} className="fill-muted-foreground/60 font-mono">
+                      {idx}
+                    </text>
+                  </g>
+                );
+              });
+            })()}
+          </g>
+
+          <g transform={`translate(${startX}, 100)`}>
+            <rect width={width - startX - 20} height={70} rx={6} fill="hsl(var(--card))" className="stroke-border" strokeWidth={1} />
+            <text x={12} y={16} fontSize={9} fontWeight={700} className="fill-muted-foreground uppercase tracking-wider">
+              Hashes {frame.bloomQueryItem ? `for "${frame.bloomQueryItem}"` : ""}
+            </text>
+            {(frame.bloomHashes ?? []).map((h, idx) => (
+              <text key={idx} x={12} y={32 + idx * 13} fontSize={10} className="fill-foreground font-mono">
+                {h.name} → idx {h.index}
+              </text>
+            ))}
+          </g>
+
+          <g transform={`translate(${startX}, 180)`}>
+            <rect width={width - startX - 20} height={80} rx={6} fill="hsl(var(--card))" className="stroke-border" strokeWidth={1} />
+            <text x={12} y={16} fontSize={9} fontWeight={700} className="fill-muted-foreground uppercase tracking-wider">
+              Stored ({frame.bloomStored?.length ?? 0})
+            </text>
+            <foreignObject x={12} y={22} width={width - startX - 44} height={30}>
+              <div className="flex flex-wrap gap-1 font-mono text-[10px] text-foreground">
+                {frame.bloomStored?.map((s, idx) => (
+                  <span key={idx} className="rounded border border-border bg-background px-1.5 py-0.5 text-muted-foreground font-semibold">
+                    {s}
+                  </span>
+                ))}
+              </div>
+            </foreignObject>
+            {frame.bloomResult && (
+              <text x={12} y={70} fontSize={11} fontWeight={800} className={
+                frame.bloomResult === "positive"
+                  ? "fill-emerald-500 font-mono"
+                  : frame.bloomResult === "negative"
+                    ? "fill-red-500 font-mono"
+                    : "fill-amber-500 font-mono"
+              }>
+                {frame.bloomResult.toUpperCase()}
+              </text>
+            )}
+          </g>
+        </g>
+      )}
+
+      {/* RENDER FOR TYPE 10: Fast Exponentiation */}
+      {isFastExp && (
+        <g>
+          {renderBitRegister(
+            "Exponent bits (LSB→)",
+            frame.bitsMask ?? Array(8).fill(0),
+            30,
+            String(frame.valB ?? 0),
+            frame.activeBitIdx,
+            frame.highlightIndices
+          )}
+          {renderBitRegister(
+            "Current base",
+            frame.bitsA,
+            90,
+            String(frame.fexpBase ?? 0),
+            -1,
+            []
+          )}
+          {renderBitRegister(
+            "Running result",
+            frame.bitsResult,
+            150,
+            String(frame.fexpResult ?? 0),
+            -1,
+            []
+          )}
+          <g transform={`translate(${startX}, 210)`}>
+            <rect width={width - startX - 20} height={55} rx={6} fill="hsl(var(--card))" className="stroke-border" strokeWidth={1} />
+            <text x={12} y={16} fontSize={9} fontWeight={700} className="fill-muted-foreground uppercase tracking-wider">
+              Step
+            </text>
+            <text x={12} y={40} fontSize={12} fontWeight={700} className={
+              frame.fexpAction === "multiply"
+                ? "fill-emerald-500 font-mono"
+                : frame.fexpAction === "square"
+                  ? "fill-primary font-mono"
+                  : frame.fexpAction === "skip"
+                    ? "fill-muted-foreground font-mono"
+                    : "fill-foreground font-mono"
+            }>
+              bit {frame.fexpBitPos ?? 0} · {(frame.fexpAction ?? "").toUpperCase()}
+            </text>
+          </g>
+        </g>
+      )}
     </svg>
   );
 }
+

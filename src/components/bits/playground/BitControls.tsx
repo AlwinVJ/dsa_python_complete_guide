@@ -59,7 +59,28 @@ const PRESET_VALUES: Record<AlgoKey, { valA: number; valB: number; opType: strin
     { valA: 28, valB: 12, opType: "DIFFERENCE" },
   ],
   subsets: [{ valA: 3, valB: 8, opType: "" }],
+  graycode: [
+    { valA: 3, valB: 0, opType: "" },
+    { valA: 4, valB: 0, opType: "" },
+    { valA: 2, valB: 0, opType: "" },
+  ],
+  hamming: [
+    { valA: 13, valB: 6, opType: "" },
+    { valA: 29, valB: 15, opType: "" },
+    { valA: 255, valB: 0, opType: "" },
+  ],
+  bloom: [
+    { valA: 16, valB: 0, opType: "" },
+    { valA: 12, valB: 0, opType: "" },
+    { valA: 24, valB: 0, opType: "" },
+  ],
+  fastexp: [
+    { valA: 3, valB: 5, opType: "" },
+    { valA: 2, valB: 10, opType: "" },
+    { valA: 5, valB: 3, opType: "" },
+  ],
 };
+
 
 export function BitControls({
   algo,
@@ -92,6 +113,36 @@ export function BitControls({
   const isConverter = algo === "converter";
   const isPopcount = algo === "popcount";
   const isPower2 = algo === "power2";
+  const isGray = algo === "graycode";
+  const isHamming = algo === "hamming";
+  const isBloom = algo === "bloom";
+  const isFastExp = algo === "fastexp";
+
+  // Algos that render only Value A (single-input)
+  const singleInputOnly = isConverter || isPopcount || isPower2 || isGray || isBloom;
+  // Algos that render Value A + Value B, no operator dropdown
+  const dualNumericNoOp = isHamming || isFastExp;
+
+  const labelA =
+    algo === "mask"
+      ? "Set Mask A"
+      : isGray
+        ? "Number of bits (1-6)"
+        : isBloom
+          ? "Bit array size (m)"
+          : isFastExp
+            ? "Base"
+            : "Value n / A";
+
+  const labelB = isHamming
+    ? "Value B"
+    : isFastExp
+      ? "Exponent"
+      : algo === "shift"
+        ? "Shift Count"
+        : algo === "modify"
+          ? "Bit index i"
+          : "Mask B";
 
   return (
     <div className="card-surface p-4 flex flex-col gap-4">
@@ -101,16 +152,20 @@ export function BitControls({
           {/* Input A */}
           <div className="flex flex-col gap-1">
             <label className="text-[11px] font-semibold text-muted-foreground uppercase">
-              {algo === "mask" ? "Set Mask A" : "Value n / A"}
+              {labelA}
             </label>
             <input
               type="number"
               value={valA}
               onChange={(e) => {
-                const limit = isPower2 ? 255 : 255;
-                const minVal = isPower2 ? -128 : 0;
                 let parsed = parseInt(e.target.value, 10);
                 if (isNaN(parsed)) parsed = 0;
+                let limit = 255;
+                let minVal = 0;
+                if (isPower2) minVal = -128;
+                if (isGray) { limit = 6; minVal = 1; }
+                if (isBloom) { limit = 32; minVal = 4; }
+                if (isFastExp) { limit = 20; minVal = 0; }
                 onValAChange(Math.max(minVal, Math.min(limit, parsed)));
               }}
               className="rounded border border-border bg-background px-2.5 py-1 text-xs text-foreground focus:outline-none focus:ring-1 focus:ring-primary font-mono"
@@ -118,13 +173,12 @@ export function BitControls({
             />
           </div>
 
-          {/* Secondary inputs / Shifts / Indices */}
-          {!isConverter && !isPopcount && !isPower2 && (
+          {/* Secondary inputs */}
+          {!singleInputOnly && (
             <>
-              {/* Input B / Shift count / index */}
               <div className="flex flex-col gap-1">
                 <label className="text-[11px] font-semibold text-muted-foreground uppercase">
-                  {algo === "shift" ? "Shift Count" : algo === "modify" ? "Bit index i" : "Mask B"}
+                  {labelB}
                 </label>
                 <input
                   type="number"
@@ -132,7 +186,9 @@ export function BitControls({
                   onChange={(e) => {
                     let parsed = parseInt(e.target.value, 10);
                     if (isNaN(parsed)) parsed = 0;
-                    const limit = algo === "shift" || algo === "modify" ? 7 : 255;
+                    let limit = 255;
+                    if (algo === "shift" || algo === "modify") limit = 7;
+                    if (isFastExp) limit = 15;
                     onValBChange(Math.max(0, Math.min(limit, parsed)));
                   }}
                   className="rounded border border-border bg-background px-2.5 py-1 text-xs text-foreground focus:outline-none focus:ring-1 focus:ring-primary font-mono"
@@ -141,46 +197,48 @@ export function BitControls({
               </div>
 
               {/* Operator type selection */}
-              <div className="flex flex-col gap-1">
-                <label className="text-[11px] font-semibold text-muted-foreground uppercase">
-                  Operator
-                </label>
-                <select
-                  value={opType}
-                  onChange={(e) => onOpTypeChange(e.target.value)}
-                  className="rounded border border-border bg-background px-2 py-1 text-xs text-foreground focus:outline-none focus:ring-1 focus:ring-primary font-sans"
-                >
-                  {algo === "bitwise" && (
-                    <>
-                      <option value="AND">AND (&)</option>
-                      <option value="OR">OR (|)</option>
-                      <option value="XOR">(^)</option>
-                      <option value="NOT">NOT (~)</option>
-                    </>
-                  )}
-                  {algo === "shift" && (
-                    <>
-                      <option value="LEFT">LEFT (&lt;&lt;)</option>
-                      <option value="RIGHT">RIGHT (&gt;&gt;)</option>
-                    </>
-                  )}
-                  {algo === "modify" && (
-                    <>
-                      <option value="GET">GET bit</option>
-                      <option value="SET">SET bit</option>
-                      <option value="CLEAR">CLEAR bit</option>
-                      <option value="TOGGLE">TOGGLE bit</option>
-                    </>
-                  )}
-                  {algo === "mask" && (
-                    <>
-                      <option value="UNION">UNION (|)</option>
-                      <option value="INTERSECT">INTERSECT (&amp;)</option>
-                      <option value="DIFFERENCE">DIFFERENCE (&amp; ~)</option>
-                    </>
-                  )}
-                </select>
-              </div>
+              {!dualNumericNoOp && (
+                <div className="flex flex-col gap-1">
+                  <label className="text-[11px] font-semibold text-muted-foreground uppercase">
+                    Operator
+                  </label>
+                  <select
+                    value={opType}
+                    onChange={(e) => onOpTypeChange(e.target.value)}
+                    className="rounded border border-border bg-background px-2 py-1 text-xs text-foreground focus:outline-none focus:ring-1 focus:ring-primary font-sans"
+                  >
+                    {algo === "bitwise" && (
+                      <>
+                        <option value="AND">AND (&)</option>
+                        <option value="OR">OR (|)</option>
+                        <option value="XOR">(^)</option>
+                        <option value="NOT">NOT (~)</option>
+                      </>
+                    )}
+                    {algo === "shift" && (
+                      <>
+                        <option value="LEFT">LEFT (&lt;&lt;)</option>
+                        <option value="RIGHT">RIGHT (&gt;&gt;)</option>
+                      </>
+                    )}
+                    {algo === "modify" && (
+                      <>
+                        <option value="GET">GET bit</option>
+                        <option value="SET">SET bit</option>
+                        <option value="CLEAR">CLEAR bit</option>
+                        <option value="TOGGLE">TOGGLE bit</option>
+                      </>
+                    )}
+                    {algo === "mask" && (
+                      <>
+                        <option value="UNION">UNION (|)</option>
+                        <option value="INTERSECT">INTERSECT (&amp;)</option>
+                        <option value="DIFFERENCE">DIFFERENCE (&amp; ~)</option>
+                      </>
+                    )}
+                  </select>
+                </div>
+              )}
             </>
           )}
         </div>
@@ -191,6 +249,14 @@ export function BitControls({
           Subset Generation works on set elements <span className="font-semibold text-foreground">A, B, and C</span>. It counts binary masks from <span className="font-mono text-foreground font-semibold">0 to 7</span>.
         </div>
       )}
+
+      {isBloom && (
+        <div className="text-xs text-muted-foreground bg-muted/30 border border-border/40 rounded p-2.5 leading-relaxed">
+          Bloom filter runs a fixed script: insert <span className="font-mono text-foreground font-semibold">"apple"</span>, <span className="font-mono text-foreground font-semibold">"banana"</span>, <span className="font-mono text-foreground font-semibold">"cherry"</span>, then look up each plus <span className="font-mono text-foreground font-semibold">"grape"</span> to demonstrate true / false positives.
+        </div>
+      )}
+
+
 
       <div className="flex flex-wrap items-center justify-between gap-3 border-t border-border/40 pt-3">
         {/* Preset selections */}

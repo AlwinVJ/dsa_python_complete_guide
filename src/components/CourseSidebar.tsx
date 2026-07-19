@@ -274,7 +274,12 @@ function CourseGroup({
   // collapse to a single, ordinary navigation link — same look
   // as any other sidebar item, just no expand arrow. The module explains
   // its own status once opened; the sidebar doesn't editorialize.
-  if (course.comingSoon || course.duplicateOf || course.courseLayout === "overview") {
+  // Tries is a duplicateOf pointer to Trees → Trie, but we still expose its
+  // lesson tree in the sidebar with the same chevron affordance as Heaps —
+  // the Overview link continues to hit the /learn/tries redirect page.
+  const forceExpandable = course.slug === "tries";
+  if (!forceExpandable && (course.comingSoon || course.duplicateOf || course.courseLayout === "overview")) {
+
     const href = `/learn/${course.slug}`;
     const label = course.comingSoon ? `${course.title} (Coming Soon)` : course.title;
     return (

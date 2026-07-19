@@ -57,7 +57,28 @@ export function StatisticsPanel({ frame }: StatisticsPanelProps) {
       spaceC = "O(N * 2^N)";
       finalSummary = `Generated all subsets. Evaluated 2^${frame.valA} = ${frame.valB} masks.`;
       break;
+    case "graycode":
+      timeC = "O(2^N)";
+      spaceC = "O(2^N)";
+      finalSummary = `Generated ${frame.grayTotal ?? 0} Gray codes for ${frame.valA} bits, each differing from its neighbour by 1 bit.`;
+      break;
+    case "hamming":
+      timeC = "O(bits)";
+      spaceC = "O(1)";
+      finalSummary = `Hamming distance = ${frame.hammingCount ?? 0} — number of bit positions where ${frame.valA} and ${frame.valB} differ.`;
+      break;
+    case "bloom":
+      timeC = "O(k) per op";
+      spaceC = "O(m)";
+      finalSummary = `Bloom filter run complete over ${frame.bloomBits?.length ?? 0} bits with ${frame.bloomStored?.length ?? 0} inserted items.`;
+      break;
+    case "fastexp":
+      timeC = "O(log exp)";
+      spaceC = "O(1)";
+      finalSummary = `Computed ${frame.valA}^${frame.valB} = ${frame.fexpResult ?? frame.resultVal} in ${frame.operationsPerformed} bit iterations.`;
+      break;
   }
+
 
   // Count set/cleared bits in resultVal
   const setBits = frame.bitsResult.filter(b => b === 1).length;

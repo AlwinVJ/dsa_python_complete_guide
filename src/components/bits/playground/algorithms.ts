@@ -557,7 +557,371 @@ export function traceSubsets(elements: string[]): BitFrame[] {
   return frames;
 }
 
-export type AlgoKey = "converter" | "bitwise" | "shift" | "modify" | "popcount" | "power2" | "mask" | "subsets";
+/* ---------- Gray Code ---------- */
+
+export const GRAYCODE_CODE = `def gray_code(n):
+    codes = []
+    for i in range(1 << n):
+        g = i ^ (i >> 1)
+        codes.append(g)
+    return codes`;
+
+export function traceGrayCode(nBits: number): BitFrame[] {
+  const frames: BitFrame[] = [];
+  const bits = Math.max(1, Math.min(6, nBits));
+  const total = 1 << bits;
+  let operations = 0;
+  let stepCount = 0;
+  const sequence: { i: number; gray: number; bits: number[] }[] = [];
+  let prevGrayBits: number[] = Array(8).fill(0);
+
+  const snap = (line: number, note: string, explanation: string, goal: string, focus: string, extras: Partial<BitFrame> = {}) => {
+    frames.push({
+      kind: "graycode",
+      line,
+      note,
+      explanation,
+      currentGoal: goal,
+      currentFocus: focus,
+      valA: bits,
+      valB: total,
+      resultVal: sequence.length > 0 ? sequence[sequence.length - 1].gray : 0,
+      bitsA: toBitArray(bits),
+      bitsResult: sequence.length > 0 ? sequence[sequence.length - 1].bits : Array(8).fill(0),
+      activeBitIdx: -1,
+      highlightIndices: [],
+      grayPrev: [...prevGrayBits],
+      grayIndex: sequence.length,
+      grayTotal: total,
+      graySequence: [...sequence],
+      stepCount: stepCount++,
+      operationsPerformed: operations,
+      ...extras,
+    });
+  };
+
+  snap(1, `Generate Gray Code for n = ${bits} bits.`, `A Gray code sequence enumerates 2^${bits} = ${total} values so that consecutive codes differ by exactly one bit. Formula: g = i ^ (i >> 1).`, "Initialize", `n = ${bits}`);
+
+  for (let i = 0; i < total; i++) {
+    operations++;
+    const gray = i ^ (i >> 1);
+    const gBits = toBitArray(gray);
+
+    let changed = -1;
+    if (i > 0) {
+      for (let k = 0; k < 8; k++) {
+        if (gBits[k] !== prevGrayBits[k]) { changed = k; break; }
+      }
+    }
+    const changedBitPos = changed >= 0 ? 7 - changed : -1;
+    const highlight = changed >= 0 ? [changed] : [];
+
+    snap(
+      3,
+      `i = ${i}, g = i ^ (i >> 1) = ${gray}.`,
+      `Compute Gray code for i = ${i}: ${i} XOR ${i >> 1} = ${gray} (binary ${gBits.slice(8 - bits).join("")}).${changedBitPos >= 0 ? ` This differs from the previous code by exactly one bit at position ${changedBitPos}.` : " This is the first code (base value)."}`,
+      "Compute gray code",
+      `i = ${i}, g = ${gray}`,
+      {
+        resultVal: gray,
+        bitsResult: gBits,
+        highlightIndices: highlight,
+        changedBit: changedBitPos,
+        activeBitIdx: changedBitPos,
+      }
+    );
+
+    sequence.push({ i, gray, bits: gBits });
+    prevGrayBits = gBits;
+
+    snap(
+      4,
+      `Append ${gray} to code list.`,
+      `Recorded gray code ${gray} at position ${i}. Sequence length is now ${sequence.length}.`,
+      "Record code",
+      `codes[${i}] = ${gray}`,
+      {
+        resultVal: gray,
+        bitsResult: gBits,
+        highlightIndices: highlight,
+        changedBit: changedBitPos,
+      }
+    );
+  }
+
+  snap(5, `Gray code sequence complete (${total} codes).`, `Generated all ${total} Gray codes. Each consecutive pair differs by exactly one bit — a defining property useful for rotary encoders and Karnaugh maps.`, "Finished", "Done", { done: true });
+  return frames;
+}
+
+/* ---------- Hamming Distance ---------- */
+
+export const HAMMING_CODE = `def hamming_distance(a, b):
+    x = a ^ b
+    count = 0
+    while x > 0:
+        count += x & 1
+        x >>= 1
+    return count`;
+
+export function traceHamming(a: number, b: number): BitFrame[] {
+  const frames: BitFrame[] = [];
+  const bitsA = toBitArray(a);
+  const bitsB = toBitArray(b);
+  const xorVal = (a ^ b) & 255;
+  const bitsXor = toBitArray(xorVal);
+  const bitsResult = Array(8).fill(0);
+  let count = 0;
+  let operations = 0;
+  let stepCount = 0;
+  const highlight: number[] = [];
+
+  const snap = (line: number, note: string, explanation: string, goal: string, focus: string, activeIdx: number, extras: Partial<BitFrame> = {}) => {
+    frames.push({
+      kind: "hamming",
+      line,
+      note,
+      explanation,
+      currentGoal: goal,
+      currentFocus: focus,
+      valA: a,
+      valB: b,
+      resultVal: count,
+      bitsA,
+      bitsB,
+      bitsResult: [...bitsResult],
+      bitsMask: bitsXor,
+      activeBitIdx: activeIdx,
+      highlightIndices: [...highlight],
+      hammingCount: count,
+      stepCount: stepCount++,
+      operationsPerformed: operations,
+      ...extras,
+    });
+  };
+
+  snap(1, `Compute Hamming distance between ${a} and ${b}.`, `Hamming distance counts bit positions where two integers differ. We first compute a XOR b so that differing bits become 1s.`, "Initialize", `a = ${a}, b = ${b}`, -1);
+
+  snap(2, `Compute XOR: ${a} ^ ${b} = ${xorVal}.`, `The XOR produces a 1 exactly at bit positions where a and b disagree. Result: ${xorVal} (binary ${bitsXor.join("")}). We now count its set bits.`, "XOR values", `x = ${xorVal}`, -1);
+
+  for (let i = 0; i < 8; i++) {
+    operations++;
+    const bit = bitsXor[7 - i];
+    snap(4, `Inspect bit position ${i}: value ${bit}.`, `Testing whether position ${i} of the XOR result is set. bit = ${bit}. If it is 1 (positions differed), we increment the distance count.`, "Inspect bit", `bit ${i} = ${bit}`, i);
+
+    if (bit === 1) {
+      count++;
+      bitsResult[7 - i] = 1;
+      highlight.push(7 - i);
+      snap(4, `Bit ${i} differs — count = ${count}.`, `Position ${i}: a and b differ (a bit ${bitsA[7 - i]}, b bit ${bitsB[7 - i]}). Increment Hamming count to ${count}.`, "Increment count", `count = ${count}`, i, { hammingCount: count, resultVal: count });
+    }
+  }
+
+  snap(5, `Hamming distance = ${count}.`, `All 8 bit positions inspected. Total differing bits: ${count}. That is the Hamming distance between ${a} and ${b}.`, "Finished", `d = ${count}`, -1, { done: true, hammingCount: count, resultVal: count });
+  return frames;
+}
+
+/* ---------- Bloom Filter ---------- */
+
+export const BLOOM_CODE = `class BloomFilter:
+    def __init__(self, m, k):
+        self.m = m
+        self.bits = [0] * m
+        self.hashes = [self._make(i) for i in range(k)]
+
+    def insert(self, item):
+        for h in self.hashes:
+            self.bits[h(item) % self.m] = 1
+
+    def contains(self, item):
+        return all(self.bits[h(item) % self.m] == 1
+                   for h in self.hashes)`;
+
+// Simple deterministic hash for visualization
+function bloomHashes(item: string, m: number): { name: string; value: number; index: number }[] {
+  // 3 hash functions, deterministic small integers
+  let h1 = 0, h2 = 0, h3 = 0;
+  for (let i = 0; i < item.length; i++) {
+    const c = item.charCodeAt(i);
+    h1 = (h1 * 31 + c) >>> 0;
+    h2 = (h2 * 131 + c * 7) >>> 0;
+    h3 = (h3 * 17 + c * 13 + 3) >>> 0;
+  }
+  return [
+    { name: "h1", value: h1, index: h1 % m },
+    { name: "h2", value: h2, index: h2 % m },
+    { name: "h3", value: h3, index: h3 % m },
+  ];
+}
+
+export function traceBloom(size: number, ops: { kind: "insert" | "lookup"; item: string }[]): BitFrame[] {
+  const frames: BitFrame[] = [];
+  const m = Math.max(4, Math.min(32, size));
+  const bloomBits: number[] = Array(m).fill(0);
+  const stored: string[] = [];
+  let operations = 0;
+  let stepCount = 0;
+
+  const snap = (line: number, note: string, explanation: string, goal: string, focus: string, extras: Partial<BitFrame> = {}) => {
+    frames.push({
+      kind: "bloom",
+      line,
+      note,
+      explanation,
+      currentGoal: goal,
+      currentFocus: focus,
+      valA: m,
+      valB: 3,
+      resultVal: bloomBits.reduce((a, x) => a + x, 0),
+      bitsA: toBitArray(m),
+      bitsResult: bloomBits.slice(0, 8),
+      activeBitIdx: -1,
+      highlightIndices: [],
+      bloomBits: [...bloomBits],
+      bloomStored: [...stored],
+      stepCount: stepCount++,
+      operationsPerformed: operations,
+      ...extras,
+    });
+  };
+
+  snap(1, `Initialize Bloom filter (m = ${m}, k = 3).`, `Create a bit array of size ${m}, all zeros, together with 3 hash functions. Bloom filters answer set membership with probabilistic guarantees: no false negatives, possible false positives.`, "Initialize filter", `m = ${m}, k = 3`);
+
+  for (const op of ops) {
+    operations++;
+    const hashes = bloomHashes(op.item, m);
+
+    if (op.kind === "insert") {
+      snap(7, `Insert "${op.item}".`, `Hash "${op.item}" with all 3 hash functions and set the corresponding bits to 1.`, "Insert item", `item = "${op.item}"`, { bloomMode: "insert", bloomHashes: hashes });
+
+      for (const h of hashes) {
+        bloomBits[h.index] = 1;
+        snap(8, `Set bit ${h.index} (${h.name}).`, `${h.name}("${op.item}") mod ${m} = ${h.index}. Setting bloomBits[${h.index}] = 1.`, "Set bit", `${h.name} → ${h.index}`, {
+          bloomMode: "insert",
+          bloomHashes: hashes,
+          bloomTouched: [h.index],
+          bloomBits: [...bloomBits],
+        });
+      }
+      stored.push(op.item);
+      snap(8, `"${op.item}" inserted.`, `All 3 bit positions for "${op.item}" are now set. Filter tracks ${stored.length} inserted item(s).`, "Done insert", `stored: ${stored.length}`, { bloomMode: "insert", bloomHashes: hashes, bloomStored: [...stored] });
+    } else {
+      snap(10, `Lookup "${op.item}".`, `Hash "${op.item}" with all 3 hash functions and check whether every corresponding bit is 1.`, "Lookup item", `item = "${op.item}"`, { bloomMode: "lookup", bloomHashes: hashes, bloomQueryItem: op.item });
+
+      let allSet = true;
+      for (const h of hashes) {
+        const val = bloomBits[h.index];
+        if (val === 0) allSet = false;
+        snap(11, `Check bit ${h.index} (${h.name}) = ${val}.`, `${h.name}("${op.item}") mod ${m} = ${h.index}. bloomBits[${h.index}] = ${val}. ${val === 0 ? "A zero means the item is definitely NOT in the set — return false immediately in a real implementation." : "Bit is set — continue checking."}`, "Check bit", `${h.name} → ${h.index} = ${val}`, {
+          bloomMode: "lookup",
+          bloomHashes: hashes,
+          bloomTouched: [h.index],
+          bloomQueryItem: op.item,
+        });
+      }
+
+      const isStored = stored.includes(op.item);
+      const result: "positive" | "negative" | "false-positive" = !allSet
+        ? "negative"
+        : isStored
+          ? "positive"
+          : "false-positive";
+      const resultText =
+        result === "positive"
+          ? `TRUE POSITIVE — "${op.item}" is present and all bits matched.`
+          : result === "negative"
+            ? `DEFINITELY NOT — at least one bit was zero, so "${op.item}" was never inserted.`
+            : `FALSE POSITIVE — all bits happened to be set by other items, but "${op.item}" was never inserted. This is the Bloom filter's fundamental tradeoff.`;
+      snap(11, resultText, resultText, "Membership result", result.toUpperCase(), {
+        bloomMode: "lookup",
+        bloomHashes: hashes,
+        bloomQueryItem: op.item,
+        bloomResult: result,
+      });
+    }
+  }
+
+  snap(12, "Bloom filter operations complete.", `Filter now stores ${stored.length} item(s) across ${m} bits. Occupancy: ${bloomBits.reduce((a, x) => a + x, 0)} / ${m} bits set.`, "Finished", "Done", { done: true });
+  return frames;
+}
+
+/* ---------- Fast Exponentiation ---------- */
+
+export const FASTEXP_CODE = `def fast_pow(base, exp):
+    result = 1
+    while exp > 0:
+        if exp & 1:
+            result = result * base
+        base = base * base
+        exp >>= 1
+    return result`;
+
+export function traceFastExp(baseIn: number, expIn: number): BitFrame[] {
+  const frames: BitFrame[] = [];
+  let base = baseIn;
+  let exp = Math.max(0, Math.min(15, expIn));
+  let result = 1;
+  let operations = 0;
+  let stepCount = 0;
+  let bitPos = 0;
+  const originalExp = exp;
+  const expBits = toBitArray(exp);
+
+  const snap = (line: number, note: string, explanation: string, goal: string, focus: string, action: "multiply" | "square" | "skip" | "init" | "done", extras: Partial<BitFrame> = {}) => {
+    frames.push({
+      kind: "fastexp",
+      line,
+      note,
+      explanation,
+      currentGoal: goal,
+      currentFocus: focus,
+      valA: baseIn,
+      valB: originalExp,
+      resultVal: result,
+      bitsA: toBitArray(base & 255),
+      bitsResult: toBitArray(result & 255),
+      bitsMask: expBits,
+      activeBitIdx: 7 - bitPos,
+      highlightIndices: [7 - bitPos],
+      fexpBase: base,
+      fexpExp: exp,
+      fexpResult: result,
+      fexpBitPos: bitPos,
+      fexpExpBits: [...expBits],
+      fexpAction: action,
+      stepCount: stepCount++,
+      operationsPerformed: operations,
+      ...extras,
+    });
+  };
+
+  snap(1, `Compute ${baseIn}^${originalExp} using bit exponentiation.`, `Exponentiation by squaring processes the exponent's binary digits from LSB to MSB. For each bit: if it is 1, multiply the running result by the current base; then square the base and shift the exponent right.`, "Initialize", `base = ${baseIn}, exp = ${originalExp}`, "init");
+
+  while (exp > 0) {
+    operations++;
+    const bit = exp & 1;
+
+    if (bit === 1) {
+      const prevResult = result;
+      result = result * base;
+      snap(4, `Bit ${bitPos} is 1 → multiply: ${prevResult} × ${base} = ${result}.`, `The current bit of the exponent is 1, so we fold the current base (${base}) into our running product. Result: ${prevResult} × ${base} = ${result}.`, "Multiply into result", `result = ${result}`, "multiply");
+    } else {
+      snap(4, `Bit ${bitPos} is 0 → skip multiplication.`, `The current bit of the exponent is 0, so the base is not folded into the result at this step.`, "Skip bit", `bit ${bitPos} = 0`, "skip");
+    }
+
+    const prevBase = base;
+    base = base * base;
+    exp = exp >> 1;
+    bitPos++;
+    if (exp > 0) {
+      snap(5, `Square base: ${prevBase}² = ${base}; exp >>= 1 → ${exp}.`, `Square the base so it represents 2^${bitPos} copies of the original base. Right-shift the exponent to inspect the next bit.`, "Square base, shift exp", `base = ${base}, exp = ${exp}`, "square");
+    }
+  }
+
+  snap(7, `${baseIn}^${originalExp} = ${result}.`, `Loop finished when exponent became 0. Final result: ${result}. Total multiplications performed: O(log ${originalExp}).`, "Finished", `result = ${result}`, "done", { done: true });
+  return frames;
+}
+
+export type AlgoKey = "converter" | "bitwise" | "shift" | "modify" | "popcount" | "power2" | "mask" | "subsets" | "graycode" | "hamming" | "bloom" | "fastexp";
 
 export interface AlgoDef {
   id: AlgoKey;
@@ -624,4 +988,33 @@ export const ALGOS: AlgoDef[] = [
     code: SUBSETS_CODE,
     fileName: "generate_subsets.py",
   },
+  {
+    id: "graycode",
+    name: "Gray Code Generator",
+    description: "Generate reflected Gray codes where consecutive values differ by exactly one bit. Uses the identity g = i ^ (i >> 1).",
+    code: GRAYCODE_CODE,
+    fileName: "gray_code.py",
+  },
+  {
+    id: "hamming",
+    name: "Hamming Distance",
+    description: "Count the number of differing bit positions between two integers by XOR-ing them and counting set bits.",
+    code: HAMMING_CODE,
+    fileName: "hamming_distance.py",
+  },
+  {
+    id: "bloom",
+    name: "Bloom Filter",
+    description: "Space-efficient probabilistic set membership. Insert sets k hashed bit positions; lookup returns 'possibly' or 'definitely not'.",
+    code: BLOOM_CODE,
+    fileName: "bloom_filter.py",
+  },
+  {
+    id: "fastexp",
+    name: "Fast Exponentiation",
+    description: "Compute base^exp in O(log exp) by walking the binary digits of the exponent, multiplying when the bit is 1 and squaring the base each step.",
+    code: FASTEXP_CODE,
+    fileName: "fast_pow.py",
+  },
 ];
+

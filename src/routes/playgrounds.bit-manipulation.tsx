@@ -19,11 +19,16 @@ import {
   tracePower2,
   traceMask,
   traceSubsets,
+  traceGrayCode,
+  traceHamming,
+  traceBloom,
+  traceFastExp,
 } from "@/components/bits/playground/algorithms";
 import { BitRenderer } from "@/components/bits/playground/BitRenderer";
 import { BitControls } from "@/components/bits/playground/BitControls";
 import { GoalExplanationPanel } from "@/components/bits/playground/GoalExplanationPanel";
 import { StatisticsPanel } from "@/components/bits/playground/StatisticsPanel";
+
 
 export const Route = createFileRoute("/playgrounds/bit-manipulation")({
   head: () => ({
@@ -45,18 +50,12 @@ export const Route = createFileRoute("/playgrounds/bit-manipulation")({
   component: Page,
 });
 
-const COMING_SOON = [
-  "Gray Code Generator",
-  "Hamming Distance",
-  "Bloom Filter Visualization",
-  "Fast Exponentiation using Bits",
-];
-
 function Page() {
   const [algo, setAlgo] = useState<AlgoKey>("bitwise");
   const [valA, setValA] = useState(5);
   const [valB, setValB] = useState(3);
   const [opType, setOpType] = useState("AND");
+
 
   // Playback state variables
   const [step, setStep] = useState(0);
@@ -84,9 +83,25 @@ function Page() {
         return traceMask(valA, valB, opType as any);
       case "subsets":
         return traceSubsets(["A", "B", "C"]);
+      case "graycode":
+        return traceGrayCode(valA);
+      case "hamming":
+        return traceHamming(valA, valB);
+      case "bloom":
+        return traceBloom(valA, [
+          { kind: "insert", item: "apple" },
+          { kind: "insert", item: "banana" },
+          { kind: "insert", item: "cherry" },
+          { kind: "lookup", item: "apple" },
+          { kind: "lookup", item: "banana" },
+          { kind: "lookup", item: "grape" },
+        ]);
+      case "fastexp":
+        return traceFastExp(valA, valB);
       default:
         return [];
     }
+
   }, [algo, valA, valB, opType]);
 
   // Set default values when switching algorithms
@@ -117,7 +132,18 @@ function Page() {
       setValA(13);
       setValB(6);
       setOpType("UNION");
+    } else if (algo === "graycode") {
+      setValA(3);
+    } else if (algo === "hamming") {
+      setValA(13);
+      setValB(6);
+    } else if (algo === "bloom") {
+      setValA(16);
+    } else if (algo === "fastexp") {
+      setValA(3);
+      setValB(5);
     }
+
   }, [algo]);
 
   // Reset steps when input values change
@@ -262,20 +288,8 @@ function Page() {
         <p className="text-sm text-muted-foreground leading-relaxed">{problem.description}</p>
       </div>
 
-      {/* Advanced operators coming soon */}
-      <div className="mt-6 card-surface p-4">
-        <div className="mb-3 text-sm font-semibold">Advanced Bit Manipulation — coming soon</div>
-        <div className="flex flex-wrap gap-2">
-          {COMING_SOON.map((label) => (
-            <span
-              key={label}
-              className="rounded-full border border-amber-500/40 bg-amber-500/10 px-3 py-1 text-xs text-amber-500 font-medium"
-            >
-              {label}
-            </span>
-          ))}
-        </div>
-      </div>
+
+
 
       <PlaygroundFooterNav playground="bit-manipulation" />
     </PageShell>
