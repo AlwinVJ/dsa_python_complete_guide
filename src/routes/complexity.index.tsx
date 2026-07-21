@@ -83,15 +83,6 @@ function Page() {
         </div>
       </Callout>
 
-      <div className="mt-8 flex justify-center">
-        <Link
-          to="/introduction"
-          className="inline-flex items-center gap-1.5 rounded-md gradient-brand px-6 py-3 text-sm font-semibold text-primary-foreground shadow-lg hover:opacity-90 transition"
-        >
-          Start Learning Arrays →
-        </Link>
-      </div>
-
       <PrevNext current="/complexity" />
     </PageShell>
   );

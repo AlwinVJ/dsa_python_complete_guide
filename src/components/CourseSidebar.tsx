@@ -268,18 +268,49 @@ function CourseGroup({
   pathname: string;
   onNavigate?: () => void;
 }) {
-  // Modules that aren't ready for their full lesson tree yet (still under
-  // development, or a thin duplicate pointing at canonical content
-  // elsewhere, or configured with an overview-based layout style)
-  // collapse to a single, ordinary navigation link — same look
-  // as any other sidebar item, just no expand arrow. The module explains
-  // its own status once opened; the sidebar doesn't editorialize.
-  // Tries is a duplicateOf pointer to Trees → Trie, but we still expose its
-  // lesson tree in the sidebar with the same chevron affordance as Heaps —
-  // the Overview link continues to hit the /learn/tries redirect page.
-  const forceExpandable = course.slug === "tries";
-  if (!forceExpandable && (course.comingSoon || course.duplicateOf || course.courseLayout === "overview")) {
-
+  // Tries is a duplicateOf pointer to Trees → Trie. In the sidebar it renders
+  // as an expandable group with a single "Overview" child — the canonical
+  // Trie lesson tree lives under Trees → Trie and is reached from the
+  // Overview page itself, not from this sidebar.
+  if (course.slug === "tries") {
+    const overviewHref = `/learn/${course.slug}`;
+    return (
+      <li>
+        <button
+          onClick={onToggle}
+          className="flex w-full items-center gap-1.5 rounded-md px-2 py-1.5 text-left transition hover:bg-accent/60 hover:text-foreground"
+        >
+          {open ? (
+            <ChevronDown className="h-3.5 w-3.5 shrink-0" />
+          ) : (
+            <ChevronRight className="h-3.5 w-3.5 shrink-0" />
+          )}
+          <span className="flex-1 font-medium">{course.title}</span>
+        </button>
+        {open && (
+          <ul className="mb-1 ml-4 mt-0.5 space-y-0.5 border-l border-border pl-3">
+            <li>
+              <Link
+                to={overviewHref}
+                onClick={onNavigate}
+                className={`block rounded-md px-2 py-1 text-xs transition ${
+                  pathname === overviewHref
+                    ? "bg-accent text-accent-foreground font-medium"
+                    : "text-muted-foreground hover:bg-accent/60 hover:text-foreground"
+                }`}
+              >
+                Overview
+              </Link>
+            </li>
+          </ul>
+        )}
+      </li>
+    );
+  }
+  // Other modules that aren't ready for their full lesson tree yet (coming
+  // soon, thin duplicates, or overview-only layouts) collapse to a single
+  // ordinary link with no expand arrow.
+  if (course.comingSoon || course.duplicateOf || course.courseLayout === "overview") {
     const href = `/learn/${course.slug}`;
     const label = course.comingSoon ? `${course.title} (Coming Soon)` : course.title;
     return (

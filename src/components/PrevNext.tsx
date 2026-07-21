@@ -12,9 +12,9 @@ import { NAV_SECTIONS } from "@/lib/nav";
 type Override = { to: string; label: string };
 const NEXT_OVERRIDES: Record<string, Override> = {
   "/copying": { to: "/modules/linked-lists", label: "Linked Lists — Overview" },
-  "/complexity": { to: "/introduction", label: "Start Learning Arrays" },
+  "/complexity": { to: "/introduction", label: "Arrays — Introduction" },
   "/complexity/time": { to: "/complexity/space", label: "Space Complexity" },
-  "/complexity/space": { to: "/introduction", label: "Start Learning Arrays" },
+  "/complexity/space": { to: "/introduction", label: "Arrays — Introduction" },
 };
 
 const PREV_OVERRIDES: Record<string, Override> = {

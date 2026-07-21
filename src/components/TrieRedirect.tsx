@@ -11,7 +11,8 @@ const APPLICATIONS = [
   "IP Routing",
 ];
 
-const CANONICAL_TRIE_HREF: string = "/trees/trie/introduction";
+const TREES_OVERVIEW_HREF: string = "/learn/trees";
+const TRIE_SECTION_HREF: string = "/trees/trie/introduction";
 
 /**
  * The Tries course's lesson slugs still resolve (old bookmarks and deep
@@ -49,12 +50,19 @@ export function TrieRedirect() {
           theory, the interactive visualizer, and Python implementations — under Trees.
         </p>
 
-        <div className="mt-8">
+        <div className="mt-8 flex flex-col items-stretch justify-center gap-3 sm:flex-row sm:items-center">
           <Link
-            to={CANONICAL_TRIE_HREF}
-            className="inline-flex items-center gap-2 rounded-md gradient-brand px-5 py-2.5 text-sm font-semibold text-primary-foreground transition hover:opacity-90"
+            to={TREES_OVERVIEW_HREF}
+            className="inline-flex items-center justify-center gap-2 rounded-md gradient-brand px-5 py-2.5 text-sm font-semibold text-primary-foreground transition hover:opacity-90"
           >
-            Open Complete Trie Course
+            Open Complete Tree Course
+            <ArrowRight className="h-4 w-4" />
+          </Link>
+          <Link
+            to={TRIE_SECTION_HREF}
+            className="inline-flex items-center justify-center gap-2 rounded-md border border-border bg-card px-5 py-2.5 text-sm font-semibold text-foreground transition hover:border-[color:var(--brand)]/50 hover:bg-accent/60"
+          >
+            Go to Trie Section
             <ArrowRight className="h-4 w-4" />
           </Link>
         </div>

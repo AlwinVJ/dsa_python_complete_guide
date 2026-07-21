@@ -1,18 +1,60 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { PageShell, PageHeader } from "@/components/Callout";
-import { CodeBlock } from "@/components/CodeBlock";
-import { Section } from "@/components/ListVisualizer";
 import { PrevNext } from "@/components/PrevNext";
+import { Badge } from "@/components/ui/badge";
 
 export const Route = createFileRoute("/cheatsheet")({
   head: () => ({
     meta: [
-      { title: "Python List Quick Revision Sheet" },
-      { name: "description", content: "The one-page revision sheet you can print or save." },
+      { title: "Quick Revision — DSA Modules" },
+      {
+        name: "description",
+        content:
+          "Quick revision dashboard for every Data Structure and Algorithm module.",
+      },
     ],
   }),
   component: Page,
 });
+
+type RevisionItem = { label: string };
+
+const dataStructures: RevisionItem[] = [
+  { label: "Arrays" },
+  { label: "Linked Lists" },
+  { label: "Stacks" },
+  { label: "Queues" },
+  { label: "Hash Tables" },
+  { label: "Trees" },
+  { label: "Heaps" },
+  { label: "Tries" },
+  { label: "Graphs" },
+];
+
+const algorithms: RevisionItem[] = [
+  { label: "Searching" },
+  { label: "Sorting" },
+  { label: "Recursion" },
+  { label: "Divide & Conquer" },
+  { label: "Backtracking" },
+  { label: "Dynamic Programming" },
+  { label: "Greedy Algorithms" },
+  { label: "Graph Algorithms" },
+  { label: "String Algorithms" },
+  { label: "Bit Manipulation" },
+];
+
+function ComingSoonCard({ label }: RevisionItem) {
+  return (
+    <div
+      className="card-surface flex cursor-not-allowed items-center justify-between gap-3 p-4 opacity-60"
+      aria-disabled="true"
+    >
+      <span className="font-medium text-muted-foreground">{label}</span>
+      <Badge variant="secondary">Coming Soon</Badge>
+    </div>
+  );
+}
 
 function Page() {
   return (
@@ -20,48 +62,32 @@ function Page() {
       <PageHeader
         eyebrow="Reference"
         title="Quick Revision"
-        description="One-page cheat sheet — perfect for exams and interviews."
+        description="Pick a module to review key concepts, formulas, and interview patterns."
       />
 
-      <Section title="Creation">
-        <CodeBlock
-          code={`a = []                  # empty\nb = [1, 2, 3]           # literal\nc = list("abc")         # ['a','b','c']\nd = [0] * 5             # [0,0,0,0,0]\nm = [[0]*3 for _ in range(3)]   # 3x3 matrix`}
-        />
-      </Section>
+      <section className="space-y-8">
+        <div>
+          <h3 className="mb-3 text-sm font-semibold uppercase tracking-wider text-muted-foreground">
+            Data Structures
+          </h3>
+          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+            {dataStructures.map((item) => (
+              <ComingSoonCard key={item.label} label={item.label} />
+            ))}
+          </div>
+        </div>
 
-      <Section title="Access & Update">
-        <CodeBlock
-          code={`x = a[0]        # first\ny = a[-1]       # last\na[2] = 42       # update\nlen(a)          # length`}
-        />
-      </Section>
-
-      <Section title="Slicing">
-        <CodeBlock
-          code={`a[1:4]     # positions 1,2,3\na[:3]      # first 3\na[-3:]     # last 3\na[::2]     # every 2nd\na[::-1]    # reversed`}
-        />
-      </Section>
-
-      <Section title="Add / Remove">
-        <CodeBlock
-          code={`a.append(9)       # end\na.insert(0, 1)    # index 0\na.extend([1,2])   # multiple\na.pop()           # last\na.pop(0)          # by index\na.remove(9)       # by value\ndel a[2]\na.clear()`}
-        />
-      </Section>
-
-      <Section title="Search">
-        <CodeBlock code={`9 in a\na.index(9)\na.count(9)`} />
-      </Section>
-
-      <Section title="Sort / Reverse / Copy">
-        <CodeBlock
-          code={`a.sort()             # in place\nsorted(a)            # new list\na.sort(reverse=True)\na.sort(key=len)\na.reverse()\nb = a.copy()`}
-        />
-      </Section>
-
-      <Section title="Handy built-ins">
-        <CodeBlock
-          code={`len(a); min(a); max(a); sum(a)\nany(a); all(a)\nlist(zip(a, b))\nlist(enumerate(a))\nlist(map(str, a))\nlist(filter(None, a))`}
-        />
-      </Section>
+        <div>
+          <h3 className="mb-3 text-sm font-semibold uppercase tracking-wider text-muted-foreground">
+            Algorithms
+          </h3>
+          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+            {algorithms.map((item) => (
+              <ComingSoonCard key={item.label} label={item.label} />
+            ))}
+          </div>
+        </div>
+      </section>
 
       <PrevNext current="/cheatsheet" />
     </PageShell>
