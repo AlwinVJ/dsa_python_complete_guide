@@ -76,7 +76,7 @@ export function CourseSidebar({ onNavigate }: { onNavigate?: () => void }) {
   const groups = coursesByCategory();
 
   return (
-    <nav className="h-full overflow-y-auto px-4 py-6 text-sm">
+    <nav className="h-full overflow-y-auto px-4 py-6 text-sm custom-scrollbar">
       <SidebarSection title="Getting Started">
         {TOP_LINKS.map((l) => (
           <SidebarLink
