@@ -3,7 +3,6 @@ import { useEffect, useMemo, useState } from "react";
 import { PageShell, PageHeader, Callout } from "@/components/Callout";
 import { CodeViewer } from "@/components/CodeViewer";
 import {
-  PlaygroundBackButton,
   PlaygroundFooterNav,
 } from "@/components/PlaygroundNav";
 
@@ -103,7 +102,6 @@ function Page() {
 
   return (
     <PageShell>
-      <PlaygroundBackButton playground="string-algorithms" />
       <PageHeader
         eyebrow="String Algorithms Playground"
         title="Slide, hash, match — live"

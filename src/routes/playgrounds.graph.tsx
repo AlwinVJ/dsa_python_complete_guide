@@ -1,7 +1,7 @@
+import { PlaygroundFooterNav } from "@/components/PlaygroundNav";
 import { createFileRoute } from "@tanstack/react-router";
 import { PageShell, PageHeader } from "@/components/Callout";
 import { GraphPlayground } from "@/components/graphs/GraphPlayground";
-import { PlaygroundBackButton, PlaygroundFooterNav } from "@/components/PlaygroundNav";
 
 export const Route = createFileRoute("/playgrounds/graph")({
   head: () => ({
@@ -25,7 +25,6 @@ export const Route = createFileRoute("/playgrounds/graph")({
 function Page() {
   return (
     <PageShell>
-      <PlaygroundBackButton playground="graph" />
       <PageHeader
         eyebrow="Playground"
         title="Graph Playground"

@@ -4,7 +4,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import { PageShell, PageHeader, Callout } from "@/components/Callout";
 import { CodeViewer } from "@/components/CodeViewer";
 import {
-  PlaygroundBackButton,
   PlaygroundFooterNav,
 } from "@/components/PlaygroundNav";
 import { Play, Pause, RotateCcw, StepForward, StepBack } from "lucide-react";
@@ -377,7 +376,6 @@ function Page() {
 
   return (
     <PageShell>
-      <PlaygroundBackButton playground="greedy" />
       <PageHeader
         eyebrow="Greedy Playground"
         title="Sort, commit, win — live"

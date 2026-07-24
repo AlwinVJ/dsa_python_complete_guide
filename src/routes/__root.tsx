@@ -14,7 +14,7 @@ import { Menu, X, Moon, Sun, Github, ListTree } from "lucide-react";
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { CourseSidebar } from "../components/CourseSidebar";
-import { BackButton } from "../components/BackButton";
+
 
 function NotFoundComponent() {
   return (
@@ -119,6 +119,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       },
       { rel: "stylesheet", href: appCss },
       { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
+      { rel: "icon", href: "/favicon.png", type: "image/png" },
     ],
   }),
   shellComponent: RootShell,
@@ -233,9 +234,6 @@ function RootComponent() {
           )}
 
           <main className="min-w-0 flex-1">
-            <div className="mx-auto w-full max-w-4xl px-4 pt-4 sm:px-6 lg:px-10">
-              <BackButton />
-            </div>
             <Outlet />
           </main>
         </div>

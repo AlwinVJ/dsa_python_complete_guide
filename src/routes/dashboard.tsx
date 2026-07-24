@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { Bookmark, CheckCircle2, Trophy, ArrowRight } from "lucide-react";
 import { ROADMAP, getModuleRoute } from "@/lib/curriculum";
 import { useLocalSet } from "@/lib/useLocalSet";
+import { BackButton } from "@/components/BackButton";
 
 export const Route = createFileRoute("/dashboard")({
   head: () => ({
@@ -46,6 +47,7 @@ function DashboardPage() {
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-10 sm:px-6">
+      <div className="mb-6"><BackButton /></div>
       <h1 className="text-4xl font-bold tracking-tight">Study Hub</h1>
       <p className="mt-2 text-muted-foreground">
         Review your bookmarks and practice logs across the curriculum.

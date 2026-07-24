@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { BackButton } from "@/components/BackButton";
 import { Search as SearchIcon } from "lucide-react";
 import { useMemo, useState } from "react";
 import { NAV_SECTIONS } from "@/lib/nav";
@@ -55,6 +56,7 @@ function SearchPage() {
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-10 sm:px-6">
+      <div className="mb-6"><BackButton /></div>
       <h1 className="text-3xl font-bold">Search</h1>
       <p className="mt-2 text-muted-foreground">
         Find any data structure, algorithm, pattern, question, or reference.

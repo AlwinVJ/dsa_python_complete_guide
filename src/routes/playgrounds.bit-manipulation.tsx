@@ -3,7 +3,6 @@ import { useEffect, useMemo, useState } from "react";
 import { PageShell, PageHeader, Callout } from "@/components/Callout";
 import { CodeViewer } from "@/components/CodeViewer";
 import {
-  PlaygroundBackButton,
   PlaygroundFooterNav,
 } from "@/components/PlaygroundNav";
 
@@ -171,7 +170,6 @@ function Page() {
 
   return (
     <PageShell>
-      <PlaygroundBackButton playground="bit-manipulation" />
       <PageHeader
         eyebrow="Bit Manipulation Playground"
         title="Bit-twiddling and binary shifts"

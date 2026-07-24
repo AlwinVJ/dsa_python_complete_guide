@@ -1,8 +1,8 @@
+import { PlaygroundFooterNav } from "@/components/PlaygroundNav";
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { PageShell, PageHeader, Callout } from "@/components/Callout";
 import { CodeViewer } from "@/components/CodeViewer";
-import { PlaygroundBackButton, PlaygroundFooterNav } from "@/components/PlaygroundNav";
 import {
   Play,
   Pause,
@@ -1097,7 +1097,6 @@ function Page() {
 
   return (
     <PageShell>
-      <PlaygroundBackButton playground="dp" />
       <PageHeader
         eyebrow="Dynamic Programming Playground"
         title="Watch DP tables and caches fill — live"

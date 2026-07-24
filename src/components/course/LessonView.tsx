@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { BackButton } from "@/components/BackButton";
 import { Link } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import {
@@ -157,6 +158,7 @@ export function LessonView({
 
   return (
     <div className="mx-auto max-w-4xl px-4 py-10 sm:px-6">
+      <div className="mb-6"><BackButton /></div>
       <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}>
         <div className="mb-2 inline-flex items-center gap-2 rounded-full border border-border bg-card px-3 py-1 text-xs text-muted-foreground">
           <Sparkles className="h-3.5 w-3.5 text-[color:var(--brand)]" />

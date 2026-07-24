@@ -3,7 +3,6 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { PageShell, PageHeader, Callout } from "@/components/Callout";
 import { CodeViewer } from "@/components/CodeViewer";
 import {
-  PlaygroundBackButton,
   PlaygroundFooterNav,
 } from "@/components/PlaygroundNav";
 
@@ -213,7 +212,6 @@ function Page() {
 
   return (
     <PageShell>
-      <PlaygroundBackButton playground="graph-algorithms" />
       <PageHeader
         eyebrow="Graph Algorithms Playground"
         title="Traverse, relax, converge — live"

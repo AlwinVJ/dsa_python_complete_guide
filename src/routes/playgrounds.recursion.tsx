@@ -1,9 +1,9 @@
+import { PlaygroundFooterNav } from "@/components/PlaygroundNav";
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { PageShell, PageHeader, Callout } from "@/components/Callout";
 import { CodeViewer } from "@/components/CodeViewer";
-import { PlaygroundBackButton, PlaygroundFooterNav } from "@/components/PlaygroundNav";
 import { Play, Pause, RotateCcw, StepForward, StepBack } from "lucide-react";
 
 export const Route = createFileRoute("/playgrounds/recursion")({
@@ -305,7 +305,6 @@ function Page() {
 
   return (
     <PageShell>
-      <PlaygroundBackButton playground="recursion" />
       <PageHeader
         eyebrow="Recursion Playground"
         title="Watch the call stack come alive"

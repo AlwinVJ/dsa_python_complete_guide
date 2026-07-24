@@ -1,3 +1,4 @@
+import { PlaygroundFooterNav } from "@/components/PlaygroundNav";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { PageShell, PageHeader, Callout, ComplexityBadge } from "@/components/Callout";
@@ -15,7 +16,6 @@ import {
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { CodeViewer } from "@/components/CodeViewer";
-import { PlaygroundBackButton, PlaygroundFooterNav } from "@/components/PlaygroundNav";
 
 export const Route = createFileRoute("/playgrounds/divide-conquer")({
   head: () => ({
@@ -970,7 +970,6 @@ function Page() {
 
   return (
     <PageShell>
-      <PlaygroundBackButton playground="divide-conquer" />
       <PageHeader
         eyebrow="Playground"
         title="Divide & Conquer Playground"

@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { BackButton } from "@/components/BackButton";
 import { ArrowRight, BookOpen, Clock, Layers } from "lucide-react";
 import { motion } from "framer-motion";
 import { getModuleRoute } from "@/lib/curriculum";
@@ -84,6 +85,7 @@ function RoadmapPage() {
 
   return (
     <div className="mx-auto max-w-4xl px-4 py-10 sm:px-6">
+      <div className="mb-6"><BackButton /></div>
       <div className="mb-8">
         <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">DSA Roadmap</h1>
         <p className="mt-3 max-w-2xl text-lg text-muted-foreground">

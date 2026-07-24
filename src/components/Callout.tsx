@@ -88,6 +88,15 @@ export function PageHeader({
   );
 }
 
+import { BackButton } from "@/components/BackButton";
+
 export function PageShell({ children }: { children: ReactNode }) {
-  return <div className="mx-auto w-full max-w-4xl px-4 py-10 sm:px-6 lg:px-10">{children}</div>;
+  return (
+    <div className="mx-auto w-full max-w-4xl px-4 py-10 sm:px-6 lg:px-10">
+      <div className="mb-6">
+        <BackButton />
+      </div>
+      {children}
+    </div>
+  );
 }

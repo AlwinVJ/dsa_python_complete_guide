@@ -4,7 +4,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import { PageShell, PageHeader, Callout } from "@/components/Callout";
 import { CodeViewer } from "@/components/CodeViewer";
 import {
-  PlaygroundBackButton,
   PlaygroundFooterNav,
 } from "@/components/PlaygroundNav";
 import { Play, Pause, RotateCcw, StepForward, StepBack } from "lucide-react";
@@ -828,7 +827,6 @@ function Page() {
 
   return (
     <PageShell>
-      <PlaygroundBackButton playground="backtracking" />
       <PageHeader
         eyebrow="Backtracking Playground"
         title="Choose, explore, undo — live"
