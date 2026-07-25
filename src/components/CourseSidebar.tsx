@@ -188,13 +188,13 @@ export function CourseSidebar({ onNavigate }: { onNavigate?: () => void }) {
       <SidebarSection title="Interview Prep">
         <SidebarLink
           to="/modules/interview"
-          label="Interview Preparation"
+          label="Interview Preparation (Coming Soon)"
           active={pathname === "/modules/interview"}
           onNavigate={onNavigate}
         />
         <SidebarLink
           to="/modules/cp"
-          label="Competitive Programming"
+          label="Competitive Programming (Coming Soon)"
           active={pathname === "/modules/cp"}
           onNavigate={onNavigate}
         />

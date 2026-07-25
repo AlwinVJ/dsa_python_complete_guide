@@ -53,6 +53,8 @@ import { Route as PlaygroundsDpRouteImport } from './routes/playgrounds.dp'
 import { Route as PlaygroundsDivideConquerRouteImport } from './routes/playgrounds.divide-conquer'
 import { Route as PlaygroundsBitManipulationRouteImport } from './routes/playgrounds.bit-manipulation'
 import { Route as PlaygroundsBacktrackingRouteImport } from './routes/playgrounds.backtracking'
+import { Route as ModulesInterviewRouteImport } from './routes/modules.interview'
+import { Route as ModulesCpRouteImport } from './routes/modules.cp'
 import { Route as ModulesSlugRouteImport } from './routes/modules.$slug'
 import { Route as LinkedListsInterviewRouteImport } from './routes/linked-lists.interview'
 import { Route as LinkedListsFaqRouteImport } from './routes/linked-lists.faq'
@@ -290,6 +292,16 @@ const PlaygroundsBacktrackingRoute = PlaygroundsBacktrackingRouteImport.update({
   path: '/playgrounds/backtracking',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ModulesInterviewRoute = ModulesInterviewRouteImport.update({
+  id: '/modules/interview',
+  path: '/modules/interview',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ModulesCpRoute = ModulesCpRouteImport.update({
+  id: '/modules/cp',
+  path: '/modules/cp',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ModulesSlugRoute = ModulesSlugRouteImport.update({
   id: '/modules/$slug',
   path: '/modules/$slug',
@@ -383,6 +395,8 @@ export interface FileRoutesByFullPath {
   '/linked-lists/faq': typeof LinkedListsFaqRoute
   '/linked-lists/interview': typeof LinkedListsInterviewRoute
   '/modules/$slug': typeof ModulesSlugRoute
+  '/modules/cp': typeof ModulesCpRoute
+  '/modules/interview': typeof ModulesInterviewRoute
   '/playgrounds/backtracking': typeof PlaygroundsBacktrackingRoute
   '/playgrounds/bit-manipulation': typeof PlaygroundsBitManipulationRoute
   '/playgrounds/divide-conquer': typeof PlaygroundsDivideConquerRoute
@@ -441,6 +455,8 @@ export interface FileRoutesByTo {
   '/linked-lists/faq': typeof LinkedListsFaqRoute
   '/linked-lists/interview': typeof LinkedListsInterviewRoute
   '/modules/$slug': typeof ModulesSlugRoute
+  '/modules/cp': typeof ModulesCpRoute
+  '/modules/interview': typeof ModulesInterviewRoute
   '/playgrounds/backtracking': typeof PlaygroundsBacktrackingRoute
   '/playgrounds/bit-manipulation': typeof PlaygroundsBitManipulationRoute
   '/playgrounds/divide-conquer': typeof PlaygroundsDivideConquerRoute
@@ -500,6 +516,8 @@ export interface FileRoutesById {
   '/linked-lists/faq': typeof LinkedListsFaqRoute
   '/linked-lists/interview': typeof LinkedListsInterviewRoute
   '/modules/$slug': typeof ModulesSlugRoute
+  '/modules/cp': typeof ModulesCpRoute
+  '/modules/interview': typeof ModulesInterviewRoute
   '/playgrounds/backtracking': typeof PlaygroundsBacktrackingRoute
   '/playgrounds/bit-manipulation': typeof PlaygroundsBitManipulationRoute
   '/playgrounds/divide-conquer': typeof PlaygroundsDivideConquerRoute
@@ -560,6 +578,8 @@ export interface FileRouteTypes {
     | '/linked-lists/faq'
     | '/linked-lists/interview'
     | '/modules/$slug'
+    | '/modules/cp'
+    | '/modules/interview'
     | '/playgrounds/backtracking'
     | '/playgrounds/bit-manipulation'
     | '/playgrounds/divide-conquer'
@@ -618,6 +638,8 @@ export interface FileRouteTypes {
     | '/linked-lists/faq'
     | '/linked-lists/interview'
     | '/modules/$slug'
+    | '/modules/cp'
+    | '/modules/interview'
     | '/playgrounds/backtracking'
     | '/playgrounds/bit-manipulation'
     | '/playgrounds/divide-conquer'
@@ -676,6 +698,8 @@ export interface FileRouteTypes {
     | '/linked-lists/faq'
     | '/linked-lists/interview'
     | '/modules/$slug'
+    | '/modules/cp'
+    | '/modules/interview'
     | '/playgrounds/backtracking'
     | '/playgrounds/bit-manipulation'
     | '/playgrounds/divide-conquer'
@@ -735,6 +759,8 @@ export interface RootRouteChildren {
   LinkedListsFaqRoute: typeof LinkedListsFaqRoute
   LinkedListsInterviewRoute: typeof LinkedListsInterviewRoute
   ModulesSlugRoute: typeof ModulesSlugRoute
+  ModulesCpRoute: typeof ModulesCpRoute
+  ModulesInterviewRoute: typeof ModulesInterviewRoute
   PlaygroundsBacktrackingRoute: typeof PlaygroundsBacktrackingRoute
   PlaygroundsBitManipulationRoute: typeof PlaygroundsBitManipulationRoute
   PlaygroundsDivideConquerRoute: typeof PlaygroundsDivideConquerRoute
@@ -1072,6 +1098,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PlaygroundsBacktrackingRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/modules/interview': {
+      id: '/modules/interview'
+      path: '/modules/interview'
+      fullPath: '/modules/interview'
+      preLoaderRoute: typeof ModulesInterviewRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/modules/cp': {
+      id: '/modules/cp'
+      path: '/modules/cp'
+      fullPath: '/modules/cp'
+      preLoaderRoute: typeof ModulesCpRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/modules/$slug': {
       id: '/modules/$slug'
       path: '/modules/$slug'
@@ -1191,6 +1231,8 @@ const rootRouteChildren: RootRouteChildren = {
   LinkedListsFaqRoute: LinkedListsFaqRoute,
   LinkedListsInterviewRoute: LinkedListsInterviewRoute,
   ModulesSlugRoute: ModulesSlugRoute,
+  ModulesCpRoute: ModulesCpRoute,
+  ModulesInterviewRoute: ModulesInterviewRoute,
   PlaygroundsBacktrackingRoute: PlaygroundsBacktrackingRoute,
   PlaygroundsBitManipulationRoute: PlaygroundsBitManipulationRoute,
   PlaygroundsDivideConquerRoute: PlaygroundsDivideConquerRoute,
