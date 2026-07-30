@@ -9,7 +9,7 @@ import {
   Scripts,
 } from "@tanstack/react-router";
 import { useEffect, useState, type ReactNode } from "react";
-import { Menu, X, Moon, Sun, Github, ListTree } from "lucide-react";
+import { Menu, X, Moon, Sun, Github, ListTree, PanelLeftClose, PanelLeftOpen } from "lucide-react";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
@@ -176,11 +176,31 @@ function ThemeToggle() {
   );
 }
 
+const DESKTOP_SIDEBAR_KEY = "dsa-sidebar:desktop-collapsed";
+
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [desktopCollapsed, setDesktopCollapsed] = useState(false);
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   useEffect(() => setMobileOpen(false), [pathname]);
+
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem(DESKTOP_SIDEBAR_KEY);
+      if (saved === "1") setDesktopCollapsed(true);
+    } catch {}
+  }, []);
+
+  const toggleDesktop = () => {
+    setDesktopCollapsed((c) => {
+      const next = !c;
+      try {
+        localStorage.setItem(DESKTOP_SIDEBAR_KEY, next ? "1" : "0");
+      } catch {}
+      return next;
+    });
+  };
 
   return (
     <QueryClientProvider client={queryClient}>
@@ -193,6 +213,18 @@ function RootComponent() {
               aria-label="Toggle menu"
             >
               {mobileOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
+            </button>
+            <button
+              className="hidden lg:inline-flex h-9 w-9 items-center justify-center rounded-md border border-border hover:bg-accent transition"
+              onClick={toggleDesktop}
+              aria-label={desktopCollapsed ? "Expand sidebar" : "Collapse sidebar"}
+              title={desktopCollapsed ? "Expand sidebar" : "Collapse sidebar"}
+            >
+              {desktopCollapsed ? (
+                <PanelLeftOpen className="h-4 w-4" />
+              ) : (
+                <PanelLeftClose className="h-4 w-4" />
+              )}
             </button>
             <Link to="/" className="flex items-center gap-2 font-semibold">
               <span className="grid h-8 w-8 place-items-center rounded-md gradient-brand text-primary-foreground">
@@ -223,8 +255,15 @@ function RootComponent() {
         </header>
 
         <div className="mx-auto flex w-full">
-          <aside className="hidden lg:block sticky top-14 h-[calc(100vh-3.5rem)] w-64 lg:w-72 xl:w-80 shrink-0 border-r border-border">
-            <CourseSidebar />
+          <aside
+            className={`hidden lg:block sticky top-14 h-[calc(100vh-3.5rem)] shrink-0 border-r border-border overflow-hidden transition-[width] duration-300 ease-in-out ${
+              desktopCollapsed ? "w-0 border-r-0" : "w-64 lg:w-72 xl:w-80"
+            }`}
+            aria-hidden={desktopCollapsed}
+          >
+            <div className="w-64 lg:w-72 xl:w-80 h-full">
+              <CourseSidebar />
+            </div>
           </aside>
 
           {mobileOpen && (
