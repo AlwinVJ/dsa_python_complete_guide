@@ -22,7 +22,6 @@ const REFERENCE_LINKS = [
   { to: "/complexity", label: "Complexity Cheat Sheet" },
   { to: "/cheatsheet", label: "Quick Revision" },
   { to: "/resources", label: "References & Practice" },
-  { to: "/faq", label: "FAQ & Interview Qs" },
 ];
 
 const OPEN_KEY = "dsa-sidebar:v2";

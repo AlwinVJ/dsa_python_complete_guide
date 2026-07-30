@@ -1118,7 +1118,7 @@ export const LEARNING_ORDER: { title: string; to?: string; note: string }[] = [
   { title: "Sorting", to: "/sorting", note: "11 sorting algorithms animated." },
   { title: "List Comprehensions", to: "/comprehension", note: "One-liners done right." },
   { title: "Nested Lists", to: "/nested", note: "Matrices and 2D data." },
-  { title: "Interview Questions", to: "/faq", note: "FAQ + Interview Qs." },
+  
   { title: "LeetCode Beginner", note: "Level 1–3 of the roadmap above." },
   { title: "LeetCode Intermediate", note: "Level 4–5: prefix sums, sliding window." },
   { title: "LeetCode Advanced", note: "Level 6: hardest interview classics." },

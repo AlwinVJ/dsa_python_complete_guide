@@ -446,12 +446,6 @@ function Landing() {
               >
                 <Rocket className="h-3.5 w-3.5" /> Start prep
               </Link>
-              <Link
-                to="/faq"
-                className="inline-flex items-center gap-1 rounded-md border border-border px-3 py-1.5 text-xs font-medium hover:bg-accent text-foreground"
-              >
-                Interview Qs
-              </Link>
             </div>
           </div>
         </div>

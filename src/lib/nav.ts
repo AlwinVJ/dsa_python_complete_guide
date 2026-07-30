@@ -174,7 +174,7 @@ export const NAV_SECTIONS: NavSection[] = [
     items: [
       { to: "/modules/interview", label: "Interview Preparation" },
       { to: "/modules/cp", label: "Competitive Programming" },
-      { to: "/faq", label: "FAQ & Interview Qs" },
+      
     ],
   },
   {
